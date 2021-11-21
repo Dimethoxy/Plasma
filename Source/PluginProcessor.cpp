@@ -126,8 +126,8 @@ bool PlasmaAudioProcessor::hasEditor() const
 
 juce::AudioProcessorEditor* PlasmaAudioProcessor::createEditor()
 {
-	return new juce::GenericAudioProcessorEditor(*this);
-	//return new PlasmaAudioProcessorEditor (*this);
+	//return new juce::GenericAudioProcessorEditor(*this);
+	return new PlasmaAudioProcessorEditor (*this);
 }
 
 //==============================================================================
