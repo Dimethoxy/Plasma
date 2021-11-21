@@ -191,6 +191,8 @@ void PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
 
     //Get Settings
     auto chainSettings = getChainSettings(apvts);
+    float gain = Decibels::decibelsToGain(chainSettings.gain);
+    float preGain = Decibels::decibelsToGain(chainSettings.preGain);
 
     //Distortion Unit
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
@@ -198,6 +200,9 @@ void PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
         auto* channelData = buffer.getWritePointer(channel);
         for (int sample = 0; sample < buffer.getNumSamples(); sample++)
         {
+			//Pre Gain
+			channelData[sample] = clamp(channelData[sample] * preGain, -1.0, 1.0);
+
             //Girth
             channelData[sample] = channelData[sample] *
                 ((((float)(rand() % 100)) / 100 * chainSettings.girth) + 1);
@@ -226,7 +231,7 @@ void PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
     rightChain.process(rightContext);
 
     //Late Stage
-    float gain = Decibels::decibelsToGain(chainSettings.gain);
+    
 	for (int channel = 0; channel < totalNumInputChannels; ++channel)
 	{
 		auto* channelData = buffer.getWritePointer(channel);
@@ -251,10 +256,10 @@ juce::AudioProcessorValueTreeState::ParameterLayout PlasmaAudioProcessor::create
 {
     juce::AudioProcessorValueTreeState::ParameterLayout layout;
     
-	//Gain
+	//Pre Gain
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Pre Gain", "Pre Gain",
-			juce::NormalisableRange<float>(-48.0f, 48.0f, 0.01f, 1.0f), 0.0f));
+			juce::NormalisableRange<float>(-48.0f, 48.0f, 0.01f, 0.5f), 0.0f));
 
     //Drive
     juce::StringArray distortionArray;
@@ -286,7 +291,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout PlasmaAudioProcessor::create
     //Peak
     layout.add(std::make_unique<juce::AudioParameterFloat>
         ("Peak Freq", "Peak Freq",
-        juce::NormalisableRange<float>(0.0f, 5000.0f, 0.1f, 0.5f), 450.0f));
+        juce::NormalisableRange<float>(20.0f, 5000.0f, 0.1f, 0.5f), 450.0f));
     layout.add(std::make_unique<juce::AudioParameterFloat>
         ("Peak Gain", "Peak Gain",
             juce::NormalisableRange<float>(-64.0f, 64.0f, 0.1f, 1.0f), 16.0f));
@@ -297,14 +302,14 @@ juce::AudioProcessorValueTreeState::ParameterLayout PlasmaAudioProcessor::create
     //Highpass/Lowpass Freq
     layout.add(std::make_unique<juce::AudioParameterFloat>
         ("Highpass Freq", "Highpass Freq",
-            juce::NormalisableRange<float>(0.0f, 20000.0f, 0.1f, 0.5f), 70.0f));
+            juce::NormalisableRange<float>(20.0f, 20000.0f, 0.1f, 0.5f), 70.0f));
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Lowpass Freq", "Lowpass Freq",
-			juce::NormalisableRange<float>(0.0f, 20000.0f, 0.1f, 0.5f), 8000.0f));
+			juce::NormalisableRange<float>(20.0f, 20000.0f, 0.1f, 0.5f), 8000.0f));
 
     //Highpass/Lowpass Slope
     juce::StringArray slopeArray;
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 8; i++) {
         juce::String str;
         str << (12 + i * 12);
         str << " db/Oct";
@@ -334,6 +339,7 @@ ChainSettings getChainSettings(juce::AudioProcessorValueTreeState& apvts)
 {
     ChainSettings settings;
     //Distortion Unit
+    settings.preGain = apvts.getRawParameterValue("Pre Gain")->load();
     settings.drive = apvts.getRawParameterValue("Drive")->load();
     settings.girth = apvts.getRawParameterValue("Girth")->load();
     settings.bias = apvts.getRawParameterValue("Bias")->load();

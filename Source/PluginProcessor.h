@@ -12,7 +12,11 @@ enum Slope
 	Slope_12,
 	Slope_24,
 	Slope_36,
-	Slope_48
+	Slope_48,
+    Slope_60,
+    Slope_72,
+    Slope_84,
+    Slope_96
 };
 enum Distortion
 {
@@ -26,7 +30,7 @@ enum Distortion
 };
 struct ChainSettings
 {
-	float drive{ 10.0f }, girth{ 0.0f }, bias{ 0.0f }, lateDrive, gain{ 0.0f };
+    float drive{ 10.0f }, girth{ 0.0f }, bias{ 0.0f }, lateDrive, gain{ 0.0f }, preGain{ 0.0f };
 	float peakFreq{ 0 }, peakGainInDecibels{ 0 }, peakQuality{ 1.0f };
 	float highPassFreq{ 20.0f }, lowPassFreq{ 20.0f };
 	Slope highPassSlope{ Slope::Slope_12 }, lowPassSlope{ Slope::Slope_12 };
@@ -91,7 +95,7 @@ public:
 private:
     float clamp(float d, float min, float max);
     using Filter = juce::dsp::IIR::Filter<float>;
-    using PassFilter = juce::dsp::ProcessorChain<Filter, Filter, Filter, Filter>;
+    using PassFilter = juce::dsp::ProcessorChain<Filter, Filter, Filter, Filter, Filter, Filter, Filter, Filter >;
     using MonoChain = juce::dsp::ProcessorChain<PassFilter, Filter, PassFilter>;
 
     MonoChain leftChain, rightChain;
@@ -123,8 +127,24 @@ private:
         filter.template setBypassed<1>(true);
         filter.template setBypassed<2>(true);
         filter.template setBypassed<3>(true);
+        filter.template setBypassed<4>(true);
+        filter.template setBypassed<5>(true);
+        filter.template setBypassed<6>(true);
+        filter.template setBypassed<7>(true);
 
         switch (filterSlope){
+        case Slope_96: {
+            update<7>(filter, filterCoefficients);
+        }
+        case Slope_84: {
+            update<6>(filter, filterCoefficients);
+        }
+        case Slope_72: {
+            update<5>(filter, filterCoefficients);
+        }
+        case Slope_60: {
+            update<4>(filter, filterCoefficients);
+        }
         case Slope_48:{
             update<3>(filter, filterCoefficients);
         }
