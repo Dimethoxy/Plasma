@@ -4,16 +4,36 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Constructor
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor (PlasmaAudioProcessor& p)
-    : AudioProcessorEditor (&p), audioProcessor (p)
+PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
+    : AudioProcessorEditor(&p), audioProcessor(p), 
+    highPassFreqSliderAttachment(audioProcessor.apvts, "Highpass Freq", highPassFreqSlider),
+    lowPassFreqSliderAttachment(audioProcessor.apvts, "Lowpass Freq", lowPassFreqSlider),
+    peakFreqSliderAttachment(audioProcessor.apvts, "Peak Freq", peakFreqSlider),
+    biasSliderAttachment(audioProcessor.apvts, "Bias", biasSlider),
+    lateBiasSliderAttachment(audioProcessor.apvts, "Late Bias", lateBiasSlider),
+    driveTypeSliderAttachment(audioProcessor.apvts, "Distortion Type", driveTypeSlider),
+    lateDriveTypeSliderAttachment(audioProcessor.apvts, "Late Distortion Type", lateDriveTypeSlider),
+    highPassResonanceSliderAttachment(audioProcessor.apvts, "Highpass Resonance", highPassResonanceSlider),
+    lowPassResonanceSliderAttachment(audioProcessor.apvts, "Lowpass Resonance", lowPassResonanceSlider),
+    peakGainSliderAttachment(audioProcessor.apvts, "Peak Gain", highPassResonanceQualitySlider),
+    highPassResonanceQualitySliderAttachment(audioProcessor.apvts, "Highpass Resonance Q", highPassResonanceQualitySlider),
+	lowPassResonanceQualitySliderAttachment(audioProcessor.apvts, "Lowpass Resonance Q", lowPassResonanceQualitySlider),
+	peakQualitySliderAttachment(audioProcessor.apvts, "Peak Q", peakQualitySlider),
+	highPassSlopeSliderAttachment(audioProcessor.apvts, "Highpass Slope", highPassSlopeSlider),
+	lowPassSlopeSliderAttachment(audioProcessor.apvts, "Lowpass Slope", lowPassSlopeSlider),
+	preGainSliderAttachment(audioProcessor.apvts, "Pre Gain", gainSlider),
+	driveSliderAttachment(audioProcessor.apvts, "Drive", driveSlider),
+	girthSliderAttachment(audioProcessor.apvts, "Girth", girthSlider),
+	lateGirthSliderAttachment(audioProcessor.apvts, "Late Girth", lateGirthSlider),
+	lateDriveSliderAttachment(audioProcessor.apvts, "Late Drive", lateDriveSlider),
+	gainSliderAttachment(audioProcessor.apvts, "Gain", gainSlider)
 {
-    //Make all components visible
-    for (auto* comp : getComps())
-    {
-        addAndMakeVisible(comp);
-    }
-
-    setSize (1000, 500);
+	//Make all components visible
+	for (auto* comp : getComps())
+	{
+		addAndMakeVisible(comp);
+	}
+	setSize(1000, 500);
 }
 
 PlasmaAudioProcessorEditor::~PlasmaAudioProcessorEditor()
@@ -33,14 +53,14 @@ void PlasmaAudioProcessorEditor::paint (juce::Graphics& g)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Layout
 /////////////////////////////////////////////////W///////////////////////////////////////////////////////////////////
-float PlasmaAudioProcessorEditor::sq(float value)
+int PlasmaAudioProcessorEditor::sq(float value)
 {
-    return value * 50.0f;
+    return round(value * 50.0f);
 }
 
 void PlasmaAudioProcessorEditor::resized()
 {
-    gainSlider.setBounds(sq(0.5), sq(4), sq(1.5), sq(5.5));
+    preGainSlider.setBounds(sq(0.5), sq(4), sq(1.5), sq(5.5));
     driveSlider.setBounds(sq(2.0), sq(4), sq(1.5), sq(5.5));
     girthSlider.setBounds(sq(3.5), sq(4), sq(1.5), sq(5.5));
 
@@ -49,7 +69,7 @@ void PlasmaAudioProcessorEditor::resized()
 	lateDriveTypeSlider.setBounds(sq(17.25), sq(1.5), sq(1.5), sq(1.5));
 	lateBiasSlider.setBounds(sq(15.75), sq(1.5), sq(1.5), sq(1.5));
 
-	lateGainSlider.setBounds(sq(15.0), sq(4), sq(1.5), sq(5.5));
+	gainSlider.setBounds(sq(15.0), sq(4), sq(1.5), sq(5.5));
     lateDriveSlider.setBounds(sq(16.5), sq(4), sq(1.5), sq(5.5));
 	lateGirthSlider.setBounds(sq(18.0), sq(4), sq(1.5), sq(5.5));
 
@@ -98,7 +118,7 @@ std::vector<juce::Component*> PlasmaAudioProcessorEditor::getComps()
 
         &lateGirthSlider,
         &lateDriveSlider,
-        &lateGainSlider,
+        &preGainSlider,
 
         & highPassSlopeSlider,
         &highPassFreqSlider,

@@ -44,7 +44,7 @@ public:
 private:
     PlasmaAudioProcessor& audioProcessor;
     
-    float sq(float value);
+    int sq(float value);
 
     CustomRotarySlider highPassFreqSlider, lowPassFreqSlider, peakFreqSlider;
     CustomRotarySlider biasSlider, lateBiasSlider, driveTypeSlider, lateDriveTypeSlider;
@@ -52,7 +52,32 @@ private:
     CustomRotarySlider highPassResonanceQualitySlider, lowPassResonanceQualitySlider, peakQualitySlider;
     CustomRotarySlider highPassSlopeSlider, lowPassSlopeSlider;
 
-    CustomSlider gainSlider, driveSlider, girthSlider, lateGirthSlider, lateDriveSlider, lateGainSlider;
+    CustomSlider gainSlider, driveSlider, girthSlider, lateGirthSlider, lateDriveSlider, preGainSlider;
+
+    using APVTS = juce::AudioProcessorValueTreeState;
+    using Attachment = APVTS::SliderAttachment;
+   
+    Attachment highPassFreqSliderAttachment,
+        lowPassFreqSliderAttachment,
+        peakFreqSliderAttachment,
+        biasSliderAttachment,
+        lateBiasSliderAttachment,
+        driveTypeSliderAttachment,
+        lateDriveTypeSliderAttachment,
+        highPassResonanceSliderAttachment,
+        lowPassResonanceSliderAttachment,
+        peakGainSliderAttachment,
+        highPassResonanceQualitySliderAttachment,
+        lowPassResonanceQualitySliderAttachment,
+        peakQualitySliderAttachment,
+        highPassSlopeSliderAttachment,
+        lowPassSlopeSliderAttachment,
+        preGainSliderAttachment,
+        driveSliderAttachment,
+        girthSliderAttachment,
+        lateGirthSliderAttachment,
+        lateDriveSliderAttachment,
+        gainSliderAttachment;
 
     std::vector<juce::Component*> getComps();
 

@@ -97,15 +97,14 @@ public:
 
 
 private:
+
     float clamp(float d, float min, float max);
+
     using Filter = juce::dsp::IIR::Filter<float>;
     using PassFilter = juce::dsp::ProcessorChain<Filter, Filter, Filter, Filter, Filter, Filter, Filter, Filter >;
     using MonoChain = juce::dsp::ProcessorChain<PassFilter, Filter, Filter, PassFilter, Filter>;
 
     MonoChain leftChain, rightChain;
-
-    
-
     //Pass Filter
     void updatePeakFilter(const ChainSettings& chainSettings);
     void updateHighPassResonance(const ChainSettings& chainSettings);
@@ -115,6 +114,7 @@ private:
     void updateFilters();
     using Coefficients = Filter::CoefficientsPtr;
     static void updateCoefficients(Coefficients& old, const Coefficients& replacements);
+    
     template<int Index, typename ChainType, typename CoefficientType>
     void update(ChainType& chain, const CoefficientType& coefficients)
     {
