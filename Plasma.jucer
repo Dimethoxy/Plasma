@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="qMF8Un" name="Plasma" projectType="audioplug" useAppConfig="0"
-              jucerFormatVersion="1" companyName="Dimethoxy" pluginFormats="buildVST3">
+              jucerFormatVersion="1" companyName="Dimethoxy" pluginFormats="buildStandalone">
   <MAINGROUP id="JL3O3j" name="Plasma">
     <GROUP id="{C06EE6F1-1336-2987-2A83-453AE370713C}" name="Source">
       <FILE id="xnfq48" name="PluginProcessor.cpp" compile="1" resource="0"

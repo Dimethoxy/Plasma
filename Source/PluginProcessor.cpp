@@ -299,15 +299,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout PlasmaAudioProcessor::create
         ("Peak Q", "Peak Q",
             juce::NormalisableRange<float>(0.1f, 5.0f, 0.01f, 0.5f), 1.0f));
 
-    //Highpass/Lowpass Freq
-    layout.add(std::make_unique<juce::AudioParameterFloat>
-        ("Highpass Freq", "Highpass Freq",
-            juce::NormalisableRange<float>(20.0f, 20000.0f, 0.1f, 0.5f), 70.0f));
-	layout.add(std::make_unique<juce::AudioParameterFloat>
-		("Lowpass Freq", "Lowpass Freq",
-			juce::NormalisableRange<float>(20.0f, 20000.0f, 0.1f, 0.5f), 8000.0f));
-
-    //Highpass/Lowpass Slope
+    //Slope Array
     juce::StringArray slopeArray;
     for (int i = 0; i < 8; i++) {
         juce::String str;
@@ -315,10 +307,32 @@ juce::AudioProcessorValueTreeState::ParameterLayout PlasmaAudioProcessor::create
         str << " db/Oct";
         slopeArray.add(str);
     }
-    layout.add(std::make_unique<juce::AudioParameterChoice>
-        ("Highpass Slope", "Highpass Slope", slopeArray, 0));
+
+	//Highpass
+	layout.add(std::make_unique<juce::AudioParameterChoice>
+		("Highpass Slope", "Highpass Slope", slopeArray, 0));
+	layout.add(std::make_unique<juce::AudioParameterFloat>
+		("Highpass Freq", "Highpass Freq",
+			juce::NormalisableRange<float>(20.0f, 20000.0f, 0.1f, 0.5f), 70.0f));
+	layout.add(std::make_unique<juce::AudioParameterFloat>
+		("Highpass Resonance", "Highpass Resonance",
+			juce::NormalisableRange<float>(0.0f, 64.0f, 0.1f, 0.5f), 0.0f));
+	layout.add(std::make_unique<juce::AudioParameterFloat>
+		("Highpass Resonance Q", "Highpass Resonance Q",
+			juce::NormalisableRange<float>(0.1f, 5.0f, 0.01f, 0.5f), 1.0f));
+
+    //Lowpass
 	layout.add(std::make_unique<juce::AudioParameterChoice>
 		("Lowpass Slope", "Lowpass Slope", slopeArray, 0));
+	layout.add(std::make_unique<juce::AudioParameterFloat>
+		("Lowpass Freq", "Lowpass Freq",
+			juce::NormalisableRange<float>(20.0f, 20000.0f, 0.1f, 0.5f), 8000.0f));
+	layout.add(std::make_unique<juce::AudioParameterFloat>
+		("Lowpass Resonance", "Lowpass Resonance",
+			juce::NormalisableRange<float>(0.0f, 64.0f, 0.1f, 0.5f), 0.0f));
+	layout.add(std::make_unique<juce::AudioParameterFloat>
+		("Lowpass Resonance Q", "Lowpass Resonance Q",
+			juce::NormalisableRange<float>(0.1f, 5.0f, 0.01f, 0.5f), 1.0f));
 
 	//Late Drive
 	layout.add(std::make_unique<juce::AudioParameterChoice>
@@ -346,13 +360,17 @@ ChainSettings getChainSettings(juce::AudioProcessorValueTreeState& apvts)
     settings.driveType = static_cast<Distortion>(apvts.getRawParameterValue("Distortion Type")->load());
     //Peak
     settings.peakFreq = apvts.getRawParameterValue("Peak Freq")->load();
-    settings.peakGainInDecibels = apvts.getRawParameterValue("Peak Gain")->load();
+    settings.peakGain = apvts.getRawParameterValue("Peak Gain")->load();
     settings.peakQuality = apvts.getRawParameterValue("Peak Q")->load();
     //Highpass
     settings.highPassFreq = apvts.getRawParameterValue("Highpass Freq")->load();
+    settings.highPassResonance = apvts.getRawParameterValue("Highpass Resonance")->load();
+    settings.highPassResonanceQuality = apvts.getRawParameterValue("Highpass Resonance Q")->load();
     settings.highPassSlope = static_cast<Slope>(apvts.getRawParameterValue("Highpass Slope")->load());
 	//Lowpass
 	settings.lowPassFreq = apvts.getRawParameterValue("Lowpass Freq")->load();
+	settings.lowPassResonance = apvts.getRawParameterValue("Lowpass Resonance")->load();
+	settings.lowPassResonanceQuality = apvts.getRawParameterValue("Lowpass Resonance Q")->load();
 	settings.lowPassSlope = static_cast<Slope>(apvts.getRawParameterValue("Lowpass Slope")->load());
     //Late
     settings.lateDriveType = static_cast<Distortion>(apvts.getRawParameterValue("Late Distortion Type")->load());
@@ -370,19 +388,45 @@ void PlasmaAudioProcessor::updateFilters()
 {
     auto chainSettings = getChainSettings(apvts);
 	updateHighPass(chainSettings);
+    updateHighPassResonance(chainSettings);
+    updatePeakFilter(chainSettings);
 	updateLowPass(chainSettings);
-	updatePeakFilter(chainSettings);
+    updateLowPassResonance(chainSettings);
 }
+
 void PlasmaAudioProcessor::updatePeakFilter(const ChainSettings& chainSettings)
 {
 	auto peakCoefficients = juce::dsp::IIR::Coefficients<float>::makePeakFilter(getSampleRate(),
 		chainSettings.peakFreq,
 		chainSettings.peakQuality,
-		juce::Decibels::decibelsToGain(chainSettings.peakGainInDecibels));
+		juce::Decibels::decibelsToGain(chainSettings.peakGain));
 
     updateCoefficients(leftChain.get<ChainPositions::Peak>().coefficients, *peakCoefficients);
     updateCoefficients(rightChain.get<ChainPositions::Peak>().coefficients, *peakCoefficients);
 }
+
+void PlasmaAudioProcessor::updateHighPassResonance(const ChainSettings& chainSettings)
+{
+	auto peakCoefficients = juce::dsp::IIR::Coefficients<float>::makePeakFilter(getSampleRate(),
+		chainSettings.highPassFreq,
+		chainSettings.highPassResonanceQuality,
+		juce::Decibels::decibelsToGain(chainSettings.highPassResonance));
+
+	updateCoefficients(leftChain.get<ChainPositions::HighPassResonance>().coefficients, *peakCoefficients);
+	updateCoefficients(rightChain.get<ChainPositions::HighPassResonance>().coefficients, *peakCoefficients);
+}
+
+void PlasmaAudioProcessor::updateLowPassResonance(const ChainSettings& chainSettings)
+{
+	auto peakCoefficients = juce::dsp::IIR::Coefficients<float>::makePeakFilter(getSampleRate(),
+		chainSettings.lowPassFreq,
+		chainSettings.lowPassResonanceQuality,
+		juce::Decibels::decibelsToGain(chainSettings.lowPassResonance));
+
+	updateCoefficients(leftChain.get<ChainPositions::LowPassResonance>().coefficients, *peakCoefficients);
+	updateCoefficients(rightChain.get<ChainPositions::LowPassResonance>().coefficients, *peakCoefficients);
+}
+
 void PlasmaAudioProcessor::updateHighPass(const ChainSettings& chainSettings)
 {
 	auto highPassCoefficients =
@@ -397,6 +441,7 @@ void PlasmaAudioProcessor::updateHighPass(const ChainSettings& chainSettings)
 	auto& rightHighPass = rightChain.get<ChainPositions::HighPass>();
 	updatePassFilter(rightHighPass, highPassCoefficients, chainSettings.highPassSlope);
 }
+
 void PlasmaAudioProcessor::updateLowPass(const ChainSettings& chainSettings)
 {
 	auto lowPassCoefficients =
@@ -411,6 +456,7 @@ void PlasmaAudioProcessor::updateLowPass(const ChainSettings& chainSettings)
 	auto& rightLowPass = rightChain.get<ChainPositions::LowPass>();
 	updatePassFilter(rightLowPass, lowPassCoefficients, chainSettings.lowPassSlope);
 }
+
 void PlasmaAudioProcessor::updateCoefficients(Coefficients& old, const Coefficients& replacements)
 {
 	*old = *replacements;

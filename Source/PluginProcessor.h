@@ -4,8 +4,10 @@
 enum ChainPositions
 {
 	HighPass,
+    HighPassResonance,
 	Peak,
 	LowPass,
+    LowPassResonance,
 };
 enum Slope
 {
@@ -31,8 +33,10 @@ enum Distortion
 struct ChainSettings
 {
     float drive{ 10.0f }, girth{ 0.0f }, bias{ 0.0f }, lateDrive, gain{ 0.0f }, preGain{ 0.0f };
-	float peakFreq{ 0 }, peakGainInDecibels{ 0 }, peakQuality{ 1.0f };
+	float peakFreq{ 0 }, peakGain{ 0 }, peakQuality{ 1.0f };
 	float highPassFreq{ 20.0f }, lowPassFreq{ 20.0f };
+    float highPassResonanceQuality{ 1.0 }, highPassResonance { 0.0 };
+    float lowPassResonanceQuality{ 1.0 }, lowPassResonance{ 0.0 };
 	Slope highPassSlope{ Slope::Slope_12 }, lowPassSlope{ Slope::Slope_12 };
 	Distortion driveType{ Distortion::Overdrive }, lateDriveType{ Distortion::Overdrive };
 
@@ -96,7 +100,7 @@ private:
     float clamp(float d, float min, float max);
     using Filter = juce::dsp::IIR::Filter<float>;
     using PassFilter = juce::dsp::ProcessorChain<Filter, Filter, Filter, Filter, Filter, Filter, Filter, Filter >;
-    using MonoChain = juce::dsp::ProcessorChain<PassFilter, Filter, PassFilter>;
+    using MonoChain = juce::dsp::ProcessorChain<PassFilter, Filter, Filter, PassFilter, Filter>;
 
     MonoChain leftChain, rightChain;
 
@@ -104,6 +108,8 @@ private:
 
     //Pass Filter
     void updatePeakFilter(const ChainSettings& chainSettings);
+    void updateHighPassResonance(const ChainSettings& chainSettings);
+    void updateLowPassResonance(const ChainSettings& chainSettings);
     void updateHighPass(const ChainSettings& chainSettings);
     void updateLowPass(const ChainSettings& chainSettings);
     void updateFilters();
