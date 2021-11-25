@@ -389,7 +389,7 @@ void PlasmaAudioProcessor::updateFilters()
 	updateLowPass(chainSettings);
     updateLowPassResonance(chainSettings);
 }
-
+//Coefficients
 Coefficients makePeakFilter(const ChainSettings& chainSettings, double sampleRate)
 {
 	return juce::dsp::IIR::Coefficients<float>::makePeakFilter(sampleRate,
@@ -397,7 +397,21 @@ Coefficients makePeakFilter(const ChainSettings& chainSettings, double sampleRat
 		chainSettings.peakQuality,
 		juce::Decibels::decibelsToGain(chainSettings.peakGain));
 }
-
+Coefficients makeLowPassResonance(const ChainSettings& chainSettings, double sampleRate)
+{
+	return juce::dsp::IIR::Coefficients<float>::makePeakFilter(sampleRate,
+		chainSettings.lowPassFreq,
+		chainSettings.lowPassResonanceQuality,
+		juce::Decibels::decibelsToGain(chainSettings.lowPassResonance));
+}
+Coefficients makeHighPassResonance(const ChainSettings& chainSettings, double sampleRate)
+{
+	return juce::dsp::IIR::Coefficients<float>::makePeakFilter(sampleRate,
+		chainSettings.highPassFreq,
+		chainSettings.highPassResonanceQuality,
+		juce::Decibels::decibelsToGain(chainSettings.highPassResonance));
+}
+//Updates
 void PlasmaAudioProcessor::updatePeakFilter(const ChainSettings& chainSettings)
 {
 	auto peakCoefficients = makePeakFilter(chainSettings, getSampleRate());
