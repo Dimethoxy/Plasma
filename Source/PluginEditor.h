@@ -54,7 +54,8 @@ struct CustomSlider : juce::Slider
 
 
 class PlasmaAudioProcessorEditor : public juce::AudioProcessorEditor,
-    public Slider::Listener
+    juce::AudioProcessorParameter::Listener,
+    juce::Timer
 {
 public:
     PlasmaAudioProcessorEditor(PlasmaAudioProcessor&);
@@ -64,11 +65,13 @@ public:
     void paint(juce::Graphics&) override;
     void resized() override;
 
-    void sliderValueChanged(Slider* slider) override;
-
+    void parameterValueChanged(int parameterIndex, float newValue) override;
+    void parameterGestureChanged(int parameterIndex, bool gestureIsStarting) override {};
+    void timerCallback() override;
 private:
     PlasmaAudioProcessor& audioProcessor;
-    
+    juce::Atomic<bool> parametersChanged { false };
+
     int sq(float value);
     int sl(float value);
 

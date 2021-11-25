@@ -1,6 +1,8 @@
 #pragma once
-
 #include <JuceHeader.h>
+
+//PI
+const float pi = 3.14159265358979323846;
 
 //Enums
 enum ChainPositions
@@ -52,7 +54,11 @@ using Filter = juce::dsp::IIR::Filter<float>;
 using PassFilter = juce::dsp::ProcessorChain<Filter, Filter, Filter, Filter, Filter, Filter, Filter, Filter >;
 using MonoChain = juce::dsp::ProcessorChain<PassFilter, Filter, Filter, PassFilter, Filter>;
 
-const float pi = 3.14159265358979323846;
+//Coefficients
+using Coefficients = Filter::CoefficientsPtr;
+void updateCoefficients(Coefficients& old, const Coefficients& replacements);
+
+Coefficients makePeakFilter(const ChainSettings& chainSettings, double sampleRate);
 
 
 
@@ -112,15 +118,16 @@ private:
     
 
     MonoChain leftChain, rightChain;
-    //Pass Filter
+    //Filters
     void updatePeakFilter(const ChainSettings& chainSettings);
     void updateHighPassResonance(const ChainSettings& chainSettings);
     void updateLowPassResonance(const ChainSettings& chainSettings);
     void updateHighPass(const ChainSettings& chainSettings);
     void updateLowPass(const ChainSettings& chainSettings);
     void updateFilters();
-    using Coefficients = Filter::CoefficientsPtr;
-    static void updateCoefficients(Coefficients& old, const Coefficients& replacements);
+    
+    //Coefficients
+    
     
     template<int Index, typename ChainType, typename CoefficientType>
     void update(ChainType& chain, const CoefficientType& coefficients)
