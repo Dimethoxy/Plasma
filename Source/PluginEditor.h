@@ -3,10 +3,42 @@
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 
-struct CustomRotarySlider : juce::Slider 
+//LookAndFeel
+struct LookAndFeel : juce::LookAndFeel_V4
+{
+    void drawRotarySlider(juce::Graphics&,
+        int x, int y, int width, int height,
+        float sliderPosProportional, float rotaryStartAngle,
+        float rotaryEndAngle,
+        juce::Slider&) override { };
+};
+//RotaryWithLabels
+struct RotarySliderWithLabels : juce::Slider
+{
+    RotarySliderWithLabels(juce::RangedAudioParameter& rap, const juce::String& unitSuffix) :
+        juce::Slider(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, juce::Slider::TextEntryBoxPosition::NoTextBox),
+        param(&rap),
+        suffix(unitSuffix)
+    {
+        //setLookAndFeel(&lnf);
+    }
+    ~RotarySliderWithLabels()
+    {
+        setLookAndFeel(nullptr);
+    }
+    void paint(juce::Graphics& g) override;
+    juce::Rectangle<int> getSliderBounds() const;
+    int getTexHeight() const { return 14; }
+    juce::String getDisplayString() const;
+private:
+    juce::RangedAudioParameter* param;
+    juce::String suffix;
+};
+
+struct CustomRotarySlider : juce::Slider
 {
     CustomRotarySlider() : juce::Slider(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag,
-                                        juce::Slider::TextEntryBoxPosition::NoTextBox)
+        juce::Slider::TextEntryBoxPosition::NoTextBox)
     {
 
     }
@@ -19,14 +51,7 @@ struct CustomSlider : juce::Slider
 
 	}
 };
-struct CustomHorizontalSlider : juce::Slider
-{
-	CustomHorizontalSlider() : juce::Slider(juce::Slider::SliderStyle::LinearHorizontal,
-		juce::Slider::TextEntryBoxPosition::NoTextBox)
-	{
 
-	}
-};
 
 class PlasmaAudioProcessorEditor : public juce::AudioProcessorEditor,
     public Slider::Listener
@@ -45,6 +70,7 @@ private:
     PlasmaAudioProcessor& audioProcessor;
     
     int sq(float value);
+    int sl(float value);
 
     CustomRotarySlider highPassFreqSlider, lowPassFreqSlider, peakFreqSlider;
     CustomRotarySlider biasSlider, lateBiasSlider, driveTypeSlider, lateDriveTypeSlider;
@@ -80,6 +106,11 @@ private:
         gainSliderAttachment;
 
     std::vector<juce::Component*> getComps();
+
+    ImageComponent screenImageComponent;
+
+    //Response Curve
+    MonoChain monoChain;
 
     //End
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PlasmaAudioProcessorEditor);

@@ -5,6 +5,9 @@
     <Filter Include="Plasma\Source">
       <UniqueIdentifier>{C456C244-4715-1719-A6F4-0A7287481203}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Plasma\Resources">
+      <UniqueIdentifier>{217E9515-34F3-EEC4-CCA8-610B6909EF2E}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Plasma">
       <UniqueIdentifier>{7026826F-A3BF-9868-43EF-6D420D3AE1DC}</UniqueIdentifier>
     </Filter>
@@ -2647,6 +2650,9 @@
     <ClCompile Include="..\..\..\JUCE\JUCE\modules\juce_gui_extra\juce_gui_extra.mm">
       <Filter>JUCE Modules\juce_gui_extra</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\JuceLibraryCode\BinaryData.cpp">
+      <Filter>JUCE Library Code</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_audio_basics.cpp">
       <Filter>JUCE Library Code</Filter>
     </ClCompile>
@@ -5223,6 +5229,9 @@
     <ClInclude Include="..\..\..\JUCE\JUCE\modules\juce_gui_extra\juce_gui_extra.h">
       <Filter>JUCE Modules\juce_gui_extra</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\JuceLibraryCode\BinaryData.h">
+      <Filter>JUCE Library Code</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h">
       <Filter>JUCE Library Code</Filter>
     </ClInclude>
@@ -5231,6 +5240,12 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\Resources\RotaryBase.png">
+      <Filter>Plasma\Resources</Filter>
+    </None>
+    <None Include="..\..\Resources\Screen.png">
+      <Filter>Plasma\Resources</Filter>
+    </None>
     <None Include="..\..\..\JUCE\JUCE\modules\juce_audio_devices\native\oboe\CMakeLists.txt">
       <Filter>JUCE Modules\juce_audio_devices\native\oboe</Filter>
     </None>

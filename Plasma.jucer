@@ -12,6 +12,10 @@
             file="Source/PluginEditor.cpp"/>
       <FILE id="c6b0xF" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
     </GROUP>
+    <GROUP id="{F21D0FBD-3A1D-B8A8-D434-293EB1990ECA}" name="Resources">
+      <FILE id="n4Wf1D" name="RotaryBase.png" compile="0" resource="1" file="Resources/RotaryBase.png"/>
+      <FILE id="MVBeU6" name="Screen.png" compile="0" resource="1" file="Resources/Screen.png"/>
+    </GROUP>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
   <EXPORTFORMATS>

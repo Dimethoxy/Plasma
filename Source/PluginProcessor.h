@@ -1,6 +1,8 @@
 #pragma once
 
 #include <JuceHeader.h>
+
+//Enums
 enum ChainPositions
 {
 	HighPass,
@@ -30,6 +32,8 @@ enum Distortion
 	Sinus,
 	Cosinus,
 };
+
+//Chain Settings
 struct ChainSettings
 {
     float drive{ 10.0f }, girth{ 0.0f }, bias{ 0.0f }, lateDrive, gain{ 0.0f }, preGain{ 0.0f };
@@ -41,14 +45,21 @@ struct ChainSettings
 	Distortion driveType{ Distortion::Overdrive }, lateDriveType{ Distortion::Overdrive };
 
 };
+ChainSettings getChainSettings(juce::AudioProcessorValueTreeState& apvts);
+
+//MonoChain
+using Filter = juce::dsp::IIR::Filter<float>;
+using PassFilter = juce::dsp::ProcessorChain<Filter, Filter, Filter, Filter, Filter, Filter, Filter, Filter >;
+using MonoChain = juce::dsp::ProcessorChain<PassFilter, Filter, Filter, PassFilter, Filter>;
 
 const float pi = 3.14159265358979323846;
 
-ChainSettings getChainSettings(juce::AudioProcessorValueTreeState& apvts);
 
-//==============================================================================
-/**
-*/
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Class
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 class PlasmaAudioProcessor : public juce::AudioProcessor
 {
 public:
@@ -94,15 +105,11 @@ public:
     static juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
     juce::AudioProcessorValueTreeState apvts{ *this, nullptr, "Parameters", createParameterLayout() };
 
-
-
 private:
 
     float clamp(float d, float min, float max);
 
-    using Filter = juce::dsp::IIR::Filter<float>;
-    using PassFilter = juce::dsp::ProcessorChain<Filter, Filter, Filter, Filter, Filter, Filter, Filter, Filter >;
-    using MonoChain = juce::dsp::ProcessorChain<PassFilter, Filter, Filter, PassFilter, Filter>;
+    
 
     MonoChain leftChain, rightChain;
     //Pass Filter
@@ -205,6 +212,8 @@ private:
 		}
 		}
     }
+
+ 
         //==============================================================================
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PlasmaAudioProcessor);
 };
