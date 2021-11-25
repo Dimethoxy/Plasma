@@ -238,8 +238,12 @@ void PlasmaAudioProcessorEditor::timerCallback()
     {
         //Update Monochain
         auto chainSettings = getChainSettings(audioProcessor.apvts);
+        auto highPassCoefficients = makeHighPassFilter(chainSettings, audioProcessor.getSampleRate());
         auto peakCoefficients = makePeakFilter(chainSettings, audioProcessor.getSampleRate());
+        auto lowPassCoefficients = makeLowPassFilter(chainSettings, audioProcessor.getSampleRate());
+        updatePassFilter(monoChain.get<ChainPositions::HighPass>(), highPassCoefficients, chainSettings.highPassSlope);
         updateCoefficients(monoChain.get<ChainPositions::Peak>().coefficients, peakCoefficients);
+        updatePassFilter(monoChain.get<ChainPositions::LowPass>(), lowPassCoefficients, chainSettings.lowPassSlope);
         //signal a repaint
         repaint();
     }
