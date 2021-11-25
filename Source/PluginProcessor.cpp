@@ -284,10 +284,10 @@ juce::AudioProcessorValueTreeState::ParameterLayout PlasmaAudioProcessor::create
     //Peak
     layout.add(std::make_unique<juce::AudioParameterFloat>
         ("Peak Freq", "Peak Freq",
-        juce::NormalisableRange<float>(20.0f, 5000.0f, 0.1f, 0.5f), 450.0f));
+        juce::NormalisableRange<float>(20.0f, 20000.0f, 0.1f, 0.5f), 450.0f));
     layout.add(std::make_unique<juce::AudioParameterFloat>
         ("Peak Gain", "Peak Gain",
-            juce::NormalisableRange<float>(-64.0f, 64.0f, 0.1f, 1.0f), 16.0f));
+            juce::NormalisableRange<float>(-48.0f, 48.0f, 0.1f, 1.0f), 16.0f));
     layout.add(std::make_unique<juce::AudioParameterFloat>
         ("Peak Q", "Peak Q",
             juce::NormalisableRange<float>(0.1f, 5.0f, 0.01f, 0.5f), 1.0f));
@@ -429,11 +429,7 @@ void PlasmaAudioProcessor::updateLowPassResonance(const ChainSettings& chainSett
 
 void PlasmaAudioProcessor::updateHighPass(const ChainSettings& chainSettings)
 {
-	auto highPassCoefficients =
-		juce::dsp::FilterDesign<float>::designIIRHighpassHighOrderButterworthMethod(
-			chainSettings.highPassFreq,
-			getSampleRate(),
-			2 * (chainSettings.highPassSlope + 1));
+	auto highPassCoefficients = makeHighPassFilter(chainSettings, getSampleRate());
 
 	auto& leftHighPass = leftChain.get<ChainPositions::HighPass>();
 	updatePassFilter(leftHighPass, highPassCoefficients, chainSettings.highPassSlope);
@@ -444,11 +440,7 @@ void PlasmaAudioProcessor::updateHighPass(const ChainSettings& chainSettings)
 
 void PlasmaAudioProcessor::updateLowPass(const ChainSettings& chainSettings)
 {
-	auto lowPassCoefficients =
-		juce::dsp::FilterDesign<float>::designIIRLowpassHighOrderButterworthMethod(
-			chainSettings.lowPassFreq,
-			getSampleRate(),
-			2 * (chainSettings.lowPassSlope + 1));
+	auto lowPassCoefficients = makeLowPassFilter(chainSettings, getSampleRate());
 
 	auto& leftLowPass = leftChain.get<ChainPositions::LowPass>();
 	updatePassFilter(leftLowPass, lowPassCoefficients, chainSettings.lowPassSlope);

@@ -48,12 +48,30 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	}
     addAndMakeVisible(screenImageComponent);
 
+    //Listen to parameter changes
+    const auto& params = audioProcessor.getParameters();
+    for (auto param : params)
+    {
+        param->addListener(this);
+    }
+    startTimer(60);
+
+	//Update Monochain
+	auto chainSettings = getChainSettings(audioProcessor.apvts);
+	auto peakCoefficients = makePeakFilter(chainSettings, audioProcessor.getSampleRate());
+	updateCoefficients(monoChain.get<ChainPositions::Peak>().coefficients, peakCoefficients);
+
 	setResizable(false, false);
     setSize(1000, 550);
   }
 
 PlasmaAudioProcessorEditor::~PlasmaAudioProcessorEditor()
 {
+	const auto& params = audioProcessor.getParameters();
+    for (auto param : params)
+    {
+        param->removeListener(this);
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -85,58 +103,59 @@ void PlasmaAudioProcessorEditor::paint (juce::Graphics& g)
     mags.resize(w);
     for (int i = 0; i < w; ++i)
     {
-        //Magnitute
+        //Magnitude
         double mag = 1.f;
         auto freq = mapToLog10(double(i) / double(w), 20.0, 20000.0);
 
         //Highpass
-			        if (!highpass.isBypassed<0>())
-			            mag *= highpass.get<0>().coefficients->getMagnitudeForFrequency(freq, sampleRate);
-					if (!highpass.isBypassed<1>())
-						mag *= highpass.get<1>().coefficients->getMagnitudeForFrequency(freq, sampleRate);
-					if (!highpass.isBypassed<2>())
-						mag *= highpass.get<2>().coefficients->getMagnitudeForFrequency(freq, sampleRate);
-					if (!highpass.isBypassed<3>())
-						mag *= highpass.get<3>().coefficients->getMagnitudeForFrequency(freq, sampleRate);
-					if (!highpass.isBypassed<4>())
-						mag *= highpass.get<4>().coefficients->getMagnitudeForFrequency(freq, sampleRate);
-					if (!highpass.isBypassed<5>())
-						mag *= highpass.get<5>().coefficients->getMagnitudeForFrequency(freq, sampleRate);
-					if (!highpass.isBypassed<6>())
-						mag *= highpass.get<6>().coefficients->getMagnitudeForFrequency(freq, sampleRate);
-					if (!highpass.isBypassed<7>())
-						mag *= highpass.get<7>().coefficients->getMagnitudeForFrequency(freq, sampleRate);
-			        
-			        //Highpass Resonance
-					if (!monoChain.isBypassed<ChainPositions::HighPassResonance>())
-						mag *= highpassResonance.coefficients->getMagnitudeForFrequency(freq, sampleRate);
-			
-					//Peak
-					if (!monoChain.isBypassed<ChainPositions::Peak>())
-						mag *= peak.coefficients->getMagnitudeForFrequency(freq, sampleRate);
-			
-			        //Lowpass
-					if (!lowpass.isBypassed<0>())
-						mag *= lowpass.get<0>().coefficients->getMagnitudeForFrequency(freq, sampleRate);
-					if (!lowpass.isBypassed<1>())
-						mag *= lowpass.get<1>().coefficients->getMagnitudeForFrequency(freq, sampleRate);
-					if (!lowpass.isBypassed<2>())
-						mag *= lowpass.get<2>().coefficients->getMagnitudeForFrequency(freq, sampleRate);
-					if (!lowpass.isBypassed<3>())
-						mag *= lowpass.get<3>().coefficients->getMagnitudeForFrequency(freq, sampleRate);
-					if (!lowpass.isBypassed<4>())
-						mag *= lowpass.get<4>().coefficients->getMagnitudeForFrequency(freq, sampleRate);
-					if (!lowpass.isBypassed<5>())
-						mag *= lowpass.get<5>().coefficients->getMagnitudeForFrequency(freq, sampleRate);
-					if (!lowpass.isBypassed<6>())
-						mag *= lowpass.get<6>().coefficients->getMagnitudeForFrequency(freq, sampleRate);
-					if (!lowpass.isBypassed<7>())
-						mag *= lowpass.get<7>().coefficients->getMagnitudeForFrequency(freq, sampleRate);
-			
-			        //Lowpass Resonance
-					if (!monoChain.isBypassed<ChainPositions::LowPassResonance>())
-						mag *= lowpassResonance.coefficients->getMagnitudeForFrequency(freq, sampleRate);
-
+        if (!highpass.isBypassed<0>())
+		    mag *= highpass.get<0>().coefficients->getMagnitudeForFrequency(freq, sampleRate);
+		if (!highpass.isBypassed<1>())
+		    mag *= highpass.get<1>().coefficients->getMagnitudeForFrequency(freq, sampleRate);
+		if (!highpass.isBypassed<2>())
+		    mag *= highpass.get<2>().coefficients->getMagnitudeForFrequency(freq, sampleRate);
+		if (!highpass.isBypassed<3>())
+		    mag *= highpass.get<3>().coefficients->getMagnitudeForFrequency(freq, sampleRate);
+		if (!highpass.isBypassed<4>())
+		    mag *= highpass.get<4>().coefficients->getMagnitudeForFrequency(freq, sampleRate);
+		if (!highpass.isBypassed<5>())
+		    mag *= highpass.get<5>().coefficients->getMagnitudeForFrequency(freq, sampleRate);
+		if (!highpass.isBypassed<6>())
+		    mag *= highpass.get<6>().coefficients->getMagnitudeForFrequency(freq, sampleRate);
+		if (!highpass.isBypassed<7>())
+		    mag *= highpass.get<7>().coefficients->getMagnitudeForFrequency(freq, sampleRate);
+		
+		//Highpass Resonance
+		if (!monoChain.isBypassed<ChainPositions::HighPassResonance>())
+		    mag *= highpassResonance.coefficients->getMagnitudeForFrequency(freq, sampleRate);
+		
+		//Peak
+		if (!monoChain.isBypassed<ChainPositions::Peak>())
+		    mag *= peak.coefficients->getMagnitudeForFrequency(freq, sampleRate);
+		
+		//Lowpass
+		if (!lowpass.isBypassed<0>())
+		    mag *= lowpass.get<0>().coefficients->getMagnitudeForFrequency(freq, sampleRate);
+		if (!lowpass.isBypassed<1>())
+		    mag *= lowpass.get<1>().coefficients->getMagnitudeForFrequency(freq, sampleRate);
+		if (!lowpass.isBypassed<2>())
+		    mag *= lowpass.get<2>().coefficients->getMagnitudeForFrequency(freq, sampleRate);
+		if (!lowpass.isBypassed<3>())
+		    mag *= lowpass.get<3>().coefficients->getMagnitudeForFrequency(freq, sampleRate);
+		if (!lowpass.isBypassed<4>())
+		    mag *= lowpass.get<4>().coefficients->getMagnitudeForFrequency(freq, sampleRate);
+		if (!lowpass.isBypassed<5>())
+		    mag *= lowpass.get<5>().coefficients->getMagnitudeForFrequency(freq, sampleRate);
+		if (!lowpass.isBypassed<6>())
+		    mag *= lowpass.get<6>().coefficients->getMagnitudeForFrequency(freq, sampleRate);
+		if (!lowpass.isBypassed<7>())
+		    mag *= lowpass.get<7>().coefficients->getMagnitudeForFrequency(freq, sampleRate);
+		
+		//Lowpass Resonance
+		if (!monoChain.isBypassed<ChainPositions::LowPassResonance>())
+		    mag *= lowpassResonance.coefficients->getMagnitudeForFrequency(freq, sampleRate);
+        
+        //Write
         mags[i] = Decibels::gainToDecibels(mag);
     }
     
@@ -217,8 +236,12 @@ void PlasmaAudioProcessorEditor::timerCallback()
 {
     if (parametersChanged.compareAndSetBool(false, true))
     {
-        //update monochain
+        //Update Monochain
+        auto chainSettings = getChainSettings(audioProcessor.apvts);
+        auto peakCoefficients = makePeakFilter(chainSettings, audioProcessor.getSampleRate());
+        updateCoefficients(monoChain.get<ChainPositions::Peak>().coefficients, peakCoefficients);
         //signal a repaint
+        repaint();
     }
 }
 

@@ -60,8 +60,71 @@ void updateCoefficients(Coefficients& old, const Coefficients& replacements);
 
 Coefficients makePeakFilter(const ChainSettings& chainSettings, double sampleRate);
 
+template<int Index, typename ChainType, typename CoefficientType>
+void update(ChainType& chain, const CoefficientType& coefficients)
+{
+	updateCoefficients(chain.template get<Index>().coefficients, coefficients[Index]);
+	chain.template setBypassed<Index>(false);
+}
+template<typename ChainType, typename CoefficientType>
+void updatePassFilter
+(
+	ChainType& filter,
+	const CoefficientType& filterCoefficients,
+	const Slope& filterSlope
+)
+{
+	filter.template setBypassed<0>(true);
+	filter.template setBypassed<1>(true);
+	filter.template setBypassed<2>(true);
+	filter.template setBypassed<3>(true);
+	filter.template setBypassed<4>(true);
+	filter.template setBypassed<5>(true);
+	filter.template setBypassed<6>(true);
+	filter.template setBypassed<7>(true);
 
+	switch (filterSlope) {
+	case Slope_96: {
+		update<7>(filter, filterCoefficients);
+	}
+	case Slope_84: {
+		update<6>(filter, filterCoefficients);
+	}
+	case Slope_72: {
+		update<5>(filter, filterCoefficients);
+	}
+	case Slope_60: {
+		update<4>(filter, filterCoefficients);
+	}
+	case Slope_48: {
+		update<3>(filter, filterCoefficients);
+	}
+	case Slope_36: {
+		update<2>(filter, filterCoefficients);
+	}
+	case Slope_24: {
+		update<1>(filter, filterCoefficients);
+	}
+	case Slope_12: {
+		update<0>(filter, filterCoefficients);
+	}
+	}
+}
 
+inline auto makeHighPassFilter(const ChainSettings& chainSettings, double sampleRate)
+{
+	return juce::dsp::FilterDesign<float>::designIIRHighpassHighOrderButterworthMethod(
+			chainSettings.highPassFreq,
+			sampleRate,
+			2 * (chainSettings.highPassSlope + 1));
+}
+inline auto makeLowPassFilter(const ChainSettings& chainSettings, double sampleRate)
+{
+	return juce::dsp::FilterDesign<float>::designIIRLowpassHighOrderButterworthMethod(
+		chainSettings.lowPassFreq,
+		sampleRate,
+		2 * (chainSettings.lowPassSlope + 1));
+}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Class
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -112,10 +175,7 @@ public:
     juce::AudioProcessorValueTreeState apvts{ *this, nullptr, "Parameters", createParameterLayout() };
 
 private:
-
     float clamp(float d, float min, float max);
-
-    
 
     MonoChain leftChain, rightChain;
     //Filters
@@ -125,60 +185,6 @@ private:
     void updateHighPass(const ChainSettings& chainSettings);
     void updateLowPass(const ChainSettings& chainSettings);
     void updateFilters();
-    
-    //Coefficients
-    
-    
-    template<int Index, typename ChainType, typename CoefficientType>
-    void update(ChainType& chain, const CoefficientType& coefficients)
-    {
-        updateCoefficients(chain.template get<Index>().coefficients, coefficients[Index]);
-        chain.template setBypassed<Index>(false);
-    }
-    template<typename ChainType, typename CoefficientType>
-    void updatePassFilter
-    (
-        ChainType& filter,
-        const CoefficientType& filterCoefficients,
-        const Slope& filterSlope
-    )
-    {
-        filter.template setBypassed<0>(true);
-        filter.template setBypassed<1>(true);
-        filter.template setBypassed<2>(true);
-        filter.template setBypassed<3>(true);
-        filter.template setBypassed<4>(true);
-        filter.template setBypassed<5>(true);
-        filter.template setBypassed<6>(true);
-        filter.template setBypassed<7>(true);
-
-        switch (filterSlope){
-        case Slope_96: {
-            update<7>(filter, filterCoefficients);
-        }
-        case Slope_84: {
-            update<6>(filter, filterCoefficients);
-        }
-        case Slope_72: {
-            update<5>(filter, filterCoefficients);
-        }
-        case Slope_60: {
-            update<4>(filter, filterCoefficients);
-        }
-        case Slope_48:{
-            update<3>(filter, filterCoefficients);
-        }
-        case Slope_36:{
-            update<2>(filter, filterCoefficients);
-        }
-        case Slope_24:{
-            update<1>(filter, filterCoefficients);
-        }
-        case Slope_12:{
-            update<0>(filter, filterCoefficients);
-        }
-        }
-    }
 
     //Distortion
     template<typename Data, typename Drive, typename Distortion>
