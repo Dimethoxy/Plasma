@@ -162,7 +162,7 @@ void ResponseCurveComponent::paint(juce::Graphics& g)
 PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
     : AudioProcessorEditor(&p), audioProcessor(p),
 	responseCurveComponent(audioProcessor),
-	preGainSliderAttachment(audioProcessor.apvts, "Pre Gain", gainSlider),
+	preGainSliderAttachment(audioProcessor.apvts, "Pre Gain", preGainSlider),
     driveTypeSliderAttachment(audioProcessor.apvts, "Distortion Type", driveTypeSlider),
     girthSliderAttachment(audioProcessor.apvts, "Girth", girthSlider),
     driveSliderAttachment(audioProcessor.apvts, "Drive", driveSlider),
@@ -235,7 +235,6 @@ void PlasmaAudioProcessorEditor::paint (juce::Graphics& g)
 //Layout
 /////////////////////////////////////////////////W///////////////////////////////////////////////////////////////////
 
-
 void PlasmaAudioProcessorEditor::resized()
 {
 	//Analyzers
@@ -276,38 +275,6 @@ void PlasmaAudioProcessorEditor::resized()
 	lateBiasSlider.setBounds(sq(15.75), sq(3.0), sq(1.5), sq(1.5));
 
 }
-/*
-void PlasmaAudioProcessorEditor::parameterValueChanged(int parameterIndex, float newValue)
-{
-    parametersChanged.set(true);
-}
-
-void PlasmaAudioProcessorEditor::timerCallback()
-{
-    if (parametersChanged.compareAndSetBool(false, true))
-    {
-        //Update Monochain
-        auto chainSettings = getChainSettings(audioProcessor.apvts);
-
-        //Coefficients
-        auto highPassCoefficients = makeHighPassFilter(chainSettings, audioProcessor.getSampleRate());
-        auto highPassResonanceCoefficients = makeHighPassResonance(chainSettings, audioProcessor.getSampleRate());
-        auto peakCoefficients = makePeakFilter(chainSettings, audioProcessor.getSampleRate());
-        auto lowPassResonanceCoefficients = makeLowPassResonance(chainSettings, audioProcessor.getSampleRate());
-        auto lowPassCoefficients = makeLowPassFilter(chainSettings, audioProcessor.getSampleRate());
-
-        //Updates
-        updatePassFilter(monoChain.get<ChainPositions::HighPass>(), highPassCoefficients, chainSettings.highPassSlope);
-        updateCoefficients(monoChain.get<ChainPositions::HighPassResonance>().coefficients, highPassResonanceCoefficients);
-        updateCoefficients(monoChain.get<ChainPositions::Peak>().coefficients, peakCoefficients);
-        updateCoefficients(monoChain.get<ChainPositions::LowPassResonance>().coefficients, lowPassResonanceCoefficients);
-        updatePassFilter(monoChain.get<ChainPositions::LowPass>(), lowPassCoefficients, chainSettings.lowPassSlope);
-        
-        //Repaint
-        repaint();
-    }
-}
-*/
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Misc
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

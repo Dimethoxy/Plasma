@@ -28,6 +28,7 @@ struct LookAndFeel : juce::LookAndFeel_V4
         float rotaryEndAngle,
         juce::Slider&) override { };
 };
+
 //RotaryWithLabels
 struct RotarySliderWithLabels : juce::Slider
 {
@@ -59,6 +60,7 @@ struct CustomRotarySlider : juce::Slider
 
     }
 };
+
 struct CustomSlider : juce::Slider
 {
 	CustomSlider() : juce::Slider(juce::Slider::SliderStyle::LinearVertical,

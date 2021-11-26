@@ -239,8 +239,15 @@ void PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
             //Drive 
             distort(channelData[sample], chainSettings.lateDrive, chainSettings.lateDriveType);
 
+			//Girth
+			channelData[sample] = channelData[sample] *
+				((((float)(rand() % 100)) / 100 * chainSettings.lateGirth) + 1);
+
             //Gain
 			channelData[sample] = clamp(channelData[sample] * gain, -1.0, 1.0);
+
+			//Bias         
+			channelData[sample] = clamp(channelData[sample] + chainSettings.lateBias, -1.0, 1.0);
 		}
 
 	}
@@ -371,6 +378,8 @@ ChainSettings getChainSettings(juce::AudioProcessorValueTreeState& apvts)
     //Late
     settings.lateDriveType = static_cast<Distortion>(apvts.getRawParameterValue("Late Distortion Type")->load());
     settings.lateDrive = apvts.getRawParameterValue("Late Drive")->load();
+	settings.lateGirth = apvts.getRawParameterValue("Late Girth")->load();
+	settings.lateBias = apvts.getRawParameterValue("Late Bias")->load();
     settings.gain = apvts.getRawParameterValue("Gain")->load();
 
     return settings;

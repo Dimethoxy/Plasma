@@ -38,7 +38,8 @@ enum Distortion
 //Chain Settings
 struct ChainSettings
 {
-    float drive{ 10.0f }, girth{ 0.0f }, bias{ 0.0f }, lateDrive, gain{ 0.0f }, preGain{ 0.0f };
+	float drive{ 10.0f }, girth{ 0.0f }, bias{ 0.0f }, preGain{ 0.0f };
+	float lateDrive{ 0.0f }, lateBias{ 0.0f }, lateGirth{ 0.0f }, gain{ 0.0f };
 	float peakFreq{ 0 }, peakGain{ 0 }, peakQuality{ 1.0f };
 	float highPassFreq{ 20.0f }, lowPassFreq{ 20.0f };
     float highPassResonanceQuality{ 1.0 }, highPassResonance { 0.0 };
@@ -48,6 +49,10 @@ struct ChainSettings
 
 };
 ChainSettings getChainSettings(juce::AudioProcessorValueTreeState& apvts);
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Filters
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //MonoChain
 using Filter = juce::dsp::IIR::Filter<float>;
@@ -127,8 +132,9 @@ inline auto makeLowPassFilter(const ChainSettings& chainSettings, double sampleR
 		sampleRate,
 		2 * (chainSettings.lowPassSlope + 1));
 }
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//Class
+//AudioProcessor
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 class PlasmaAudioProcessor : public juce::AudioProcessor
