@@ -34,26 +34,31 @@ void ResponseCurveComponent::timerCallback()
 {
 	if (parametersChanged.compareAndSetBool(false, true))
 	{
-		//Update Monochain
-		auto chainSettings = getChainSettings(audioProcessor.apvts);
-
-		//Coefficients
-		auto highPassCoefficients = makeHighPassFilter(chainSettings, audioProcessor.getSampleRate());
-		auto highPassResonanceCoefficients = makeHighPassResonance(chainSettings, audioProcessor.getSampleRate());
-		auto peakCoefficients = makePeakFilter(chainSettings, audioProcessor.getSampleRate());
-		auto lowPassResonanceCoefficients = makeLowPassResonance(chainSettings, audioProcessor.getSampleRate());
-		auto lowPassCoefficients = makeLowPassFilter(chainSettings, audioProcessor.getSampleRate());
-
-		//Updates
-		updatePassFilter(monoChain.get<ChainPositions::HighPass>(), highPassCoefficients, chainSettings.highPassSlope);
-		updateCoefficients(monoChain.get<ChainPositions::HighPassResonance>().coefficients, highPassResonanceCoefficients);
-		updateCoefficients(monoChain.get<ChainPositions::Peak>().coefficients, peakCoefficients);
-		updateCoefficients(monoChain.get<ChainPositions::LowPassResonance>().coefficients, lowPassResonanceCoefficients);
-		updatePassFilter(monoChain.get<ChainPositions::LowPass>(), lowPassCoefficients, chainSettings.lowPassSlope);
-
-		//Repaint
-		repaint();
+		update();
 	}
+}
+
+void ResponseCurveComponent::update()
+{
+	//Update Monochain
+	auto chainSettings = getChainSettings(audioProcessor.apvts);
+
+	//Coefficients
+	auto highPassCoefficients = makeHighPassFilter(chainSettings, audioProcessor.getSampleRate());
+	auto highPassResonanceCoefficients = makeHighPassResonance(chainSettings, audioProcessor.getSampleRate());
+	auto peakCoefficients = makePeakFilter(chainSettings, audioProcessor.getSampleRate());
+	auto lowPassResonanceCoefficients = makeLowPassResonance(chainSettings, audioProcessor.getSampleRate());
+	auto lowPassCoefficients = makeLowPassFilter(chainSettings, audioProcessor.getSampleRate());
+
+	//Updates
+	updatePassFilter(monoChain.get<ChainPositions::HighPass>(), highPassCoefficients, chainSettings.highPassSlope);
+	updateCoefficients(monoChain.get<ChainPositions::HighPassResonance>().coefficients, highPassResonanceCoefficients);
+	updateCoefficients(monoChain.get<ChainPositions::Peak>().coefficients, peakCoefficients);
+	updateCoefficients(monoChain.get<ChainPositions::LowPassResonance>().coefficients, lowPassResonanceCoefficients);
+	updatePassFilter(monoChain.get<ChainPositions::LowPass>(), lowPassCoefficients, chainSettings.lowPassSlope);
+
+	//Repaint
+	repaint();
 }
 
 void ResponseCurveComponent::paint(juce::Graphics& g)
@@ -160,7 +165,8 @@ void ResponseCurveComponent::paint(juce::Graphics& g)
 //Editor
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
-    : AudioProcessorEditor(&p), audioProcessor(p),
+	: AudioProcessorEditor(&p), audioProcessor(p),
+	highPassFreqSlider(*audioProcessor.apvts.getParameter("Highpass Freq"), "Hz"),
 	responseCurveComponent(audioProcessor),
 	preGainSliderAttachment(audioProcessor.apvts, "Pre Gain", preGainSlider),
     driveTypeSliderAttachment(audioProcessor.apvts, "Distortion Type", driveTypeSlider),
@@ -273,6 +279,8 @@ void PlasmaAudioProcessorEditor::resized()
 	lateGirthSlider.setBounds(sq(18.0), sq(5), sq(1.5), sq(5.5));
 	lateDriveTypeSlider.setBounds(sq(17.0), sq(0.5), sq(2.5), sq(2.5));
 	lateBiasSlider.setBounds(sq(15.75), sq(3.0), sq(1.5), sq(1.5));
+
+	responseCurveComponent.update();
 
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

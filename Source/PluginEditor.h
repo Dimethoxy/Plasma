@@ -20,7 +20,7 @@ inline int sl(float value)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //LookAndFeel
-struct LookAndFeel : juce::LookAndFeel_V4
+struct CustomLookAndFeel : juce::LookAndFeel_V4
 {
     void drawRotarySlider(juce::Graphics&,
         int x, int y, int width, int height,
@@ -31,23 +31,28 @@ struct LookAndFeel : juce::LookAndFeel_V4
 
 //RotaryWithLabels
 struct RotarySliderWithLabels : juce::Slider
-{
+{   
+    //Constructor
     RotarySliderWithLabels(juce::RangedAudioParameter& rap, const juce::String& unitSuffix) :
         juce::Slider(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, juce::Slider::TextEntryBoxPosition::NoTextBox),
         param(&rap),
         suffix(unitSuffix)
     {
-        //setLookAndFeel(&lnf);
+        setLookAndFeel(&lnf);
     }
+    //Destructor
     ~RotarySliderWithLabels()
     {
         setLookAndFeel(nullptr);
     }
-    void paint(juce::Graphics& g) override;
+    //Misc
+    void paint(juce::Graphics& g) override {};
     juce::Rectangle<int> getSliderBounds() const;
     int getTexHeight() const { return 14; }
     juce::String getDisplayString() const;
 private:
+    CustomLookAndFeel lnf;
+
     juce::RangedAudioParameter* param;
     juce::String suffix;
 };
@@ -84,7 +89,7 @@ struct ResponseCurveComponent : juce::Component,
 	void parameterValueChanged(int parameterIndex, float newValue) override;
 	void parameterGestureChanged(int parameterIndex, bool gestureIsStarting) override {};
 	void timerCallback() override;
-
+    void update();
     void paint(juce::Graphics& g) override;
 
 private:
@@ -111,12 +116,29 @@ private:
     PlasmaAudioProcessor& audioProcessor;
 
     //Slider Components
-    CustomRotarySlider highPassFreqSlider, lowPassFreqSlider, peakFreqSlider;
-    CustomRotarySlider biasSlider, lateBiasSlider, driveTypeSlider, lateDriveTypeSlider;
-    CustomRotarySlider highPassResonanceSlider, lowPassResonanceSlider, peakGainSlider;
-    CustomRotarySlider highPassResonanceQualitySlider, lowPassResonanceQualitySlider, peakQualitySlider;
-    CustomRotarySlider highPassSlopeSlider, lowPassSlopeSlider;
-    CustomSlider gainSlider, driveSlider, girthSlider, lateGirthSlider, lateDriveSlider, preGainSlider;
+    CustomRotarySlider lowPassFreqSlider,
+        peakFreqSlider,
+        biasSlider,
+        lateBiasSlider,
+        driveTypeSlider,
+        lateDriveTypeSlider,
+        highPassResonanceSlider,
+        lowPassResonanceSlider,
+        peakGainSlider,
+        highPassResonanceQualitySlider,
+        lowPassResonanceQualitySlider,
+        peakQualitySlider,
+        highPassSlopeSlider,
+        lowPassSlopeSlider;
+
+    RotarySliderWithLabels highPassFreqSlider;
+
+    CustomSlider gainSlider,
+        driveSlider,
+        girthSlider,
+        lateGirthSlider,
+        lateDriveSlider,
+        preGainSlider;
 
     //Response Curve Component
     ResponseCurveComponent responseCurveComponent;
