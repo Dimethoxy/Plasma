@@ -22,11 +22,11 @@ inline int sl(float value)
 //LookAndFeel
 struct CustomLookAndFeel : juce::LookAndFeel_V4
 {
-    void drawRotarySlider(juce::Graphics&,
+    void drawRotarySlider(juce::Graphics& g,
         int x, int y, int width, int height,
         float sliderPosProportional, float rotaryStartAngle,
         float rotaryEndAngle,
-        juce::Slider&) override { };
+        juce::Slider&) override;
 };
 
 //RotaryWithLabels
@@ -46,7 +46,7 @@ struct RotarySliderWithLabels : juce::Slider
         setLookAndFeel(nullptr);
     }
     //Misc
-    void paint(juce::Graphics& g) override {};
+    void paint(juce::Graphics& g) override;
     juce::Rectangle<int> getSliderBounds() const;
     int getTexHeight() const { return 14; }
     juce::String getDisplayString() const;

@@ -2,6 +2,69 @@
 #include "PluginEditor.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Sliders LookAndFeel
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
+	int x, int y, int width, int height,
+	float sliderPosProportional, 
+	float rotaryStartAngle,
+	float rotaryEndAngle,
+	juce::Slider& slider)
+{
+	using namespace juce;
+	auto bounds = Rectangle<float>(x, y, width, height);
+	
+	//Draw Mask
+	g.setColour(Colours::forestgreen);
+	g.fillEllipse(bounds);
+
+	//Draw Mask Outline
+	g.setColour(Colours::deeppink);
+	g.drawEllipse(bounds, 3.0f);
+
+	auto center = bounds.getCentre();
+	Path p;
+	Rectangle<float> r;
+	r.setLeft(center.getX() - 20);
+	r.setRight(center.getX() + 20);
+	r.setTop(center.getY()-5);
+	r.setBottom(center.getY()+5);
+	p.addRectangle(r);
+	jassert(rotaryStartAngle < rotaryEndAngle);
+	auto sliderAngleRadian = jmap(sliderPosProportional, 0.0f, 1.0f, rotaryStartAngle, rotaryStartAngle);
+	p.applyTransform(AffineTransform().rotated(sliderAngleRadian, center.getX(), center.getY()));
+	g.setColour(Colours::blue);
+	g.fillPath(p);
+
+}
+
+void RotarySliderWithLabels::paint(juce::Graphics& g)
+{
+	using namespace juce;
+	auto startAngleRadian = degreesToRadians(180.0f + 45.0f);
+	auto endAngleRadian = degreesToRadians(180.0f - 45.0f) + MathConstants<float>::twoPi;
+	auto range = getRange();
+	auto sliderBounds = getSliderBounds();
+
+	g.setColour(Colours::yellow);
+	g.drawRect(sliderBounds);
+
+	getLookAndFeel().drawRotarySlider(g,
+								      sliderBounds.getX(), 
+								      sliderBounds.getY(),
+								      sliderBounds.getWidth(),
+								      sliderBounds.getHeight(),
+								      jmap(getValue(), range.getStart(), range.getEnd(), 0.0, 1.0),
+								      startAngleRadian,
+								      endAngleRadian,
+								      *this);
+}
+juce::Rectangle<int> RotarySliderWithLabels::getSliderBounds() const
+{
+	return getLocalBounds();
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Response Curve
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
