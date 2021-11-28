@@ -11,16 +11,21 @@ inline int sq(float value)
 {
 	return round(value * 50.0f);
 }
+inline int sqw(float value)
+{
+	return round(value * 50.0f);
+}
 inline int sl(float value)
 {
 	return round(value * 1.0f);
 }
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Sliders
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//LookAndFeel
-struct CustomLookAndFeel : juce::LookAndFeel_V4
+//Big Rotary
+struct BigRotaryLookAndFeel : juce::LookAndFeel_V4
 {
     void drawRotarySlider(juce::Graphics& g,
         int x, int y, int width, int height,
@@ -28,36 +33,33 @@ struct CustomLookAndFeel : juce::LookAndFeel_V4
         float rotaryEndAngle,
         juce::Slider&) override;
     Image rotaryBaseImage = ImageCache::getFromMemory(BinaryData::RotaryBase_png, BinaryData::RotaryBase_pngSize);
-    
-    
-    
-    Image indicatorImage[95] = {
-    ImageCache::getFromMemory(BinaryData::Indicator_00_png, BinaryData::Indicator_00_pngSize),
-    ImageCache::getFromMemory(BinaryData::Indicator_01_png, BinaryData::Indicator_01_pngSize),
-    ImageCache::getFromMemory(BinaryData::Indicator_02_png, BinaryData::Indicator_02_pngSize),
-    ImageCache::getFromMemory(BinaryData::Indicator_03_png, BinaryData::Indicator_03_pngSize),
-    ImageCache::getFromMemory(BinaryData::Indicator_04_png, BinaryData::Indicator_04_pngSize),
-    ImageCache::getFromMemory(BinaryData::Indicator_05_png, BinaryData::Indicator_05_pngSize),
-    ImageCache::getFromMemory(BinaryData::Indicator_06_png, BinaryData::Indicator_06_pngSize),
-    ImageCache::getFromMemory(BinaryData::Indicator_07_png, BinaryData::Indicator_07_pngSize),
-    ImageCache::getFromMemory(BinaryData::Indicator_08_png, BinaryData::Indicator_08_pngSize),
-    ImageCache::getFromMemory(BinaryData::Indicator_09_png, BinaryData::Indicator_09_pngSize),
-    ImageCache::getFromMemory(BinaryData::Indicator_10_png, BinaryData::Indicator_10_pngSize),
-    ImageCache::getFromMemory(BinaryData::Indicator_11_png, BinaryData::Indicator_11_pngSize),
-    ImageCache::getFromMemory(BinaryData::Indicator_12_png, BinaryData::Indicator_12_pngSize),
-    ImageCache::getFromMemory(BinaryData::Indicator_13_png, BinaryData::Indicator_13_pngSize),
-    ImageCache::getFromMemory(BinaryData::Indicator_14_png, BinaryData::Indicator_14_pngSize),
-    ImageCache::getFromMemory(BinaryData::Indicator_15_png, BinaryData::Indicator_15_pngSize),
-    ImageCache::getFromMemory(BinaryData::Indicator_16_png, BinaryData::Indicator_16_pngSize),
-    ImageCache::getFromMemory(BinaryData::Indicator_17_png, BinaryData::Indicator_17_pngSize),
-    ImageCache::getFromMemory(BinaryData::Indicator_18_png, BinaryData::Indicator_18_pngSize),
-    ImageCache::getFromMemory(BinaryData::Indicator_19_png, BinaryData::Indicator_19_pngSize),
-    ImageCache::getFromMemory(BinaryData::Indicator_20_png, BinaryData::Indicator_20_pngSize),
-    ImageCache::getFromMemory(BinaryData::Indicator_21_png, BinaryData::Indicator_21_pngSize),
-    ImageCache::getFromMemory(BinaryData::Indicator_22_png, BinaryData::Indicator_22_pngSize),
-    ImageCache::getFromMemory(BinaryData::Indicator_23_png, BinaryData::Indicator_23_pngSize),
-    ImageCache::getFromMemory(BinaryData::Indicator_24_png, BinaryData::Indicator_24_pngSize),
-    ImageCache::getFromMemory(BinaryData::Indicator_25_png, BinaryData::Indicator_25_pngSize),
+	const Image indicatorImage[95] = {
+	ImageCache::getFromMemory(BinaryData::Indicator_00_png, BinaryData::Indicator_00_pngSize),
+	ImageCache::getFromMemory(BinaryData::Indicator_01_png, BinaryData::Indicator_01_pngSize),
+	ImageCache::getFromMemory(BinaryData::Indicator_02_png, BinaryData::Indicator_02_pngSize),
+	ImageCache::getFromMemory(BinaryData::Indicator_03_png, BinaryData::Indicator_03_pngSize),
+	ImageCache::getFromMemory(BinaryData::Indicator_04_png, BinaryData::Indicator_04_pngSize),
+	ImageCache::getFromMemory(BinaryData::Indicator_05_png, BinaryData::Indicator_05_pngSize),
+	ImageCache::getFromMemory(BinaryData::Indicator_06_png, BinaryData::Indicator_06_pngSize),
+	ImageCache::getFromMemory(BinaryData::Indicator_07_png, BinaryData::Indicator_07_pngSize),
+	ImageCache::getFromMemory(BinaryData::Indicator_08_png, BinaryData::Indicator_08_pngSize),
+	ImageCache::getFromMemory(BinaryData::Indicator_09_png, BinaryData::Indicator_09_pngSize),
+	ImageCache::getFromMemory(BinaryData::Indicator_10_png, BinaryData::Indicator_10_pngSize),
+	ImageCache::getFromMemory(BinaryData::Indicator_11_png, BinaryData::Indicator_11_pngSize),
+	ImageCache::getFromMemory(BinaryData::Indicator_12_png, BinaryData::Indicator_12_pngSize),
+	ImageCache::getFromMemory(BinaryData::Indicator_13_png, BinaryData::Indicator_13_pngSize),
+	ImageCache::getFromMemory(BinaryData::Indicator_14_png, BinaryData::Indicator_14_pngSize),
+	ImageCache::getFromMemory(BinaryData::Indicator_15_png, BinaryData::Indicator_15_pngSize),
+	ImageCache::getFromMemory(BinaryData::Indicator_16_png, BinaryData::Indicator_16_pngSize),
+	ImageCache::getFromMemory(BinaryData::Indicator_17_png, BinaryData::Indicator_17_pngSize),
+	ImageCache::getFromMemory(BinaryData::Indicator_18_png, BinaryData::Indicator_18_pngSize),
+	ImageCache::getFromMemory(BinaryData::Indicator_19_png, BinaryData::Indicator_19_pngSize),
+	ImageCache::getFromMemory(BinaryData::Indicator_20_png, BinaryData::Indicator_20_pngSize),
+	ImageCache::getFromMemory(BinaryData::Indicator_21_png, BinaryData::Indicator_21_pngSize),
+	ImageCache::getFromMemory(BinaryData::Indicator_22_png, BinaryData::Indicator_22_pngSize),
+	ImageCache::getFromMemory(BinaryData::Indicator_23_png, BinaryData::Indicator_23_pngSize),
+	ImageCache::getFromMemory(BinaryData::Indicator_24_png, BinaryData::Indicator_24_pngSize),
+	ImageCache::getFromMemory(BinaryData::Indicator_25_png, BinaryData::Indicator_25_pngSize),
 	ImageCache::getFromMemory(BinaryData::Indicator_26_png, BinaryData::Indicator_26_pngSize),
 	ImageCache::getFromMemory(BinaryData::Indicator_27_png, BinaryData::Indicator_27_pngSize),
 	ImageCache::getFromMemory(BinaryData::Indicator_28_png, BinaryData::Indicator_28_pngSize),
@@ -127,41 +129,43 @@ struct CustomLookAndFeel : juce::LookAndFeel_V4
 	ImageCache::getFromMemory(BinaryData::Indicator_92_png, BinaryData::Indicator_92_pngSize),
 	ImageCache::getFromMemory(BinaryData::Indicator_93_png, BinaryData::Indicator_93_pngSize),
 	ImageCache::getFromMemory(BinaryData::Indicator_94_png, BinaryData::Indicator_94_pngSize)
-    };
-
+	};
 
 
 };
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Sliders
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 //RotaryWithLabels
-struct RotarySliderWithLabels : juce::Slider
+struct BigRotary : juce::Slider
 {   
     //Constructor
-    RotarySliderWithLabels(juce::RangedAudioParameter& rap, const juce::String& unitSuffix) :
+    BigRotary(juce::RangedAudioParameter& rap, const juce::String& unitSuffix, const juce::String& name) :
         juce::Slider(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, juce::Slider::TextEntryBoxPosition::NoTextBox),
-        param(&rap), suffix(unitSuffix)
+        param(&rap)
     {
         //Look and Feel
+		setTextValueSuffix(unitSuffix);
         setLookAndFeel(&lnf);
-       
-       
+		setName(name);
     }
 
     //Destructor
-    ~RotarySliderWithLabels()
+    ~BigRotary()
     {
         setLookAndFeel(nullptr);
     }
     //Misc
+	const juce::String name = "Slider";
     void paint(juce::Graphics& g) override;
     juce::Rectangle<int> getSliderBounds() const;
     int getTexHeight() const { return 14; }
     juce::String getDisplayString() const;
 private:
-    CustomLookAndFeel lnf;
-    
+    BigRotaryLookAndFeel lnf;
     juce::RangedAudioParameter* param;
-    juce::String suffix;
 };
 
 struct CustomRotarySlider : juce::Slider
@@ -220,34 +224,37 @@ public:
 
 private:
     //Audio Processor
-    PlasmaAudioProcessor& audioProcessor;
+    PlasmaAudioProcessor& audioProcessor;	
 
-    //Slider Components
-    CustomRotarySlider 
-        biasSlider,
-        lateBiasSlider,
-        driveTypeSlider,
-        lateDriveTypeSlider,
-        highPassResonanceSlider,
-        lowPassResonanceSlider,
-        peakGainSlider,
-        highPassResonanceQualitySlider,
-        lowPassResonanceQualitySlider,
-        peakQualitySlider,
-        highPassSlopeSlider,
-        lowPassSlopeSlider;
-
-    RotarySliderWithLabels 
+	//Sliders
+    BigRotary 
+		//Drive
+		gainSlider,
+		driveSlider,
+		girthSlider,
+		biasSlider,
+		driveTypeSlider,
+		//Highpass
         highPassFreqSlider,
-        lowPassFreqSlider,
-        peakFreqSlider;
-
-    CustomSlider gainSlider,
-        driveSlider,
-        girthSlider,
-        lateGirthSlider,
-        lateDriveSlider,
-        preGainSlider;
+		highPassResonanceSlider,
+		highPassResonanceQualitySlider,
+		highPassSlopeSlider,
+		//Peak
+        peakFreqSlider,
+		peakGainSlider,
+		peakQualitySlider,
+		//Lowpass
+		lowPassFreqSlider,
+		lowPassResonanceSlider,
+		lowPassResonanceQualitySlider,
+		lowPassSlopeSlider,
+		//lateDrive
+		lateBiasSlider,
+		lateDriveTypeSlider,
+		lateGirthSlider,
+		lateDriveSlider,
+		preGainSlider;
+        
 
     //Response Curve Component
     ResponseCurveComponent responseCurveComponent;
@@ -280,9 +287,9 @@ private:
 
     //Image Components
     ImageComponent screenImageComponent;
-    static Image rotaryBaseImage;
-
-    //Math
+	Image backgroundImage = ImageCache::getFromMemory(BinaryData::Background_png, BinaryData::Background_pngSize);
+   
+	//Math
 	
 
     //End
