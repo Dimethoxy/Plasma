@@ -13,29 +13,15 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 {
 	using namespace juce;
 	auto bounds = Rectangle<float>(x, y, width, height);
+	auto sliderAngleRadian = jmap(sliderPosProportional, 0.0f, 1.0f, rotaryStartAngle, rotaryEndAngle);
 	
-	//Draw Mask
-	g.setColour(Colours::forestgreen);
-	g.fillEllipse(bounds);
+	//int imgIndex = jmap(sliderPosProportional, 0.0f, 94.0f);
+	NormalisableRange<float> targetRange{ 0, 94.0f };
+	targetRange.setSkewForCentre(71);
+	int imgIndex = targetRange.convertFrom0to1(sliderPosProportional);
 
-	//Draw Mask Outline
-	g.setColour(Colours::deeppink);
-	g.drawEllipse(bounds, 3.0f);
-
-	auto center = bounds.getCentre();
-	Path p;
-	Rectangle<float> r;
-	r.setLeft(center.getX() - 20);
-	r.setRight(center.getX() + 20);
-	r.setTop(center.getY()-5);
-	r.setBottom(center.getY()+5);
-	p.addRectangle(r);
-	jassert(rotaryStartAngle < rotaryEndAngle);
-	auto sliderAngleRadian = jmap(sliderPosProportional, 0.0f, 1.0f, rotaryStartAngle, rotaryStartAngle);
-	p.applyTransform(AffineTransform().rotated(sliderAngleRadian, center.getX(), center.getY()));
-	g.setColour(Colours::blue);
-	g.fillPath(p);
-
+	g.drawImage(rotaryBaseImage, bounds, RectanglePlacement::stretchToFit, false);
+	g.drawImage(indicatorImage[imgIndex], bounds, RectanglePlacement::stretchToFit, false);
 }
 
 void RotarySliderWithLabels::paint(juce::Graphics& g)
@@ -46,8 +32,10 @@ void RotarySliderWithLabels::paint(juce::Graphics& g)
 	auto range = getRange();
 	auto sliderBounds = getSliderBounds();
 
+	
+
 	g.setColour(Colours::yellow);
-	g.drawRect(sliderBounds);
+	//g.drawRect(sliderBounds);
 
 	getLookAndFeel().drawRotarySlider(g,
 								      sliderBounds.getX(), 
@@ -230,6 +218,8 @@ void ResponseCurveComponent::paint(juce::Graphics& g)
 PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	: AudioProcessorEditor(&p), audioProcessor(p),
 	highPassFreqSlider(*audioProcessor.apvts.getParameter("Highpass Freq"), "Hz"),
+	peakFreqSlider(*audioProcessor.apvts.getParameter("Peak Freq"), "Hz"),
+	lowPassFreqSlider(*audioProcessor.apvts.getParameter("Lowpass Freq"), "Hz"),
 	responseCurveComponent(audioProcessor),
 	preGainSliderAttachment(audioProcessor.apvts, "Pre Gain", preGainSlider),
     driveTypeSliderAttachment(audioProcessor.apvts, "Distortion Type", driveTypeSlider),
@@ -255,6 +245,7 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 {
     //Loading Resources
     Image screenImage = ImageCache::getFromMemory(BinaryData::Screen_png, BinaryData::Screen_pngSize);
+	
     if (!screenImage.isNull())
     {
         screenImageComponent.setImage(screenImage, RectanglePlacement::doNotResize);
@@ -320,19 +311,19 @@ void PlasmaAudioProcessorEditor::resized()
     biasSlider.setBounds(sq(2.75), sq(3.0), sq(1.5), sq(1.5));
 
     //Highpass
+	highPassFreqSlider.setBounds(sq(5.0), sq(7.75), sq(3.5), sq(3.5));
     highPassSlopeSlider.setBounds(sq(6.0), sq(4.75), sq(1.5), sq(1.5));
-    highPassFreqSlider.setBounds(sq(5.5), sq(8.25), sq(2.5), sq(2.5));
     highPassResonanceSlider.setBounds(sq(7.0), sq(6.5), sq(1.5), sq(1.5));
     highPassResonanceQualitySlider.setBounds(sq(5.0), sq(6.5), sq(1.5), sq(1.5));
 
     //Peak
-	peakFreqSlider.setBounds(sq(8.75), sq(6.75), sq(2.5), sq(2.5));
+	peakFreqSlider.setBounds(sq(8.25), sq(7.75), sq(3.5), sq(3.5));
 	peakGainSlider.setBounds(sq(9.25), sq(5.25), sq(1.5), sq(1.5));
-	peakQualitySlider.setBounds(sq(9.25), sq(9.25), sq(1.5), sq(1.5));
+	peakQualitySlider.setBounds(sq(9.25), sq(6.5), sq(1.5), sq(1.5));
 
     //Lowpass
+	lowPassFreqSlider.setBounds(sq(11.5), sq(7.75), sq(3.5), sq(3.5));
     lowPassSlopeSlider.setBounds(sq(12.5),sq(4.75),sq(1.5),sq(1.5));
-    lowPassFreqSlider.setBounds(sq(12.0), sq(8.25), sq(2.5), sq(2.5));
 	lowPassResonanceSlider.setBounds(sq(11.5), sq(6.5), sq(1.5), sq(1.5));
 	lowPassResonanceQualitySlider.setBounds(sq(13.5), sq(6.5), sq(1.5), sq(1.5));
    

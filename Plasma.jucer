@@ -13,6 +13,200 @@
       <FILE id="c6b0xF" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
     </GROUP>
     <GROUP id="{F21D0FBD-3A1D-B8A8-D434-293EB1990ECA}" name="Resources">
+      <GROUP id="{56EA0BC2-975F-2F4D-71D0-C195C57013AF}" name="Indicator">
+        <FILE id="Ya3JBc" name="Indicator_95.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_95.png"/>
+        <FILE id="GQOfZd" name="Indicator_00.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_00.png"/>
+        <FILE id="rcSmjC" name="Indicator_01.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_01.png"/>
+        <FILE id="aY9yNe" name="Indicator_02.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_02.png"/>
+        <FILE id="vYREHc" name="Indicator_03.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_03.png"/>
+        <FILE id="lKFT3T" name="Indicator_04.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_04.png"/>
+        <FILE id="RsLk8Y" name="Indicator_05.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_05.png"/>
+        <FILE id="EYLnyH" name="Indicator_06.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_06.png"/>
+        <FILE id="eKmZEO" name="Indicator_07.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_07.png"/>
+        <FILE id="JO8pZZ" name="Indicator_08.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_08.png"/>
+        <FILE id="vKk1ME" name="Indicator_09.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_09.png"/>
+        <FILE id="Yvs3qJ" name="Indicator_10.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_10.png"/>
+        <FILE id="ETkzqM" name="Indicator_11.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_11.png"/>
+        <FILE id="S0oSIx" name="Indicator_12.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_12.png"/>
+        <FILE id="QAgIHT" name="Indicator_13.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_13.png"/>
+        <FILE id="IliYj0" name="Indicator_14.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_14.png"/>
+        <FILE id="qnzMSG" name="Indicator_15.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_15.png"/>
+        <FILE id="wjFW2y" name="Indicator_16.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_16.png"/>
+        <FILE id="CUqCEr" name="Indicator_17.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_17.png"/>
+        <FILE id="LjGVR3" name="Indicator_18.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_18.png"/>
+        <FILE id="cuVuyC" name="Indicator_19.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_19.png"/>
+        <FILE id="a6X3zE" name="Indicator_20.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_20.png"/>
+        <FILE id="CnhQHR" name="Indicator_21.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_21.png"/>
+        <FILE id="k6ztuA" name="Indicator_22.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_22.png"/>
+        <FILE id="puwcAJ" name="Indicator_23.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_23.png"/>
+        <FILE id="T5jDU3" name="Indicator_24.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_24.png"/>
+        <FILE id="OjQpOU" name="Indicator_25.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_25.png"/>
+        <FILE id="goJlRK" name="Indicator_26.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_26.png"/>
+        <FILE id="S9qBBw" name="Indicator_27.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_27.png"/>
+        <FILE id="tzWcc2" name="Indicator_28.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_28.png"/>
+        <FILE id="cjuQYB" name="Indicator_29.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_29.png"/>
+        <FILE id="oDi98x" name="Indicator_30.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_30.png"/>
+        <FILE id="QbggYN" name="Indicator_31.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_31.png"/>
+        <FILE id="WYGGJr" name="Indicator_32.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_32.png"/>
+        <FILE id="wDKEh9" name="Indicator_33.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_33.png"/>
+        <FILE id="Ri9lG7" name="Indicator_34.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_34.png"/>
+        <FILE id="pIRZZZ" name="Indicator_35.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_35.png"/>
+        <FILE id="VstOCv" name="Indicator_36.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_36.png"/>
+        <FILE id="jh0prL" name="Indicator_37.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_37.png"/>
+        <FILE id="BnqmpF" name="Indicator_38.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_38.png"/>
+        <FILE id="onVrTe" name="Indicator_39.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_39.png"/>
+        <FILE id="UahnhU" name="Indicator_40.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_40.png"/>
+        <FILE id="TT93pB" name="Indicator_41.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_41.png"/>
+        <FILE id="OWz7xW" name="Indicator_42.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_42.png"/>
+        <FILE id="MEgllY" name="Indicator_43.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_43.png"/>
+        <FILE id="w708y0" name="Indicator_44.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_44.png"/>
+        <FILE id="JLJKJ2" name="Indicator_45.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_45.png"/>
+        <FILE id="g8gg33" name="Indicator_46.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_46.png"/>
+        <FILE id="e6hRBQ" name="Indicator_47.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_47.png"/>
+        <FILE id="m2grcI" name="Indicator_48.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_48.png"/>
+        <FILE id="EB85jF" name="Indicator_49.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_49.png"/>
+        <FILE id="pOmGAQ" name="Indicator_50.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_50.png"/>
+        <FILE id="Ivalgw" name="Indicator_51.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_51.png"/>
+        <FILE id="n2zq4l" name="Indicator_52.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_52.png"/>
+        <FILE id="PC0JLB" name="Indicator_53.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_53.png"/>
+        <FILE id="gR02Z2" name="Indicator_54.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_54.png"/>
+        <FILE id="H8Ol0Y" name="Indicator_55.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_55.png"/>
+        <FILE id="qDvDoe" name="Indicator_56.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_56.png"/>
+        <FILE id="EsBH2o" name="Indicator_57.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_57.png"/>
+        <FILE id="vIlMKL" name="Indicator_58.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_58.png"/>
+        <FILE id="TjkZxc" name="Indicator_59.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_59.png"/>
+        <FILE id="HwfIiw" name="Indicator_60.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_60.png"/>
+        <FILE id="tsYrDk" name="Indicator_61.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_61.png"/>
+        <FILE id="QDh8o1" name="Indicator_62.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_62.png"/>
+        <FILE id="UbdLeH" name="Indicator_63.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_63.png"/>
+        <FILE id="FumdOL" name="Indicator_64.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_64.png"/>
+        <FILE id="qDCXdc" name="Indicator_65.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_65.png"/>
+        <FILE id="SR6l2c" name="Indicator_66.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_66.png"/>
+        <FILE id="x6w9fN" name="Indicator_67.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_67.png"/>
+        <FILE id="Dv2IsN" name="Indicator_68.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_68.png"/>
+        <FILE id="XojCyl" name="Indicator_69.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_69.png"/>
+        <FILE id="l2ZQiW" name="Indicator_70.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_70.png"/>
+        <FILE id="NyYKu5" name="Indicator_71.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_71.png"/>
+        <FILE id="jHNjAR" name="Indicator_72.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_72.png"/>
+        <FILE id="kK58L8" name="Indicator_73.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_73.png"/>
+        <FILE id="TKwYkv" name="Indicator_74.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_74.png"/>
+        <FILE id="SfNRwA" name="Indicator_75.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_75.png"/>
+        <FILE id="kSdy99" name="Indicator_76.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_76.png"/>
+        <FILE id="XVbUYp" name="Indicator_77.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_77.png"/>
+        <FILE id="PRAW0q" name="Indicator_78.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_78.png"/>
+        <FILE id="nR8Dsp" name="Indicator_79.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_79.png"/>
+        <FILE id="hqXvfT" name="Indicator_80.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_80.png"/>
+        <FILE id="T081Mp" name="Indicator_81.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_81.png"/>
+        <FILE id="Ln33qx" name="Indicator_82.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_82.png"/>
+        <FILE id="fQb9RF" name="Indicator_83.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_83.png"/>
+        <FILE id="UrgnAP" name="Indicator_84.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_84.png"/>
+        <FILE id="ZVvlAz" name="Indicator_85.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_85.png"/>
+        <FILE id="nDeOoZ" name="Indicator_86.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_86.png"/>
+        <FILE id="WfK2BR" name="Indicator_87.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_87.png"/>
+        <FILE id="KhOSwG" name="Indicator_88.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_88.png"/>
+        <FILE id="TasS8N" name="Indicator_89.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_89.png"/>
+        <FILE id="ngGzil" name="Indicator_90.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_90.png"/>
+        <FILE id="j7L57g" name="Indicator_91.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_91.png"/>
+        <FILE id="GznZZl" name="Indicator_92.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_92.png"/>
+        <FILE id="Y4TRwt" name="Indicator_93.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_93.png"/>
+        <FILE id="tTFlva" name="Indicator_94.png" compile="0" resource="1"
+              file="C:/Users/david/OneDrive/Bilder/Knob/Indicator_94.png"/>
+      </GROUP>
       <FILE id="n4Wf1D" name="RotaryBase.png" compile="0" resource="1" file="Resources/RotaryBase.png"/>
       <FILE id="MVBeU6" name="Screen.png" compile="0" resource="1" file="Resources/Screen.png"/>
     </GROUP>

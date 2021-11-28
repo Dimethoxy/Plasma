@@ -311,7 +311,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout PlasmaAudioProcessor::create
 		("Highpass Slope", "Highpass Slope", slopeArray, 0));
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Highpass Freq", "Highpass Freq",
-			juce::NormalisableRange<float>(20.0f, 20000.0f, 0.1f, 0.5f), 70.0f));
+			juce::NormalisableRange<float>(20.0f, 20000.0f, 0.1f, 0.5f), 20000.0f));
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Highpass Resonance", "Highpass Resonance",
 			juce::NormalisableRange<float>(0.0f, 64.0f, 0.1f, 0.5f), 0.0f));
@@ -323,7 +323,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout PlasmaAudioProcessor::create
 		("Lowpass Slope", "Lowpass Slope", slopeArray, 0));
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Lowpass Freq", "Lowpass Freq",
-			juce::NormalisableRange<float>(20.0f, 20000.0f, 0.1f, 0.5f), 8000.0f));
+			juce::NormalisableRange<float>(20.0f, 20000.0f, 0.1f, 0.5f), 20000.0f));
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Lowpass Resonance", "Lowpass Resonance",
 			juce::NormalisableRange<float>(0.0f, 64.0f, 0.1f, 0.5f), 0.0f));
