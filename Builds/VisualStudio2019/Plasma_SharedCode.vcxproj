@@ -3050,6 +3050,7 @@
     <ClInclude Include="..\..\JuceLibraryCode\JucePluginDefines.h"/>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\Resources\Knob.png"/>
     <None Include="..\..\Resources\Background.png"/>
     <None Include="..\..\Resources\RotaryBase.png"/>
     <None Include="..\..\Resources\Indicator_175\Indicator_00.png"/>
@@ -3148,7 +3149,7 @@
     <None Include="..\..\Resources\Indicator_175\Indicator_93.png"/>
     <None Include="..\..\Resources\Indicator_175\Indicator_94.png"/>
     <None Include="..\..\Resources\Indicator_175\Indicator_95.png"/>
-    <None Include="..\..\Resources\Screen.png"/>
+    <None Include="C:\Users\david\OneDrive\Bilder\UI Design\Screen.png"/>
     <None Include="..\..\..\JUCE\JUCE\modules\juce_audio_devices\native\oboe\CMakeLists.txt"/>
     <None Include="..\..\..\JUCE\JUCE\modules\juce_audio_devices\native\oboe\README.md"/>
     <None Include="..\..\..\JUCE\JUCE\modules\juce_audio_formats\codecs\flac\Flac Licence.txt"/>

@@ -14,49 +14,39 @@ void BigRotaryLookAndFeel::drawRotarySlider(juce::Graphics& g,
 	using namespace juce;
 	auto bounds = Rectangle<float>(x, y, width, height);
 	auto sliderAngleRadian = jmap(sliderPosProportional, 0.0f, 1.0f, rotaryStartAngle, rotaryEndAngle);
-	
-	int imgIndex = 0;
 
-	if(slider.getSkewFactor() == 1.0)
-	{
-		imgIndex = jmap(sliderPosProportional, 0.0f, 94.0f);
-	}
-	else
-	{
-		NormalisableRange<float> targetRange{ 0, 94.0f };
-		targetRange.setSkewForCentre(65);
-		imgIndex = ceil(targetRange.convertFrom0to1(sliderPosProportional));
-	}
-
-	g.drawImage(rotaryBaseImage, bounds, RectanglePlacement::onlyReduceInSize, false);
-	g.drawImage(indicatorImage[imgIndex], bounds, RectanglePlacement::onlyReduceInSize, false);
 	g.setColour(Colours::white);
+	auto offset = 4;
+	auto circleBounds = Rectangle<float>(bounds.getX() + offset,
+		bounds.getY() + offset,
+		bounds.getWidth() - 2 * offset,
+		bounds.getHeight() - 2 * offset);
 	
-	if(slider.getTextValueSuffix() == "Hz")
-	{
-		g.setFont(20.0f);
-		g.drawText(slider.getName(), bounds, juce::Justification::centredBottom, true);
-		bounds.setBottom(bounds.getBottom() - 20);
-		bounds.setX(bounds.getX() + 20);
-		bounds.setWidth(bounds.getWidth() - 40);
-		g.setFont(10.0f);
-		g.drawText("20 " + slider.getTextValueSuffix(), bounds, juce::Justification::bottomLeft, true);
-		g.drawText("20k " + slider.getTextValueSuffix(), bounds, juce::Justification::bottomRight, true);
-	}
-	else if (slider.getName() == "Distortion")
-	{
-		g.setFont(20.0f);
-		
-		g.drawText(slider.getTextFromValue(slider.getValue()), bounds, juce::Justification::centredBottom, true);
-	}
-	else
-	{
-		g.setFont(14.0f);
-		g.drawText(slider.getName(), bounds, juce::Justification::centredBottom, true);
-	}
+
+	float s, c;
+	c = cos(-sliderAngleRadian);
+	s = sin(-sliderAngleRadian);
+
+	float x0, x1, x2, y0, y1, y2;
+	x0 = circleBounds.getCentreX();
+	y0 = circleBounds.getCentreY();
+	x1 = 0;
+	y1 = 0;
+	float r = 25;
+	x2 = -r * s;
+	y2 = -r * c;
+	
+	//Translate
+	x1 = x1 + x0;
+	y1 = y1 + y0;
+	x2 = x2 + x0;
+	y2 = y2 + y0;
+	
+	g.drawLine(x1,y1,x2,y2, 4);
+	g.drawEllipse(circleBounds, 4);
 }
 
-void BigRotary::paint(juce::Graphics& g)
+void CustomRotary::paint(juce::Graphics& g)
 {
 	using namespace juce;
 	auto startAngleRadian = degreesToRadians(180.0f + 45.0f);
@@ -79,7 +69,7 @@ void BigRotary::paint(juce::Graphics& g)
 								      endAngleRadian,
 								      *this);
 }
-juce::Rectangle<int> BigRotary::getSliderBounds() const
+juce::Rectangle<int> CustomRotary::getSliderBounds() const
 {
 	return getLocalBounds();
 }
@@ -129,7 +119,7 @@ void ResponseCurveComponent::update()
 	//Coefficients
 	auto highPassCoefficients = makeHighPassFilter(chainSettings, audioProcessor.getSampleRate());
 	auto highPassResonanceCoefficients = makeHighPassResonance(chainSettings, audioProcessor.getSampleRate());
-	auto peakCoefficients = makePeakFilter(chainSettings, audioProcessor.getSampleRate());
+	auto peakCoefficients = makePeakFilter(chainSettings, audioProcessor.getSampleRate(), 0.0);
 	auto lowPassResonanceCoefficients = makeLowPassResonance(chainSettings, audioProcessor.getSampleRate());
 	auto lowPassCoefficients = makeLowPassFilter(chainSettings, audioProcessor.getSampleRate());
 
@@ -149,13 +139,13 @@ void ResponseCurveComponent::paint(juce::Graphics& g)
 	using namespace juce;
 
 	//Screen
-	auto x = sl(0);
-	auto y = sl(0);
-	auto w = sl(434);
-	auto h = sl(180);
+	auto x = sl(10);
+	auto y = sl(10);
+	auto w = sl(600);
+	auto h = sl(270);
 
-	g.setColour(Colours::black);
-	g.fillRect(x, y, w, h);
+	//g.setColour(Colours::black);
+	//g.fillRect(x, y, w, h);
 	auto& highpass = monoChain.get<ChainPositions::HighPass>();
 	auto& highpassResonance = monoChain.get<ChainPositions::HighPassResonance>();
 	auto& peak = monoChain.get<ChainPositions::Peak>();
@@ -237,7 +227,7 @@ void ResponseCurveComponent::paint(juce::Graphics& g)
 	{
 		responseCurve.lineTo(x + i, map(mags[i]));
 	}
-	g.setColour(Colours::green);
+	g.setColour(Colours::white);
 	g.strokePath(responseCurve, PathStrokeType(3));
 
 }
@@ -260,6 +250,7 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	highPassResonanceQualitySlider(*audioProcessor.apvts.getParameter("Highpass Resonance Q"), "", "Q"),
 	highPassSlopeSlider(*audioProcessor.apvts.getParameter("Highpass Slope"), "dB/oct", "Slope"),
 	//Peak
+	peakStereoSlider(*audioProcessor.apvts.getParameter("Peak Stereo"), "Hz", "Stereo"),
 	peakFreqSlider(*audioProcessor.apvts.getParameter("Peak Freq"), "Hz", "Peak"),
 	peakGainSlider(*audioProcessor.apvts.getParameter("Peak Gain"), "dB", "Resonance"),
 	peakQualitySlider(*audioProcessor.apvts.getParameter("Peak Quality"), "", "Q"),
@@ -270,7 +261,7 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	lowPassSlopeSlider(*audioProcessor.apvts.getParameter("Lowpass Slope"), "dB/oct", "Slope"),
 	//Lategain
 	gainSlider(*audioProcessor.apvts.getParameter("Gain"), "dB", "Gain"),
-	lateDriveSlider(*audioProcessor.apvts.getParameter("Drive"), "x", "Drive"),
+	lateDriveSlider(*audioProcessor.apvts.getParameter("Late Drive"), "x", "Drive"),
 	lateGirthSlider(*audioProcessor.apvts.getParameter("Girth"), "%", "Girth"),
 	lateBiasSlider(*audioProcessor.apvts.getParameter("Late Bias"), "", "Symmetry"),
 	lateDriveTypeSlider(*audioProcessor.apvts.getParameter("Late Distortion Type"), "", "Distortion"),
@@ -286,7 +277,9 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
     highPassResonanceQualitySliderAttachment(audioProcessor.apvts, "Highpass Resonance Q", highPassResonanceQualitySlider),
     highPassFreqSliderAttachment(audioProcessor.apvts, "Highpass Freq", highPassFreqSlider),
 	highPassSlopeSliderAttachment(audioProcessor.apvts, "Highpass Slope", highPassSlopeSlider),
-    peakFreqSliderAttachment(audioProcessor.apvts, "Peak Freq", peakFreqSlider),
+    //Peak
+	peakStereoSliderAttachment(audioProcessor.apvts, "Peak Stereo", peakStereoSlider),
+	peakFreqSliderAttachment(audioProcessor.apvts, "Peak Freq", peakFreqSlider),
     peakGainSliderAttachment(audioProcessor.apvts, "Peak Gain", peakGainSlider),
     peakQualitySliderAttachment(audioProcessor.apvts, "Peak Q", peakQualitySlider),
     lowPassFreqSliderAttachment(audioProcessor.apvts, "Lowpass Freq", lowPassFreqSlider),
@@ -317,7 +310,7 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
     addAndMakeVisible(screenImageComponent);
 
 	setResizable(false, false);
-    setSize(1000, 600);
+    setSize(1060, 910);
   }
 
 PlasmaAudioProcessorEditor::~PlasmaAudioProcessorEditor()
@@ -337,10 +330,10 @@ void PlasmaAudioProcessorEditor::paint (juce::Graphics& g)
 	g.fillAll(Colour(20, 20, 20));
 
     //Screen
-    auto x = sl(283);
-    auto y = sl(22);
-    auto w = sl(434);
-    auto h = sl(180);
+    auto x = 220;
+    auto y = 60;
+    auto w = 620;
+    auto h = 290;
 
 	g.fillRect(x, y, w, h);
 
@@ -355,41 +348,44 @@ void PlasmaAudioProcessorEditor::paint (juce::Graphics& g)
 void PlasmaAudioProcessorEditor::resized()
 {
 	//Analyzers
-	responseCurveComponent.setBounds(sl(283), sl(22), sl(434), sl(180));
+	responseCurveComponent.setBounds(220, 60, 620, 290);
 
-	//Images
-	screenImageComponent.setBounds(sl(262), sl(2), sl(476), sl(229));
-
-    //Predrive
-    preGainSlider.setBounds(sqw(0.5), sq(5), sq(1.5), sq(5.5));
-    driveSlider.setBounds(sqw(2.0), sq(5), sq(1.5), sq(5.5));
-    girthSlider.setBounds(sqw(3.5), sq(5), sq(1.5), sq(5.5));
-    driveTypeSlider.setBounds(sqw(0.5), sq(0.5), sq(2.5), sq(2.5));
-    biasSlider.setBounds(sqw(2.75), sq(3.0), sq(1.5), sq(1.5));
+    //Early
+    preGainSlider.setBounds(80, 150, 60, 60);
+	driveTypeSlider.setBounds(80, 440, 60, 60);
+	biasSlider.setBounds(80, 560, 60, 60);
+    girthSlider.setBounds(80, 680, 60, 60);
+	driveSlider.setBounds(80, 800, 60, 60);
+	
 
     //Highpass
-	highPassFreqSlider.setBounds(sqw(5.0), sq(8.5), sq(3.5), sq(3.5));
-    highPassSlopeSlider.setBounds(sqw(5.75), sq(4.5), sq(2.0), sq(2.0));
-    highPassResonanceSlider.setBounds(sqw(6.75), sq(6.60), sq(2.0), sq(2.0));
-    highPassResonanceQualitySlider.setBounds(sqw(4.75), sq(6.60), sq(2.0), sq(2.0));
+	highPassSlopeSlider.setBounds(290, 440, 60, 60);
+	highPassResonanceQualitySlider.setBounds(290, 560, 60, 60);
+	highPassResonanceSlider.setBounds(290, 680, 60, 60);
+	highPassFreqSlider.setBounds(290, 800, 60, 60);
 
     //Peak
-	peakFreqSlider.setBounds(sqw(8.25), sq(8.5), sq(3.5), sq(3.5));
-	peakGainSlider.setBounds(sqw(9.0), sq(6.60), sq(2.0), sq(2.0));
-	peakQualitySlider.setBounds(sqw(9.0), sq(4.5), sq(2.0), sq(2.0));
+	peakStereoSlider.setBounds(500, 440, 60, 60);
+	peakQualitySlider.setBounds(500, 560, 60, 60);
+	peakGainSlider.setBounds(500, 680, 60, 60);
+	peakFreqSlider.setBounds(500, 800, 60, 60);
+	
 
     //Lowpass
-	lowPassFreqSlider.setBounds(sqw(11.5), sq(8.5), sq(3.5), sq(3.5));
-    lowPassSlopeSlider.setBounds(sqw(12.25),sq(4.5),sq(2.0),sq(2.0));
-	lowPassResonanceSlider.setBounds(sqw(11.25), sq(6.60), sq(2.0), sq(2.0));
-	lowPassResonanceQualitySlider.setBounds(sqw(13.25), sq(6.60), sq(2.0), sq(2.0));
+	lowPassSlopeSlider.setBounds(710, 440, 60, 60);
+	lowPassResonanceQualitySlider.setBounds(710, 560, 60, 60);
+	lowPassResonanceSlider.setBounds(710, 680, 60, 60);
+	lowPassFreqSlider.setBounds(710, 800, 60, 60);
    
 	//Latedrive
-	gainSlider.setBounds(sqw(15.0), sq(5), sq(1.5), sq(5.5));
-	lateDriveSlider.setBounds(sqw(16.5), sq(5), sq(1.5), sq(5.5));
-	lateGirthSlider.setBounds(sqw(18.0), sq(5), sq(1.5), sq(5.5));
-	lateDriveTypeSlider.setBounds(sqw(17.0), sq(0.5), sq(2.5), sq(2.5));
-	lateBiasSlider.setBounds(sqw(15.75), sq(3.0), sq(1.5), sq(1.5));
+	gainSlider.setBounds(920, 150, 60, 60);
+	lateDriveTypeSlider.setBounds(920, 440, 60, 60);
+	lateBiasSlider.setBounds(920, 560, 60, 60);
+	lateGirthSlider.setBounds(920, 680, 60, 60);
+	lateDriveSlider.setBounds(920, 800, 60, 60);
+
+	
+	
 
 	responseCurveComponent.update();
 
@@ -411,6 +407,7 @@ std::vector<juce::Component*> PlasmaAudioProcessorEditor::getComps()
         &highPassFreqSlider,
         &highPassResonanceSlider,
         &highPassResonanceQualitySlider,
+		&peakStereoSlider,
         &peakFreqSlider,
         &peakGainSlider,
         &peakQualitySlider,

@@ -155,7 +155,7 @@ juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 	return new PlasmaAudioProcessor();
 }
 
-float PlasmaAudioProcessor::clamp(float d, float min, float max) {
+float clamp(float d, float min, float max) {
 	const float t = d < min ? min : d;
 	return t > max ? max : t;
 }
@@ -283,12 +283,15 @@ juce::AudioProcessorValueTreeState::ParameterLayout PlasmaAudioProcessor::create
     //Girth
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Girth", "Girth",
-			juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f, 1.0f), 0.5f));
+			juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f, 1.0f), 0.0f));
 	//Bias
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Bias", "Bias",
 			juce::NormalisableRange<float>(-1.0f, 1.0f, 0.01f, 1.0f), 0.0f));
     //Peak
+	layout.add(std::make_unique<juce::AudioParameterFloat>
+		("Peak Stereo", "Peak Stereo",
+			juce::NormalisableRange<float>(0.0f, 500.0f, 0.1f, 1.0f), 0.0f));
     layout.add(std::make_unique<juce::AudioParameterFloat>
         ("Peak Freq", "Peak Freq",
         juce::NormalisableRange<float>(20.0f, 20000.0f, 0.1f, 0.5f), 450.0f));
@@ -308,10 +311,10 @@ juce::AudioProcessorValueTreeState::ParameterLayout PlasmaAudioProcessor::create
     }
 	//Highpass
 	layout.add(std::make_unique<juce::AudioParameterChoice>
-		("Highpass Slope", "Highpass Slope", slopeArray, 0));
+		("Highpass Slope", "Highpass Slope", slopeArray, 1));
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Highpass Freq", "Highpass Freq",
-			juce::NormalisableRange<float>(20.0f, 20000.0f, 0.1f, 0.5f), 20000.0f));
+			juce::NormalisableRange<float>(20.0f, 20000.0f, 0.1f, 0.5f), 80.0f));
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Highpass Resonance", "Highpass Resonance",
 			juce::NormalisableRange<float>(0.0f, 64.0f, 0.1f, 1.0f), 0.0f));
@@ -339,7 +342,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout PlasmaAudioProcessor::create
 	//Late Girth
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Late Girth", "Late Girth",
-			juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f, 1.0f), 0.5f));
+			juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f, 1.0f), 0.0f));
 	//Late Bias
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Late Bias", "Late Bias",
@@ -362,6 +365,7 @@ ChainSettings getChainSettings(juce::AudioProcessorValueTreeState& apvts)
     settings.bias = apvts.getRawParameterValue("Bias")->load();
     settings.driveType = static_cast<Distortion>(apvts.getRawParameterValue("Distortion Type")->load());
     //Peak
+	settings.peakStereo = apvts.getRawParameterValue("Peak Stereo")->load();
     settings.peakFreq = apvts.getRawParameterValue("Peak Freq")->load();
     settings.peakGain = apvts.getRawParameterValue("Peak Gain")->load();
     settings.peakQuality = apvts.getRawParameterValue("Peak Q")->load();
@@ -398,11 +402,10 @@ void PlasmaAudioProcessor::updateFilters()
 	updateLowPass(chainSettings);
     updateLowPassResonance(chainSettings);
 }
-//Coefficients
-Coefficients makePeakFilter(const ChainSettings& chainSettings, double sampleRate)
+Coefficients makePeakFilter(const ChainSettings& chainSettings, double sampleRate, float offset)
 {
 	return juce::dsp::IIR::Coefficients<float>::makePeakFilter(sampleRate,
-		chainSettings.peakFreq,
+		clamp(chainSettings.peakFreq + offset, 20, 20000),
 		chainSettings.peakQuality,
 		juce::Decibels::decibelsToGain(chainSettings.peakGain));
 }
@@ -420,12 +423,12 @@ Coefficients makeHighPassResonance(const ChainSettings& chainSettings, double sa
 		chainSettings.highPassResonanceQuality,
 		juce::Decibels::decibelsToGain(chainSettings.highPassResonance));
 }
-//Updates
 void PlasmaAudioProcessor::updatePeakFilter(const ChainSettings& chainSettings)
 {
-	auto peakCoefficients = makePeakFilter(chainSettings, getSampleRate());
-    updateCoefficients(leftChain.get<ChainPositions::Peak>().coefficients, *peakCoefficients);
-    updateCoefficients(rightChain.get<ChainPositions::Peak>().coefficients, *peakCoefficients);
+	auto peakCoefficientsL = makePeakFilter(chainSettings, getSampleRate(), chainSettings.peakStereo);
+	auto peakCoefficientsR = makePeakFilter(chainSettings, getSampleRate(), chainSettings.peakStereo);
+    updateCoefficients(leftChain.get<ChainPositions::Peak>().coefficients, *peakCoefficientsL);
+    updateCoefficients(rightChain.get<ChainPositions::Peak>().coefficients, *peakCoefficientsR);
 }
 
 void PlasmaAudioProcessor::updateHighPassResonance(const ChainSettings& chainSettings)

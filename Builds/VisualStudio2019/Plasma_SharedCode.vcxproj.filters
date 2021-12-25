@@ -5243,6 +5243,9 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\Resources\Knob.png">
+      <Filter>Plasma\Resources</Filter>
+    </None>
     <None Include="..\..\Resources\Background.png">
       <Filter>Plasma\Resources</Filter>
     </None>
@@ -5537,8 +5540,8 @@
     <None Include="..\..\Resources\Indicator_175\Indicator_95.png">
       <Filter>Plasma\Resources\Indicator_175</Filter>
     </None>
-    <None Include="..\..\Resources\Screen.png">
-      <Filter>Plasma\Resources</Filter>
+    <None Include="C:\Users\david\OneDrive\Bilder\UI Design\Screen.png">
+      <Filter>Plasma</Filter>
     </None>
     <None Include="..\..\..\JUCE\JUCE\modules\juce_audio_devices\native\oboe\CMakeLists.txt">
       <Filter>JUCE Modules\juce_audio_devices\native\oboe</Filter>

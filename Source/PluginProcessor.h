@@ -1,8 +1,9 @@
 #pragma once
 #include <JuceHeader.h>
 
-//PI
+//Math
 const float pi = 3.14159265358979323846;
+float clamp(float d, float min, float max);
 
 //Enums
 enum ChainPositions
@@ -40,7 +41,7 @@ struct ChainSettings
 {
 	float drive{ 10.0f }, girth{ 0.0f }, bias{ 0.0f }, preGain{ 0.0f };
 	float lateDrive{ 0.0f }, lateBias{ 0.0f }, lateGirth{ 0.0f }, gain{ 0.0f };
-	float peakFreq{ 0 }, peakGain{ 0 }, peakQuality{ 1.0f };
+	float peakFreq{ 0 }, peakGain{ 0 }, peakQuality{ 1.0f }, peakStereo{ 0.0f };
 	float highPassFreq{ 20.0f }, lowPassFreq{ 20.0f };
     float highPassResonanceQuality{ 1.0 }, highPassResonance { 0.0 };
     float lowPassResonanceQuality{ 1.0 }, lowPassResonance{ 0.0 };
@@ -63,7 +64,7 @@ using MonoChain = juce::dsp::ProcessorChain<PassFilter, Filter, Filter, PassFilt
 using Coefficients = Filter::CoefficientsPtr;
 void updateCoefficients(Coefficients& old, const Coefficients& replacements);
 
-Coefficients makePeakFilter(const ChainSettings& chainSettings, double sampleRate);
+Coefficients makePeakFilter(const ChainSettings& chainSettings, double sampleRate, float offset);
 Coefficients makeHighPassResonance(const ChainSettings& chainSettings, double sampleRate);
 Coefficients makeLowPassResonance(const ChainSettings& chainSettings, double sampleRate);
 
@@ -183,7 +184,7 @@ public:
     juce::AudioProcessorValueTreeState apvts{ *this, nullptr, "Parameters", createParameterLayout() };
 
 private:
-    float clamp(float d, float min, float max);
+    
 
     MonoChain leftChain, rightChain;
     //Filters

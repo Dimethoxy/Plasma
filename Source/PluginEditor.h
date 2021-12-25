@@ -32,7 +32,9 @@ struct BigRotaryLookAndFeel : juce::LookAndFeel_V4
         float sliderPosProportional, float rotaryStartAngle,
         float rotaryEndAngle,
         juce::Slider&) override;
-    Image rotaryBaseImage = ImageCache::getFromMemory(BinaryData::RotaryBase_png, BinaryData::RotaryBase_pngSize);
+	Image knobImage = ImageCache::getFromMemory(BinaryData::Knob_png, BinaryData::Knob_pngSize);
+	/*
+	Image rotaryBaseImage = ImageCache::getFromMemory(BinaryData::RotaryBase_png, BinaryData::RotaryBase_pngSize);
 	const Image indicatorImage[95] = {
 	ImageCache::getFromMemory(BinaryData::Indicator_00_png, BinaryData::Indicator_00_pngSize),
 	ImageCache::getFromMemory(BinaryData::Indicator_01_png, BinaryData::Indicator_01_pngSize),
@@ -130,6 +132,7 @@ struct BigRotaryLookAndFeel : juce::LookAndFeel_V4
 	ImageCache::getFromMemory(BinaryData::Indicator_93_png, BinaryData::Indicator_93_pngSize),
 	ImageCache::getFromMemory(BinaryData::Indicator_94_png, BinaryData::Indicator_94_pngSize)
 	};
+	*/
 
 
 };
@@ -139,10 +142,10 @@ struct BigRotaryLookAndFeel : juce::LookAndFeel_V4
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //RotaryWithLabels
-struct BigRotary : juce::Slider
+struct CustomRotary : juce::Slider
 {   
     //Constructor
-    BigRotary(juce::RangedAudioParameter& rap, const juce::String& unitSuffix, const juce::String& name) :
+    CustomRotary(juce::RangedAudioParameter& rap, const juce::String& unitSuffix, const juce::String& name) :
         juce::Slider(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, juce::Slider::TextEntryBoxPosition::NoTextBox),
         param(&rap)
     {
@@ -153,7 +156,7 @@ struct BigRotary : juce::Slider
     }
 
     //Destructor
-    ~BigRotary()
+    ~CustomRotary()
     {
         setLookAndFeel(nullptr);
     }
@@ -227,7 +230,7 @@ private:
     PlasmaAudioProcessor& audioProcessor;	
 
 	//Sliders
-    BigRotary 
+    CustomRotary 
 		//Drive
 		gainSlider,
 		driveSlider,
@@ -240,6 +243,7 @@ private:
 		highPassResonanceQualitySlider,
 		highPassSlopeSlider,
 		//Peak
+		peakStereoSlider,
         peakFreqSlider,
 		peakGainSlider,
 		peakQualitySlider,
@@ -272,6 +276,7 @@ private:
         highPassResonanceSliderAttachment,
         lowPassResonanceSliderAttachment,
         peakGainSliderAttachment,
+		peakStereoSliderAttachment,
         highPassResonanceQualitySliderAttachment,
         lowPassResonanceQualitySliderAttachment,
         peakQualitySliderAttachment,
@@ -288,9 +293,6 @@ private:
     //Image Components
     ImageComponent screenImageComponent;
 	Image backgroundImage = ImageCache::getFromMemory(BinaryData::Background_png, BinaryData::Background_pngSize);
-   
-	//Math
-	
 
     //End
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PlasmaAudioProcessorEditor);
