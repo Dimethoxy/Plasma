@@ -12,7 +12,7 @@ namespace BinaryData
     const int            Knob_pngSize = 1883;
 
     extern const char*   Background_png;
-    const int            Background_pngSize = 26626;
+    const int            Background_pngSize = 27570;
 
     extern const char*   RotaryBase_png;
     const int            RotaryBase_pngSize = 24444;

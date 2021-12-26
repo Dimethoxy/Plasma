@@ -25,6 +25,13 @@ enum Slope
     Slope_84,
     Slope_96
 };
+enum AnalyserType
+{
+	Response,
+	Waveform,
+	Spectrum,
+	Stereo
+};
 enum Distortion
 {
 	Hardclip,
@@ -43,11 +50,12 @@ struct ChainSettings
 	float lateDrive{ 0.0f }, lateBias{ 0.0f }, lateGirth{ 0.0f }, gain{ 0.0f };
 	float peakFreq{ 0 }, peakGain{ 0 }, peakQuality{ 1.0f }, peakStereo{ 0.0f };
 	float highPassFreq{ 20.0f }, lowPassFreq{ 20.0f };
-    float highPassResonanceQuality{ 1.0 }, highPassResonance { 0.0 };
-    float lowPassResonanceQuality{ 1.0 }, lowPassResonance{ 0.0 };
+	float highPassResonanceQuality{ 1.0 }, highPassResonance{ 0.0 };
+	float lowPassResonanceQuality{ 1.0 }, lowPassResonance{ 0.0 };
+	float mix{ 100.0f };
 	Slope highPassSlope{ Slope::Slope_12 }, lowPassSlope{ Slope::Slope_12 };
+	AnalyserType analyserType{ AnalyserType::Response };
 	Distortion driveType{ Distortion::Overdrive }, lateDriveType{ Distortion::Overdrive };
-
 };
 ChainSettings getChainSettings(juce::AudioProcessorValueTreeState& apvts);
 

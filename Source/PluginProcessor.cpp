@@ -192,6 +192,11 @@ void PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
     auto chainSettings = getChainSettings(apvts);
     float gain = Decibels::decibelsToGain(chainSettings.gain);
     float preGain = Decibels::decibelsToGain(chainSettings.preGain);
+	float mixWet = chainSettings.mix/100;
+	float mixDry = (100.0 - chainSettings.mix)/100;
+	
+
+	
 
     //Distortion Unit
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
@@ -230,10 +235,11 @@ void PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
     rightChain.process(rightContext);
 
     //Late Stage
-    
+
 	for (int channel = 0; channel < totalNumInputChannels; ++channel)
 	{
 		auto* channelData = buffer.getWritePointer(channel);
+		
 		for (int sample = 0; sample < buffer.getNumSamples(); sample++)
 		{    
             //Drive 
@@ -248,6 +254,7 @@ void PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
 
 			//Bias         
 			channelData[sample] = clamp(channelData[sample] + chainSettings.lateBias, -1.0, 1.0);
+
 		}
 
 	}
@@ -291,7 +298,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout PlasmaAudioProcessor::create
     //Peak
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Peak Stereo", "Peak Stereo",
-			juce::NormalisableRange<float>(0.0f, 500.0f, 0.1f, 1.0f), 0.0f));
+			juce::NormalisableRange<float>(0.0f, 100.0f, 0.1f, 1.0f), 0.0f));
     layout.add(std::make_unique<juce::AudioParameterFloat>
         ("Peak Freq", "Peak Freq",
         juce::NormalisableRange<float>(20.0f, 20000.0f, 0.1f, 0.5f), 450.0f));
@@ -342,7 +349,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout PlasmaAudioProcessor::create
 	//Late Girth
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Late Girth", "Late Girth",
-			juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f, 1.0f), 0.0f));
+			juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f, 21.0f), 0.0f));
 	//Late Bias
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Late Bias", "Late Bias",
@@ -351,7 +358,20 @@ juce::AudioProcessorValueTreeState::ParameterLayout PlasmaAudioProcessor::create
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Gain", "Gain",
 			juce::NormalisableRange<float>(-48.0f, 48.0f, 0.01f, 0.5f), -12.0f));
-
+	//Mix
+	layout.add(std::make_unique<juce::AudioParameterFloat>
+		("Mix", "Mix",
+			juce::NormalisableRange<float>(0.0f, 100.0f, 0.01f, 1.0f), 100.0f));
+	//Analyser
+	juce::StringArray analyserArray;
+	for (int i = 0; i < 4; i++) {
+		juce::String str;
+		str << "Type ";
+		str << i;
+		analyserArray.add(str);
+	}
+	layout.add(std::make_unique<juce::AudioParameterChoice>
+		("Analyser Type", "Analyser Type", analyserArray, 1));
     return layout;
 }
 
@@ -385,6 +405,10 @@ ChainSettings getChainSettings(juce::AudioProcessorValueTreeState& apvts)
 	settings.lateGirth = apvts.getRawParameterValue("Late Girth")->load();
 	settings.lateBias = apvts.getRawParameterValue("Late Bias")->load();
     settings.gain = apvts.getRawParameterValue("Gain")->load();
+	//Mix
+	settings.mix = apvts.getRawParameterValue("Mix")->load();
+	//Analyser
+	settings.analyserType = static_cast<AnalyserType>(apvts.getRawParameterValue("Analyser Type")->load());
 
     return settings;
 }
@@ -426,7 +450,7 @@ Coefficients makeHighPassResonance(const ChainSettings& chainSettings, double sa
 void PlasmaAudioProcessor::updatePeakFilter(const ChainSettings& chainSettings)
 {
 	auto peakCoefficientsL = makePeakFilter(chainSettings, getSampleRate(), chainSettings.peakStereo);
-	auto peakCoefficientsR = makePeakFilter(chainSettings, getSampleRate(), chainSettings.peakStereo);
+	auto peakCoefficientsR = makePeakFilter(chainSettings, getSampleRate(), -chainSettings.peakStereo);
     updateCoefficients(leftChain.get<ChainPositions::Peak>().coefficients, *peakCoefficientsL);
     updateCoefficients(rightChain.get<ChainPositions::Peak>().coefficients, *peakCoefficientsR);
 }

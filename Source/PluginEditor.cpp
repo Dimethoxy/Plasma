@@ -14,34 +14,35 @@ void BigRotaryLookAndFeel::drawRotarySlider(juce::Graphics& g,
 	using namespace juce;
 	auto bounds = Rectangle<float>(x, y, width, height);
 	auto sliderAngleRadian = jmap(sliderPosProportional, 0.0f, 1.0f, rotaryStartAngle, rotaryEndAngle);
-
-	g.setColour(Colours::white);
 	auto offset = 4;
 	auto circleBounds = Rectangle<float>(bounds.getX() + offset,
 		bounds.getY() + offset,
 		bounds.getWidth() - 2 * offset,
 		bounds.getHeight() - 2 * offset);
 	
-
+	//Get Sine / Cosine
 	float s, c;
 	c = cos(-sliderAngleRadian);
 	s = sin(-sliderAngleRadian);
 
+	//Calculate Indicator
 	float x0, x1, x2, y0, y1, y2;
 	x0 = circleBounds.getCentreX();
 	y0 = circleBounds.getCentreY();
 	x1 = 0;
 	y1 = 0;
+	
 	float r = 25;
 	x2 = -r * s;
 	y2 = -r * c;
-	
-	//Translate
+
 	x1 = x1 + x0;
 	y1 = y1 + y0;
 	x2 = x2 + x0;
 	y2 = y2 + y0;
 	
+	//Draw
+	g.setColour(Colours::white);
 	g.drawLine(x1,y1,x2,y2, 4);
 	g.drawEllipse(circleBounds, 4);
 }
@@ -142,7 +143,7 @@ void ResponseCurveComponent::paint(juce::Graphics& g)
 	auto x = sl(10);
 	auto y = sl(10);
 	auto w = sl(600);
-	auto h = sl(270);
+	auto h = sl(300);
 
 	//g.setColour(Colours::black);
 	//g.fillRect(x, y, w, h);
@@ -265,6 +266,8 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	lateGirthSlider(*audioProcessor.apvts.getParameter("Girth"), "%", "Girth"),
 	lateBiasSlider(*audioProcessor.apvts.getParameter("Late Bias"), "", "Symmetry"),
 	lateDriveTypeSlider(*audioProcessor.apvts.getParameter("Late Distortion Type"), "", "Distortion"),
+	mixSlider(*audioProcessor.apvts.getParameter("Mix"), "%", "Mix"),
+	analyserSlider(*audioProcessor.apvts.getParameter("Analyser Type"), "%", "Analyser Type"),
 	//ResponseCurve
 	responseCurveComponent(audioProcessor),
 	//Attachments
@@ -290,7 +293,9 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
     lateDriveTypeSliderAttachment(audioProcessor.apvts, "Late Distortion Type", lateDriveTypeSlider),
 	lateGirthSliderAttachment(audioProcessor.apvts, "Late Girth", lateGirthSlider),
 	lateDriveSliderAttachment(audioProcessor.apvts, "Late Drive", lateDriveSlider),
-	gainSliderAttachment(audioProcessor.apvts, "Gain", gainSlider)
+	gainSliderAttachment(audioProcessor.apvts, "Gain", gainSlider),
+	mixSliderAttachment(audioProcessor.apvts, "Mix", mixSlider),
+	analyserSliderAttachment(audioProcessor.apvts, "Analyser Type", analyserSlider)
 
 {
     //Loading Resources
@@ -307,10 +312,12 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	{
 		addAndMakeVisible(comp);
 	}
+	tooltipLabel.setText("Tooltip", juce::dontSendNotification);
+	addAndMakeVisible(tooltipLabel);
     addAndMakeVisible(screenImageComponent);
 
 	setResizable(false, false);
-    setSize(1060, 910);
+    setSize(1060, 940);
   }
 
 PlasmaAudioProcessorEditor::~PlasmaAudioProcessorEditor()
@@ -328,15 +335,6 @@ void PlasmaAudioProcessorEditor::paint (juce::Graphics& g)
     //Background 2e2f31
     //g.fillAll(Colour(46, 47, 49));
 	g.fillAll(Colour(20, 20, 20));
-
-    //Screen
-    auto x = 220;
-    auto y = 60;
-    auto w = 620;
-    auto h = 290;
-
-	g.fillRect(x, y, w, h);
-
 	g.drawImageAt(backgroundImage, 0, 0);
        
 }
@@ -348,46 +346,49 @@ void PlasmaAudioProcessorEditor::paint (juce::Graphics& g)
 void PlasmaAudioProcessorEditor::resized()
 {
 	//Analyzers
-	responseCurveComponent.setBounds(220, 60, 620, 290);
+	responseCurveComponent.setBounds(220, 60, 620, 300);
+	responseCurveComponent.update();
 
     //Early
-    preGainSlider.setBounds(80, 150, 60, 60);
-	driveTypeSlider.setBounds(80, 440, 60, 60);
-	biasSlider.setBounds(80, 560, 60, 60);
-    girthSlider.setBounds(80, 680, 60, 60);
-	driveSlider.setBounds(80, 800, 60, 60);
+    preGainSlider.setBounds(80, 140, 60, 60);
+	driveTypeSlider.setBounds(80, 460, 60, 60);
+	biasSlider.setBounds(80, 580, 60, 60);
+    girthSlider.setBounds(80, 700, 60, 60);
+	driveSlider.setBounds(80, 820, 60, 60);
 	
 
     //Highpass
-	highPassSlopeSlider.setBounds(290, 440, 60, 60);
-	highPassResonanceQualitySlider.setBounds(290, 560, 60, 60);
-	highPassResonanceSlider.setBounds(290, 680, 60, 60);
-	highPassFreqSlider.setBounds(290, 800, 60, 60);
+	highPassSlopeSlider.setBounds(290, 460, 60, 60);
+	highPassResonanceQualitySlider.setBounds(290, 580, 60, 60);
+	highPassResonanceSlider.setBounds(290, 700, 60, 60);
+	highPassFreqSlider.setBounds(290, 820, 60, 60);
 
     //Peak
-	peakStereoSlider.setBounds(500, 440, 60, 60);
-	peakQualitySlider.setBounds(500, 560, 60, 60);
-	peakGainSlider.setBounds(500, 680, 60, 60);
-	peakFreqSlider.setBounds(500, 800, 60, 60);
+	peakStereoSlider.setBounds(500, 460, 60, 60);
+	peakQualitySlider.setBounds(500, 580, 60, 60);
+	peakGainSlider.setBounds(500, 700, 60, 60);
+	peakFreqSlider.setBounds(500, 820, 60, 60);
 	
 
     //Lowpass
-	lowPassSlopeSlider.setBounds(710, 440, 60, 60);
-	lowPassResonanceQualitySlider.setBounds(710, 560, 60, 60);
-	lowPassResonanceSlider.setBounds(710, 680, 60, 60);
-	lowPassFreqSlider.setBounds(710, 800, 60, 60);
+	lowPassSlopeSlider.setBounds(710, 460, 60, 60);
+	lowPassResonanceQualitySlider.setBounds(710, 580, 60, 60);
+	lowPassResonanceSlider.setBounds(710, 700, 60, 60);
+	lowPassFreqSlider.setBounds(710, 820, 60, 60);
    
 	//Latedrive
-	gainSlider.setBounds(920, 150, 60, 60);
-	lateDriveTypeSlider.setBounds(920, 440, 60, 60);
-	lateBiasSlider.setBounds(920, 560, 60, 60);
-	lateGirthSlider.setBounds(920, 680, 60, 60);
-	lateDriveSlider.setBounds(920, 800, 60, 60);
+	gainSlider.setBounds(920, 140, 60, 60);
+	lateDriveTypeSlider.setBounds(920, 460, 60, 60);
+	lateBiasSlider.setBounds(920, 580, 60, 60);
+	lateGirthSlider.setBounds(920, 700, 60, 60);
+	lateDriveSlider.setBounds(920, 820, 60, 60);
 
-	
-	
+	//ToolTip
+	tooltipLabel.setBounds(30, 0, 200, 60);
 
-	responseCurveComponent.update();
+	//Mix
+	mixSlider.setBounds(920, 260, 60, 60);
+	analyserSlider.setBounds(80, 260, 60, 60);
 
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -420,7 +421,9 @@ std::vector<juce::Component*> PlasmaAudioProcessorEditor::getComps()
 		&preGainSlider,
 		&driveTypeSlider,
 		&lateDriveTypeSlider,
-		&responseCurveComponent
+		&responseCurveComponent,
+		&mixSlider,
+		&analyserSlider
     };
 }
 

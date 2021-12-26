@@ -257,7 +257,9 @@ private:
 		lateDriveTypeSlider,
 		lateGirthSlider,
 		lateDriveSlider,
-		preGainSlider;
+		preGainSlider,
+		mixSlider,
+		analyserSlider;
         
 
     //Response Curve Component
@@ -287,12 +289,17 @@ private:
         girthSliderAttachment,
         lateGirthSliderAttachment,
         lateDriveSliderAttachment,
-        gainSliderAttachment;
+        gainSliderAttachment,
+		analyserSliderAttachment,
+		mixSliderAttachment;
     std::vector<juce::Component*> getComps();
 
     //Image Components
     ImageComponent screenImageComponent;
 	Image backgroundImage = ImageCache::getFromMemory(BinaryData::Background_png, BinaryData::Background_pngSize);
+
+	//
+	Label tooltipLabel;
 
     //End
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PlasmaAudioProcessorEditor);
