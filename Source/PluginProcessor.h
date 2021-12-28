@@ -192,8 +192,7 @@ public:
     juce::AudioProcessorValueTreeState apvts{ *this, nullptr, "Parameters", createParameterLayout() };
 
 private:
-    
-
+	AudioSampleBuffer cleanBuffer;
     MonoChain leftChain, rightChain;
     //Filters
     void updatePeakFilter(const ChainSettings& chainSettings);

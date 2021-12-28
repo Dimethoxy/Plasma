@@ -4,17 +4,74 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Sliders LookAndFeel
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void BigRotaryLookAndFeel::drawRotarySlider(juce::Graphics& g,
+void CustomRotaryLookAndFeel::drawRotarySlider(juce::Graphics& g,
 	int x, int y, int width, int height,
 	float sliderPosProportional, 
 	float rotaryStartAngle,
 	float rotaryEndAngle,
 	juce::Slider& slider)
 {
-	using namespace juce;
-	auto bounds = Rectangle<float>(x, y, width, height);
+	//Stuff
+	auto outline = slider.findColour(Slider::rotarySliderOutlineColourId);
+	auto fill = slider.findColour(Slider::rotarySliderFillColourId);
+	auto bounds = Rectangle<int>(x, y, width, height).toFloat().reduced(10);
+	auto radius = jmin(bounds.getWidth(), bounds.getHeight()) / 2.3f;
+	auto toAngle = rotaryStartAngle + sliderPosProportional * (rotaryEndAngle - rotaryStartAngle);
+	auto lineW = jmin(8.0f, radius * 0.5f);
+	auto arcRadius = radius - lineW * 0.5f;
+	bool selector = false;
+	if (!selector)
+	{
+		//Draw Dark Rail
+		Path backgroundArc;
+		backgroundArc.addCentredArc(bounds.getCentreX(),
+			bounds.getCentreY(),
+			arcRadius,
+			arcRadius,
+			0.0f,
+			rotaryStartAngle,
+			rotaryEndAngle,
+			true);
+		g.setColour(Colour(18, 20, 20));
+		g.strokePath(backgroundArc, PathStrokeType(lineW, PathStrokeType::curved, PathStrokeType::rounded));
+
+		//Draw Light Rail
+		if (slider.isEnabled())
+		{
+			Path valueArc;
+			valueArc.addCentredArc(bounds.getCentreX(),
+				bounds.getCentreY(),
+				arcRadius,
+				arcRadius,
+				0.0f,
+				rotaryStartAngle,
+				toAngle,
+				true);
+			g.setColour(Colours::white); //g.setColour(fill);
+			g.strokePath(valueArc, PathStrokeType(lineW, PathStrokeType::curved, PathStrokeType::rounded));
+		}
+		//Draw Thumb
+		auto thumbWidth = lineW * 2.0f;
+		Point<float> thumbPoint(bounds.getCentreX() + arcRadius * std::cos(toAngle - MathConstants<float>::halfPi),
+			bounds.getCentreY() + arcRadius * std::sin(toAngle - MathConstants<float>::halfPi));
+		g.setColour(Colour(18, 20, 20));
+		g.fillEllipse(Rectangle<float>(thumbWidth, thumbWidth).withCentre(thumbPoint));
+		g.setColour(Colours::white);
+		g.drawEllipse(Rectangle<float>(thumbWidth, thumbWidth).withCentre(thumbPoint), 2);
+	}
+	else {
+		int numOptions = 4;
+		auto spacing = (rotaryEndAngle - rotaryEndAngle) / numOptions;
+		for (int i = 0; i < numOptions; i++) 
+		{
+
+		}
+	}
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	//Knob
 	auto sliderAngleRadian = jmap(sliderPosProportional, 0.0f, 1.0f, rotaryStartAngle, rotaryEndAngle);
-	auto offset = 4;
+	auto offset = 30;
 	auto circleBounds = Rectangle<float>(bounds.getX() + offset,
 		bounds.getY() + offset,
 		bounds.getWidth() - 2 * offset,
@@ -31,20 +88,19 @@ void BigRotaryLookAndFeel::drawRotarySlider(juce::Graphics& g,
 	y0 = circleBounds.getCentreY();
 	x1 = 0;
 	y1 = 0;
-	
-	float r = 25;
+	float r = 20;
 	x2 = -r * s;
 	y2 = -r * c;
-
 	x1 = x1 + x0;
 	y1 = y1 + y0;
 	x2 = x2 + x0;
 	y2 = y2 + y0;
 	
-	//Draw
+	//Draw Knob
 	g.setColour(Colours::white);
 	g.drawLine(x1,y1,x2,y2, 4);
 	g.drawEllipse(circleBounds, 4);
+
 }
 
 void CustomRotary::paint(juce::Graphics& g)
@@ -138,7 +194,10 @@ void ResponseCurveComponent::update()
 void ResponseCurveComponent::paint(juce::Graphics& g)
 {
 	using namespace juce;
-
+	
+	//Get Chain Settings
+	auto chainSettings = getChainSettings(audioProcessor.apvts);
+	
 	//Screen
 	auto x = sl(10);
 	auto y = sl(10);
@@ -228,9 +287,11 @@ void ResponseCurveComponent::paint(juce::Graphics& g)
 	{
 		responseCurve.lineTo(x + i, map(mags[i]));
 	}
-	g.setColour(Colours::white);
-	g.strokePath(responseCurve, PathStrokeType(3));
-
+	if (chainSettings.analyserType == 0)
+	{
+		g.setColour(Colours::white);
+		g.strokePath(responseCurve, PathStrokeType(3));
+	}
 }
 
 //preGainSlider(*audioProcessor.apvts.getParameter("Pre Gain"), "db"),
@@ -298,23 +359,13 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	analyserSliderAttachment(audioProcessor.apvts, "Analyser Type", analyserSlider)
 
 {
-    //Loading Resources
-    Image screenImage = ImageCache::getFromMemory(BinaryData::Screen_png, BinaryData::Screen_pngSize);
-	
-    if (!screenImage.isNull())
-    {
-        screenImageComponent.setImage(screenImage, RectanglePlacement::doNotResize);
-    } 
-
-
 	//Make all components visible
 	for (auto* comp : getComps())
 	{
 		addAndMakeVisible(comp);
 	}
-	tooltipLabel.setText("Tooltip", juce::dontSendNotification);
+	tooltipLabel.setText("", juce::dontSendNotification);
 	addAndMakeVisible(tooltipLabel);
-    addAndMakeVisible(screenImageComponent);
 
 	setResizable(false, false);
     setSize(1060, 940);
@@ -350,45 +401,45 @@ void PlasmaAudioProcessorEditor::resized()
 	responseCurveComponent.update();
 
     //Early
-    preGainSlider.setBounds(80, 140, 60, 60);
-	driveTypeSlider.setBounds(80, 460, 60, 60);
-	biasSlider.setBounds(80, 580, 60, 60);
-    girthSlider.setBounds(80, 700, 60, 60);
-	driveSlider.setBounds(80, 820, 60, 60);
+    preGainSlider.setBounds(50, 110, 120, 120);
+	driveTypeSlider.setBounds(50, 430, 120, 120);
+	biasSlider.setBounds(50, 550, 120, 120);
+    girthSlider.setBounds(50, 670, 120, 120);
+	driveSlider.setBounds(50, 790, 120, 120);
 	
 
     //Highpass
-	highPassSlopeSlider.setBounds(290, 460, 60, 60);
-	highPassResonanceQualitySlider.setBounds(290, 580, 60, 60);
-	highPassResonanceSlider.setBounds(290, 700, 60, 60);
-	highPassFreqSlider.setBounds(290, 820, 60, 60);
+	highPassSlopeSlider.setBounds(260, 430, 120, 120);
+	highPassResonanceQualitySlider.setBounds(260, 550, 120, 120);
+	highPassResonanceSlider.setBounds(260, 670, 120, 120);
+	highPassFreqSlider.setBounds(260, 790, 120, 120);
 
     //Peak
-	peakStereoSlider.setBounds(500, 460, 60, 60);
-	peakQualitySlider.setBounds(500, 580, 60, 60);
-	peakGainSlider.setBounds(500, 700, 60, 60);
-	peakFreqSlider.setBounds(500, 820, 60, 60);
+	peakStereoSlider.setBounds(470, 430, 120, 120);
+	peakQualitySlider.setBounds(470, 550, 120, 120);
+	peakGainSlider.setBounds(470, 670, 120, 120);
+	peakFreqSlider.setBounds(470, 790, 120, 120);
 	
 
     //Lowpass
-	lowPassSlopeSlider.setBounds(710, 460, 60, 60);
-	lowPassResonanceQualitySlider.setBounds(710, 580, 60, 60);
-	lowPassResonanceSlider.setBounds(710, 700, 60, 60);
-	lowPassFreqSlider.setBounds(710, 820, 60, 60);
+	lowPassSlopeSlider.setBounds(680, 430, 120, 120);
+	lowPassResonanceQualitySlider.setBounds(680, 550, 120, 120);
+	lowPassResonanceSlider.setBounds(680, 670, 120, 120);
+	lowPassFreqSlider.setBounds(680, 790, 120, 120);
    
 	//Latedrive
-	gainSlider.setBounds(920, 140, 60, 60);
-	lateDriveTypeSlider.setBounds(920, 460, 60, 60);
-	lateBiasSlider.setBounds(920, 580, 60, 60);
-	lateGirthSlider.setBounds(920, 700, 60, 60);
-	lateDriveSlider.setBounds(920, 820, 60, 60);
+	gainSlider.setBounds(890, 110, 120, 120);
+	lateDriveTypeSlider.setBounds(890, 430, 120, 120);
+	lateBiasSlider.setBounds(890, 550, 120, 120);
+	lateGirthSlider.setBounds(890, 670, 120, 120);
+	lateDriveSlider.setBounds(890, 790, 120, 120);
 
 	//ToolTip
 	tooltipLabel.setBounds(30, 0, 200, 60);
 
 	//Mix
-	mixSlider.setBounds(920, 260, 60, 60);
-	analyserSlider.setBounds(80, 260, 60, 60);
+	mixSlider.setBounds(890, 230, 120, 120);
+	analyserSlider.setBounds(50, 230, 120, 120);
 
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

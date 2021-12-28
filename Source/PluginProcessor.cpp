@@ -172,7 +172,10 @@ void PlasmaAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 	auto chainSettings = getChainSettings(apvts);
 
 	//Filter
-	updateFilters();	
+	updateFilters();
+
+	//Allocate Clean Buffer
+	cleanBuffer.setSize(getNumInputChannels(), samplesPerBlock);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -194,14 +197,17 @@ void PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
     float preGain = Decibels::decibelsToGain(chainSettings.preGain);
 	float mixWet = chainSettings.mix/100;
 	float mixDry = (100.0 - chainSettings.mix)/100;
-	
 
-	
+	//Clean
+	AudioSampleBuffer tmpBuffer(cleanBuffer.getArrayOfWritePointers(), buffer.getNumChannels(), buffer.getNumSamples());
+	for (int ch = 0; ch < buffer.getNumChannels(); ++ch)
+		tmpBuffer.copyFrom(ch, 0, buffer, ch, 0, buffer.getNumSamples());
 
     //Distortion Unit
-    for (int channel = 0; channel < totalNumInputChannels; ++channel)
+    for (int channel = 0; channel < 2; ++channel)
     {
         auto* channelData = buffer.getWritePointer(channel);
+		
         for (int sample = 0; sample < buffer.getNumSamples(); sample++)
         {
 			//Pre Gain
@@ -239,7 +245,7 @@ void PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
 	for (int channel = 0; channel < totalNumInputChannels; ++channel)
 	{
 		auto* channelData = buffer.getWritePointer(channel);
-		
+		auto* cleanData = tmpBuffer.getWritePointer(channel);
 		for (int sample = 0; sample < buffer.getNumSamples(); sample++)
 		{    
             //Drive 
@@ -254,6 +260,9 @@ void PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
 
 			//Bias         
 			channelData[sample] = clamp(channelData[sample] + chainSettings.lateBias, -1.0, 1.0);
+			
+			//Mix
+			channelData[sample] = cleanData[sample]*mixDry + channelData[sample]*mixWet;
 
 		}
 
@@ -371,7 +380,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout PlasmaAudioProcessor::create
 		analyserArray.add(str);
 	}
 	layout.add(std::make_unique<juce::AudioParameterChoice>
-		("Analyser Type", "Analyser Type", analyserArray, 1));
+		("Analyser Type", "Analyser Type", analyserArray, 0));
     return layout;
 }
 
