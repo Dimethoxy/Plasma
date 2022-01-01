@@ -281,7 +281,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout PlasmaAudioProcessor::create
 	//Pre Gain
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Pre Gain", "Pre Gain",
-			juce::NormalisableRange<float>(-48.0f, 48.0f, 0.01f, 0.5f), 0.0f));
+			juce::NormalisableRange<float>(-12.0f, 12.0f, 0.2f, 0.5f), 0.0f));
     //Drive
     juce::StringArray distortionArray;
 	distortionArray.add("Hardclip");
@@ -295,7 +295,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout PlasmaAudioProcessor::create
 		("Drive", "Drive",
 			juce::NormalisableRange<float>(1.0f, 10.0f, 0.01f, 1.0f), 10.0f));
 	layout.add(std::make_unique<juce::AudioParameterChoice>
-		("Distortion Type", "Distortion Type", distortionArray, 2));
+		("Distortion Type", "Distortion Type", distortionArray, 1));
     //Girth
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Girth", "Girth",
@@ -366,7 +366,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout PlasmaAudioProcessor::create
 	//Gain
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Gain", "Gain",
-			juce::NormalisableRange<float>(-48.0f, 48.0f, 0.01f, 0.5f), -12.0f));
+			juce::NormalisableRange<float>(-12.0f, 12.0f, 0.2f, 0.5f), -12.0f));
 	//Mix
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Mix", "Mix",

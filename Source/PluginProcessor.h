@@ -6,6 +6,10 @@ const float pi = 3.14159265358979323846;
 float clamp(float d, float min, float max);
 
 //Enums
+enum Channel
+{
+
+};
 enum ChainPositions
 {
 	HighPass,

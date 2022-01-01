@@ -24,7 +24,6 @@ inline int sl(float value)
 //Sliders
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//Big Rotary
 struct CustomRotaryLookAndFeel : juce::LookAndFeel_V4
 {
     void drawRotarySlider(juce::Graphics& g,
@@ -34,11 +33,6 @@ struct CustomRotaryLookAndFeel : juce::LookAndFeel_V4
         juce::Slider&) override;
 };
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//Sliders
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-//RotaryWithLabels
 struct CustomRotary : juce::Slider
 {   
     //Constructor
@@ -50,6 +44,7 @@ struct CustomRotary : juce::Slider
 		setTextValueSuffix(unitSuffix);
         setLookAndFeel(&lnf);
 		setName(name);
+        setColour(Slider::rotarySliderFillColourId, Colour(255, 0, 0)); 
     }
 
     //Destructor
@@ -66,24 +61,6 @@ struct CustomRotary : juce::Slider
 private:
     CustomRotaryLookAndFeel lnf;
     juce::RangedAudioParameter* param;
-};
-
-struct CustomRotarySlider : juce::Slider
-{
-    CustomRotarySlider() : juce::Slider(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag,
-        juce::Slider::TextEntryBoxPosition::NoTextBox)
-    {
-
-    }
-};
-
-struct CustomSlider : juce::Slider
-{
-	CustomSlider() : juce::Slider(juce::Slider::SliderStyle::LinearVertical,
-		juce::Slider::TextEntryBoxPosition::NoTextBox)
-	{
-
-	}
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -108,6 +85,7 @@ private:
     juce::Atomic<bool> parametersChanged{ false };
     MonoChain monoChain;
 };
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //AudioProcessorEditor

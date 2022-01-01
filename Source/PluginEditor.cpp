@@ -19,7 +19,7 @@ void CustomRotaryLookAndFeel::drawRotarySlider(juce::Graphics& g,
 	auto toAngle = rotaryStartAngle + sliderPosProportional * (rotaryEndAngle - rotaryStartAngle);
 	auto lineW = jmin(8.0f, radius * 0.5f);
 	auto arcRadius = radius - lineW * 0.5f;
-	bool selector = false;
+	bool selector =  false;
 	if (!selector)
 	{
 		//Draw Dark Rail
@@ -47,7 +47,7 @@ void CustomRotaryLookAndFeel::drawRotarySlider(juce::Graphics& g,
 				rotaryStartAngle,
 				toAngle,
 				true);
-			g.setColour(Colours::white); //g.setColour(fill);
+			g.setColour(fill);
 			g.strokePath(valueArc, PathStrokeType(lineW, PathStrokeType::curved, PathStrokeType::rounded));
 		}
 		//Draw Thumb
@@ -72,6 +72,11 @@ void CustomRotaryLookAndFeel::drawRotarySlider(juce::Graphics& g,
 	//Knob
 	auto sliderAngleRadian = jmap(sliderPosProportional, 0.0f, 1.0f, rotaryStartAngle, rotaryEndAngle);
 	auto offset = 30;
+	float r = 20;
+	if (slider.isMouseButtonDown()) {
+		offset = 26;
+		r = 24;
+	}
 	auto circleBounds = Rectangle<float>(bounds.getX() + offset,
 		bounds.getY() + offset,
 		bounds.getWidth() - 2 * offset,
@@ -88,7 +93,6 @@ void CustomRotaryLookAndFeel::drawRotarySlider(juce::Graphics& g,
 	y0 = circleBounds.getCentreY();
 	x1 = 0;
 	y1 = 0;
-	float r = 20;
 	x2 = -r * s;
 	y2 = -r * c;
 	x1 = x1 + x0;
@@ -101,6 +105,71 @@ void CustomRotaryLookAndFeel::drawRotarySlider(juce::Graphics& g,
 	g.drawLine(x1,y1,x2,y2, 4);
 	g.drawEllipse(circleBounds, 4);
 
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	//Tooltip
+	if (slider.getName() == "Distortion")
+	{
+		switch ((int)slider.getValue())
+		{
+		case 1:
+			slider.setHelpText("Distortion Type : Hardclip");
+			break;
+		case 2:
+			slider.setHelpText("Distortion Type : Softclip");
+			break;
+		case 3:
+			slider.setHelpText("Distortion Type : Overdrive");
+			break;
+		case 4:
+			slider.setHelpText("Distortion Type : Bitcrush");
+			break;
+		case 5:
+			slider.setHelpText("Distortion Type : Atan");
+			break;
+		case 6:
+			slider.setHelpText("Distortion Type : Sinus");
+			break;
+		case 7:
+			slider.setHelpText("Distortion Type : Cosinus");
+			break;
+		}
+	}
+	else if (slider.getName() == "Slope")
+	{
+		int slope = ((int)slider.getValue() + 1) * 12;
+		String str;
+		str << "Slope : ";
+		str << slope;
+		str << " db/oct";
+		slider.setHelpText(str);
+	}
+	else if (slider.getName() == "Symmetry")
+	{
+		auto value = round(slider.getValue() * 100);
+		String str;
+		str << "Symmetry : ";
+		if (value == 0)
+		{
+			str << "Centered";
+		}
+		else
+		{
+			str << value;
+			str << "%";
+		}
+
+
+		slider.setHelpText(str);
+	}
+	else
+	{
+		String str;
+		str << (round(slider.getValue() * 100)) / 100;
+		slider.setHelpText((String)slider.getName() + " : " +
+			str + " " +
+			(String)slider.getTextValueSuffix());
+	}
 }
 
 void CustomRotary::paint(juce::Graphics& g)
@@ -302,8 +371,8 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	: AudioProcessorEditor(&p), audioProcessor(p),
 	//Pregain
 	preGainSlider(*audioProcessor.apvts.getParameter("Pre Gain"), "dB", "Gain"),
-	driveSlider(*audioProcessor.apvts.getParameter("Drive"), "x", "Drive"),
-	girthSlider(*audioProcessor.apvts.getParameter("Girth"), "%", "Girth"),
+	driveSlider(*audioProcessor.apvts.getParameter("Drive"), "", "Drive"),
+	girthSlider(*audioProcessor.apvts.getParameter("Girth"), "", "Girth"),
 	biasSlider(*audioProcessor.apvts.getParameter("Bias"), "", "Symmetry"),
 	driveTypeSlider(*audioProcessor.apvts.getParameter("Distortion Type"), "", "Distortion"),
 	//Highpass
@@ -323,12 +392,12 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	lowPassSlopeSlider(*audioProcessor.apvts.getParameter("Lowpass Slope"), "dB/oct", "Slope"),
 	//Lategain
 	gainSlider(*audioProcessor.apvts.getParameter("Gain"), "dB", "Gain"),
-	lateDriveSlider(*audioProcessor.apvts.getParameter("Late Drive"), "x", "Drive"),
-	lateGirthSlider(*audioProcessor.apvts.getParameter("Girth"), "%", "Girth"),
+	lateDriveSlider(*audioProcessor.apvts.getParameter("Late Drive"), "", "Drive"),
+	lateGirthSlider(*audioProcessor.apvts.getParameter("Girth"), "", "Girth"),
 	lateBiasSlider(*audioProcessor.apvts.getParameter("Late Bias"), "", "Symmetry"),
 	lateDriveTypeSlider(*audioProcessor.apvts.getParameter("Late Distortion Type"), "", "Distortion"),
 	mixSlider(*audioProcessor.apvts.getParameter("Mix"), "%", "Mix"),
-	analyserSlider(*audioProcessor.apvts.getParameter("Analyser Type"), "%", "Analyser Type"),
+	analyserSlider(*audioProcessor.apvts.getParameter("Analyser Type"), "", "Analyser Type"),
 	//ResponseCurve
 	responseCurveComponent(audioProcessor),
 	//Attachments
@@ -387,7 +456,18 @@ void PlasmaAudioProcessorEditor::paint (juce::Graphics& g)
     //g.fillAll(Colour(46, 47, 49));
 	g.fillAll(Colour(20, 20, 20));
 	g.drawImageAt(backgroundImage, 0, 0);
-       
+	bool clear = true;
+	for (auto* comp : getComps())
+	{
+		if (comp->isMouseButtonDown()) 
+		{
+			tooltipLabel.setText(comp->getHelpText(), juce::dontSendNotification);
+			clear = false;
+		}
+	}
+	if (clear) {
+		tooltipLabel.setText("", juce::dontSendNotification);
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -435,7 +515,7 @@ void PlasmaAudioProcessorEditor::resized()
 	lateDriveSlider.setBounds(890, 790, 120, 120);
 
 	//ToolTip
-	tooltipLabel.setBounds(30, 0, 200, 60);
+	tooltipLabel.setBounds(30, 0, 200, 55);
 
 	//Mix
 	mixSlider.setBounds(890, 230, 120, 120);
