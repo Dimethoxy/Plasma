@@ -26,25 +26,25 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 		selectedOption = (int)slider.getValue();
 		switch ((int)slider.getValue())
 		{
-		case 1:
+		case 0:
 			slider.setHelpText("Distortion Type : Hardclip");
 			break;
-		case 2:
+		case 1:
 			slider.setHelpText("Distortion Type : Softclip");
 			break;
-		case 3:
+		case 2:
 			slider.setHelpText("Distortion Type : Overdrive");
 			break;
-		case 4:
+		case 3:
 			slider.setHelpText("Distortion Type : Bitcrush");
 			break;
-		case 5:
+		case 4:
 			slider.setHelpText("Distortion Type : Atan");
 			break;
-		case 6:
+		case 5:
 			slider.setHelpText("Distortion Type : Sinus");
 			break;
-		case 7:
+		case 6:
 			slider.setHelpText("Distortion Type : Cosinus");
 			break;
 		}
@@ -82,7 +82,7 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 	else if (slider.getName() == "Analyser Type")
 	{
 		isSelector = true;
-		numOptions = 4;
+		numOptions = 5;
 		selectedOption = (int)slider.getValue();
 		String str;
 		str << (round(slider.getValue() * 100)) / 100;
@@ -168,18 +168,18 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 			//Check if selected
 			if (selectedOption != i) 
 			{
-				//Filling Unselected
-				Point<float> fill(bounds.getCentreX() + x, bounds.getCentreY() + y);
-				g.setColour(Colours::red);
-				g.fillEllipse(Rectangle<float>(dotSize / 2, dotSize / 2).withCentre(fill));
+				
 				//Dot Ring Unselected
 				Point<float> dot(bounds.getCentreX() + x, bounds.getCentreY() + y);
-				g.setColour(backgroundColor);
+				g.setColour(Colours::white);
 				g.drawEllipse(Rectangle<float>(dotSize/2, dotSize/2).withCentre(dot), 2);
 				
 			}
 			else 
-			{				
+			{	
+				Point<float> fill(bounds.getCentreX() + x, bounds.getCentreY() + y);
+				g.setColour(Colours::red);
+				g.fillEllipse(Rectangle<float>(dotSize/2, dotSize/2).withCentre(fill));
 				Point<float> dot(bounds.getCentreX() + x, bounds.getCentreY() + y);
 				g.setColour(Colours::white);
 				g.drawEllipse(Rectangle<float>(dotSize, dotSize).withCentre(dot), 2);
@@ -495,7 +495,7 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	//Tooltip
 	Typeface::Ptr tface = Typeface::createSystemTypefaceFor(BinaryData::PoppinsMedium_ttf, BinaryData::PoppinsMedium_ttfSize);
 	Font popFont(tface);
-	tooltipLabel.setFont(popFont.withHeight(32.0));
+	tooltipLabel.setFont(popFont.withHeight(24.0));
 	tooltipLabel.setJustificationType(juce::Justification::centredLeft);
 	tooltipLabel.setText("", juce::dontSendNotification);
 	addAndMakeVisible(tooltipLabel);
@@ -543,6 +543,7 @@ void PlasmaAudioProcessorEditor::resized()
 	//Analyzers
 	responseCurveComponent.setBounds(220, 60, 620, 300);
 	responseCurveComponent.update();
+	tooltipLabel.setBounds(235, 70, 300, 40);
 
     //Early
     preGainSlider.setBounds(50, 110, 120, 120);
@@ -577,9 +578,6 @@ void PlasmaAudioProcessorEditor::resized()
 	lateBiasSlider.setBounds(890, 550, 120, 120);
 	lateGirthSlider.setBounds(890, 670, 120, 120);
 	lateDriveSlider.setBounds(890, 790, 120, 120);
-
-	//ToolTip
-	tooltipLabel.setBounds(10, 10, 300, 40);
 
 	//Mix
 	mixSlider.setBounds(890, 230, 120, 120);
