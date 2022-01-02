@@ -176,6 +176,7 @@ void PlasmaAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 
 	//Allocate Clean Buffer
 	cleanBuffer.setSize(getNumInputChannels(), samplesPerBlock);
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -220,8 +221,11 @@ void PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
             //Drive          
             distort(channelData[sample], chainSettings.drive, chainSettings.driveType);
 
-            //Bias         
-            channelData[sample] = clamp(channelData[sample] + chainSettings.bias, -1.0, 1.0);
+			//Bias
+			if (channelData[sample] != 0.0)
+			{
+				channelData[sample] = clamp(channelData[sample] + chainSettings.bias, -1.0, 1.0);
+			}
         }
     }
 
@@ -248,22 +252,24 @@ void PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
 		auto* cleanData = tmpBuffer.getWritePointer(channel);
 		for (int sample = 0; sample < buffer.getNumSamples(); sample++)
 		{    
-            //Drive 
-            distort(channelData[sample], chainSettings.lateDrive, chainSettings.lateDriveType);
-
 			//Girth
 			channelData[sample] = channelData[sample] *
 				((((float)(rand() % 100)) / 100 * chainSettings.lateGirth) + 1);
 
-            //Gain
-			channelData[sample] = clamp(channelData[sample] * gain, -1.0, 1.0);
+            //Drive 
+            distort(channelData[sample], chainSettings.lateDrive, chainSettings.lateDriveType);
 
 			//Bias         
-			channelData[sample] = clamp(channelData[sample] + chainSettings.lateBias, -1.0, 1.0);
+			if (channelData[sample] != 0.0)
+			{
+				channelData[sample] = clamp(channelData[sample] + chainSettings.lateBias, -1.0, 1.0);
+			}
 			
 			//Mix
 			channelData[sample] = cleanData[sample]*mixDry + channelData[sample]*mixWet;
 
+			//Gain
+			channelData[sample] = channelData[sample] * gain;
 		}
 
 	}
@@ -358,7 +364,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout PlasmaAudioProcessor::create
 	//Late Girth
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Late Girth", "Late Girth",
-			juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f, 21.0f), 0.0f));
+			juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f, 1.0f), 0.0f));
 	//Late Bias
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Late Bias", "Late Bias",

@@ -7,14 +7,6 @@
 //Math
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-inline int sq(float value)
-{
-	return round(value * 50.0f);
-}
-inline int sqw(float value)
-{
-	return round(value * 50.0f);
-}
 inline int sl(float value)
 {
 	return round(value * 1.0f);
@@ -24,7 +16,7 @@ inline int sl(float value)
 //Sliders
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-struct CustomRotaryLookAndFeel : juce::LookAndFeel_V4
+struct CustomLookAndFeel : juce::LookAndFeel_V4
 {
     void drawRotarySlider(juce::Graphics& g,
         int x, int y, int width, int height,
@@ -33,14 +25,13 @@ struct CustomRotaryLookAndFeel : juce::LookAndFeel_V4
         juce::Slider&) override;
 };
 
-struct CustomRotary : juce::Slider
+struct CustomRotarySlider : juce::Slider
 {   
     //Constructor
-    CustomRotary(juce::RangedAudioParameter& rap, const juce::String& unitSuffix, const juce::String& name) :
+    CustomRotarySlider(juce::RangedAudioParameter& rap, const juce::String& unitSuffix, const juce::String& name) :
         juce::Slider(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, juce::Slider::TextEntryBoxPosition::NoTextBox),
         param(&rap)
     {
-        //Look and Feel
 		setTextValueSuffix(unitSuffix);
         setLookAndFeel(&lnf);
 		setName(name);
@@ -48,7 +39,7 @@ struct CustomRotary : juce::Slider
     }
 
     //Destructor
-    ~CustomRotary()
+    ~CustomRotarySlider()
     {
         setLookAndFeel(nullptr);
     }
@@ -59,7 +50,7 @@ struct CustomRotary : juce::Slider
     int getTexHeight() const { return 14; }
     juce::String getDisplayString() const;
 private:
-    CustomRotaryLookAndFeel lnf;
+    CustomLookAndFeel lnf;
     juce::RangedAudioParameter* param;
 };
 
@@ -105,7 +96,7 @@ private:
     PlasmaAudioProcessor& audioProcessor;	
 
 	//Sliders
-    CustomRotary 
+    CustomRotarySlider 
 		//Drive
 		gainSlider,
 		driveSlider,

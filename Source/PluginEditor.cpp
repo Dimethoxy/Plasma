@@ -4,14 +4,105 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Sliders LookAndFeel
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CustomRotaryLookAndFeel::drawRotarySlider(juce::Graphics& g,
+void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 	int x, int y, int width, int height,
 	float sliderPosProportional, 
 	float rotaryStartAngle,
 	float rotaryEndAngle,
 	juce::Slider& slider)
 {
-	//Stuff
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//Check Type and Generate String
+	
+	//Selector Parameters
+	bool isSelector = false;
+	int numOptions = 4;
+	int selectedOption = 0;
+
+	if (slider.getName() == "Distortion")
+	{
+		isSelector = true;
+		numOptions = 7;
+		selectedOption = (int)slider.getValue();
+		switch ((int)slider.getValue())
+		{
+		case 1:
+			slider.setHelpText("Distortion Type : Hardclip");
+			break;
+		case 2:
+			slider.setHelpText("Distortion Type : Softclip");
+			break;
+		case 3:
+			slider.setHelpText("Distortion Type : Overdrive");
+			break;
+		case 4:
+			slider.setHelpText("Distortion Type : Bitcrush");
+			break;
+		case 5:
+			slider.setHelpText("Distortion Type : Atan");
+			break;
+		case 6:
+			slider.setHelpText("Distortion Type : Sinus");
+			break;
+		case 7:
+			slider.setHelpText("Distortion Type : Cosinus");
+			break;
+		}
+	}
+	else if (slider.getName() == "Slope")
+	{
+		isSelector = true;
+		numOptions = 8;
+		selectedOption = (int)slider.getValue();
+		int slope = ((int)slider.getValue() + 1) * 12;
+		String str;
+		str << "Slope : ";
+		str << slope;
+		str << " db/oct";
+		slider.setHelpText(str);
+	}
+	else if (slider.getName() == "Symmetry")
+	{
+		auto value = round(slider.getValue() * 100);
+		String str;
+		str << "Symmetry : ";
+		if (value == 0)
+		{
+			str << "Centered";
+		}
+		else
+		{
+			str << value;
+			str << "%";
+		}
+
+
+		slider.setHelpText(str);
+	}
+	else if (slider.getName() == "Analyser Type")
+	{
+		isSelector = true;
+		numOptions = 4;
+		selectedOption = (int)slider.getValue();
+		String str;
+		str << (round(slider.getValue() * 100)) / 100;
+		slider.setHelpText((String)slider.getName() + " : " +
+			str + " " +
+			(String)slider.getTextValueSuffix());
+	}
+	else
+	{
+		String str;
+		str << (round(slider.getValue() * 100)) / 100;
+		slider.setHelpText((String)slider.getName() + " : " +
+			str + " " +
+			(String)slider.getTextValueSuffix());
+	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//Drawing
+
+	//Calculations
 	auto outline = slider.findColour(Slider::rotarySliderOutlineColourId);
 	auto fill = slider.findColour(Slider::rotarySliderFillColourId);
 	auto bounds = Rectangle<int>(x, y, width, height).toFloat().reduced(10);
@@ -19,8 +110,10 @@ void CustomRotaryLookAndFeel::drawRotarySlider(juce::Graphics& g,
 	auto toAngle = rotaryStartAngle + sliderPosProportional * (rotaryEndAngle - rotaryStartAngle);
 	auto lineW = jmin(8.0f, radius * 0.5f);
 	auto arcRadius = radius - lineW * 0.5f;
-	bool selector =  false;
-	if (!selector)
+	auto thumbWidth = lineW * 2.0f;
+	Colour backgroundColor(18, 20, 20);
+	//Draw Rail or Selector
+	if (!isSelector)
 	{
 		//Draw Dark Rail
 		Path backgroundArc;
@@ -51,25 +144,52 @@ void CustomRotaryLookAndFeel::drawRotarySlider(juce::Graphics& g,
 			g.strokePath(valueArc, PathStrokeType(lineW, PathStrokeType::curved, PathStrokeType::rounded));
 		}
 		//Draw Thumb
-		auto thumbWidth = lineW * 2.0f;
 		Point<float> thumbPoint(bounds.getCentreX() + arcRadius * std::cos(toAngle - MathConstants<float>::halfPi),
 			bounds.getCentreY() + arcRadius * std::sin(toAngle - MathConstants<float>::halfPi));
-		g.setColour(Colour(18, 20, 20));
+		g.setColour(backgroundColor);
 		g.fillEllipse(Rectangle<float>(thumbWidth, thumbWidth).withCentre(thumbPoint));
 		g.setColour(Colours::white);
 		g.drawEllipse(Rectangle<float>(thumbWidth, thumbWidth).withCentre(thumbPoint), 2);
 	}
 	else {
-		int numOptions = 4;
-		auto spacing = (rotaryEndAngle - rotaryEndAngle) / numOptions;
+		//Draw Selector
+		auto spacing = (rotaryEndAngle - rotaryStartAngle) / (numOptions - 1);
+		auto r = 40;
+		auto dotSize = thumbWidth;
+		auto radianOffset = rotaryStartAngle - rotaryEndAngle;
+		auto angle = rotaryStartAngle;
+
 		for (int i = 0; i < numOptions; i++) 
 		{
+			//Calculate Position
+			auto x = r * cos(angle - radianOffset);
+			auto y = r * sin(angle - radianOffset);
 
+			//Check if selected
+			if (selectedOption != i) 
+			{
+				//Filling Unselected
+				Point<float> fill(bounds.getCentreX() + x, bounds.getCentreY() + y);
+				g.setColour(Colours::red);
+				g.fillEllipse(Rectangle<float>(dotSize / 2, dotSize / 2).withCentre(fill));
+				//Dot Ring Unselected
+				Point<float> dot(bounds.getCentreX() + x, bounds.getCentreY() + y);
+				g.setColour(backgroundColor);
+				g.drawEllipse(Rectangle<float>(dotSize/2, dotSize/2).withCentre(dot), 2);
+				
+			}
+			else 
+			{				
+				Point<float> dot(bounds.getCentreX() + x, bounds.getCentreY() + y);
+				g.setColour(Colours::white);
+				g.drawEllipse(Rectangle<float>(dotSize, dotSize).withCentre(dot), 2);
+				
+			}
+			angle += spacing;
 		}
 	}
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	//Knob
+	//Calculate Knob
 	auto sliderAngleRadian = jmap(sliderPosProportional, 0.0f, 1.0f, rotaryStartAngle, rotaryEndAngle);
 	auto offset = 30;
 	float r = 20;
@@ -107,72 +227,10 @@ void CustomRotaryLookAndFeel::drawRotarySlider(juce::Graphics& g,
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-	//Tooltip
-	if (slider.getName() == "Distortion")
-	{
-		switch ((int)slider.getValue())
-		{
-		case 1:
-			slider.setHelpText("Distortion Type : Hardclip");
-			break;
-		case 2:
-			slider.setHelpText("Distortion Type : Softclip");
-			break;
-		case 3:
-			slider.setHelpText("Distortion Type : Overdrive");
-			break;
-		case 4:
-			slider.setHelpText("Distortion Type : Bitcrush");
-			break;
-		case 5:
-			slider.setHelpText("Distortion Type : Atan");
-			break;
-		case 6:
-			slider.setHelpText("Distortion Type : Sinus");
-			break;
-		case 7:
-			slider.setHelpText("Distortion Type : Cosinus");
-			break;
-		}
-	}
-	else if (slider.getName() == "Slope")
-	{
-		int slope = ((int)slider.getValue() + 1) * 12;
-		String str;
-		str << "Slope : ";
-		str << slope;
-		str << " db/oct";
-		slider.setHelpText(str);
-	}
-	else if (slider.getName() == "Symmetry")
-	{
-		auto value = round(slider.getValue() * 100);
-		String str;
-		str << "Symmetry : ";
-		if (value == 0)
-		{
-			str << "Centered";
-		}
-		else
-		{
-			str << value;
-			str << "%";
-		}
-
-
-		slider.setHelpText(str);
-	}
-	else
-	{
-		String str;
-		str << (round(slider.getValue() * 100)) / 100;
-		slider.setHelpText((String)slider.getName() + " : " +
-			str + " " +
-			(String)slider.getTextValueSuffix());
-	}
+	
 }
 
-void CustomRotary::paint(juce::Graphics& g)
+void CustomRotarySlider::paint(juce::Graphics& g)
 {
 	using namespace juce;
 	auto startAngleRadian = degreesToRadians(180.0f + 45.0f);
@@ -195,7 +253,7 @@ void CustomRotary::paint(juce::Graphics& g)
 								      endAngleRadian,
 								      *this);
 }
-juce::Rectangle<int> CustomRotary::getSliderBounds() const
+juce::Rectangle<int> CustomRotarySlider::getSliderBounds() const
 {
 	return getLocalBounds();
 }
@@ -433,6 +491,12 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	{
 		addAndMakeVisible(comp);
 	}
+
+	//Tooltip
+	Typeface::Ptr tface = Typeface::createSystemTypefaceFor(BinaryData::PoppinsMedium_ttf, BinaryData::PoppinsMedium_ttfSize);
+	Font popFont(tface);
+	tooltipLabel.setFont(popFont.withHeight(32.0));
+	tooltipLabel.setJustificationType(juce::Justification::centredLeft);
 	tooltipLabel.setText("", juce::dontSendNotification);
 	addAndMakeVisible(tooltipLabel);
 
@@ -515,7 +579,7 @@ void PlasmaAudioProcessorEditor::resized()
 	lateDriveSlider.setBounds(890, 790, 120, 120);
 
 	//ToolTip
-	tooltipLabel.setBounds(30, 0, 200, 55);
+	tooltipLabel.setBounds(10, 10, 300, 40);
 
 	//Mix
 	mixSlider.setBounds(890, 230, 120, 120);

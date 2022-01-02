@@ -3051,6 +3051,25 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Resources\Background.png"/>
+    <None Include="..\..\Resources\Poppins\OFL.txt"/>
+    <None Include="..\..\Resources\Poppins\Poppins-Black.ttf"/>
+    <None Include="..\..\Resources\Poppins\Poppins-BlackItalic.ttf"/>
+    <None Include="..\..\Resources\Poppins\Poppins-Bold.ttf"/>
+    <None Include="..\..\Resources\Poppins\Poppins-BoldItalic.ttf"/>
+    <None Include="..\..\Resources\Poppins\Poppins-ExtraBold.ttf"/>
+    <None Include="..\..\Resources\Poppins\Poppins-ExtraBoldItalic.ttf"/>
+    <None Include="..\..\Resources\Poppins\Poppins-ExtraLight.ttf"/>
+    <None Include="..\..\Resources\Poppins\Poppins-ExtraLightItalic.ttf"/>
+    <None Include="..\..\Resources\Poppins\Poppins-Italic.ttf"/>
+    <None Include="..\..\Resources\Poppins\Poppins-Light.ttf"/>
+    <None Include="..\..\Resources\Poppins\Poppins-LightItalic.ttf"/>
+    <None Include="..\..\Resources\Poppins\Poppins-Medium.ttf"/>
+    <None Include="..\..\Resources\Poppins\Poppins-MediumItalic.ttf"/>
+    <None Include="..\..\Resources\Poppins\Poppins-Regular.ttf"/>
+    <None Include="..\..\Resources\Poppins\Poppins-SemiBold.ttf"/>
+    <None Include="..\..\Resources\Poppins\Poppins-SemiBoldItalic.ttf"/>
+    <None Include="..\..\Resources\Poppins\Poppins-Thin.ttf"/>
+    <None Include="..\..\Resources\Poppins\Poppins-ThinItalic.ttf"/>
     <None Include="..\..\..\JUCE\JUCE\modules\juce_audio_devices\native\oboe\CMakeLists.txt"/>
     <None Include="..\..\..\JUCE\JUCE\modules\juce_audio_devices\native\oboe\README.md"/>
     <None Include="..\..\..\JUCE\JUCE\modules\juce_audio_formats\codecs\flac\Flac Licence.txt"/>

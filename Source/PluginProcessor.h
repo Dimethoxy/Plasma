@@ -6,10 +6,6 @@ const float pi = 3.14159265358979323846;
 float clamp(float d, float min, float max);
 
 //Enums
-enum Channel
-{
-
-};
 enum ChainPositions
 {
 	HighPass,
@@ -205,7 +201,7 @@ private:
     void updateHighPass(const ChainSettings& chainSettings);
     void updateLowPass(const ChainSettings& chainSettings);
     void updateFilters();
-
+	
     //Distortion
     template<typename Data, typename Drive, typename Distortion>
     void distort(Data& data, Drive& drive, Distortion& type){

@@ -8,6 +8,9 @@
     <Filter Include="Plasma\Resources">
       <UniqueIdentifier>{217E9515-34F3-EEC4-CCA8-610B6909EF2E}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Plasma\Poppins">
+      <UniqueIdentifier>{F48A469A-D24D-7E32-13DF-3DE2144A7DD8}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Plasma">
       <UniqueIdentifier>{7026826F-A3BF-9868-43EF-6D420D3AE1DC}</UniqueIdentifier>
     </Filter>
@@ -5242,6 +5245,63 @@
   <ItemGroup>
     <None Include="..\..\Resources\Background.png">
       <Filter>Plasma\Resources</Filter>
+    </None>
+    <None Include="..\..\Resources\Poppins\OFL.txt">
+      <Filter>Plasma\Poppins</Filter>
+    </None>
+    <None Include="..\..\Resources\Poppins\Poppins-Black.ttf">
+      <Filter>Plasma\Poppins</Filter>
+    </None>
+    <None Include="..\..\Resources\Poppins\Poppins-BlackItalic.ttf">
+      <Filter>Plasma\Poppins</Filter>
+    </None>
+    <None Include="..\..\Resources\Poppins\Poppins-Bold.ttf">
+      <Filter>Plasma\Poppins</Filter>
+    </None>
+    <None Include="..\..\Resources\Poppins\Poppins-BoldItalic.ttf">
+      <Filter>Plasma\Poppins</Filter>
+    </None>
+    <None Include="..\..\Resources\Poppins\Poppins-ExtraBold.ttf">
+      <Filter>Plasma\Poppins</Filter>
+    </None>
+    <None Include="..\..\Resources\Poppins\Poppins-ExtraBoldItalic.ttf">
+      <Filter>Plasma\Poppins</Filter>
+    </None>
+    <None Include="..\..\Resources\Poppins\Poppins-ExtraLight.ttf">
+      <Filter>Plasma\Poppins</Filter>
+    </None>
+    <None Include="..\..\Resources\Poppins\Poppins-ExtraLightItalic.ttf">
+      <Filter>Plasma\Poppins</Filter>
+    </None>
+    <None Include="..\..\Resources\Poppins\Poppins-Italic.ttf">
+      <Filter>Plasma\Poppins</Filter>
+    </None>
+    <None Include="..\..\Resources\Poppins\Poppins-Light.ttf">
+      <Filter>Plasma\Poppins</Filter>
+    </None>
+    <None Include="..\..\Resources\Poppins\Poppins-LightItalic.ttf">
+      <Filter>Plasma\Poppins</Filter>
+    </None>
+    <None Include="..\..\Resources\Poppins\Poppins-Medium.ttf">
+      <Filter>Plasma\Poppins</Filter>
+    </None>
+    <None Include="..\..\Resources\Poppins\Poppins-MediumItalic.ttf">
+      <Filter>Plasma\Poppins</Filter>
+    </None>
+    <None Include="..\..\Resources\Poppins\Poppins-Regular.ttf">
+      <Filter>Plasma\Poppins</Filter>
+    </None>
+    <None Include="..\..\Resources\Poppins\Poppins-SemiBold.ttf">
+      <Filter>Plasma\Poppins</Filter>
+    </None>
+    <None Include="..\..\Resources\Poppins\Poppins-SemiBoldItalic.ttf">
+      <Filter>Plasma\Poppins</Filter>
+    </None>
+    <None Include="..\..\Resources\Poppins\Poppins-Thin.ttf">
+      <Filter>Plasma\Poppins</Filter>
+    </None>
+    <None Include="..\..\Resources\Poppins\Poppins-ThinItalic.ttf">
+      <Filter>Plasma\Poppins</Filter>
     </None>
     <None Include="..\..\..\JUCE\JUCE\modules\juce_audio_devices\native\oboe\CMakeLists.txt">
       <Filter>JUCE Modules\juce_audio_devices\native\oboe</Filter>

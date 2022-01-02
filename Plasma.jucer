@@ -15,6 +15,45 @@
     <GROUP id="{F21D0FBD-3A1D-B8A8-D434-293EB1990ECA}" name="Resources">
       <FILE id="BJR9KD" name="Background.png" compile="0" resource="1" file="Resources/Background.png"/>
     </GROUP>
+    <GROUP id="{D32D6830-8C4E-B646-23BC-E15AE2DA763B}" name="Poppins">
+      <FILE id="XRxD5R" name="OFL.txt" compile="0" resource="1" file="Resources/Poppins/OFL.txt"/>
+      <FILE id="lbOLWx" name="Poppins-Black.ttf" compile="0" resource="1"
+            file="Resources/Poppins/Poppins-Black.ttf"/>
+      <FILE id="JbmlaF" name="Poppins-BlackItalic.ttf" compile="0" resource="1"
+            file="Resources/Poppins/Poppins-BlackItalic.ttf"/>
+      <FILE id="A2PKsg" name="Poppins-Bold.ttf" compile="0" resource="1"
+            file="Resources/Poppins/Poppins-Bold.ttf"/>
+      <FILE id="CuSvIN" name="Poppins-BoldItalic.ttf" compile="0" resource="1"
+            file="Resources/Poppins/Poppins-BoldItalic.ttf"/>
+      <FILE id="AgJ7au" name="Poppins-ExtraBold.ttf" compile="0" resource="1"
+            file="Resources/Poppins/Poppins-ExtraBold.ttf"/>
+      <FILE id="TYdefJ" name="Poppins-ExtraBoldItalic.ttf" compile="0" resource="1"
+            file="Resources/Poppins/Poppins-ExtraBoldItalic.ttf"/>
+      <FILE id="rLlSRy" name="Poppins-ExtraLight.ttf" compile="0" resource="1"
+            file="Resources/Poppins/Poppins-ExtraLight.ttf"/>
+      <FILE id="DEThmz" name="Poppins-ExtraLightItalic.ttf" compile="0" resource="1"
+            file="Resources/Poppins/Poppins-ExtraLightItalic.ttf"/>
+      <FILE id="eTRLmo" name="Poppins-Italic.ttf" compile="0" resource="1"
+            file="Resources/Poppins/Poppins-Italic.ttf"/>
+      <FILE id="sevag2" name="Poppins-Light.ttf" compile="0" resource="1"
+            file="Resources/Poppins/Poppins-Light.ttf"/>
+      <FILE id="Ee9SGq" name="Poppins-LightItalic.ttf" compile="0" resource="1"
+            file="Resources/Poppins/Poppins-LightItalic.ttf"/>
+      <FILE id="Mbjahb" name="Poppins-Medium.ttf" compile="0" resource="1"
+            file="Resources/Poppins/Poppins-Medium.ttf"/>
+      <FILE id="hMGFr8" name="Poppins-MediumItalic.ttf" compile="0" resource="1"
+            file="Resources/Poppins/Poppins-MediumItalic.ttf"/>
+      <FILE id="Cbi6Iq" name="Poppins-Regular.ttf" compile="0" resource="1"
+            file="Resources/Poppins/Poppins-Regular.ttf"/>
+      <FILE id="ES2C3w" name="Poppins-SemiBold.ttf" compile="0" resource="1"
+            file="Resources/Poppins/Poppins-SemiBold.ttf"/>
+      <FILE id="mcFByd" name="Poppins-SemiBoldItalic.ttf" compile="0" resource="1"
+            file="Resources/Poppins/Poppins-SemiBoldItalic.ttf"/>
+      <FILE id="BTxznw" name="Poppins-Thin.ttf" compile="0" resource="1"
+            file="Resources/Poppins/Poppins-Thin.ttf"/>
+      <FILE id="sRLCII" name="Poppins-ThinItalic.ttf" compile="0" resource="1"
+            file="Resources/Poppins/Poppins-ThinItalic.ttf"/>
+    </GROUP>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
   <EXPORTFORMATS>
