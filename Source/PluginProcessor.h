@@ -30,7 +30,8 @@ enum AnalyserType
 	Response,
 	Waveform,
 	Spectrum,
-	Stereo
+	Stereo,
+	Loudness
 };
 enum Distortion
 {
@@ -192,9 +193,14 @@ public:
     juce::AudioProcessorValueTreeState apvts{ *this, nullptr, "Parameters", createParameterLayout() };
 
 private:
+	//Clean Buffer
 	AudioSampleBuffer cleanBuffer;
-    MonoChain leftChain, rightChain;
-    //Filters
+	
+	//LoudnessMeter
+	float rmsLevelLeft, rmsLevelRight;
+
+	//Filters
+	MonoChain leftChain, rightChain;
     void updatePeakFilter(const ChainSettings& chainSettings);
     void updateHighPassResonance(const ChainSettings& chainSettings);
     void updateLowPassResonance(const ChainSettings& chainSettings);
@@ -202,7 +208,9 @@ private:
     void updateLowPass(const ChainSettings& chainSettings);
     void updateFilters();
 	
-    //Distortion
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//Distortion
     template<typename Data, typename Drive, typename Distortion>
     void distort(Data& data, Drive& drive, Distortion& type){
 		switch (type){
@@ -241,8 +249,6 @@ private:
 		}
 		}
     }
-
- 
-        //==============================================================================
-        JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PlasmaAudioProcessor);
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PlasmaAudioProcessor);
 };

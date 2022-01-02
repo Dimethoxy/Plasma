@@ -16,17 +16,17 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	//Highpass
 	highPassFreqSlider(*audioProcessor.apvts.getParameter("Highpass Freq"), "Hz", "Highpass"),
 	highPassResonanceSlider(*audioProcessor.apvts.getParameter("Highpass Resonance"), "dB", "Resonance"),
-	highPassResonanceQualitySlider(*audioProcessor.apvts.getParameter("Highpass Resonance Q"), "", "Q"),
+	highPassResonanceQualitySlider(*audioProcessor.apvts.getParameter("Highpass Resonance Q"), "", "Quality"),
 	highPassSlopeSlider(*audioProcessor.apvts.getParameter("Highpass Slope"), "dB/oct", "Slope"),
 	//Peak
-	peakStereoSlider(*audioProcessor.apvts.getParameter("Peak Stereo"), "Hz", "Stereo"),
+	peakStereoSlider(*audioProcessor.apvts.getParameter("Peak Stereo"), "%", "Stereo"),
 	peakFreqSlider(*audioProcessor.apvts.getParameter("Peak Freq"), "Hz", "Peak"),
 	peakGainSlider(*audioProcessor.apvts.getParameter("Peak Gain"), "dB", "Resonance"),
-	peakQualitySlider(*audioProcessor.apvts.getParameter("Peak Quality"), "", "Q"),
+	peakQualitySlider(*audioProcessor.apvts.getParameter("Peak Quality"), "", "Quality"),
 	//Lowpass
 	lowPassFreqSlider(*audioProcessor.apvts.getParameter("Lowpass Freq"), "Hz", "Lowpass"),
 	lowPassResonanceSlider(*audioProcessor.apvts.getParameter("Lowpass Resonance"), "dB", "Resonance"),
-	lowPassResonanceQualitySlider(*audioProcessor.apvts.getParameter("Lowpass Resonance Q"), "", "Q"),
+	lowPassResonanceQualitySlider(*audioProcessor.apvts.getParameter("Lowpass Resonance Q"), "", "Quality"),
 	lowPassSlopeSlider(*audioProcessor.apvts.getParameter("Lowpass Slope"), "dB/oct", "Slope"),
 	//Lategain
 	gainSlider(*audioProcessor.apvts.getParameter("Gain"), "dB", "Gain"),
@@ -115,14 +115,26 @@ void PlasmaAudioProcessorEditor::paint (juce::Graphics& g)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Timer Callback
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void PlasmaAudioProcessorEditor::timerCallback()
+{
+	loudnessMeterIn.repaint();
+	loudnessMeterOut.repaint();
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Layout
 /////////////////////////////////////////////////W///////////////////////////////////////////////////////////////////
 
 void PlasmaAudioProcessorEditor::resized()
 {
 	//Analyzers
-	responseCurveComponent.setBounds(220, 60, 620, 300);
+	responseCurveComponent.setBounds(220, 70, 620, 290);
 	responseCurveComponent.update();
+	//loudnessMeterIn.setBounds(220, 60, 620, 155);
+	//loudnessMeterOut.setBounds(220, 215, 620, 155);
 	tooltipLabel.setBounds(235, 70, 300, 40);
 
     //Early
@@ -162,7 +174,6 @@ void PlasmaAudioProcessorEditor::resized()
 	//Mix
 	mixSlider.setBounds(890, 230, 120, 120);
 	analyserSlider.setBounds(50, 230, 120, 120);
-
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Misc
@@ -170,23 +181,23 @@ void PlasmaAudioProcessorEditor::resized()
 
 std::vector<juce::Component*> PlasmaAudioProcessorEditor::getComps()
 {
-    return
-    {
-        &gainSlider,
-        &driveSlider,
-        &girthSlider,
-        &biasSlider,
-        &lateBiasSlider,
-        &highPassSlopeSlider,
-        &highPassFreqSlider,
-        &highPassResonanceSlider,
-        &highPassResonanceQualitySlider,
+	return
+	{
+		&gainSlider,
+		&driveSlider,
+		&girthSlider,
+		&biasSlider,
+		&lateBiasSlider,
+		&highPassSlopeSlider,
+		&highPassFreqSlider,
+		&highPassResonanceSlider,
+		&highPassResonanceQualitySlider,
 		&peakStereoSlider,
-        &peakFreqSlider,
-        &peakGainSlider,
-        &peakQualitySlider,
-        &lowPassSlopeSlider,
-        &lowPassFreqSlider,
+		&peakFreqSlider,
+		&peakGainSlider,
+		&peakQualitySlider,
+		&lowPassSlopeSlider,
+		&lowPassFreqSlider,
 		&lowPassResonanceSlider,
 		&lowPassResonanceQualitySlider,
 		&lateGirthSlider,
@@ -196,7 +207,9 @@ std::vector<juce::Component*> PlasmaAudioProcessorEditor::getComps()
 		&lateDriveTypeSlider,
 		&responseCurveComponent,
 		&mixSlider,
-		&analyserSlider
+		&analyserSlider,
+		&loudnessMeterIn,
+		&loudnessMeterOut
     };
 }
 

@@ -198,11 +198,16 @@ void PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
     float preGain = Decibels::decibelsToGain(chainSettings.preGain);
 	float mixWet = chainSettings.mix/100;
 	float mixDry = (100.0 - chainSettings.mix)/100;
-	bool killswitch = false;
+	//bool killswitch = false;
+	
 	//Clean
 	AudioSampleBuffer tmpBuffer(cleanBuffer.getArrayOfWritePointers(), buffer.getNumChannels(), buffer.getNumSamples());
 	for (int ch = 0; ch < buffer.getNumChannels(); ++ch)
 		tmpBuffer.copyFrom(ch, 0, buffer, ch, 0, buffer.getNumSamples());
+
+	//Clean RMS
+	rmsLevelLeft = Decibels::gainToDecibels(buffer.getRMSLevel(0, 0, buffer.getNumSamples()));
+	rmsLevelRight = Decibels::gainToDecibels(buffer.getRMSLevel(1, 0, buffer.getNumSamples()));
 
     //Distortion Unit
     for (int channel = 0; channel < 2; ++channel)
@@ -225,19 +230,6 @@ void PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
 
 				//Bias
 				channelData[sample] = clamp(channelData[sample] + chainSettings.bias, -1.0, 1.0);
-				
-				/*
-				//Killswitch
-				if (buffer.getRMSLevel(channel,sample, buffer.getNumSamples() - sample) < 0) 
-				{
-					if (killswitch)
-					{
-						mixDry = 1.0;
-						mixWet = 0.0;
-					}
-					killswitch = true;
-				}
-				*/
 			}
         }
     }

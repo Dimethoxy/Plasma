@@ -3,9 +3,9 @@
 #include <JuceHeader.h>
 #include "CustomLookAndFeel.h";
 
-struct CustomRotarySlider : juce::Slider
+class CustomRotarySlider : public Slider
 {
-    //Constructor
+public:
     CustomRotarySlider(juce::RangedAudioParameter& rap, const juce::String& unitSuffix, const juce::String& name) :
         juce::Slider(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, juce::Slider::TextEntryBoxPosition::NoTextBox),
         param(&rap)

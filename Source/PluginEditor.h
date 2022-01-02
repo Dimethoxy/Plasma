@@ -4,8 +4,9 @@
 #include "PluginProcessor.h"
 #include "CustomRotarySlider.h"
 #include "ResponseCurveComponent.h"
+#include "LoudnessMeterComponent.h"
 
-class PlasmaAudioProcessorEditor : public juce::AudioProcessorEditor
+class PlasmaAudioProcessorEditor : public juce::AudioProcessorEditor, public Timer
 {
 public:
     PlasmaAudioProcessorEditor(PlasmaAudioProcessor&);
@@ -14,6 +15,7 @@ public:
     void paint(juce::Graphics&) override;
     void resized() override;
 
+    void timerCallback() override;
 private:
     //Audio Processor
     PlasmaAudioProcessor& audioProcessor;	
@@ -53,6 +55,9 @@ private:
 
     //Response Curve Component
     ResponseCurveComponent responseCurveComponent;
+
+    //Loudness Meter Components
+    Gui::LoudnessMeterComponent loudnessMeterIn, loudnessMeterOut;
 
     //Attachments
     using APVTS = juce::AudioProcessorValueTreeState;

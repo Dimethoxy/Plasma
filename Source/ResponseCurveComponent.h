@@ -8,10 +8,11 @@ inline int sl(float value)
     return round(value * 1.0f);
 }
 
-struct ResponseCurveComponent : juce::Component,
+class ResponseCurveComponent : public Component,
     juce::AudioProcessorParameter::Listener,
     juce::Timer
 {
+public:
     ResponseCurveComponent(PlasmaAudioProcessor&);
     ~ResponseCurveComponent();
 

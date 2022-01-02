@@ -9,7 +9,10 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 {
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Check Type and Generate String
-
+	
+	//Default Skewfactor
+	auto skewFactor = 0.5;
+	
 	//Selector Parameters
 	bool isSelector = false;
 	int numOptions = 4;
@@ -86,6 +89,24 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 			str + " " +
 			(String)slider.getTextValueSuffix());
 	}
+	else if (slider.getName() == "Lowpass" || slider.getName() == "Highpass" || slider.getName() == "Peak")
+	{
+		skewFactor = 0.80;
+		String str;
+		str << (round(slider.getValue() * 100)) / 100;
+		slider.setHelpText((String)slider.getName() + " : " +
+			str + " " +
+			(String)slider.getTextValueSuffix());
+	}
+	else if (slider.getName() == "Girth")
+	{
+		String str;
+		str << (round(slider.getValue() * 100));
+		str << "%";
+		slider.setHelpText((String)slider.getName() + " : " +
+			str + " " +
+			(String)slider.getTextValueSuffix());
+	}
 	else
 	{
 		String str;
@@ -99,11 +120,14 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 	//Drawing
 
 	//Calculations
+	NormalisableRange<float> targetRange{ 0, 1 };
+	targetRange.setSkewForCentre(skewFactor);
+	auto normalisedPos = targetRange.convertFrom0to1(sliderPosProportional);
 	auto outline = slider.findColour(Slider::rotarySliderOutlineColourId);
 	auto fill = slider.findColour(Slider::rotarySliderFillColourId);
 	auto bounds = Rectangle<int>(x, y, width, height).toFloat().reduced(10);
 	auto radius = jmin(bounds.getWidth(), bounds.getHeight()) / 2.3f;
-	auto toAngle = rotaryStartAngle + sliderPosProportional * (rotaryEndAngle - rotaryStartAngle);
+	auto toAngle = rotaryStartAngle + normalisedPos * (rotaryEndAngle - rotaryStartAngle);
 	auto lineW = jmin(8.0f, radius * 0.5f);
 	auto arcRadius = radius - lineW * 0.5f;
 	auto thumbWidth = lineW * 2.0f;
@@ -186,7 +210,7 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 	}
 
 	//Calculate Knob
-	auto sliderAngleRadian = jmap(sliderPosProportional, 0.0f, 1.0f, rotaryStartAngle, rotaryEndAngle);
+	auto sliderAngleRadian = jmap(normalisedPos, 0.0f, 1.0f, rotaryStartAngle, rotaryEndAngle);
 	auto offset = 30;
 	float r = 20;
 	if (slider.isMouseButtonDown()) {
@@ -218,8 +242,8 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 
 	//Draw Knob
 	g.setColour(Colours::white);
-	g.drawLine(x1, y1, x2, y2, 4);
-	g.drawEllipse(circleBounds, 4);
+	g.drawLine(x1, y1, x2, y2, 3);
+	g.drawEllipse(circleBounds, 3);
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
