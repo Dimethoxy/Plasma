@@ -18,6 +18,11 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 	int numOptions = 4;
 	int selectedOption = 0;
 
+	//Symmertry
+	bool isCentered = false;
+	auto range = rotaryEndAngle - rotaryStartAngle;
+	auto center = range / 2;
+
 	if (slider.getName() == "Distortion")
 	{
 		isSelector = true;
@@ -62,6 +67,7 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 	}
 	else if (slider.getName() == "Symmetry")
 	{
+		isCentered = true;
 		auto value = round(slider.getValue() * 100);
 		String str;
 		str << "Symmetry : ";
@@ -152,14 +158,27 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 		if (slider.isEnabled())
 		{
 			Path valueArc;
-			valueArc.addCentredArc(bounds.getCentreX(),
-				bounds.getCentreY(),
-				arcRadius,
-				arcRadius,
-				0.0f,
-				rotaryStartAngle,
-				toAngle,
-				true);
+			if (!isCentered) {
+				valueArc.addCentredArc(bounds.getCentreX(),
+					bounds.getCentreY(),
+					arcRadius,
+					arcRadius,
+					0.0f,
+					rotaryStartAngle,
+					toAngle,
+					true);
+			} 
+			else
+			{
+				valueArc.addCentredArc(bounds.getCentreX(),
+					bounds.getCentreY(),
+					arcRadius,
+					arcRadius,
+					0.0f,
+					rotaryStartAngle + center,
+					toAngle,
+					true);
+			}
 			g.setColour(fill);
 			g.strokePath(valueArc, PathStrokeType(lineW, PathStrokeType::curved, PathStrokeType::rounded));
 		}

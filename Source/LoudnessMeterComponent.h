@@ -7,7 +7,6 @@ namespace Gui
 	class LoudnessMeterComponent : public Component
 	{
 	public:
-		auto chainSettings = getChainSettings(audioProcessor.apvts);
 		void paint(Graphics& g) override
 		{
 			auto bounds = getLocalBounds().toFloat();
