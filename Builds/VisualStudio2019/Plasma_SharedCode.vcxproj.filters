@@ -5,11 +5,14 @@
     <Filter Include="Plasma\Source">
       <UniqueIdentifier>{C456C244-4715-1719-A6F4-0A7287481203}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Plasma\Resources\Poppins">
+      <UniqueIdentifier>{EE934671-6DF8-1F3C-C4E9-CFD9BE5BE1B9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Plasma\Resources\Images">
+      <UniqueIdentifier>{E2826809-23F5-99C6-ADDE-36E1B8538391}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Plasma\Resources">
       <UniqueIdentifier>{217E9515-34F3-EEC4-CCA8-610B6909EF2E}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Plasma\Poppins">
-      <UniqueIdentifier>{F48A469A-D24D-7E32-13DF-3DE2144A7DD8}</UniqueIdentifier>
     </Filter>
     <Filter Include="Plasma">
       <UniqueIdentifier>{7026826F-A3BF-9868-43EF-6D420D3AE1DC}</UniqueIdentifier>
@@ -475,6 +478,18 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\LoudnessMeterComponent.cpp">
+      <Filter>Plasma\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ResponseCurveComponent.cpp">
+      <Filter>Plasma\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\CustomRotarySlider.cpp">
+      <Filter>Plasma\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\CustomLookAndFeel.cpp">
+      <Filter>Plasma\Source</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\PluginProcessor.cpp">
       <Filter>Plasma\Source</Filter>
     </ClCompile>
@@ -2697,6 +2712,18 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\LoudnessMeterComponent.h">
+      <Filter>Plasma\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ResponseCurveComponent.h">
+      <Filter>Plasma\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\CustomRotarySlider.h">
+      <Filter>Plasma\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\CustomLookAndFeel.h">
+      <Filter>Plasma\Source</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\PluginProcessor.h">
       <Filter>Plasma\Source</Filter>
     </ClInclude>
@@ -5243,65 +5270,65 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Resources\Background.png">
-      <Filter>Plasma\Resources</Filter>
-    </None>
     <None Include="..\..\Resources\Poppins\OFL.txt">
-      <Filter>Plasma\Poppins</Filter>
+      <Filter>Plasma\Resources\Poppins</Filter>
     </None>
     <None Include="..\..\Resources\Poppins\Poppins-Black.ttf">
-      <Filter>Plasma\Poppins</Filter>
+      <Filter>Plasma\Resources\Poppins</Filter>
     </None>
     <None Include="..\..\Resources\Poppins\Poppins-BlackItalic.ttf">
-      <Filter>Plasma\Poppins</Filter>
+      <Filter>Plasma\Resources\Poppins</Filter>
     </None>
     <None Include="..\..\Resources\Poppins\Poppins-Bold.ttf">
-      <Filter>Plasma\Poppins</Filter>
+      <Filter>Plasma\Resources\Poppins</Filter>
     </None>
     <None Include="..\..\Resources\Poppins\Poppins-BoldItalic.ttf">
-      <Filter>Plasma\Poppins</Filter>
+      <Filter>Plasma\Resources\Poppins</Filter>
     </None>
     <None Include="..\..\Resources\Poppins\Poppins-ExtraBold.ttf">
-      <Filter>Plasma\Poppins</Filter>
+      <Filter>Plasma\Resources\Poppins</Filter>
     </None>
     <None Include="..\..\Resources\Poppins\Poppins-ExtraBoldItalic.ttf">
-      <Filter>Plasma\Poppins</Filter>
+      <Filter>Plasma\Resources\Poppins</Filter>
     </None>
     <None Include="..\..\Resources\Poppins\Poppins-ExtraLight.ttf">
-      <Filter>Plasma\Poppins</Filter>
+      <Filter>Plasma\Resources\Poppins</Filter>
     </None>
     <None Include="..\..\Resources\Poppins\Poppins-ExtraLightItalic.ttf">
-      <Filter>Plasma\Poppins</Filter>
+      <Filter>Plasma\Resources\Poppins</Filter>
     </None>
     <None Include="..\..\Resources\Poppins\Poppins-Italic.ttf">
-      <Filter>Plasma\Poppins</Filter>
+      <Filter>Plasma\Resources\Poppins</Filter>
     </None>
     <None Include="..\..\Resources\Poppins\Poppins-Light.ttf">
-      <Filter>Plasma\Poppins</Filter>
+      <Filter>Plasma\Resources\Poppins</Filter>
     </None>
     <None Include="..\..\Resources\Poppins\Poppins-LightItalic.ttf">
-      <Filter>Plasma\Poppins</Filter>
+      <Filter>Plasma\Resources\Poppins</Filter>
     </None>
     <None Include="..\..\Resources\Poppins\Poppins-Medium.ttf">
-      <Filter>Plasma\Poppins</Filter>
+      <Filter>Plasma\Resources\Poppins</Filter>
     </None>
     <None Include="..\..\Resources\Poppins\Poppins-MediumItalic.ttf">
-      <Filter>Plasma\Poppins</Filter>
+      <Filter>Plasma\Resources\Poppins</Filter>
     </None>
     <None Include="..\..\Resources\Poppins\Poppins-Regular.ttf">
-      <Filter>Plasma\Poppins</Filter>
+      <Filter>Plasma\Resources\Poppins</Filter>
     </None>
     <None Include="..\..\Resources\Poppins\Poppins-SemiBold.ttf">
-      <Filter>Plasma\Poppins</Filter>
+      <Filter>Plasma\Resources\Poppins</Filter>
     </None>
     <None Include="..\..\Resources\Poppins\Poppins-SemiBoldItalic.ttf">
-      <Filter>Plasma\Poppins</Filter>
+      <Filter>Plasma\Resources\Poppins</Filter>
     </None>
     <None Include="..\..\Resources\Poppins\Poppins-Thin.ttf">
-      <Filter>Plasma\Poppins</Filter>
+      <Filter>Plasma\Resources\Poppins</Filter>
     </None>
     <None Include="..\..\Resources\Poppins\Poppins-ThinItalic.ttf">
-      <Filter>Plasma\Poppins</Filter>
+      <Filter>Plasma\Resources\Poppins</Filter>
+    </None>
+    <None Include="..\..\Resources\Background.png">
+      <Filter>Plasma\Resources\Images</Filter>
     </None>
     <None Include="..\..\..\JUCE\JUCE\modules\juce_audio_devices\native\oboe\CMakeLists.txt">
       <Filter>JUCE Modules\juce_audio_devices\native\oboe</Filter>

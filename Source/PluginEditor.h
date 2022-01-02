@@ -2,85 +2,8 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//Math
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-inline int sl(float value)
-{
-	return round(value * 1.0f);
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//Sliders
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-struct CustomLookAndFeel : juce::LookAndFeel_V4
-{
-    void drawRotarySlider(juce::Graphics& g,
-        int x, int y, int width, int height,
-        float sliderPosProportional, float rotaryStartAngle,
-        float rotaryEndAngle,
-        juce::Slider&) override;
-};
-
-struct CustomRotarySlider : juce::Slider
-{   
-    //Constructor
-    CustomRotarySlider(juce::RangedAudioParameter& rap, const juce::String& unitSuffix, const juce::String& name) :
-        juce::Slider(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, juce::Slider::TextEntryBoxPosition::NoTextBox),
-        param(&rap)
-    {
-		setTextValueSuffix(unitSuffix);
-        setLookAndFeel(&lnf);
-		setName(name);
-        setColour(Slider::rotarySliderFillColourId, Colour(255, 0, 0)); 
-    }
-
-    //Destructor
-    ~CustomRotarySlider()
-    {
-        setLookAndFeel(nullptr);
-    }
-    //Misc
-	const juce::String name = "Slider";
-    void paint(juce::Graphics& g) override;
-    juce::Rectangle<int> getSliderBounds() const;
-    int getTexHeight() const { return 14; }
-    juce::String getDisplayString() const;
-private:
-    CustomLookAndFeel lnf;
-    juce::RangedAudioParameter* param;
-};
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//Visualizers
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-struct ResponseCurveComponent : juce::Component,
-    juce::AudioProcessorParameter::Listener,
-    juce::Timer
-{
-    ResponseCurveComponent(PlasmaAudioProcessor&);
-    ~ResponseCurveComponent();
-
-	void parameterValueChanged(int parameterIndex, float newValue) override;
-	void parameterGestureChanged(int parameterIndex, bool gestureIsStarting) override {};
-	void timerCallback() override;
-    void update();
-    void paint(juce::Graphics& g) override;
-
-private:
-	PlasmaAudioProcessor& audioProcessor;
-    juce::Atomic<bool> parametersChanged{ false };
-    MonoChain monoChain;
-};
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//AudioProcessorEditor
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#include "CustomRotarySlider.h"
+#include "ResponseCurveComponent.h"
 
 class PlasmaAudioProcessorEditor : public juce::AudioProcessorEditor
 {

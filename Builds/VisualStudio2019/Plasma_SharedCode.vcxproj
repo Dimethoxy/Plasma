@@ -137,6 +137,10 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\LoudnessMeterComponent.cpp"/>
+    <ClCompile Include="..\..\Source\ResponseCurveComponent.cpp"/>
+    <ClCompile Include="..\..\Source\CustomRotarySlider.cpp"/>
+    <ClCompile Include="..\..\Source\CustomLookAndFeel.cpp"/>
     <ClCompile Include="..\..\Source\PluginProcessor.cpp"/>
     <ClCompile Include="..\..\Source\PluginEditor.cpp"/>
     <ClCompile Include="..\..\..\JUCE\JUCE\modules\juce_audio_basics\buffers\juce_AudioChannelSet.cpp">
@@ -2200,6 +2204,10 @@
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_gui_extra.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\LoudnessMeterComponent.h"/>
+    <ClInclude Include="..\..\Source\ResponseCurveComponent.h"/>
+    <ClInclude Include="..\..\Source\CustomRotarySlider.h"/>
+    <ClInclude Include="..\..\Source\CustomLookAndFeel.h"/>
     <ClInclude Include="..\..\Source\PluginProcessor.h"/>
     <ClInclude Include="..\..\Source\PluginEditor.h"/>
     <ClInclude Include="..\..\..\JUCE\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.h"/>
@@ -3050,7 +3058,6 @@
     <ClInclude Include="..\..\JuceLibraryCode\JucePluginDefines.h"/>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Resources\Background.png"/>
     <None Include="..\..\Resources\Poppins\OFL.txt"/>
     <None Include="..\..\Resources\Poppins\Poppins-Black.ttf"/>
     <None Include="..\..\Resources\Poppins\Poppins-BlackItalic.ttf"/>
@@ -3070,6 +3077,7 @@
     <None Include="..\..\Resources\Poppins\Poppins-SemiBoldItalic.ttf"/>
     <None Include="..\..\Resources\Poppins\Poppins-Thin.ttf"/>
     <None Include="..\..\Resources\Poppins\Poppins-ThinItalic.ttf"/>
+    <None Include="..\..\Resources\Background.png"/>
     <None Include="..\..\..\JUCE\JUCE\modules\juce_audio_devices\native\oboe\CMakeLists.txt"/>
     <None Include="..\..\..\JUCE\JUCE\modules\juce_audio_devices\native\oboe\README.md"/>
     <None Include="..\..\..\JUCE\JUCE\modules\juce_audio_formats\codecs\flac\Flac Licence.txt"/>

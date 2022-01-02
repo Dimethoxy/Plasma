@@ -8,9 +8,6 @@
 
 namespace BinaryData
 {
-    extern const char*   Background_png;
-    const int            Background_pngSize = 27570;
-
     extern const char*   OFL_txt;
     const int            OFL_txtSize = 4478;
 
@@ -67,6 +64,9 @@ namespace BinaryData
 
     extern const char*   PoppinsThinItalic_ttf;
     const int            PoppinsThinItalic_ttfSize = 186992;
+
+    extern const char*   Background_png;
+    const int            Background_pngSize = 27570;
 
     // Number of elements in the namedResourceList and originalFileNames arrays.
     const int namedResourceListSize = 20;
