@@ -104,6 +104,15 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 			str + " " +
 			(String)slider.getTextValueSuffix());
 	}
+	else if (slider.getName() == "Peak Resonance")
+	{
+		isCentered = true;
+		String str;
+		str << (round(slider.getValue() * 100)) / 100;
+		slider.setHelpText("Resonance : " +
+			str + " " +
+			(String)slider.getTextValueSuffix());
+	}
 	else if (slider.getName() == "Girth")
 	{
 		String str;
@@ -131,10 +140,10 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 	auto normalisedPos = targetRange.convertFrom0to1(sliderPosProportional);
 	auto outline = slider.findColour(Slider::rotarySliderOutlineColourId);
 	auto fill = slider.findColour(Slider::rotarySliderFillColourId);
-	auto bounds = Rectangle<int>(x, y, width, height).toFloat().reduced(10);
+	auto bounds = Rectangle<int>(x, y, width, height).toFloat().reduced(width/12);
 	auto radius = jmin(bounds.getWidth(), bounds.getHeight()) / 2.3f;
 	auto toAngle = rotaryStartAngle + normalisedPos * (rotaryEndAngle - rotaryStartAngle);
-	auto lineW = jmin(8.0f, radius * 0.5f);
+	auto lineW = jmin((float)width/12, radius * 0.5f);
 	auto arcRadius = radius - lineW * 0.5f;
 	auto thumbWidth = lineW * 2.0f;
 	Colour backgroundColor(18, 20, 20);
@@ -152,7 +161,7 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 			rotaryEndAngle,
 			true);
 		g.setColour(Colour(18, 20, 20));
-		g.strokePath(backgroundArc, PathStrokeType(lineW, PathStrokeType::curved, PathStrokeType::rounded));
+		g.strokePath(backgroundArc, PathStrokeType(lineW, PathStrokeType::curved, PathStrokeType::square));
 
 		//Draw Light Rail
 		if (slider.isEnabled())
@@ -180,7 +189,7 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 					true);
 			}
 			g.setColour(fill);
-			g.strokePath(valueArc, PathStrokeType(lineW, PathStrokeType::curved, PathStrokeType::rounded));
+			g.strokePath(valueArc, PathStrokeType(lineW, PathStrokeType::curved, PathStrokeType::square));
 		}
 		//Draw Thumb
 		Point<float> thumbPoint(bounds.getCentreX() + arcRadius * std::cos(toAngle - MathConstants<float>::halfPi),
@@ -230,11 +239,11 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 
 	//Calculate Knob
 	auto sliderAngleRadian = jmap(normalisedPos, 0.0f, 1.0f, rotaryStartAngle, rotaryEndAngle);
-	auto offset = 30;
-	float r = 20;
+	auto offset = width /4;
+	float r = width / 6;
 	if (slider.isMouseButtonDown()) {
-		offset = 26;
-		r = 24;
+		offset = width / 5;
+		r = width / 5;
 	}
 	auto circleBounds = Rectangle<float>(bounds.getX() + offset,
 		bounds.getY() + offset,

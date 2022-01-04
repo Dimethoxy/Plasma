@@ -5,7 +5,19 @@
 #include "CustomRotarySlider.h"
 #include "ResponseCurveComponent.h"
 #include "LoudnessMeterComponent.h"
-
+class CustomLabel : public juce::Label
+{
+public:
+    CustomLabel(String text, float size, Justification justification)
+    {
+        Typeface::Ptr tface = Typeface::createSystemTypefaceFor(BinaryData::PoppinsMedium_ttf, BinaryData::PoppinsMedium_ttfSize);
+        Font popFont(tface);
+        setText(text, juce::dontSendNotification);
+        setFont(popFont.withHeight(size));
+        setJustificationType(justification);
+    }
+    
+};
 class PlasmaAudioProcessorEditor : public juce::AudioProcessorEditor, public Timer
 {
 public:
@@ -92,8 +104,59 @@ private:
     ImageComponent screenImageComponent;
 	Image backgroundImage = ImageCache::getFromMemory(BinaryData::Background_png, BinaryData::Background_pngSize);
 
-	//
-	Label tooltipLabel;
+    //Layout
+    Rectangle<int> headerArea();
+    Rectangle<int> monitorArea();
+    Rectangle<int> inArea();
+    Rectangle<int> outArea();
+    Rectangle<int> earlyArea();
+    Rectangle<int> highpassArea();
+    Rectangle<int> peakArea();
+    Rectangle<int> lowpassArea();
+    Rectangle<int> lateArea();
+
+    //Colors
+    Colour c_back();
+    Colour c_front();
+
+    //Fontsizes
+    float fs_mainLabel = 28;
+
+	//Labels
+	CustomLabel 
+        tooltipLabel,
+        //Drive
+        gainLabel,
+        driveLabel,
+        girthLabel,
+        biasLabel,
+        driveTypeLabel,
+        //Highpass
+        highPassFreqLabel,
+        highPassResonanceLabel,
+        highPassResonanceQualityLabel,
+        highPassSlopeLabel,
+        //Peak
+        peakStereoLabel,
+        peakFreqLabel,
+        peakGainLabel,
+        peakQualityLabel,
+        //Lowpass
+        lowPassFreqLabel,
+        lowPassResonanceLabel,
+        lowPassResonanceQualityLabel,
+        lowPassSlopeLabel,
+        //lateDrive
+        lateBiasLabel,
+        lateDriveTypeLabel,
+        lateGirthLabel,
+        lateDriveLabel,
+        preGainLabel,
+        mixLabel,
+        analyserLabel;
+
+    //Label Vector
+    std::vector<CustomLabel*> getLabels();
 
     //End
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PlasmaAudioProcessorEditor);
