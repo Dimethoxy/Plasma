@@ -64,11 +64,14 @@ void ResponseCurveComponent::paint(juce::Graphics& g)
 	//Get Chain Settings
 	auto chainSettings = getChainSettings(audioProcessor.apvts);
 
+	//bounds
+	auto bounds = getBounds();
+
 	//Screen
 	auto x = sl(10);
 	auto y = sl(10);
-	auto w = sl(600);
-	auto h = sl(300);
+	auto w = sl(bounds.getWidth()-10);
+	auto h = sl(bounds.getHeight());
 
 	//g.setColour(Colours::black);
 	//g.fillRect(x, y, w, h);

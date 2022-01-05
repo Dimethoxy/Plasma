@@ -29,6 +29,16 @@
       <FILE id="c6b0xF" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
     </GROUP>
     <GROUP id="{F21D0FBD-3A1D-B8A8-D434-293EB1990ECA}" name="Resources">
+      <GROUP id="{FE946A9C-3983-FB18-3AC5-04C2FF7203B8}" name="Sedgwick_Ave_Display">
+        <FILE id="eLfw9d" name="OFL.txt" compile="0" resource="1" file="Resources/Sedgwick_Ave_Display/OFL.txt"/>
+        <FILE id="jzJ8G2" name="SedgwickAveDisplay-Regular.ttf" compile="0"
+              resource="1" file="Resources/Sedgwick_Ave_Display/SedgwickAveDisplay-Regular.ttf"/>
+      </GROUP>
+      <GROUP id="{51016F95-F64A-B043-192D-B57B1D5B207A}" name="Sedgwick_Ave">
+        <FILE id="vYmn1r" name="OFL.txt" compile="0" resource="1" file="Resources/Sedgwick_Ave/OFL.txt"/>
+        <FILE id="dUe9U2" name="SedgwickAve-Regular.ttf" compile="0" resource="1"
+              file="Resources/Sedgwick_Ave/SedgwickAve-Regular.ttf"/>
+      </GROUP>
       <GROUP id="{D32D6830-8C4E-B646-23BC-E15AE2DA763B}" name="Poppins">
         <FILE id="XRxD5R" name="OFL.txt" compile="0" resource="1" file="Resources/Poppins/OFL.txt"/>
         <FILE id="lbOLWx" name="Poppins-Black.ttf" compile="0" resource="1"
@@ -67,9 +77,6 @@
               file="Resources/Poppins/Poppins-Thin.ttf"/>
         <FILE id="sRLCII" name="Poppins-ThinItalic.ttf" compile="0" resource="1"
               file="Resources/Poppins/Poppins-ThinItalic.ttf"/>
-      </GROUP>
-      <GROUP id="{56EA0BC2-975F-2F4D-71D0-C195C57013AF}" name="Images">
-        <FILE id="BJR9KD" name="Background.png" compile="0" resource="1" file="Resources/Background.png"/>
       </GROUP>
     </GROUP>
   </MAINGROUP>

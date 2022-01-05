@@ -3058,6 +3058,10 @@
     <ClInclude Include="..\..\JuceLibraryCode\JucePluginDefines.h"/>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\Resources\Sedgwick_Ave_Display\OFL.txt"/>
+    <None Include="..\..\Resources\Sedgwick_Ave_Display\SedgwickAveDisplay-Regular.ttf"/>
+    <None Include="..\..\Resources\Sedgwick_Ave\OFL.txt"/>
+    <None Include="..\..\Resources\Sedgwick_Ave\SedgwickAve-Regular.ttf"/>
     <None Include="..\..\Resources\Poppins\OFL.txt"/>
     <None Include="..\..\Resources\Poppins\Poppins-Black.ttf"/>
     <None Include="..\..\Resources\Poppins\Poppins-BlackItalic.ttf"/>
@@ -3077,7 +3081,6 @@
     <None Include="..\..\Resources\Poppins\Poppins-SemiBoldItalic.ttf"/>
     <None Include="..\..\Resources\Poppins\Poppins-Thin.ttf"/>
     <None Include="..\..\Resources\Poppins\Poppins-ThinItalic.ttf"/>
-    <None Include="..\..\Resources\Background.png"/>
     <None Include="..\..\..\JUCE\JUCE\modules\juce_audio_devices\native\oboe\CMakeLists.txt"/>
     <None Include="..\..\..\JUCE\JUCE\modules\juce_audio_devices\native\oboe\README.md"/>
     <None Include="..\..\..\JUCE\JUCE\modules\juce_audio_formats\codecs\flac\Flac Licence.txt"/>

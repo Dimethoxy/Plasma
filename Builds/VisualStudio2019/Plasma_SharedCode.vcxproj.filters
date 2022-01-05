@@ -5,11 +5,14 @@
     <Filter Include="Plasma\Source">
       <UniqueIdentifier>{C456C244-4715-1719-A6F4-0A7287481203}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Plasma\Resources\Sedgwick_Ave_Display">
+      <UniqueIdentifier>{497963FC-15ED-D795-4A22-0A730E5371B8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Plasma\Resources\Sedgwick_Ave">
+      <UniqueIdentifier>{01A0D440-88F3-75FE-6E7F-D7BD364F7C2B}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Plasma\Resources\Poppins">
       <UniqueIdentifier>{EE934671-6DF8-1F3C-C4E9-CFD9BE5BE1B9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Plasma\Resources\Images">
-      <UniqueIdentifier>{E2826809-23F5-99C6-ADDE-36E1B8538391}</UniqueIdentifier>
     </Filter>
     <Filter Include="Plasma\Resources">
       <UniqueIdentifier>{217E9515-34F3-EEC4-CCA8-610B6909EF2E}</UniqueIdentifier>
@@ -5270,6 +5273,18 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\Resources\Sedgwick_Ave_Display\OFL.txt">
+      <Filter>Plasma\Resources\Sedgwick_Ave_Display</Filter>
+    </None>
+    <None Include="..\..\Resources\Sedgwick_Ave_Display\SedgwickAveDisplay-Regular.ttf">
+      <Filter>Plasma\Resources\Sedgwick_Ave_Display</Filter>
+    </None>
+    <None Include="..\..\Resources\Sedgwick_Ave\OFL.txt">
+      <Filter>Plasma\Resources\Sedgwick_Ave</Filter>
+    </None>
+    <None Include="..\..\Resources\Sedgwick_Ave\SedgwickAve-Regular.ttf">
+      <Filter>Plasma\Resources\Sedgwick_Ave</Filter>
+    </None>
     <None Include="..\..\Resources\Poppins\OFL.txt">
       <Filter>Plasma\Resources\Poppins</Filter>
     </None>
@@ -5326,9 +5341,6 @@
     </None>
     <None Include="..\..\Resources\Poppins\Poppins-ThinItalic.ttf">
       <Filter>Plasma\Resources\Poppins</Filter>
-    </None>
-    <None Include="..\..\Resources\Background.png">
-      <Filter>Plasma\Resources\Images</Filter>
     </None>
     <None Include="..\..\..\JUCE\JUCE\modules\juce_audio_devices\native\oboe\CMakeLists.txt">
       <Filter>JUCE Modules\juce_audio_devices\native\oboe</Filter>

@@ -161,7 +161,7 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 			rotaryEndAngle,
 			true);
 		g.setColour(Colour(18, 20, 20));
-		g.strokePath(backgroundArc, PathStrokeType(lineW, PathStrokeType::curved, PathStrokeType::square));
+		g.strokePath(backgroundArc, PathStrokeType(lineW, PathStrokeType::curved, PathStrokeType::rounded));
 
 		//Draw Light Rail
 		if (slider.isEnabled())
@@ -189,7 +189,7 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 					true);
 			}
 			g.setColour(fill);
-			g.strokePath(valueArc, PathStrokeType(lineW, PathStrokeType::curved, PathStrokeType::square));
+			g.strokePath(valueArc, PathStrokeType(lineW, PathStrokeType::curved, PathStrokeType::rounded));
 		}
 		//Draw Thumb
 		Point<float> thumbPoint(bounds.getCentreX() + arcRadius * std::cos(toAngle - MathConstants<float>::halfPi),
@@ -242,7 +242,7 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 	auto offset = width /4;
 	float r = width / 6;
 	if (slider.isMouseButtonDown()) {
-		offset = width / 5;
+		offset = width / 4.5;
 		r = width / 5;
 	}
 	auto circleBounds = Rectangle<float>(bounds.getX() + offset,

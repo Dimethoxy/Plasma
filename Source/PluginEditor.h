@@ -8,16 +8,31 @@
 class CustomLabel : public juce::Label
 {
 public:
-    CustomLabel(String text, float size, Justification justification)
+    CustomLabel(String text, float size, Justification justification, bool underline)
     {
         Typeface::Ptr tface = Typeface::createSystemTypefaceFor(BinaryData::PoppinsMedium_ttf, BinaryData::PoppinsMedium_ttfSize);
         Font popFont(tface);
+        //popFont.setUnderline(underline);
+        //popFont.setExtraKerningFactor(1);
         setText(text, juce::dontSendNotification);
         setFont(popFont.withHeight(size));
         setJustificationType(justification);
-    }
-    
+    }    
 };
+
+class PlasmaLabel : public juce::Label
+{
+public:
+    PlasmaLabel()
+    {
+        Typeface::Ptr tface = Typeface::createSystemTypefaceFor(BinaryData::SedgwickAveDisplayRegular_ttf , BinaryData::SedgwickAveDisplayRegular_ttfSize);
+        Font font(tface);
+        setText("PLASMA", juce::dontSendNotification);
+        setFont(font.withHeight(100.0));
+        setJustificationType(Justification::centredTop);
+    }
+};
+
 class PlasmaAudioProcessorEditor : public juce::AudioProcessorEditor, public Timer
 {
 public:
@@ -100,10 +115,6 @@ private:
 		mixSliderAttachment;
     std::vector<juce::Component*> getComps();
 
-    //Image Components
-    ImageComponent screenImageComponent;
-	Image backgroundImage = ImageCache::getFromMemory(BinaryData::Background_png, BinaryData::Background_pngSize);
-
     //Layout
     Rectangle<int> headerArea();
     Rectangle<int> monitorArea();
@@ -114,15 +125,21 @@ private:
     Rectangle<int> peakArea();
     Rectangle<int> lowpassArea();
     Rectangle<int> lateArea();
+    int boxWidth = 150;
+    int boxHeight = 550;
 
     //Colors
     Colour c_back();
     Colour c_front();
 
     //Fontsizes
-    float fs_mainLabel = 28;
+    float fs_mainLabel();
+    float fs_titelLabel();
+    float padding = 10.0f;
+    float knobLabelHeight = 0.80f;
 
 	//Labels
+    PlasmaLabel plasmaLabel;
 	CustomLabel 
         tooltipLabel,
         //Drive
@@ -153,7 +170,15 @@ private:
         lateDriveLabel,
         preGainLabel,
         mixLabel,
-        analyserLabel;
+        analyserLabel,
+        //Titels
+        inLabel,
+        outLabel,
+        earlyLabel,
+        highpassLabel,
+        peakLabel,
+        lowpassLabel,
+        lateLabel;
 
     //Label Vector
     std::vector<CustomLabel*> getLabels();

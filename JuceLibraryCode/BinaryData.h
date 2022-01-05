@@ -9,7 +9,19 @@
 namespace BinaryData
 {
     extern const char*   OFL_txt;
-    const int            OFL_txtSize = 4478;
+    const int            OFL_txtSize = 4489;
+
+    extern const char*   SedgwickAveDisplayRegular_ttf;
+    const int            SedgwickAveDisplayRegular_ttfSize = 135996;
+
+    extern const char*   OFL_txt2;
+    const int            OFL_txt2Size = 4489;
+
+    extern const char*   SedgwickAveRegular_ttf;
+    const int            SedgwickAveRegular_ttfSize = 140384;
+
+    extern const char*   OFL_txt3;
+    const int            OFL_txt3Size = 4478;
 
     extern const char*   PoppinsBlack_ttf;
     const int            PoppinsBlack_ttfSize = 151340;
@@ -65,11 +77,8 @@ namespace BinaryData
     extern const char*   PoppinsThinItalic_ttf;
     const int            PoppinsThinItalic_ttfSize = 186992;
 
-    extern const char*   Background_png;
-    const int            Background_pngSize = 27570;
-
     // Number of elements in the namedResourceList and originalFileNames arrays.
-    const int namedResourceListSize = 20;
+    const int namedResourceListSize = 23;
 
     // Points to the start of a list of resource names.
     extern const char* namedResourceList[];
