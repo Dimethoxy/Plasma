@@ -66,6 +66,7 @@ void ResponseCurveComponent::paint(juce::Graphics& g)
 
 	//bounds
 	auto bounds = getBounds();
+	auto lineSize = bounds.getHeight()/100;
 
 	//Screen
 	auto x = sl(10);
@@ -159,6 +160,6 @@ void ResponseCurveComponent::paint(juce::Graphics& g)
 	if (chainSettings.analyserType == 0)
 	{
 		g.setColour(Colours::white);
-		g.strokePath(responseCurve, PathStrokeType(3));
+		g.strokePath(responseCurve, PathStrokeType(lineSize));
 	}
 }

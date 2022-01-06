@@ -5,19 +5,75 @@
 #include "CustomRotarySlider.h"
 #include "ResponseCurveComponent.h"
 #include "LoudnessMeterComponent.h"
+
+enum FontSizes
+{
+    Main,
+    Titel,
+    Tooltipp
+};
+
 class CustomLabel : public juce::Label
 {
 public:
-    CustomLabel(String text, float size, Justification justification, bool underline)
+    CustomLabel(String text, int size, Justification justification, bool underline)
     {
-        Typeface::Ptr tface = Typeface::createSystemTypefaceFor(BinaryData::PoppinsMedium_ttf, BinaryData::PoppinsMedium_ttfSize);
-        Font popFont(tface);
-        //popFont.setUnderline(underline);
-        //popFont.setExtraKerningFactor(1);
+        setFontSize(size);
         setText(text, juce::dontSendNotification);
-        setFont(popFont.withHeight(size));
+        setFont(getFont().withHeight(getFontSize()));
         setJustificationType(justification);
-    }    
+    }
+    void resize()
+    {
+        setFont(getFont().withHeight(getScaledFontSize()));
+    }
+private:
+    int fontSize;
+    void setFontSize(int size)
+    {
+        fontSize = size;
+    }
+    Typeface::Ptr getTypeface() 
+    {
+        Typeface::Ptr typeface = Typeface::createSystemTypefaceFor(BinaryData::PoppinsMedium_ttf, BinaryData::PoppinsMedium_ttfSize);
+        return typeface;
+    }
+    Font getFont()
+    {
+        Font font(getTypeface());
+        return font;
+    }
+       
+    float getFontSize()
+    {
+        float factor = 1.0f;//getBounds().getHeight() / 100.0f;
+        switch (fontSize)
+        {
+        case FontSizes::Main:
+        {
+            return 28.0 * factor;
+        }
+        case FontSizes::Titel:
+        {
+            return 42.0 * factor;
+        }
+        }
+    }
+    float getScaledFontSize()
+    {
+        float factor = getBounds().getHeight() / 40.0f;
+        switch (fontSize)
+        {
+        case FontSizes::Main:
+        {
+            return 28.0 * factor;
+        }
+        case FontSizes::Titel:
+        {
+            return 42.0 * factor;
+        }
+        }
+    }
 };
 
 class PlasmaLabel : public juce::Label
@@ -25,11 +81,24 @@ class PlasmaLabel : public juce::Label
 public:
     PlasmaLabel()
     {
-        Typeface::Ptr tface = Typeface::createSystemTypefaceFor(BinaryData::SedgwickAveDisplayRegular_ttf , BinaryData::SedgwickAveDisplayRegular_ttfSize);
-        Font font(tface);
         setText("PLASMA", juce::dontSendNotification);
-        setFont(font.withHeight(100.0));
+        setFont(getFont().withHeight(100));
         setJustificationType(Justification::centredTop);
+    }
+    void setFontSize(int size)
+    {
+        setFont(getFont().withHeight(size));
+    }
+private:
+    Font getFont()
+    {
+        Font font(getTypeFace());
+        return font;
+    }
+    Typeface::Ptr getTypeFace()
+    {
+       Typeface::Ptr tface = Typeface::createSystemTypefaceFor(BinaryData::SedgwickAveDisplayRegular_ttf, BinaryData::SedgwickAveDisplayRegular_ttfSize);
+       return tface;
     }
 };
 
@@ -45,7 +114,12 @@ public:
     void timerCallback() override;
 private:
     //Audio Processor
-    PlasmaAudioProcessor& audioProcessor;	
+    PlasmaAudioProcessor& audioProcessor;
+    
+
+    //Config
+    XmlDocument configDocument;
+    int scaling = 75;
 
 	//Sliders
     CustomRotarySlider 
@@ -116,6 +190,7 @@ private:
     std::vector<juce::Component*> getComps();
 
     //Layout
+    float sc(float val);
     Rectangle<int> headerArea();
     Rectangle<int> monitorArea();
     Rectangle<int> inArea();

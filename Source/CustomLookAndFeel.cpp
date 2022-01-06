@@ -146,6 +146,8 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 	auto lineW = jmin((float)width/12, radius * 0.5f);
 	auto arcRadius = radius - lineW * 0.5f;
 	auto thumbWidth = lineW * 2.0f;
+	auto lineSize = bounds.getHeight() / 40;
+
 	Colour backgroundColor(18, 20, 20);
 	//Draw Rail or Selector
 	if (!isSelector)
@@ -197,12 +199,12 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 		g.setColour(backgroundColor);
 		g.fillEllipse(Rectangle<float>(thumbWidth, thumbWidth).withCentre(thumbPoint));
 		g.setColour(Colours::white);
-		g.drawEllipse(Rectangle<float>(thumbWidth, thumbWidth).withCentre(thumbPoint), 2);
+		g.drawEllipse(Rectangle<float>(thumbWidth, thumbWidth).withCentre(thumbPoint), lineSize);
 	}
 	else {
 		//Draw Selector
 		auto spacing = (rotaryEndAngle - rotaryStartAngle) / (numOptions - 1);
-		auto r = 40;
+		auto r = bounds.getHeight() / 2.5;
 		auto dotSize = thumbWidth;
 		auto radianOffset = rotaryStartAngle - rotaryEndAngle;
 		auto angle = rotaryStartAngle;
@@ -220,7 +222,7 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 				//Dot Ring Unselected
 				Point<float> dot(bounds.getCentreX() + x, bounds.getCentreY() + y);
 				g.setColour(Colours::white);
-				g.drawEllipse(Rectangle<float>(dotSize / 2, dotSize / 2).withCentre(dot), 2);
+				g.drawEllipse(Rectangle<float>(dotSize / 2, dotSize / 2).withCentre(dot), lineSize);
 
 			}
 			else
@@ -230,7 +232,7 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 				g.fillEllipse(Rectangle<float>(dotSize / 2, dotSize / 2).withCentre(fill));
 				Point<float> dot(bounds.getCentreX() + x, bounds.getCentreY() + y);
 				g.setColour(Colours::white);
-				g.drawEllipse(Rectangle<float>(dotSize, dotSize).withCentre(dot), 2);
+				g.drawEllipse(Rectangle<float>(dotSize, dotSize).withCentre(dot), lineSize);
 
 			}
 			angle += spacing;
@@ -270,8 +272,8 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 
 	//Draw Knob
 	g.setColour(Colours::white);
-	g.drawLine(x1, y1, x2, y2, 3);
-	g.drawEllipse(circleBounds, 3);
+	g.drawLine(x1, y1, x2, y2, lineSize);
+	g.drawEllipse(circleBounds, lineSize);
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
