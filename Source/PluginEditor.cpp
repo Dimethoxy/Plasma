@@ -115,18 +115,17 @@ highpassLabel("Highpass", FontSizes(Titel), Justification::centredTop, true),
 peakLabel("Peak", FontSizes(Titel), Justification::centredTop, true),
 lowpassLabel("Lowpass", FontSizes(Titel), Justification::centredTop, true),
 lateLabel("Distortion", FontSizes(Titel), Justification::centredTop, true),
-plasmaLabel(),
-configDocument(File::getCurrentWorkingDirectory().getChildFile("config.xml"))
+plasmaLabel()
 {
-	/*
-	//Config
-	XmlElement configElement("config");
-	XmlElement* guiElement = new XmlElement("gui");
-	guiElement->setAttribute("scaling", 50);
-	configElement.addChildElement(guiElement);
-	auto configString = configElement.toString();
-	configElement.writeToFile(File::getCurrentWorkingDirectory().getChildFile("config.xml"), "UTF-8");
-	*/
+	//Load Config File
+	options.applicationName = "Plasma";
+	options.filenameSuffix = ".config";
+	applicationProperties.setStorageParameters(options);
+	auto userSettings = applicationProperties.getUserSettings();
+	auto commonSettings = applicationProperties.getCommonSettings(false);
+	
+	//Load Config Data
+	scaling = userSettings->getIntValue("scale", 100);
 
 	//Make all components visible
 	for (auto* comp : getComps())
@@ -137,6 +136,15 @@ configDocument(File::getCurrentWorkingDirectory().getChildFile("config.xml"))
 	{
 		addAndMakeVisible(label);
 	}
+	
+	scaleUpButton.setButtonText("+");
+	scaleUpButton.addListener(this);
+	addAndMakeVisible(scaleUpButton);
+	
+	scaleDownButton.setButtonText("-");
+	scaleDownButton.addListener(this);
+	addAndMakeVisible(scaleDownButton);
+	
 	addAndMakeVisible(plasmaLabel);
 
 	//Tooltip
@@ -308,10 +316,37 @@ float PlasmaAudioProcessorEditor::fs_titelLabel()
 {
 	return sc(42.0f);
 }
+void PlasmaAudioProcessorEditor::buttonClicked(Button* button)
+{
+	if (button == &scaleUpButton) 
+	{
+		if (scaling < 400)
+		{
+			scaling += 20;
+			auto userSettings = applicationProperties.getUserSettings();
+			auto commonSettings = applicationProperties.getCommonSettings(false);
+			userSettings->setValue("scale", scaling);
+			userSettings->save();
+			resized();
+		}
+	}
+	else if (button == &scaleDownButton)
+	{
+		if (scaling >= 40)
+		{
+			scaling -= 20;
+			auto userSettings = applicationProperties.getUserSettings();
+			auto commonSettings = applicationProperties.getCommonSettings(false);
+			userSettings->setValue("scale", scaling);
+			userSettings->save();
+			resized();
+		}
+	}
+}
 void PlasmaAudioProcessorEditor::resized()
 {
 	int knobSize = 120;
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////
 	//Monitor
 	responseCurveComponent.setBounds(
 		monitorArea().getX(), 
@@ -326,7 +361,8 @@ void PlasmaAudioProcessorEditor::resized()
 		monitorArea().getY() + sc(padding), 
 		sc(300), 
 		sc(40));
-	plasmaLabel.setBounds(0, sc(-42), getWidth(), sc(100));
+	auto logoX = headerArea().getCentreX() - sc(100);
+	plasmaLabel.setBounds(logoX, sc(-42), sc(200), sc(100));
 	plasmaLabel.setFontSize(sc(100));
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//In
@@ -648,6 +684,20 @@ void PlasmaAudioProcessorEditor::resized()
 		label->resize();
 	}
 	setSize(lateArea().getRight() + sc(padding), lateArea().getBottom() + sc(padding));
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//Scale Knobs
+	int scaleKnobSize = headerArea().getHeight() - 2 * (sc(padding));
+	scaleDownButton.setBounds(
+		getWidth() - scaleKnobSize - sc(padding),
+		sc(padding),
+		scaleKnobSize,
+		scaleKnobSize);
+	scaleUpButton.setBounds(
+		scaleDownButton.getX() - sc(padding) - scaleKnobSize,
+		sc(padding),
+		scaleKnobSize,
+		scaleKnobSize);
+	
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Misc

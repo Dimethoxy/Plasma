@@ -76,6 +76,22 @@ private:
     }
 };
 
+class ScaleButton : public juce::TextButton
+{
+
+private:
+    Typeface::Ptr getCustomTypeface()
+    {
+        Typeface::Ptr typeface = Typeface::createSystemTypefaceFor(BinaryData::PoppinsMedium_ttf, BinaryData::PoppinsMedium_ttfSize);
+        return typeface;
+    }
+    Font getCustomFont()
+    {
+        Font font(getCustomTypeface());
+        return font;
+    }
+};
+
 class PlasmaLabel : public juce::Label
 {
 public:
@@ -102,7 +118,9 @@ private:
     }
 };
 
-class PlasmaAudioProcessorEditor : public juce::AudioProcessorEditor, public Timer
+class PlasmaAudioProcessorEditor : public juce::AudioProcessorEditor, 
+                                   public Timer,
+                                   public Button::Listener
 {
 public:
     PlasmaAudioProcessorEditor(PlasmaAudioProcessor&);
@@ -112,14 +130,21 @@ public:
     void resized() override;
 
     void timerCallback() override;
+    void buttonClicked(Button* button) override;
 private:
+    //Scaling
+    TextButton scaleUpButton;
+    TextButton scaleDownButton;
+    TextButton configButton;
+
+
     //Audio Processor
     PlasmaAudioProcessor& audioProcessor;
-    
 
     //Config
-    XmlDocument configDocument;
-    int scaling = 75;
+    ApplicationProperties applicationProperties;
+    PropertiesFile::Options options;
+    int scaling = 100; 
 
 	//Sliders
     CustomRotarySlider 
