@@ -137,6 +137,9 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\PlasmaLabel.cpp"/>
+    <ClCompile Include="..\..\Source\CustomTextButton.cpp"/>
+    <ClCompile Include="..\..\Source\CustomLabel.cpp"/>
     <ClCompile Include="..\..\Source\LoudnessMeterComponent.cpp"/>
     <ClCompile Include="..\..\Source\ResponseCurveComponent.cpp"/>
     <ClCompile Include="..\..\Source\CustomRotarySlider.cpp"/>
@@ -2204,6 +2207,9 @@
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_gui_extra.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\PlasmaLabel.h"/>
+    <ClInclude Include="..\..\Source\CustomTextButton.h"/>
+    <ClInclude Include="..\..\Source\CustomLabel.h"/>
     <ClInclude Include="..\..\Source\LoudnessMeterComponent.h"/>
     <ClInclude Include="..\..\Source\ResponseCurveComponent.h"/>
     <ClInclude Include="..\..\Source\CustomRotarySlider.h"/>

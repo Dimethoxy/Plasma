@@ -1,5 +1,22 @@
 #include "CustomLookAndFeel.h"
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Buttons
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void CustomLookAndFeel::drawButtonBackground(
+	Graphics& g,
+	Button& button,
+	const Colour& backgroundColour,
+	bool isMouseOverButton,
+	bool isButtonDown)
+{
+	g.setColour(Colours::white);
+	g.fillRect(button.getBounds());
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Slider
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 	int x, int y, int width, int height,
 	float sliderPosProportional,
@@ -9,10 +26,10 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 {
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Check Type and Generate String
-	
+
 	//Default Skewfactor
 	auto skewFactor = 0.5;
-	
+
 	//Selector Parameters
 	bool isSelector = false;
 	int numOptions = 4;
@@ -26,30 +43,33 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 	if (slider.getName() == "Distortion")
 	{
 		isSelector = true;
-		numOptions = 7;
+		numOptions = 8;
 		selectedOption = (int)slider.getValue();
 		switch ((int)slider.getValue())
 		{
-		case 0:
+		case Hardclip:
 			slider.setHelpText("Distortion Type : Hardclip");
 			break;
-		case 1:
+		case Softclip:
 			slider.setHelpText("Distortion Type : Softclip");
 			break;
-		case 2:
-			slider.setHelpText("Distortion Type : Overdrive");
+		case Root:
+			slider.setHelpText("Distortion Type : Root");
 			break;
-		case 3:
-			slider.setHelpText("Distortion Type : Bitcrush");
-			break;
-		case 4:
+		case Atan:
 			slider.setHelpText("Distortion Type : Atan");
 			break;
-		case 5:
-			slider.setHelpText("Distortion Type : Sinus");
+		case Scream:
+			slider.setHelpText("Distortion Type : Scream");
 			break;
-		case 6:
-			slider.setHelpText("Distortion Type : Cosinus");
+		case Bitcrush:
+			slider.setHelpText("Distortion Type : Bitcrush");
+			break;
+		case Sine:
+			slider.setHelpText("Distortion Type : Sine");
+			break;
+		case Cosine:
+			slider.setHelpText("Distortion Type : Cosine");
 			break;
 		}
 	}
@@ -140,10 +160,10 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 	auto normalisedPos = targetRange.convertFrom0to1(sliderPosProportional);
 	auto outline = slider.findColour(Slider::rotarySliderOutlineColourId);
 	auto fill = slider.findColour(Slider::rotarySliderFillColourId);
-	auto bounds = Rectangle<int>(x, y, width, height).toFloat().reduced(width/12);
+	auto bounds = Rectangle<int>(x, y, width, height).toFloat().reduced(width / 12);
 	auto radius = jmin(bounds.getWidth(), bounds.getHeight()) / 2.3f;
 	auto toAngle = rotaryStartAngle + normalisedPos * (rotaryEndAngle - rotaryStartAngle);
-	auto lineW = jmin((float)width/12, radius * 0.5f);
+	auto lineW = jmin((float)width / 12, radius * 0.5f);
 	auto arcRadius = radius - lineW * 0.5f;
 	auto thumbWidth = lineW * 2.0f;
 	auto lineSize = bounds.getHeight() / 40;
@@ -178,7 +198,7 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 					rotaryStartAngle,
 					toAngle,
 					true);
-			} 
+			}
 			else
 			{
 				valueArc.addCentredArc(bounds.getCentreX(),
@@ -241,7 +261,7 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 
 	//Calculate Knob
 	auto sliderAngleRadian = jmap(normalisedPos, 0.0f, 1.0f, rotaryStartAngle, rotaryEndAngle);
-	auto offset = width /4;
+	auto offset = width / 4;
 	float r = width / 6;
 	if (slider.isMouseButtonDown()) {
 		offset = width / 4.5;

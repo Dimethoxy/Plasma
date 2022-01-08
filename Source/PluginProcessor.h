@@ -9,10 +9,10 @@ float clamp(float d, float min, float max);
 enum ChainPositions
 {
 	HighPass,
-    HighPassResonance,
+	HighPassResonance,
 	Peak,
 	LowPass,
-    LowPassResonance,
+	LowPassResonance,
 };
 enum Slope
 {
@@ -20,10 +20,10 @@ enum Slope
 	Slope_24,
 	Slope_36,
 	Slope_48,
-    Slope_60,
-    Slope_72,
-    Slope_84,
-    Slope_96
+	Slope_60,
+	Slope_72,
+	Slope_84,
+	Slope_96
 };
 enum AnalyserType
 {
@@ -37,11 +37,12 @@ enum Distortion
 {
 	Hardclip,
 	Softclip,
-	Overdrive,
-	Bitcrush,
+	Root,
+	Scream,
 	Atan,
-	Sinus,
-	Cosinus,
+	Bitcrush,
+	Sine,
+	Cosine,
 };
 
 //Chain Settings
@@ -56,7 +57,7 @@ struct ChainSettings
 	float mix{ 100.0f };
 	Slope highPassSlope{ Slope::Slope_12 }, lowPassSlope{ Slope::Slope_12 };
 	AnalyserType analyserType{ AnalyserType::Response };
-	Distortion driveType{ Distortion::Overdrive }, lateDriveType{ Distortion::Overdrive };
+	Distortion driveType{ Distortion::Hardclip }, lateDriveType{ Distortion::Hardclip };
 };
 ChainSettings getChainSettings(juce::AudioProcessorValueTreeState& apvts);
 
@@ -131,9 +132,9 @@ void updatePassFilter
 inline auto makeHighPassFilter(const ChainSettings& chainSettings, double sampleRate)
 {
 	return juce::dsp::FilterDesign<float>::designIIRHighpassHighOrderButterworthMethod(
-			chainSettings.highPassFreq,
-			sampleRate,
-			2 * (chainSettings.highPassSlope + 1));
+		chainSettings.highPassFreq,
+		sampleRate,
+		2 * (chainSettings.highPassSlope + 1));
 }
 inline auto makeLowPassFilter(const ChainSettings& chainSettings, double sampleRate)
 {
@@ -150,105 +151,134 @@ inline auto makeLowPassFilter(const ChainSettings& chainSettings, double sampleR
 class PlasmaAudioProcessor : public juce::AudioProcessor
 {
 public:
-    //==============================================================================
-    PlasmaAudioProcessor();
-    ~PlasmaAudioProcessor() override;
+	//==============================================================================
+	PlasmaAudioProcessor();
+	~PlasmaAudioProcessor() override;
 
-    //==============================================================================
-    void prepareToPlay(double sampleRate, int samplesPerBlock) override;
-    void releaseResources() override;
+	//==============================================================================
+	void prepareToPlay(double sampleRate, int samplesPerBlock) override;
+	void releaseResources() override;
 
 #ifndef JucePlugin_PreferredChannelConfigurations
-    bool isBusesLayoutSupported(const BusesLayout& layouts) const override;
+	bool isBusesLayoutSupported(const BusesLayout& layouts) const override;
 #endif
 
-    void processBlock(juce::AudioBuffer<float>&, juce::MidiBuffer&) override;
+	void processBlock(juce::AudioBuffer<float>&, juce::MidiBuffer&) override;
 
-    //==============================================================================
-    juce::AudioProcessorEditor* createEditor() override;
-    bool hasEditor() const override;
+	//==============================================================================
+	juce::AudioProcessorEditor* createEditor() override;
+	bool hasEditor() const override;
 
-    //==============================================================================
-    const juce::String getName() const override;
+	//==============================================================================
+	const juce::String getName() const override;
 
-    bool acceptsMidi() const override;
-    bool producesMidi() const override;
-    bool isMidiEffect() const override;
-    double getTailLengthSeconds() const override;
+	bool acceptsMidi() const override;
+	bool producesMidi() const override;
+	bool isMidiEffect() const override;
+	double getTailLengthSeconds() const override;
 
-    //==============================================================================
-    int getNumPrograms() override;
-    int getCurrentProgram() override;
-    void setCurrentProgram(int index) override;
-    const juce::String getProgramName(int index) override;
-    void changeProgramName(int index, const juce::String& newName) override;
+	//==============================================================================
+	int getNumPrograms() override;
+	int getCurrentProgram() override;
+	void setCurrentProgram(int index) override;
+	const juce::String getProgramName(int index) override;
+	void changeProgramName(int index, const juce::String& newName) override;
 
-    //==============================================================================
-    void getStateInformation(juce::MemoryBlock& destData) override;
-    void setStateInformation(const void* data, int sizeInBytes) override;
+	//==============================================================================
+	void getStateInformation(juce::MemoryBlock& destData) override;
+	void setStateInformation(const void* data, int sizeInBytes) override;
 
-    //==============================================================================
+	//==============================================================================
 
-    static juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
-    juce::AudioProcessorValueTreeState apvts{ *this, nullptr, "Parameters", createParameterLayout() };
+	static juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
+	juce::AudioProcessorValueTreeState apvts{ *this, nullptr, "Parameters", createParameterLayout() };
 
 private:
 	//Clean Buffer
 	AudioSampleBuffer cleanBuffer;
-	
+
 	//LoudnessMeter
 	float rmsLevelLeft, rmsLevelRight;
 
 	//Filters
 	MonoChain leftChain, rightChain;
-    void updatePeakFilter(const ChainSettings& chainSettings);
-    void updateHighPassResonance(const ChainSettings& chainSettings);
-    void updateLowPassResonance(const ChainSettings& chainSettings);
-    void updateHighPass(const ChainSettings& chainSettings);
-    void updateLowPass(const ChainSettings& chainSettings);
-    void updateFilters();
-	
-	
+	void updatePeakFilter(const ChainSettings& chainSettings);
+	void updateHighPassResonance(const ChainSettings& chainSettings);
+	void updateLowPassResonance(const ChainSettings& chainSettings);
+	void updateHighPass(const ChainSettings& chainSettings);
+	void updateLowPass(const ChainSettings& chainSettings);
+	void updateFilters();
+
+
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Distortion
-    template<typename Data, typename Drive, typename Distortion>
-    void distort(Data& data, Drive& drive, Distortion& type){
-		switch (type){
-		case Hardclip:{
+	template<typename Data, typename Drive, typename Distortion>
+	void distort(Data& data, Drive& drive, Distortion& type) {
+		switch (type) {
+		case Hardclip:
+		{
 			data = clamp(drive * data, -1.0, 1.0);
 			break;
 		}
-		case Softclip:{
-			data = (pi / 2) * atan(drive * data);
+		case Softclip:
+		{
+			data = 1.27 * atan(drive * data);
 			break;
 		}
-		case Overdrive:{
-			if (data > 0.0){
-				data = clamp(pow(data, 1.0 / ((drive/4) + 0.75)), -1.0, 1.0);
+		case Scream:
+		{
+			if (data > 0.0) {
+				data = pow(data, 1.0f / drive);
+				data = 0.9 * tan(atan(data));
 			}
-			else{
+			else {
+				data = pow(-data, 1.0f / drive);
+				data = 0.9 * tan(atan(data));
+				data = -data;
+			};
+			break;
+		}
+		case Bitcrush:
+		{
+			auto k = (1 / drive) * (1 / drive);
+			data = data * k;
+			data = ceil(data);
+			data = data / k;
+			break;
+		}
+		case Root:
+		{
+			if (data > 0.0) {
+				data = clamp(pow(data, 1.0 / ((drive / 4) + 0.75)), -1.0, 1.0);
+			}
+			else {
 				data = -clamp(pow(-data, 1.0 / ((drive / 4) + 0.75)), -1.0, 1.0);
 			}
 			break;
 		}
-		case Bitcrush:{
-			data = (2 * (ceil((data * ((10 / drive) * (10 / drive))) * 0.99) - 0.5)) / ((10 / drive) * (10 / drive));
+		case Atan:
+		{
+			if (data > 0.0) {
+				data = pow(data, 1.0f / drive);
+				data = 1.27 * atan(data);
+			}
+			else {
+				data = pow(-data, 1.0f / drive);
+				data = 1.27 * atan(data);
+				data = -data;
+			};
 			break;
 		}
-		case Atan:{
-			data = clamp(2 * atan(drive * data), -1.0, 1.0);
-			break;
-		}
-		case Sinus:{
+		case Sine: {
 			data = clamp(sin(drive * data), -1.0, 1.0);
 			break;
 		}
-		case Cosinus:{
+		case Cosine: {
 			data = clamp(cos(drive * data), -1.0, 1.0);
 			break;
 		}
 		}
-    }
+	}
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PlasmaAudioProcessor);
 };

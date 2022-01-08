@@ -69,10 +69,10 @@ void ResponseCurveComponent::paint(juce::Graphics& g)
 	auto lineSize = bounds.getHeight()/100;
 
 	//Screen
-	auto x = sl(10);
-	auto y = sl(10);
-	auto w = sl(bounds.getWidth()-10);
-	auto h = sl(bounds.getHeight());
+	auto x = padding;
+	auto y = padding;
+	auto w = bounds.getWidth() - padding;
+	auto h = bounds.getHeight() - padding;
 
 	//g.setColour(Colours::black);
 	//g.fillRect(x, y, w, h);
@@ -162,4 +162,9 @@ void ResponseCurveComponent::paint(juce::Graphics& g)
 		g.setColour(Colours::white);
 		g.strokePath(responseCurve, PathStrokeType(lineSize));
 	}
+}
+
+void ResponseCurveComponent::setPadding(float newPadding) 
+{
+	padding = newPadding;
 }

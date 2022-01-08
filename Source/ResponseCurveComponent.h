@@ -3,11 +3,6 @@
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 
-inline int sl(float value)
-{
-    return round(value * 1.0f);
-}
-
 class ResponseCurveComponent : public Component,
     juce::AudioProcessorParameter::Listener,
     juce::Timer
@@ -21,9 +16,10 @@ public:
     void timerCallback() override;
     void update();
     void paint(juce::Graphics& g) override;
-
+    void setPadding(float newPadding);
 private:
     PlasmaAudioProcessor& audioProcessor;
     juce::Atomic<bool> parametersChanged{ false };
     MonoChain monoChain;
-};
+    float padding = 10;
+}; 

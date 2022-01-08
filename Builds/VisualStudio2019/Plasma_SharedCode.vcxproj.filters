@@ -481,6 +481,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\PlasmaLabel.cpp">
+      <Filter>Plasma\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\CustomTextButton.cpp">
+      <Filter>Plasma\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\CustomLabel.cpp">
+      <Filter>Plasma\Source</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\LoudnessMeterComponent.cpp">
       <Filter>Plasma\Source</Filter>
     </ClCompile>
@@ -2715,6 +2724,15 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\PlasmaLabel.h">
+      <Filter>Plasma\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\CustomTextButton.h">
+      <Filter>Plasma\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\CustomLabel.h">
+      <Filter>Plasma\Source</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\LoudnessMeterComponent.h">
       <Filter>Plasma\Source</Filter>
     </ClInclude>

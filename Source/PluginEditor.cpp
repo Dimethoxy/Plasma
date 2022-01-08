@@ -17,105 +17,108 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	biasSlider(*audioProcessor.apvts.getParameter("Bias"), "", "Symmetry"),
 	driveTypeSlider(*audioProcessor.apvts.getParameter("Distortion Type"), "", "Distortion"),
 	//Highpass
-highPassFreqSlider(*audioProcessor.apvts.getParameter("Highpass Freq"), "Hz", "Highpass"),
-highPassResonanceSlider(*audioProcessor.apvts.getParameter("Highpass Resonance"), "dB", "Resonance"),
-highPassResonanceQualitySlider(*audioProcessor.apvts.getParameter("Highpass Resonance Q"), "", "Quality"),
-highPassSlopeSlider(*audioProcessor.apvts.getParameter("Highpass Slope"), "dB/oct", "Slope"),
-//Peak
-peakStereoSlider(*audioProcessor.apvts.getParameter("Peak Stereo"), "%", "Peak Stereo"),
-peakFreqSlider(*audioProcessor.apvts.getParameter("Peak Freq"), "Hz", "Peak"),
-peakGainSlider(*audioProcessor.apvts.getParameter("Peak Gain"), "dB", "Peak Resonance"),
-peakQualitySlider(*audioProcessor.apvts.getParameter("Peak Quality"), "", "Quality"),
-//Lowpass
-lowPassFreqSlider(*audioProcessor.apvts.getParameter("Lowpass Freq"), "Hz", "Lowpass"),
-lowPassResonanceSlider(*audioProcessor.apvts.getParameter("Lowpass Resonance"), "dB", "Resonance"),
-lowPassResonanceQualitySlider(*audioProcessor.apvts.getParameter("Lowpass Resonance Q"), "", "Quality"),
-lowPassSlopeSlider(*audioProcessor.apvts.getParameter("Lowpass Slope"), "dB/oct", "Slope"),
-//Lategain
-gainSlider(*audioProcessor.apvts.getParameter("Gain"), "dB", "Gain"),
-lateDriveSlider(*audioProcessor.apvts.getParameter("Late Drive"), "", "Drive"),
-lateGirthSlider(*audioProcessor.apvts.getParameter("Girth"), "", "Girth"),
-lateBiasSlider(*audioProcessor.apvts.getParameter("Late Bias"), "", "Symmetry"),
-lateDriveTypeSlider(*audioProcessor.apvts.getParameter("Late Distortion Type"), "", "Distortion"),
-mixSlider(*audioProcessor.apvts.getParameter("Mix"), "%", "Mix"),
-analyserSlider(*audioProcessor.apvts.getParameter("Analyser Type"), "", "Analyser Type"),
-//ResponseCurve
-responseCurveComponent(audioProcessor),
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//Attachments
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//In
-preGainSliderAttachment(audioProcessor.apvts, "Pre Gain", preGainSlider),
-analyserSliderAttachment(audioProcessor.apvts, "Analyser Type", analyserSlider),
-//Early
-driveTypeSliderAttachment(audioProcessor.apvts, "Distortion Type", driveTypeSlider),
-girthSliderAttachment(audioProcessor.apvts, "Girth", girthSlider),
-driveSliderAttachment(audioProcessor.apvts, "Drive", driveSlider),
-biasSliderAttachment(audioProcessor.apvts, "Bias", biasSlider),
-highPassResonanceSliderAttachment(audioProcessor.apvts, "Highpass Resonance", highPassResonanceSlider),
-highPassResonanceQualitySliderAttachment(audioProcessor.apvts, "Highpass Resonance Q", highPassResonanceQualitySlider),
-highPassFreqSliderAttachment(audioProcessor.apvts, "Highpass Freq", highPassFreqSlider),
-highPassSlopeSliderAttachment(audioProcessor.apvts, "Highpass Slope", highPassSlopeSlider),
-//Peak
-peakStereoSliderAttachment(audioProcessor.apvts, "Peak Stereo", peakStereoSlider),
-peakFreqSliderAttachment(audioProcessor.apvts, "Peak Freq", peakFreqSlider),
-peakGainSliderAttachment(audioProcessor.apvts, "Peak Gain", peakGainSlider),
-peakQualitySliderAttachment(audioProcessor.apvts, "Peak Q", peakQualitySlider),
-//Lowpass
-lowPassFreqSliderAttachment(audioProcessor.apvts, "Lowpass Freq", lowPassFreqSlider),
-lowPassSlopeSliderAttachment(audioProcessor.apvts, "Lowpass Slope", lowPassSlopeSlider),
-lowPassResonanceQualitySliderAttachment(audioProcessor.apvts, "Lowpass Resonance Q", lowPassResonanceQualitySlider),
-lowPassResonanceSliderAttachment(audioProcessor.apvts, "Lowpass Resonance", lowPassResonanceSlider),
-//Late
-lateBiasSliderAttachment(audioProcessor.apvts, "Late Bias", lateBiasSlider),
-lateDriveTypeSliderAttachment(audioProcessor.apvts, "Late Distortion Type", lateDriveTypeSlider),
-lateGirthSliderAttachment(audioProcessor.apvts, "Late Girth", lateGirthSlider),
-lateDriveSliderAttachment(audioProcessor.apvts, "Late Drive", lateDriveSlider),
-//Out
-gainSliderAttachment(audioProcessor.apvts, "Gain", gainSlider),
-mixSliderAttachment(audioProcessor.apvts, "Mix", mixSlider),
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//Labels
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-tooltipLabel("", FontSizes::Main, Justification::centredLeft, false),
-//Drive
-gainLabel("Gain", FontSizes::Main, Justification::centredTop, false),
-driveLabel("Drive", FontSizes(Main), Justification::centredTop, false),
-girthLabel("Girth", FontSizes(Main), Justification::centredTop, false),
-biasLabel("Symmetry", FontSizes(Main), Justification::centredTop, false),
-driveTypeLabel("Type", FontSizes(Main), Justification::centredTop, false),
-//Highpass
-highPassFreqLabel("Frequency", FontSizes(Main), Justification::centredTop, false),
-highPassResonanceLabel("Resonance", FontSizes(Main), Justification::centredTop, false),
-highPassResonanceQualityLabel("Q", FontSizes(Main), Justification::centredTop, false),
-highPassSlopeLabel("Slope", FontSizes(Main), Justification::centredTop, false),
-//Peak
-peakStereoLabel("Stereo", FontSizes(Main), Justification::centredTop, false),
-peakFreqLabel("Frequency", FontSizes(Main), Justification::centredTop, false),
-peakGainLabel("Gain", FontSizes(Main), Justification::centredTop, false),
-peakQualityLabel("Q", FontSizes(Main), Justification::centredTop, false),
-//Lowpass
-lowPassFreqLabel("Frequency", FontSizes(Main), Justification::centredTop, false),
-lowPassResonanceLabel("Resonance", FontSizes(Main), Justification::centredTop, false),
-lowPassResonanceQualityLabel("Q", FontSizes(Main), Justification::centredTop, false),
-lowPassSlopeLabel("Slope", FontSizes(Main), Justification::centredTop, false),
-//lateDrive
-lateBiasLabel("Symmetry", FontSizes(Main), Justification::centredTop, false),
-lateDriveTypeLabel("Type", FontSizes(Main), Justification::centredTop, false),
-lateGirthLabel("Girth", FontSizes(Main), Justification::centredTop, false),
-lateDriveLabel("Drive", FontSizes(Main), Justification::centredTop, false),
-preGainLabel("Gain", FontSizes(Main), Justification::centredTop, false),
-mixLabel("Mix", FontSizes(Main), Justification::centredTop, false),
-analyserLabel("Analyser", FontSizes(Main), Justification::centredTop, false),
-//Titels
-inLabel("Input", FontSizes(Titel), Justification::centredTop, true),
-outLabel("Output", FontSizes(Titel), Justification::centredTop, true),
-earlyLabel("Distortion", FontSizes(Titel), Justification::centredTop, true),
-highpassLabel("Highpass", FontSizes(Titel), Justification::centredTop, true),
-peakLabel("Peak", FontSizes(Titel), Justification::centredTop, true),
-lowpassLabel("Lowpass", FontSizes(Titel), Justification::centredTop, true),
-lateLabel("Distortion", FontSizes(Titel), Justification::centredTop, true),
-plasmaLabel()
+	highPassFreqSlider(*audioProcessor.apvts.getParameter("Highpass Freq"), "Hz", "Highpass"),
+	highPassResonanceSlider(*audioProcessor.apvts.getParameter("Highpass Resonance"), "dB", "Resonance"),
+	highPassResonanceQualitySlider(*audioProcessor.apvts.getParameter("Highpass Resonance Q"), "", "Quality"),
+	highPassSlopeSlider(*audioProcessor.apvts.getParameter("Highpass Slope"), "dB/oct", "Slope"),
+	//Peak
+	peakStereoSlider(*audioProcessor.apvts.getParameter("Peak Stereo"), "%", "Peak Stereo"),
+	peakFreqSlider(*audioProcessor.apvts.getParameter("Peak Freq"), "Hz", "Peak"),
+	peakGainSlider(*audioProcessor.apvts.getParameter("Peak Gain"), "dB", "Peak Resonance"),
+	peakQualitySlider(*audioProcessor.apvts.getParameter("Peak Quality"), "", "Quality"),
+	//Lowpass
+	lowPassFreqSlider(*audioProcessor.apvts.getParameter("Lowpass Freq"), "Hz", "Lowpass"),
+	lowPassResonanceSlider(*audioProcessor.apvts.getParameter("Lowpass Resonance"), "dB", "Resonance"),
+	lowPassResonanceQualitySlider(*audioProcessor.apvts.getParameter("Lowpass Resonance Q"), "", "Quality"),
+	lowPassSlopeSlider(*audioProcessor.apvts.getParameter("Lowpass Slope"), "dB/oct", "Slope"),
+	//Lategain
+	gainSlider(*audioProcessor.apvts.getParameter("Gain"), "dB", "Gain"),
+	lateDriveSlider(*audioProcessor.apvts.getParameter("Late Drive"), "", "Drive"),
+	lateGirthSlider(*audioProcessor.apvts.getParameter("Girth"), "", "Girth"),
+	lateBiasSlider(*audioProcessor.apvts.getParameter("Late Bias"), "", "Symmetry"),
+	lateDriveTypeSlider(*audioProcessor.apvts.getParameter("Late Distortion Type"), "", "Distortion"),
+	mixSlider(*audioProcessor.apvts.getParameter("Mix"), "%", "Mix"),
+	analyserSlider(*audioProcessor.apvts.getParameter("Analyser Type"), "", "Analyser Type"),
+	//ResponseCurve
+	responseCurveComponent(audioProcessor),
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//Attachments
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//In
+	preGainSliderAttachment(audioProcessor.apvts, "Pre Gain", preGainSlider),
+	analyserSliderAttachment(audioProcessor.apvts, "Analyser Type", analyserSlider),
+	//Early
+	driveTypeSliderAttachment(audioProcessor.apvts, "Distortion Type", driveTypeSlider),
+	girthSliderAttachment(audioProcessor.apvts, "Girth", girthSlider),
+	driveSliderAttachment(audioProcessor.apvts, "Drive", driveSlider),
+	biasSliderAttachment(audioProcessor.apvts, "Bias", biasSlider),
+	highPassResonanceSliderAttachment(audioProcessor.apvts, "Highpass Resonance", highPassResonanceSlider),
+	highPassResonanceQualitySliderAttachment(audioProcessor.apvts, "Highpass Resonance Q", highPassResonanceQualitySlider),
+	highPassFreqSliderAttachment(audioProcessor.apvts, "Highpass Freq", highPassFreqSlider),
+	highPassSlopeSliderAttachment(audioProcessor.apvts, "Highpass Slope", highPassSlopeSlider),
+	//Peak
+	peakStereoSliderAttachment(audioProcessor.apvts, "Peak Stereo", peakStereoSlider),
+	peakFreqSliderAttachment(audioProcessor.apvts, "Peak Freq", peakFreqSlider),
+	peakGainSliderAttachment(audioProcessor.apvts, "Peak Gain", peakGainSlider),
+	peakQualitySliderAttachment(audioProcessor.apvts, "Peak Q", peakQualitySlider),
+	//Lowpass
+	lowPassFreqSliderAttachment(audioProcessor.apvts, "Lowpass Freq", lowPassFreqSlider),
+	lowPassSlopeSliderAttachment(audioProcessor.apvts, "Lowpass Slope", lowPassSlopeSlider),
+	lowPassResonanceQualitySliderAttachment(audioProcessor.apvts, "Lowpass Resonance Q", lowPassResonanceQualitySlider),
+	lowPassResonanceSliderAttachment(audioProcessor.apvts, "Lowpass Resonance", lowPassResonanceSlider),
+	//Late
+	lateBiasSliderAttachment(audioProcessor.apvts, "Late Bias", lateBiasSlider),
+	lateDriveTypeSliderAttachment(audioProcessor.apvts, "Late Distortion Type", lateDriveTypeSlider),
+	lateGirthSliderAttachment(audioProcessor.apvts, "Late Girth", lateGirthSlider),
+	lateDriveSliderAttachment(audioProcessor.apvts, "Late Drive", lateDriveSlider),
+	//Out
+	gainSliderAttachment(audioProcessor.apvts, "Gain", gainSlider),
+	mixSliderAttachment(audioProcessor.apvts, "Mix", mixSlider),
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//Labels
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	tooltipLabel("", FontSizes::Main, Justification::centredLeft, false),
+	//Drive
+	gainLabel("Gain", FontSizes::Main, Justification::centredTop, false),
+	driveLabel("Drive", FontSizes(Main), Justification::centredTop, false),
+	girthLabel("Girth", FontSizes(Main), Justification::centredTop, false),
+	biasLabel("Symmetry", FontSizes(Main), Justification::centredTop, false),
+	driveTypeLabel("Type", FontSizes(Main), Justification::centredTop, false),
+	//Highpass
+	highPassFreqLabel("Frequency", FontSizes(Main), Justification::centredTop, false),
+	highPassResonanceLabel("Resonance", FontSizes(Main), Justification::centredTop, false),
+	highPassResonanceQualityLabel("Q", FontSizes(Main), Justification::centredTop, false),
+	highPassSlopeLabel("Slope", FontSizes(Main), Justification::centredTop, false),
+	//Peak
+	peakStereoLabel("Stereo", FontSizes(Main), Justification::centredTop, false),
+	peakFreqLabel("Frequency", FontSizes(Main), Justification::centredTop, false),
+	peakGainLabel("Gain", FontSizes(Main), Justification::centredTop, false),
+	peakQualityLabel("Q", FontSizes(Main), Justification::centredTop, false),
+	//Lowpass
+	lowPassFreqLabel("Frequency", FontSizes(Main), Justification::centredTop, false),
+	lowPassResonanceLabel("Resonance", FontSizes(Main), Justification::centredTop, false),
+	lowPassResonanceQualityLabel("Q", FontSizes(Main), Justification::centredTop, false),
+	lowPassSlopeLabel("Slope", FontSizes(Main), Justification::centredTop, false),
+	//lateDrive
+	lateBiasLabel("Symmetry", FontSizes(Main), Justification::centredTop, false),
+	lateDriveTypeLabel("Type", FontSizes(Main), Justification::centredTop, false),
+	lateGirthLabel("Girth", FontSizes(Main), Justification::centredTop, false),
+	lateDriveLabel("Drive", FontSizes(Main), Justification::centredTop, false),
+	preGainLabel("Gain", FontSizes(Main), Justification::centredTop, false),
+	mixLabel("Mix", FontSizes(Main), Justification::centredTop, false),
+	analyserLabel("Analyser", FontSizes(Main), Justification::centredTop, false),
+	//Titels
+	inLabel("Input", FontSizes(Titel), Justification::centredTop, true),
+	outLabel("Output", FontSizes(Titel), Justification::centredTop, true),
+	earlyLabel("Distortion", FontSizes(Titel), Justification::centredTop, true),
+	highpassLabel("Highpass", FontSizes(Titel), Justification::centredTop, true),
+	peakLabel("Peak", FontSizes(Titel), Justification::centredTop, true),
+	lowpassLabel("Lowpass", FontSizes(Titel), Justification::centredTop, true),
+	lateLabel("Distortion", FontSizes(Titel), Justification::centredTop, true),
+	plasmaLabel(),
+	configButton(),
+	scaleUpButton(),
+	scaleDownButton()
 {
 	//Load Config File
 	options.applicationName = "Plasma";
@@ -123,7 +126,7 @@ plasmaLabel()
 	applicationProperties.setStorageParameters(options);
 	auto userSettings = applicationProperties.getUserSettings();
 	auto commonSettings = applicationProperties.getCommonSettings(false);
-	
+
 	//Load Config Data
 	scaling = userSettings->getIntValue("scale", 100);
 
@@ -136,15 +139,21 @@ plasmaLabel()
 	{
 		addAndMakeVisible(label);
 	}
-	
+	//Options Button
+	configButton.setButtonText("O");
+	configButton.addListener(this);
+	addAndMakeVisible(configButton);
+
+	//Scale Up Button
 	scaleUpButton.setButtonText("+");
 	scaleUpButton.addListener(this);
 	addAndMakeVisible(scaleUpButton);
-	
+
+	//Scale Down Button
 	scaleDownButton.setButtonText("-");
 	scaleDownButton.addListener(this);
 	addAndMakeVisible(scaleDownButton);
-	
+
 	addAndMakeVisible(plasmaLabel);
 
 	//Tooltip
@@ -160,7 +169,7 @@ plasmaLabel()
 }
 PlasmaAudioProcessorEditor::~PlasmaAudioProcessorEditor()
 {
-	
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -175,10 +184,10 @@ Colour PlasmaAudioProcessorEditor::c_front()
 	return Colour(24, 26, 27);
 }
 
-void PlasmaAudioProcessorEditor::paint (juce::Graphics& g)
+void PlasmaAudioProcessorEditor::paint(juce::Graphics& g)
 {
-    using namespace juce;
-	
+	using namespace juce;
+
 	//Back
 	g.fillAll(c_back());
 
@@ -199,7 +208,7 @@ void PlasmaAudioProcessorEditor::paint (juce::Graphics& g)
 	g.fillRect(monitorArea().reduced(sc(padding)));
 
 	//Add and make visible all components
-	
+
 	bool clear = true;
 	for (auto* component : getComps())
 	{
@@ -214,26 +223,26 @@ void PlasmaAudioProcessorEditor::paint (juce::Graphics& g)
 	}
 	float lineSize = sc(2.0f);
 	float lineOffset = 0.0f;
-	Line<float> inLine(Point<float>(inArea().getCentreX() - sc(32), inArea().getY() + fs_titelLabel()),
-		Point<float>(inArea().getCentreX() + sc(32), inArea().getY() + fs_titelLabel()));
-	
-	Line<float> outLine(Point<float>(outArea().getCentreX() - sc(42), outArea().getY() + fs_titelLabel()),
-		Point<float>(outArea().getCentreX() + sc(42), outArea().getY() + fs_titelLabel()));
-	
-	Line<float> earlyLine(Point<float>(earlyArea().getCentreX() - sc(58), earlyArea().getY() + fs_titelLabel()),
-		Point<float>(earlyArea().getCentreX() + sc(58), earlyArea().getY() + fs_titelLabel()));
-	
+	Line<float> inLine(Point<float>(inArea().getCentreX() - sc(33), inArea().getY() + fs_titelLabel()),
+		Point<float>(inArea().getCentreX() + sc(33), inArea().getY() + fs_titelLabel()));
+
+	Line<float> outLine(Point<float>(outArea().getCentreX() - sc(43), outArea().getY() + fs_titelLabel()),
+		Point<float>(outArea().getCentreX() + sc(43), outArea().getY() + fs_titelLabel()));
+
+	Line<float> earlyLine(Point<float>(earlyArea().getCentreX() - sc(59), earlyArea().getY() + fs_titelLabel()),
+		Point<float>(earlyArea().getCentreX() + sc(59), earlyArea().getY() + fs_titelLabel()));
+
 	Line<float> highpassArea(Point<float>(highpassArea().getCentreX() - sc(56), highpassArea().getY() + fs_titelLabel()),
 		Point<float>(highpassArea().getCentreX() + sc(56), highpassArea().getY() + fs_titelLabel()));
-	
-	Line<float> peakArea(Point<float>(peakArea().getCentreX() - sc(30), peakArea().getY() + fs_titelLabel()),
-		Point<float>(peakArea().getCentreX() + sc(30), peakArea().getY() + fs_titelLabel()));
-	
+
+	Line<float> peakArea(Point<float>(peakArea().getCentreX() - sc(29), peakArea().getY() + fs_titelLabel()),
+		Point<float>(peakArea().getCentreX() + sc(29), peakArea().getY() + fs_titelLabel()));
+
 	Line<float> lowpassArea(Point<float>(lowpassArea().getCentreX() - sc(54), lowpassArea().getY() + fs_titelLabel()),
 		Point<float>(lowpassArea().getCentreX() + sc(54), lowpassArea().getY() + fs_titelLabel()));
-	
-	Line<float> lateArea(Point<float>(lateArea().getCentreX() - sc(58), lateArea().getY() + fs_titelLabel()),
-		Point<float>(lateArea().getCentreX() + sc(58), lateArea().getY() + fs_titelLabel()));
+
+	Line<float> lateArea(Point<float>(lateArea().getCentreX() - sc(59), lateArea().getY() + fs_titelLabel()),
+		Point<float>(lateArea().getCentreX() + sc(59), lateArea().getY() + fs_titelLabel()));
 
 	g.setColour(Colours::white);
 	g.drawLine(inLine, lineSize);
@@ -244,24 +253,51 @@ void PlasmaAudioProcessorEditor::paint (juce::Graphics& g)
 	g.drawLine(lowpassArea, lineSize);
 	g.drawLine(lateArea, lineSize);
 }
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Timer Callback
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 void PlasmaAudioProcessorEditor::timerCallback()
 {
 	loudnessMeterIn.repaint();
 	loudnessMeterOut.repaint();
 }
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Button Click
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void PlasmaAudioProcessorEditor::buttonClicked(Button* button)
+{
+	if (button == &scaleUpButton)
+	{
+		if (scaling < 400)
+		{
+			scaling += 20;
+			auto userSettings = applicationProperties.getUserSettings();
+			auto commonSettings = applicationProperties.getCommonSettings(false);
+			userSettings->setValue("scale", scaling);
+			userSettings->save();
+			resized();
+		}
+	}
+	else if (button == &scaleDownButton)
+	{
+		if (scaling >= 40)
+		{
+			scaling -= 20;
+			auto userSettings = applicationProperties.getUserSettings();
+			auto commonSettings = applicationProperties.getCommonSettings(false);
+			userSettings->setValue("scale", scaling);
+			userSettings->save();
+			resized();
+		}
+	}
+}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Layout
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-float PlasmaAudioProcessorEditor::sc(float val) 
-{	
+float PlasmaAudioProcessorEditor::sc(float val)
+{
 	float factor = float(scaling) / 100.0f;
-	return val * factor;	
+	return val * factor;
 }
 Rectangle<int> PlasmaAudioProcessorEditor::headerArea()
 {
@@ -316,66 +352,40 @@ float PlasmaAudioProcessorEditor::fs_titelLabel()
 {
 	return sc(42.0f);
 }
-void PlasmaAudioProcessorEditor::buttonClicked(Button* button)
-{
-	if (button == &scaleUpButton) 
-	{
-		if (scaling < 400)
-		{
-			scaling += 20;
-			auto userSettings = applicationProperties.getUserSettings();
-			auto commonSettings = applicationProperties.getCommonSettings(false);
-			userSettings->setValue("scale", scaling);
-			userSettings->save();
-			resized();
-		}
-	}
-	else if (button == &scaleDownButton)
-	{
-		if (scaling >= 40)
-		{
-			scaling -= 20;
-			auto userSettings = applicationProperties.getUserSettings();
-			auto commonSettings = applicationProperties.getCommonSettings(false);
-			userSettings->setValue("scale", scaling);
-			userSettings->save();
-			resized();
-		}
-	}
-}
 void PlasmaAudioProcessorEditor::resized()
 {
 	int knobSize = 120;
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//Monitor
 	responseCurveComponent.setBounds(
-		monitorArea().getX(), 
-		monitorArea().getY() + 10, 
-		monitorArea().getWidth() - 10, 
+		monitorArea().getX(),
+		monitorArea().getY() + sc(10),
+		monitorArea().getWidth() - sc(10),
 		monitorArea().getHeight() - 2 * sc(padding));
 	responseCurveComponent.update();
+	responseCurveComponent.setPadding(sc(padding));
 	//loudnessMeterIn.setBounds(220, 60, 620, 155);
 	//loudnessMeterOut.setBounds(220, 215, 620, 155);
 	tooltipLabel.setBounds(
-		monitorArea().getX() + sc(padding), 
-		monitorArea().getY() + sc(padding), 
-		sc(300), 
+		monitorArea().getX() + sc(padding),
+		monitorArea().getY(),
+		sc(300),
 		sc(40));
 	auto logoX = headerArea().getCentreX() - sc(100);
 	plasmaLabel.setBounds(logoX, sc(-42), sc(200), sc(100));
-	plasmaLabel.setFontSize(sc(100));
+	plasmaLabel.setCustomFontSize(sc(100));
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//In
 	inLabel.setBounds(
-		inArea().getX(), 
-		inArea().getY() + sc(padding), 
-		inArea().getWidth(), 
+		inArea().getX(),
+		inArea().getY() + sc(padding),
+		inArea().getWidth(),
 		sc(40));
 	//Gain
 	preGainSlider.setBounds(
 		inArea().getCentreX() - sc(knobSize) / 2,
-		sc (110), 
-		sc(knobSize), 
+		sc(110),
+		sc(knobSize),
 		sc(knobSize));
 	preGainLabel.setBounds(
 		preGainSlider.getBounds().getX(),
@@ -394,7 +404,7 @@ void PlasmaAudioProcessorEditor::resized()
 		analyserSlider.getBounds().getWidth(),
 		sc(40));
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //Early
+	//Early
 	earlyLabel.setBounds(
 		earlyArea().getX(),
 		earlyArea().getY() + sc(padding),
@@ -423,7 +433,7 @@ void PlasmaAudioProcessorEditor::resized()
 		biasSlider.getBounds().getWidth(),
 		sc(40));
 	//Girth
-    girthSlider.setBounds(
+	girthSlider.setBounds(
 		earlyArea().getCentreX() - sc(knobSize) / 2,
 		sc(670),
 		sc(knobSize),
@@ -436,7 +446,7 @@ void PlasmaAudioProcessorEditor::resized()
 	//Drive
 	driveSlider.setBounds(
 		earlyArea().getCentreX() - sc(knobSize) / 2,
-		sc(790), 
+		sc(790),
 		sc(knobSize),
 		sc(knobSize));
 	driveLabel.setBounds(
@@ -445,11 +455,11 @@ void PlasmaAudioProcessorEditor::resized()
 		driveSlider.getBounds().getWidth(),
 		sc(40));
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //Highpass
+	//Highpass
 	highpassLabel.setBounds(
 		highpassArea().getX(),
 		highpassArea().getY() + sc(padding),
-		highpassArea().getWidth(), 
+		highpassArea().getWidth(),
 		sc(40));
 	//Slope
 	highPassSlopeSlider.setBounds(
@@ -496,7 +506,7 @@ void PlasmaAudioProcessorEditor::resized()
 		highPassFreqSlider.getBounds().getWidth(),
 		sc(40));
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //Peak
+	//Peak
 	peakLabel.setBounds(
 		peakArea().getX(),
 		peakArea().getY() + sc(padding),
@@ -527,8 +537,8 @@ void PlasmaAudioProcessorEditor::resized()
 	//Peak Gain
 	peakGainSlider.setBounds(
 		peakArea().getCentreX() - sc(knobSize) / 2,
-		sc(670), 
-		sc(knobSize), 
+		sc(670),
+		sc(knobSize),
 		sc(knobSize));
 	peakGainLabel.setBounds(
 		peakGainSlider.getBounds().getX(),
@@ -538,8 +548,8 @@ void PlasmaAudioProcessorEditor::resized()
 	//Frequency
 	peakFreqSlider.setBounds(
 		peakArea().getCentreX() - sc(knobSize) / 2,
-		sc(790), 
-		sc(knobSize), 
+		sc(790),
+		sc(knobSize),
 		sc(knobSize));
 	peakFreqLabel.setBounds(
 		peakFreqSlider.getBounds().getX(),
@@ -547,7 +557,7 @@ void PlasmaAudioProcessorEditor::resized()
 		peakFreqSlider.getBounds().getWidth(),
 		sc(40));
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //Lowpass
+	//Lowpass
 	lowpassLabel.setBounds(
 		lowpassArea().getX(),
 		lowpassArea().getY() + sc(padding),
@@ -556,7 +566,7 @@ void PlasmaAudioProcessorEditor::resized()
 	//Slope
 	lowPassSlopeSlider.setBounds(
 		lowpassArea().getCentreX() - sc(knobSize) / 2,
-		sc(430), 
+		sc(430),
 		sc(knobSize),
 		sc(knobSize));
 	lowPassSlopeLabel.setBounds(
@@ -578,8 +588,8 @@ void PlasmaAudioProcessorEditor::resized()
 	//Resonance
 	lowPassResonanceSlider.setBounds(
 		lowpassArea().getCentreX() - sc(knobSize) / 2,
-		sc(670), 
-		sc(knobSize), 
+		sc(670),
+		sc(knobSize),
 		sc(knobSize));
 	lowPassResonanceLabel.setBounds(
 		lowPassResonanceSlider.getBounds().getX(),
@@ -640,8 +650,8 @@ void PlasmaAudioProcessorEditor::resized()
 	//Drive
 	lateDriveSlider.setBounds(
 		lateArea().getCentreX() - sc(knobSize) / 2,
-		sc(790), 
-		sc(knobSize), 
+		sc(790),
+		sc(knobSize),
 		sc(knobSize));
 	lateDriveLabel.setBounds(
 		lateDriveSlider.getBounds().getX(),
@@ -687,8 +697,13 @@ void PlasmaAudioProcessorEditor::resized()
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Scale Knobs
 	int scaleKnobSize = headerArea().getHeight() - 2 * (sc(padding));
-	scaleDownButton.setBounds(
+	configButton.setBounds(
 		getWidth() - scaleKnobSize - sc(padding),
+		sc(padding),
+		scaleKnobSize,
+		scaleKnobSize);
+	scaleDownButton.setBounds(
+		configButton.getX() - sc(padding) - scaleKnobSize,
 		sc(padding),
 		scaleKnobSize,
 		scaleKnobSize);
@@ -697,12 +712,11 @@ void PlasmaAudioProcessorEditor::resized()
 		sc(padding),
 		scaleKnobSize,
 		scaleKnobSize);
-	
+
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Misc
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 std::vector<juce::Component*> PlasmaAudioProcessorEditor::getComps()
 {
 	return
@@ -734,7 +748,7 @@ std::vector<juce::Component*> PlasmaAudioProcessorEditor::getComps()
 		&analyserSlider,
 		&loudnessMeterIn,
 		&loudnessMeterOut
-    };
+	};
 }
 
 std::vector<CustomLabel*> PlasmaAudioProcessorEditor::getLabels()

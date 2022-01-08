@@ -5,149 +5,47 @@
 #include "CustomRotarySlider.h"
 #include "ResponseCurveComponent.h"
 #include "LoudnessMeterComponent.h"
+#include "CustomLabel.h"
+#include "CustomTextButton.h"
+#include "PlasmaLabel.h"
 
 enum FontSizes
 {
-    Main,
-    Titel,
-    Tooltipp
+	Main,
+	Titel,
+	Tooltipp
 };
 
-class CustomLabel : public juce::Label
+class PlasmaAudioProcessorEditor : public juce::AudioProcessorEditor,
+	public Timer,
+	public Button::Listener
 {
 public:
-    CustomLabel(String text, int size, Justification justification, bool underline)
-    {
-        setFontSize(size);
-        setText(text, juce::dontSendNotification);
-        setFont(getFont().withHeight(getFontSize()));
-        setJustificationType(justification);
-    }
-    void resize()
-    {
-        setFont(getFont().withHeight(getScaledFontSize()));
-    }
+	PlasmaAudioProcessorEditor(PlasmaAudioProcessor&);
+	~PlasmaAudioProcessorEditor() override;
+
+	void paint(juce::Graphics&) override;
+	void resized() override;
+
+	void timerCallback() override;
+	void buttonClicked(Button* button) override;
 private:
-    int fontSize;
-    void setFontSize(int size)
-    {
-        fontSize = size;
-    }
-    Typeface::Ptr getTypeface() 
-    {
-        Typeface::Ptr typeface = Typeface::createSystemTypefaceFor(BinaryData::PoppinsMedium_ttf, BinaryData::PoppinsMedium_ttfSize);
-        return typeface;
-    }
-    Font getFont()
-    {
-        Font font(getTypeface());
-        return font;
-    }
-       
-    float getFontSize()
-    {
-        float factor = 1.0f;//getBounds().getHeight() / 100.0f;
-        switch (fontSize)
-        {
-        case FontSizes::Main:
-        {
-            return 28.0 * factor;
-        }
-        case FontSizes::Titel:
-        {
-            return 42.0 * factor;
-        }
-        }
-    }
-    float getScaledFontSize()
-    {
-        float factor = getBounds().getHeight() / 40.0f;
-        switch (fontSize)
-        {
-        case FontSizes::Main:
-        {
-            return 28.0 * factor;
-        }
-        case FontSizes::Titel:
-        {
-            return 42.0 * factor;
-        }
-        }
-    }
-};
-
-class ScaleButton : public juce::TextButton
-{
-
-private:
-    Typeface::Ptr getCustomTypeface()
-    {
-        Typeface::Ptr typeface = Typeface::createSystemTypefaceFor(BinaryData::PoppinsMedium_ttf, BinaryData::PoppinsMedium_ttfSize);
-        return typeface;
-    }
-    Font getCustomFont()
-    {
-        Font font(getCustomTypeface());
-        return font;
-    }
-};
-
-class PlasmaLabel : public juce::Label
-{
-public:
-    PlasmaLabel()
-    {
-        setText("PLASMA", juce::dontSendNotification);
-        setFont(getFont().withHeight(100));
-        setJustificationType(Justification::centredTop);
-    }
-    void setFontSize(int size)
-    {
-        setFont(getFont().withHeight(size));
-    }
-private:
-    Font getFont()
-    {
-        Font font(getTypeFace());
-        return font;
-    }
-    Typeface::Ptr getTypeFace()
-    {
-       Typeface::Ptr tface = Typeface::createSystemTypefaceFor(BinaryData::SedgwickAveDisplayRegular_ttf, BinaryData::SedgwickAveDisplayRegular_ttfSize);
-       return tface;
-    }
-};
-
-class PlasmaAudioProcessorEditor : public juce::AudioProcessorEditor, 
-                                   public Timer,
-                                   public Button::Listener
-{
-public:
-    PlasmaAudioProcessorEditor(PlasmaAudioProcessor&);
-    ~PlasmaAudioProcessorEditor() override;
-
-    void paint(juce::Graphics&) override;
-    void resized() override;
-
-    void timerCallback() override;
-    void buttonClicked(Button* button) override;
-private:
-    //Scaling
-    TextButton scaleUpButton;
-    TextButton scaleDownButton;
-    TextButton configButton;
+	//Scaling
+	CustomTextButton scaleUpButton;
+	CustomTextButton scaleDownButton;
+	CustomTextButton configButton;
 
 
-    //Audio Processor
-    PlasmaAudioProcessor& audioProcessor;
+	//Audio Processor
+	PlasmaAudioProcessor& audioProcessor;
 
-    //Config
-    ApplicationProperties applicationProperties;
-    PropertiesFile::Options options;
-    int scaling = 100; 
+	//Config
+	ApplicationProperties applicationProperties;
+	PropertiesFile::Options options;
+	int scaling = 100;
 
 	//Sliders
-    CustomRotarySlider 
+	CustomRotarySlider
 		//Drive
 		gainSlider,
 		driveSlider,
@@ -155,13 +53,13 @@ private:
 		biasSlider,
 		driveTypeSlider,
 		//Highpass
-        highPassFreqSlider,
+		highPassFreqSlider,
 		highPassResonanceSlider,
 		highPassResonanceQualitySlider,
 		highPassSlopeSlider,
 		//Peak
 		peakStereoSlider,
-        peakFreqSlider,
+		peakFreqSlider,
 		peakGainSlider,
 		peakQualitySlider,
 		//Lowpass
@@ -177,112 +75,112 @@ private:
 		preGainSlider,
 		mixSlider,
 		analyserSlider;
-        
 
-    //Response Curve Component
-    ResponseCurveComponent responseCurveComponent;
 
-    //Loudness Meter Components
-    Gui::LoudnessMeterComponent loudnessMeterIn, loudnessMeterOut;
+	//Response Curve Component
+	ResponseCurveComponent responseCurveComponent;
 
-    //Attachments
-    using APVTS = juce::AudioProcessorValueTreeState;
-    using Attachment = APVTS::SliderAttachment;
-    Attachment highPassFreqSliderAttachment,
-        lowPassFreqSliderAttachment,
-        peakFreqSliderAttachment,
-        biasSliderAttachment,
-        lateBiasSliderAttachment,
-        driveTypeSliderAttachment,
-        lateDriveTypeSliderAttachment,
-        highPassResonanceSliderAttachment,
-        lowPassResonanceSliderAttachment,
-        peakGainSliderAttachment,
+	//Loudness Meter Components
+	Gui::LoudnessMeterComponent loudnessMeterIn, loudnessMeterOut;
+
+	//Attachments
+	using APVTS = juce::AudioProcessorValueTreeState;
+	using Attachment = APVTS::SliderAttachment;
+	Attachment highPassFreqSliderAttachment,
+		lowPassFreqSliderAttachment,
+		peakFreqSliderAttachment,
+		biasSliderAttachment,
+		lateBiasSliderAttachment,
+		driveTypeSliderAttachment,
+		lateDriveTypeSliderAttachment,
+		highPassResonanceSliderAttachment,
+		lowPassResonanceSliderAttachment,
+		peakGainSliderAttachment,
 		peakStereoSliderAttachment,
-        highPassResonanceQualitySliderAttachment,
-        lowPassResonanceQualitySliderAttachment,
-        peakQualitySliderAttachment,
-        highPassSlopeSliderAttachment,
-        lowPassSlopeSliderAttachment,
-        preGainSliderAttachment,
-        driveSliderAttachment,
-        girthSliderAttachment,
-        lateGirthSliderAttachment,
-        lateDriveSliderAttachment,
-        gainSliderAttachment,
+		highPassResonanceQualitySliderAttachment,
+		lowPassResonanceQualitySliderAttachment,
+		peakQualitySliderAttachment,
+		highPassSlopeSliderAttachment,
+		lowPassSlopeSliderAttachment,
+		preGainSliderAttachment,
+		driveSliderAttachment,
+		girthSliderAttachment,
+		lateGirthSliderAttachment,
+		lateDriveSliderAttachment,
+		gainSliderAttachment,
 		analyserSliderAttachment,
 		mixSliderAttachment;
-    std::vector<juce::Component*> getComps();
+	std::vector<juce::Component*> getComps();
 
-    //Layout
-    float sc(float val);
-    Rectangle<int> headerArea();
-    Rectangle<int> monitorArea();
-    Rectangle<int> inArea();
-    Rectangle<int> outArea();
-    Rectangle<int> earlyArea();
-    Rectangle<int> highpassArea();
-    Rectangle<int> peakArea();
-    Rectangle<int> lowpassArea();
-    Rectangle<int> lateArea();
-    int boxWidth = 150;
-    int boxHeight = 550;
+	//Layout
+	float sc(float val);
+	Rectangle<int> headerArea();
+	Rectangle<int> monitorArea();
+	Rectangle<int> inArea();
+	Rectangle<int> outArea();
+	Rectangle<int> earlyArea();
+	Rectangle<int> highpassArea();
+	Rectangle<int> peakArea();
+	Rectangle<int> lowpassArea();
+	Rectangle<int> lateArea();
+	int boxWidth = 150;
+	int boxHeight = 550;
 
-    //Colors
-    Colour c_back();
-    Colour c_front();
+	//Colors
+	Colour c_back();
+	Colour c_front();
 
-    //Fontsizes
-    float fs_mainLabel();
-    float fs_titelLabel();
-    float padding = 10.0f;
-    float knobLabelHeight = 0.80f;
+	//Fontsizes
+	float fs_mainLabel();
+	float fs_titelLabel();
+	float padding = 10.0f;
+	float knobLabelHeight = 0.80f;
 
 	//Labels
-    PlasmaLabel plasmaLabel;
-	CustomLabel 
-        tooltipLabel,
-        //Drive
-        gainLabel,
-        driveLabel,
-        girthLabel,
-        biasLabel,
-        driveTypeLabel,
-        //Highpass
-        highPassFreqLabel,
-        highPassResonanceLabel,
-        highPassResonanceQualityLabel,
-        highPassSlopeLabel,
-        //Peak
-        peakStereoLabel,
-        peakFreqLabel,
-        peakGainLabel,
-        peakQualityLabel,
-        //Lowpass
-        lowPassFreqLabel,
-        lowPassResonanceLabel,
-        lowPassResonanceQualityLabel,
-        lowPassSlopeLabel,
-        //lateDrive
-        lateBiasLabel,
-        lateDriveTypeLabel,
-        lateGirthLabel,
-        lateDriveLabel,
-        preGainLabel,
-        mixLabel,
-        analyserLabel,
-        //Titels
-        inLabel,
-        outLabel,
-        earlyLabel,
-        highpassLabel,
-        peakLabel,
-        lowpassLabel,
-        lateLabel;
+	PlasmaLabel plasmaLabel;
+	CustomLabel
+		tooltipLabel,
+		//Drive
+		gainLabel,
+		driveLabel,
+		girthLabel,
+		biasLabel,
+		driveTypeLabel,
+		//Highpass
+		highPassFreqLabel,
+		highPassResonanceLabel,
+		highPassResonanceQualityLabel,
+		highPassSlopeLabel,
+		//Peak
+		peakStereoLabel,
+		peakFreqLabel,
+		peakGainLabel,
+		peakQualityLabel,
+		//Lowpass
+		lowPassFreqLabel,
+		lowPassResonanceLabel,
+		lowPassResonanceQualityLabel,
+		lowPassSlopeLabel,
+		//lateDrive
+		lateBiasLabel,
+		lateDriveTypeLabel,
+		lateGirthLabel,
+		lateDriveLabel,
+		preGainLabel,
+		mixLabel,
+		analyserLabel,
+		//Titels
+		inLabel,
+		outLabel,
+		earlyLabel,
+		highpassLabel,
+		peakLabel,
+		lowpassLabel,
+		lateLabel;
 
-    //Label Vector
-    std::vector<CustomLabel*> getLabels();
+	//Label Vector
+	std::vector<CustomLabel*> getLabels();
 
-    //End
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PlasmaAudioProcessorEditor);
+	//End
+	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PlasmaAudioProcessorEditor);
 };

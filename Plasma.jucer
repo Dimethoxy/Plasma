@@ -4,6 +4,14 @@
               jucerFormatVersion="1" pluginFormats="buildVST3">
   <MAINGROUP id="JL3O3j" name="Plasma">
     <GROUP id="{C06EE6F1-1336-2987-2A83-453AE370713C}" name="Source">
+      <FILE id="Cwd2IN" name="PlasmaLabel.cpp" compile="1" resource="0" file="Source/PlasmaLabel.cpp"/>
+      <FILE id="xJmQke" name="PlasmaLabel.h" compile="0" resource="0" file="Source/PlasmaLabel.h"/>
+      <FILE id="KWlHso" name="CustomTextButton.cpp" compile="1" resource="0"
+            file="Source/CustomTextButton.cpp"/>
+      <FILE id="GulkdJ" name="CustomTextButton.h" compile="0" resource="0"
+            file="Source/CustomTextButton.h"/>
+      <FILE id="OPYcmq" name="CustomLabel.cpp" compile="1" resource="0" file="Source/CustomLabel.cpp"/>
+      <FILE id="b7bkgC" name="CustomLabel.h" compile="0" resource="0" file="Source/CustomLabel.h"/>
       <FILE id="mJ2bRw" name="LoudnessMeterComponent.cpp" compile="1" resource="0"
             file="Source/LoudnessMeterComponent.cpp"/>
       <FILE id="QjNmC7" name="LoudnessMeterComponent.h" compile="0" resource="0"
