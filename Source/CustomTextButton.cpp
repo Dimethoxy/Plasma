@@ -24,12 +24,24 @@ Font CustomTextButton::getCustomFont()
 	return font;
 }
 
-void CustomTextButton::paintButton(Graphics& g, bool shouldDrawButtonAsHighlighted, bool 	shouldDrawButtonAsDown)
+void CustomTextButton::paintButton(Graphics& g,
+	bool shouldDrawButtonAsHighlighted,
+	bool shouldDrawButtonAsDown)
 {
+
 	getLookAndFeel().drawButtonBackground(
 		g,
 		*this,
 		Colours::aqua,
 		shouldDrawButtonAsHighlighted,
 		shouldDrawButtonAsDown);
+	/*
+	getLookAndFeel().drawButtonText(
+		g,
+		*this,
+		shouldDrawButtonAsHighlighted,
+		shouldDrawButtonAsDown);
+	*/
+
+	auto bounds = getBounds();
 }

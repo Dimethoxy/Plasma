@@ -34,7 +34,7 @@ private:
 	CustomTextButton scaleUpButton;
 	CustomTextButton scaleDownButton;
 	CustomTextButton configButton;
-
+	CustomTextButton safeConfigButton;
 
 	//Audio Processor
 	PlasmaAudioProcessor& audioProcessor;
@@ -42,7 +42,9 @@ private:
 	//Config
 	ApplicationProperties applicationProperties;
 	PropertiesFile::Options options;
-	int scaling = 100;
+	int scale = 100;
+	bool showConfig = false;
+	void configWindow(bool visibility);
 
 	//Sliders
 	CustomRotarySlider
@@ -176,7 +178,13 @@ private:
 		highpassLabel,
 		peakLabel,
 		lowpassLabel,
-		lateLabel;
+		lateLabel,
+		//Options
+		backgroundColorLabel,
+		foregroundColorLabel,
+		accentColorLabel,
+		scaleLabel;
+
 
 	//Label Vector
 	std::vector<CustomLabel*> getLabels();

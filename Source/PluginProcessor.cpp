@@ -5,14 +5,14 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 PlasmaAudioProcessor::PlasmaAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
-     : AudioProcessor (BusesProperties()
-                     #if ! JucePlugin_IsMidiEffect
-                      #if ! JucePlugin_IsSynth
-                       .withInput  ("Input",  juce::AudioChannelSet::stereo(), true)
-                      #endif
-                       .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
-                     #endif
-                       )
+	: AudioProcessor(BusesProperties()
+#if ! JucePlugin_IsMidiEffect
+#if ! JucePlugin_IsSynth
+		.withInput("Input", juce::AudioChannelSet::stereo(), true)
+#endif
+		.withOutput("Output", juce::AudioChannelSet::stereo(), true)
+#endif
+	)
 #endif
 {
 }
@@ -24,62 +24,62 @@ PlasmaAudioProcessor::~PlasmaAudioProcessor()
 //==============================================================================
 const juce::String PlasmaAudioProcessor::getName() const
 {
-    return JucePlugin_Name;
+	return JucePlugin_Name;
 }
 
 bool PlasmaAudioProcessor::acceptsMidi() const
 {
-   #if JucePlugin_WantsMidiInput
-    return true;
-   #else
-    return false;
-   #endif
+#if JucePlugin_WantsMidiInput
+	return true;
+#else
+	return false;
+#endif
 }
 
 bool PlasmaAudioProcessor::producesMidi() const
 {
-   #if JucePlugin_ProducesMidiOutput
-    return true;
-   #else
-    return false;
-   #endif
+#if JucePlugin_ProducesMidiOutput
+	return true;
+#else
+	return false;
+#endif
 }
 
 bool PlasmaAudioProcessor::isMidiEffect() const
 {
-   #if JucePlugin_IsMidiEffect
-    return true;
-   #else
-    return false;
-   #endif
+#if JucePlugin_IsMidiEffect
+	return true;
+#else
+	return false;
+#endif
 }
 
 double PlasmaAudioProcessor::getTailLengthSeconds() const
 {
-    return 0.0;
+	return 0.0;
 }
 
 int PlasmaAudioProcessor::getNumPrograms()
 {
-    return 1;   // NB: some hosts don't cope very well if you tell them there are 0 programs,
-                // so this should be at least 1, even if you're not really implementing programs.
+	return 1;   // NB: some hosts don't cope very well if you tell them there are 0 programs,
+				// so this should be at least 1, even if you're not really implementing programs.
 }
 
 int PlasmaAudioProcessor::getCurrentProgram()
 {
-    return 0;
+	return 0;
 }
 
-void PlasmaAudioProcessor::setCurrentProgram (int index)
+void PlasmaAudioProcessor::setCurrentProgram(int index)
 {
 }
 
-const juce::String PlasmaAudioProcessor::getProgramName (int index)
+const juce::String PlasmaAudioProcessor::getProgramName(int index)
 {
-    return {};
+	return {};
 }
 
-void PlasmaAudioProcessor::changeProgramName (int index, const juce::String& newName)
+void PlasmaAudioProcessor::changeProgramName(int index, const juce::String& newName)
 {
 }
 
@@ -87,33 +87,33 @@ void PlasmaAudioProcessor::changeProgramName (int index, const juce::String& new
 
 void PlasmaAudioProcessor::releaseResources()
 {
-    // When playback stops, you can use this as an opportunity to free up any
-    // spare memory, etc.
+	// When playback stops, you can use this as an opportunity to free up any
+	// spare memory, etc.
 }
 
 #ifndef JucePlugin_PreferredChannelConfigurations
-bool PlasmaAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
+bool PlasmaAudioProcessor::isBusesLayoutSupported(const BusesLayout& layouts) const
 {
-  #if JucePlugin_IsMidiEffect
-    juce::ignoreUnused (layouts);
-    return true;
-  #else
-    // This is the place where you check if the layout is supported.
-    // In this template code we only support mono or stereo.
-    // Some plugin hosts, such as certain GarageBand versions, will only
-    // load plugins that support stereo bus layouts.
-    if (layouts.getMainOutputChannelSet() != juce::AudioChannelSet::mono()
-     && layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
-        return false;
+#if JucePlugin_IsMidiEffect
+	juce::ignoreUnused(layouts);
+	return true;
+#else
+	// This is the place where you check if the layout is supported.
+	// In this template code we only support mono or stereo.
+	// Some plugin hosts, such as certain GarageBand versions, will only
+	// load plugins that support stereo bus layouts.
+	if (layouts.getMainOutputChannelSet() != juce::AudioChannelSet::mono()
+		&& layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
+		return false;
 
-    // This checks if the input layout matches the output layout
-   #if ! JucePlugin_IsSynth
-    if (layouts.getMainOutputChannelSet() != layouts.getMainInputChannelSet())
-        return false;
-   #endif
+	// This checks if the input layout matches the output layout
+#if ! JucePlugin_IsSynth
+	if (layouts.getMainOutputChannelSet() != layouts.getMainInputChannelSet())
+		return false;
+#endif
 
-    return true;
-  #endif
+	return true;
+#endif
 }
 #endif
 
@@ -126,7 +126,7 @@ bool PlasmaAudioProcessor::hasEditor() const
 juce::AudioProcessorEditor* PlasmaAudioProcessor::createEditor()
 {
 	//return new juce::GenericAudioProcessorEditor(*this);
-	return new PlasmaAudioProcessorEditor (*this);
+	return new PlasmaAudioProcessorEditor(*this);
 }
 
 //==============================================================================
@@ -185,21 +185,21 @@ void PlasmaAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 
 void PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
-    juce::ScopedNoDenormals noDenormals;
-    auto totalNumInputChannels = getTotalNumInputChannels();
-    auto totalNumOutputChannels = getTotalNumOutputChannels();
+	juce::ScopedNoDenormals noDenormals;
+	auto totalNumInputChannels = getTotalNumInputChannels();
+	auto totalNumOutputChannels = getTotalNumOutputChannels();
 
-    for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
-        buffer.clear(i, 0, buffer.getNumSamples());
-	
-    //Get Settings
-    auto chainSettings = getChainSettings(apvts);
-    float gain = Decibels::decibelsToGain(chainSettings.gain);
-    float preGain = Decibels::decibelsToGain(chainSettings.preGain);
-	float mixWet = chainSettings.mix/100;
-	float mixDry = (100.0 - chainSettings.mix)/100;
+	for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
+		buffer.clear(i, 0, buffer.getNumSamples());
+
+	//Get Settings
+	auto chainSettings = getChainSettings(apvts);
+	float gain = Decibels::decibelsToGain(chainSettings.gain);
+	float preGain = Decibels::decibelsToGain(chainSettings.preGain);
+	float mixWet = chainSettings.mix / 100;
+	float mixDry = (100.0 - chainSettings.mix) / 100;
 	//bool killswitch = false;
-	
+
 	//Clean
 	AudioSampleBuffer tmpBuffer(cleanBuffer.getArrayOfWritePointers(), buffer.getNumChannels(), buffer.getNumSamples());
 	for (int ch = 0; ch < buffer.getNumChannels(); ++ch)
@@ -209,13 +209,13 @@ void PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
 	rmsLevelLeft = Decibels::gainToDecibels(buffer.getRMSLevel(0, 0, buffer.getNumSamples()));
 	rmsLevelRight = Decibels::gainToDecibels(buffer.getRMSLevel(1, 0, buffer.getNumSamples()));
 
-    //Distortion Unit
-    for (int channel = 0; channel < 2; ++channel)
-    {
-        auto* channelData = buffer.getWritePointer(channel);
-		
-        for (int sample = 0; sample < buffer.getNumSamples(); sample++)
-        {
+	//Distortion Unit
+	for (int channel = 0; channel < 2; ++channel)
+	{
+		auto* channelData = buffer.getWritePointer(channel);
+
+		for (int sample = 0; sample < buffer.getNumSamples(); sample++)
+		{
 			if (channelData[sample] != 0.0)
 			{
 				//Pre Gain
@@ -239,32 +239,32 @@ void PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
 					channelData[sample] -= channelData[sample] * chainSettings.bias;
 				}
 			}
-        }
-    }
+		}
+	}
 
-    //Filter
-    updateFilters();
+	//Filter
+	updateFilters();
 
-    //DSP
-    juce::dsp::AudioBlock<float> block(buffer);
+	//DSP
+	juce::dsp::AudioBlock<float> block(buffer);
 
-    auto leftBlock = block.getSingleChannelBlock(0);
-    auto rightBlock = block.getSingleChannelBlock(1);
+	auto leftBlock = block.getSingleChannelBlock(0);
+	auto rightBlock = block.getSingleChannelBlock(1);
 
-    juce::dsp::ProcessContextReplacing<float> leftContext(leftBlock);
-    juce::dsp::ProcessContextReplacing<float> rightContext(rightBlock);
+	juce::dsp::ProcessContextReplacing<float> leftContext(leftBlock);
+	juce::dsp::ProcessContextReplacing<float> rightContext(rightBlock);
 
-    leftChain.process(leftContext);
-    rightChain.process(rightContext);
+	leftChain.process(leftContext);
+	rightChain.process(rightContext);
 
-    //Late Stage
+	//Late Stage
 
 	for (int channel = 0; channel < totalNumInputChannels; ++channel)
 	{
 		auto* channelData = buffer.getWritePointer(channel);
 		auto* cleanData = tmpBuffer.getWritePointer(channel);
 		for (int sample = 0; sample < buffer.getNumSamples(); sample++)
-		{         
+		{
 			if (channelData[sample] != 0.0)
 			{
 				//Girth
@@ -273,21 +273,21 @@ void PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
 
 				//Drive 
 				distort(channelData[sample], chainSettings.lateDrive, chainSettings.lateDriveType);
-				
+
 				//Bias 
 				//channelData[sample] = clamp(channelData[sample] + chainSettings.lateBias, -1.0, 1.0);
 				if (channelData[sample] > 0)
 				{
 					channelData[sample] += channelData[sample] * chainSettings.lateBias;
-				} 
+				}
 				else if (channelData[sample] < 0)
 				{
 					channelData[sample] -= channelData[sample] * chainSettings.lateBias;
 				}
 			}
-			
+
 			//Mix
-			channelData[sample] = cleanData[sample]*mixDry + channelData[sample]*mixWet;
+			channelData[sample] = cleanData[sample] * mixDry + channelData[sample] * mixWet;
 
 			//Gain
 			channelData[sample] = channelData[sample] * gain;
@@ -303,14 +303,14 @@ void PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
 
 juce::AudioProcessorValueTreeState::ParameterLayout PlasmaAudioProcessor::createParameterLayout()
 {
-    juce::AudioProcessorValueTreeState::ParameterLayout layout;
-    
+	juce::AudioProcessorValueTreeState::ParameterLayout layout;
+
 	//Pre Gain
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Pre Gain", "Pre Gain",
 			juce::NormalisableRange<float>(-12.0f, 12.0f, 0.2f, 0.5f), 0.0f));
-    //Drive
-    juce::StringArray distortionArray;
+	//Drive
+	juce::StringArray distortionArray;
 	distortionArray.add("Hardclip");
 	distortionArray.add("Softclip");
 	distortionArray.add("Root");
@@ -324,7 +324,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout PlasmaAudioProcessor::create
 			juce::NormalisableRange<float>(1.0f, 10.0f, 0.01f, 1.0f), 10.0f));
 	layout.add(std::make_unique<juce::AudioParameterChoice>
 		("Distortion Type", "Distortion Type", distortionArray, 1));
-    //Girth
+	//Girth
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Girth", "Girth",
 			juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f, 1.0f), 0.0f));
@@ -332,27 +332,27 @@ juce::AudioProcessorValueTreeState::ParameterLayout PlasmaAudioProcessor::create
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Bias", "Bias",
 			juce::NormalisableRange<float>(-1.0f, 1.0f, 0.01f, 1.0f), 0.0f));
-    //Peak
+	//Peak
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Peak Stereo", "Peak Stereo",
 			juce::NormalisableRange<float>(0.0f, 100.0f, 0.1f, 1.0f), 0.0f));
-    layout.add(std::make_unique<juce::AudioParameterFloat>
-        ("Peak Freq", "Peak Freq",
-        juce::NormalisableRange<float>(20.0f, 20000.0f, 1.0f, 0.5f), 450.0f));
-    layout.add(std::make_unique<juce::AudioParameterFloat>
-        ("Peak Gain", "Peak Gain",
-            juce::NormalisableRange<float>(-48.0f, 48.0f, 0.1f, 1.0f), 16.0f));
-    layout.add(std::make_unique<juce::AudioParameterFloat>
-        ("Peak Q", "Peak Q",
-            juce::NormalisableRange<float>(0.1f, 5.0f, 0.01f, 0.5f), 1.0f));
-    //Slope Array
-    juce::StringArray slopeArray;
-    for (int i = 0; i < 8; i++) {
-        juce::String str;
-        str << (12 + i * 12);
-        str << " db/Oct";
-        slopeArray.add(str);
-    }
+	layout.add(std::make_unique<juce::AudioParameterFloat>
+		("Peak Freq", "Peak Freq",
+			juce::NormalisableRange<float>(20.0f, 20000.0f, 1.0f, 0.5f), 450.0f));
+	layout.add(std::make_unique<juce::AudioParameterFloat>
+		("Peak Gain", "Peak Gain",
+			juce::NormalisableRange<float>(-48.0f, 48.0f, 0.1f, 1.0f), 16.0f));
+	layout.add(std::make_unique<juce::AudioParameterFloat>
+		("Peak Q", "Peak Q",
+			juce::NormalisableRange<float>(0.1f, 5.0f, 0.01f, 0.5f), 1.0f));
+	//Slope Array
+	juce::StringArray slopeArray;
+	for (int i = 0; i < 8; i++) {
+		juce::String str;
+		str << (12 + i * 12);
+		str << " db/Oct";
+		slopeArray.add(str);
+	}
 	//Highpass
 	layout.add(std::make_unique<juce::AudioParameterChoice>
 		("Highpass Slope", "Highpass Slope", slopeArray, 1));
@@ -365,7 +365,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout PlasmaAudioProcessor::create
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Highpass Resonance Q", "Highpass Resonance Q",
 			juce::NormalisableRange<float>(0.1f, 5.0f, 0.01f, 0.5f), 1.0f));
-    //Lowpass
+	//Lowpass
 	layout.add(std::make_unique<juce::AudioParameterChoice>
 		("Lowpass Slope", "Lowpass Slope", slopeArray, 0));
 	layout.add(std::make_unique<juce::AudioParameterFloat>
@@ -409,45 +409,46 @@ juce::AudioProcessorValueTreeState::ParameterLayout PlasmaAudioProcessor::create
 	}
 	layout.add(std::make_unique<juce::AudioParameterChoice>
 		("Analyser Type", "Analyser Type", analyserArray, 0));
-    return layout;
+	layout.add(std::make_unique<juce::AudioParameterBool>
+		("Show Options", "Show Options", 0));
+	return layout;
 }
 
 ChainSettings getChainSettings(juce::AudioProcessorValueTreeState& apvts)
 {
-    ChainSettings settings;
-    //Distortion Unit
-    settings.preGain = apvts.getRawParameterValue("Pre Gain")->load();
-    settings.drive = apvts.getRawParameterValue("Drive")->load();
-    settings.girth = apvts.getRawParameterValue("Girth")->load();
-    settings.bias = apvts.getRawParameterValue("Bias")->load();
-    settings.driveType = static_cast<Distortion>(apvts.getRawParameterValue("Distortion Type")->load());
-    //Peak
+	ChainSettings settings;
+	//Distortion Unit
+	settings.preGain = apvts.getRawParameterValue("Pre Gain")->load();
+	settings.drive = apvts.getRawParameterValue("Drive")->load();
+	settings.girth = apvts.getRawParameterValue("Girth")->load();
+	settings.bias = apvts.getRawParameterValue("Bias")->load();
+	settings.driveType = static_cast<Distortion>(apvts.getRawParameterValue("Distortion Type")->load());
+	//Peak
 	settings.peakStereo = apvts.getRawParameterValue("Peak Stereo")->load();
-    settings.peakFreq = apvts.getRawParameterValue("Peak Freq")->load();
-    settings.peakGain = apvts.getRawParameterValue("Peak Gain")->load();
-    settings.peakQuality = apvts.getRawParameterValue("Peak Q")->load();
-    //Highpass
-    settings.highPassFreq = apvts.getRawParameterValue("Highpass Freq")->load();
-    settings.highPassResonance = apvts.getRawParameterValue("Highpass Resonance")->load();
-    settings.highPassResonanceQuality = apvts.getRawParameterValue("Highpass Resonance Q")->load();
-    settings.highPassSlope = static_cast<Slope>(apvts.getRawParameterValue("Highpass Slope")->load());
+	settings.peakFreq = apvts.getRawParameterValue("Peak Freq")->load();
+	settings.peakGain = apvts.getRawParameterValue("Peak Gain")->load();
+	settings.peakQuality = apvts.getRawParameterValue("Peak Q")->load();
+	//Highpass
+	settings.highPassFreq = apvts.getRawParameterValue("Highpass Freq")->load();
+	settings.highPassResonance = apvts.getRawParameterValue("Highpass Resonance")->load();
+	settings.highPassResonanceQuality = apvts.getRawParameterValue("Highpass Resonance Q")->load();
+	settings.highPassSlope = static_cast<Slope>(apvts.getRawParameterValue("Highpass Slope")->load());
 	//Lowpass
 	settings.lowPassFreq = apvts.getRawParameterValue("Lowpass Freq")->load();
 	settings.lowPassResonance = apvts.getRawParameterValue("Lowpass Resonance")->load();
 	settings.lowPassResonanceQuality = apvts.getRawParameterValue("Lowpass Resonance Q")->load();
 	settings.lowPassSlope = static_cast<Slope>(apvts.getRawParameterValue("Lowpass Slope")->load());
-    //Late
-    settings.lateDriveType = static_cast<Distortion>(apvts.getRawParameterValue("Late Distortion Type")->load());
-    settings.lateDrive = apvts.getRawParameterValue("Late Drive")->load();
+	//Late
+	settings.lateDriveType = static_cast<Distortion>(apvts.getRawParameterValue("Late Distortion Type")->load());
+	settings.lateDrive = apvts.getRawParameterValue("Late Drive")->load();
 	settings.lateGirth = apvts.getRawParameterValue("Late Girth")->load();
 	settings.lateBias = apvts.getRawParameterValue("Late Bias")->load();
-    settings.gain = apvts.getRawParameterValue("Gain")->load();
+	settings.gain = apvts.getRawParameterValue("Gain")->load();
 	//Mix
 	settings.mix = apvts.getRawParameterValue("Mix")->load();
 	//Analyser
 	settings.analyserType = static_cast<AnalyserType>(apvts.getRawParameterValue("Analyser Type")->load());
-
-    return settings;
+	return settings;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -456,12 +457,12 @@ ChainSettings getChainSettings(juce::AudioProcessorValueTreeState& apvts)
 
 void PlasmaAudioProcessor::updateFilters()
 {
-    auto chainSettings = getChainSettings(apvts);
+	auto chainSettings = getChainSettings(apvts);
 	updateHighPass(chainSettings);
-    updateHighPassResonance(chainSettings);
-    updatePeakFilter(chainSettings);
+	updateHighPassResonance(chainSettings);
+	updatePeakFilter(chainSettings);
 	updateLowPass(chainSettings);
-    updateLowPassResonance(chainSettings);
+	updateLowPassResonance(chainSettings);
 }
 Coefficients makePeakFilter(const ChainSettings& chainSettings, double sampleRate, float offset)
 {
@@ -488,8 +489,8 @@ void PlasmaAudioProcessor::updatePeakFilter(const ChainSettings& chainSettings)
 {
 	auto peakCoefficientsL = makePeakFilter(chainSettings, getSampleRate(), chainSettings.peakStereo);
 	auto peakCoefficientsR = makePeakFilter(chainSettings, getSampleRate(), -chainSettings.peakStereo);
-    updateCoefficients(leftChain.get<ChainPositions::Peak>().coefficients, *peakCoefficientsL);
-    updateCoefficients(rightChain.get<ChainPositions::Peak>().coefficients, *peakCoefficientsR);
+	updateCoefficients(leftChain.get<ChainPositions::Peak>().coefficients, *peakCoefficientsL);
+	updateCoefficients(rightChain.get<ChainPositions::Peak>().coefficients, *peakCoefficientsR);
 }
 
 void PlasmaAudioProcessor::updateHighPassResonance(const ChainSettings& chainSettings)

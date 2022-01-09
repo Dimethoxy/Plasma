@@ -118,7 +118,12 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	plasmaLabel(),
 	configButton(),
 	scaleUpButton(),
-	scaleDownButton()
+	scaleDownButton(),
+	//Options
+	backgroundColorLabel("Background Color", FontSizes::Titel, Justification::centredLeft, true),
+	foregroundColorLabel("Foreground Color", FontSizes::Titel, Justification::centredLeft, true),
+	accentColorLabel("Accent Color", FontSizes::Titel, Justification::centredLeft, true),
+	scaleLabel("Scale", FontSizes::Titel, Justification::centredLeft, true)
 {
 	//Load Config File
 	options.applicationName = "Plasma";
@@ -128,7 +133,7 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	auto commonSettings = applicationProperties.getCommonSettings(false);
 
 	//Load Config Data
-	scaling = userSettings->getIntValue("scale", 100);
+	scale = userSettings->getIntValue("scale", 100);
 
 	//Make all components visible
 	for (auto* comp : getComps())
@@ -159,7 +164,7 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	//Tooltip
 	Typeface::Ptr tface = Typeface::createSystemTypefaceFor(BinaryData::PoppinsMedium_ttf, BinaryData::PoppinsMedium_ttfSize);
 	Font popFont(tface);
-	tooltipLabel.setFont(popFont.withHeight(sc(24.0)));
+	tooltipLabel.setFont(popFont.withHeight(sc(28.0)));
 	tooltipLabel.setJustificationType(juce::Justification::centredLeft);
 	tooltipLabel.setText("", juce::dontSendNotification);
 	addAndMakeVisible(tooltipLabel);
@@ -170,6 +175,25 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 PlasmaAudioProcessorEditor::~PlasmaAudioProcessorEditor()
 {
 
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Options
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ 
+void PlasmaAudioProcessorEditor::configWindow(bool visibility)
+{
+	if (visibility)
+	{
+		tooltipLabel.setVisible(false);
+		responseCurveComponent.setVisible(false);
+		showConfig = true;
+	}
+	else
+	{
+		tooltipLabel.setVisible(false);
+		responseCurveComponent.setVisible(true);
+		showConfig = false;
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -208,7 +232,6 @@ void PlasmaAudioProcessorEditor::paint(juce::Graphics& g)
 	g.fillRect(monitorArea().reduced(sc(padding)));
 
 	//Add and make visible all components
-
 	bool clear = true;
 	for (auto* component : getComps())
 	{
@@ -268,26 +291,37 @@ void PlasmaAudioProcessorEditor::buttonClicked(Button* button)
 {
 	if (button == &scaleUpButton)
 	{
-		if (scaling < 400)
+		if (scale <= 400)
 		{
-			scaling += 20;
+			scale += 20;
 			auto userSettings = applicationProperties.getUserSettings();
 			auto commonSettings = applicationProperties.getCommonSettings(false);
-			userSettings->setValue("scale", scaling);
+			userSettings->setValue("scale", scale);
 			userSettings->save();
 			resized();
 		}
 	}
 	else if (button == &scaleDownButton)
 	{
-		if (scaling >= 40)
+		if (scale > 40)
 		{
-			scaling -= 20;
+			scale -= 20;
 			auto userSettings = applicationProperties.getUserSettings();
 			auto commonSettings = applicationProperties.getCommonSettings(false);
-			userSettings->setValue("scale", scaling);
+			userSettings->setValue("scale", scale);
 			userSettings->save();
 			resized();
+		}
+	}
+	else if (button == &configButton)
+	{
+		if (!showConfig)
+		{
+			configWindow(true);
+		}
+		else
+		{
+			configWindow(false);
 		}
 	}
 }
@@ -296,7 +330,7 @@ void PlasmaAudioProcessorEditor::buttonClicked(Button* button)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 float PlasmaAudioProcessorEditor::sc(float val)
 {
-	float factor = float(scaling) / 100.0f;
+	float factor = float(scale) / 100.0f;
 	return val * factor;
 }
 Rectangle<int> PlasmaAudioProcessorEditor::headerArea()
@@ -367,8 +401,8 @@ void PlasmaAudioProcessorEditor::resized()
 	//loudnessMeterIn.setBounds(220, 60, 620, 155);
 	//loudnessMeterOut.setBounds(220, 215, 620, 155);
 	tooltipLabel.setBounds(
-		monitorArea().getX() + sc(padding),
-		monitorArea().getY(),
+		monitorArea().getX() + 2 * sc(padding),
+		monitorArea().getY() + sc(padding),
 		sc(300),
 		sc(40));
 	auto logoX = headerArea().getCentreX() - sc(100);
@@ -698,9 +732,9 @@ void PlasmaAudioProcessorEditor::resized()
 	//Scale Knobs
 	int scaleKnobSize = headerArea().getHeight() - 2 * (sc(padding));
 	configButton.setBounds(
-		getWidth() - scaleKnobSize - sc(padding),
+		getWidth() - 2.34 * scaleKnobSize - sc(padding),
 		sc(padding),
-		scaleKnobSize,
+		2.34 * scaleKnobSize,
 		scaleKnobSize);
 	scaleDownButton.setBounds(
 		configButton.getX() - sc(padding) - scaleKnobSize,

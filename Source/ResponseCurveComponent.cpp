@@ -66,7 +66,7 @@ void ResponseCurveComponent::paint(juce::Graphics& g)
 
 	//bounds
 	auto bounds = getBounds();
-	auto lineSize = bounds.getHeight()/100;
+	auto lineSize = bounds.getHeight() / 100;
 
 	//Screen
 	auto x = padding;
@@ -164,7 +164,7 @@ void ResponseCurveComponent::paint(juce::Graphics& g)
 	}
 }
 
-void ResponseCurveComponent::setPadding(float newPadding) 
+void ResponseCurveComponent::setPadding(float newPadding)
 {
 	padding = newPadding;
 }

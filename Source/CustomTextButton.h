@@ -8,11 +8,14 @@ class CustomTextButton : public TextButton
 public:
 	CustomTextButton();
 	~CustomTextButton();
-	void paintButton(Graphics& g, bool shouldDrawButtonAsHighlighted, bool 	shouldDrawButtonAsDown) override;
+	void paintButton(Graphics& g,
+		bool shouldDrawButtonAsHighlighted,
+		bool shouldDrawButtonAsDown) override;
 	//void paint(Graphics& g) override;
 private:
+
 	Typeface::Ptr getCustomTypeface();
-	Font getCustomFont();
+	Font CustomTextButton::getCustomFont();
 	CustomLookAndFeel lnf;
 };
 

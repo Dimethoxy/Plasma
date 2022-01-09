@@ -10,8 +10,44 @@ void CustomLookAndFeel::drawButtonBackground(
 	bool isMouseOverButton,
 	bool isButtonDown)
 {
+	auto text = button.getButtonText();
+	auto bounds = button.getBounds();
+	Rectangle<float> area(0, 0, bounds.getWidth(), bounds.getHeight());
+	auto center = area.getCentre();
+	float lineSize = bounds.getHeight() / 15.0;
+
+	//Select Color
 	g.setColour(Colours::white);
-	g.fillRect(button.getBounds());
+
+	//Draw Foreground
+	float iconSize = 2.5 * lineSize;
+	if (text == "O")
+	{
+		g.setFont(getCustomFont().withHeight(4 * iconSize));
+		g.drawText("Options", area, Justification::centred, false);
+	}
+	else if (text == "+")
+	{
+		Point<float> p1(center.x, center.y - iconSize);
+		Point<float> p2(center.x, center.y + iconSize);
+		Point<float> p3(center.x + iconSize, center.y);
+		Point<float> p4(center.x - iconSize, center.y);
+		Line<float> l1(p1, p2);
+		Line<float> l2(p3, p4);
+		g.drawLine(l1, lineSize);
+		g.drawLine(l2, lineSize);
+	}
+	else if (text == "-")
+	{
+		Point<float> p3(center.x + iconSize, center.y);
+		Point<float> p4(center.x - iconSize, center.y);
+		Line<float> l2(p3, p4);
+		g.drawLine(l2, lineSize);
+	}
+	g.drawRoundedRectangle(area.reduced(lineSize), 4 * lineSize, lineSize);
+	//Outline
+	//
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -298,4 +334,18 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+}
+
+Typeface::Ptr CustomLookAndFeel::getCustomTypeface()
+{
+	Typeface::Ptr typeface = Typeface::createSystemTypefaceFor(
+		BinaryData::PoppinsMedium_ttf,
+		BinaryData::PoppinsMedium_ttfSize);
+	return typeface;
+}
+
+Font CustomLookAndFeel::getCustomFont()
+{
+	Font font(getCustomTypeface());
+	return font;
 }
