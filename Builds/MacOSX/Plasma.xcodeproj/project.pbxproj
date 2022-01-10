@@ -25,6 +25,7 @@
 		009555C591D8B3C5732893F5 /* include_juce_data_structures.mm */ = {isa = PBXBuildFile; fileRef = 8E8D63C4F1A8AEECBFAB0037; };
 		070FF9E2298BDFD9A9F8D3AA /* WebKit.framework */ = {isa = PBXBuildFile; fileRef = 3E4935BC80693D9D75EB3847; };
 		0C610424760AE447EB32ACF0 /* include_juce_core.mm */ = {isa = PBXBuildFile; fileRef = DB90AC3937ECEA99873586B8; };
+		1C13F85BA747A4D63525840A /* WaveformComponent.cpp */ = {isa = PBXBuildFile; fileRef = 4A984BB0FA44D72C62E04D60; };
 		1DA191A81F7C3156AB6DD018 /* DiscRecording.framework */ = {isa = PBXBuildFile; fileRef = 1A3F00849A127B60195BE39A; };
 		20FF6D18299148533B30E2CF /* CoreAudioKit.framework */ = {isa = PBXBuildFile; fileRef = 1A00366EADCC101294AF1149; };
 		26A854C363D5E38312B01917 /* CustomLabel.cpp */ = {isa = PBXBuildFile; fileRef = EE59AA2AAAFFDF61A6E9E02A; };
@@ -78,6 +79,7 @@
 		2ED572198F12A9012B46995D /* PlasmaLabel.cpp */ /* PlasmaLabel.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PlasmaLabel.cpp; path = ../../Source/PlasmaLabel.cpp; sourceTree = SOURCE_ROOT; };
 		338F26D8A707B4737E463E8A /* Poppins-Black.ttf */ /* Poppins-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file.ttf; name = "Poppins-Black.ttf"; path = "../../Resources/Poppins/Poppins-Black.ttf"; sourceTree = SOURCE_ROOT; };
 		3676430420E0262433943CAB /* juce_graphics */ /* juce_graphics */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_graphics; path = "~/JUCE/modules/juce_graphics"; sourceTree = "<absolute>"; };
+		36DE56AA6AC168C4F97EC550 /* WaveformComponent.h */ /* WaveformComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = WaveformComponent.h; path = ../../Source/WaveformComponent.h; sourceTree = SOURCE_ROOT; };
 		3AE564FB69BFF8D5EE8148C4 /* Poppins-ExtraLightItalic.ttf */ /* Poppins-ExtraLightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file.ttf; name = "Poppins-ExtraLightItalic.ttf"; path = "../../Resources/Poppins/Poppins-ExtraLightItalic.ttf"; sourceTree = SOURCE_ROOT; };
 		3E4935BC80693D9D75EB3847 /* WebKit.framework */ /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		4073ED94E251580CA453E550 /* CustomLabel.h */ /* CustomLabel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CustomLabel.h; path = ../../Source/CustomLabel.h; sourceTree = SOURCE_ROOT; };
@@ -85,6 +87,7 @@
 		42DDDAFA081EA8E50CDD06F5 /* JucePluginDefines.h */ /* JucePluginDefines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = JucePluginDefines.h; path = ../../JuceLibraryCode/JucePluginDefines.h; sourceTree = SOURCE_ROOT; };
 		46BA4F6FBA271D624DDD453D /* juce_gui_extra */ /* juce_gui_extra */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_gui_extra; path = "~/JUCE/modules/juce_gui_extra"; sourceTree = "<absolute>"; };
 		478801CAB6ADFC0518A024B2 /* include_juce_audio_plugin_client_VST_utils.mm */ /* include_juce_audio_plugin_client_VST_utils.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_audio_plugin_client_VST_utils.mm; path = ../../JuceLibraryCode/include_juce_audio_plugin_client_VST_utils.mm; sourceTree = SOURCE_ROOT; };
+		4A984BB0FA44D72C62E04D60 /* WaveformComponent.cpp */ /* WaveformComponent.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = WaveformComponent.cpp; path = ../../Source/WaveformComponent.cpp; sourceTree = SOURCE_ROOT; };
 		4B411894656AD9A08158A0FC /* CustomLookAndFeel.h */ /* CustomLookAndFeel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CustomLookAndFeel.h; path = ../../Source/CustomLookAndFeel.h; sourceTree = SOURCE_ROOT; };
 		51A7B308420A55B25095E419 /* AudioToolbox.framework */ /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		5326E0655E22592534C38AF8 /* PlasmaLabel.h */ /* PlasmaLabel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PlasmaLabel.h; path = ../../Source/PlasmaLabel.h; sourceTree = SOURCE_ROOT; };
@@ -289,6 +292,8 @@
 		D9C564B1466846598B2EE775 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				4A984BB0FA44D72C62E04D60,
+				36DE56AA6AC168C4F97EC550,
 				2ED572198F12A9012B46995D,
 				5326E0655E22592534C38AF8,
 				F5D1DC11F5EC6CC0C0C98278,
@@ -406,7 +411,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 1300;
-				ORGANIZATIONNAME = "";
+				ORGANIZATIONNAME = "Dimethoxy";
 				TargetAttributes = {
 					483AAF6AE54B7C9BFE5883B7 = {
 						SystemCapabilities = {
@@ -518,6 +523,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1C13F85BA747A4D63525840A,
 				5E63DCA8C554A5D03E03EB83,
 				A478159FA18B37F28EDE62A2,
 				26A854C363D5E38312B01917,
@@ -656,7 +662,7 @@
 					"JucePlugin_Enable_IAA=0",
 					"JucePlugin_Name=\\\"Plasma\\\"",
 					"JucePlugin_Desc=\\\"Plasma\\\"",
-					"JucePlugin_Manufacturer=\\\"yourcompany\\\"",
+					"JucePlugin_Manufacturer=\\\"Dimethoxy\\\"",
 					"JucePlugin_ManufacturerWebsite=\\\"\\\"",
 					"JucePlugin_ManufacturerEmail=\\\"\\\"",
 					"JucePlugin_ManufacturerCode=0x4d616e75",
@@ -677,13 +683,13 @@
 					"JucePlugin_AUExportPrefix=PlasmaAU",
 					"JucePlugin_AUExportPrefixQuoted=\\\"PlasmaAU\\\"",
 					"JucePlugin_AUManufacturerCode=JucePlugin_ManufacturerCode",
-					"JucePlugin_CFBundleIdentifier=com.yourcompany.Plasma",
+					"JucePlugin_CFBundleIdentifier=com.Dimethoxy.Plasma",
 					"JucePlugin_RTASCategory=0",
 					"JucePlugin_RTASManufacturerCode=JucePlugin_ManufacturerCode",
 					"JucePlugin_RTASProductId=JucePlugin_PluginCode",
 					"JucePlugin_RTASDisableBypass=0",
 					"JucePlugin_RTASDisableMultiMono=0",
-					"JucePlugin_AAXIdentifier=com.yourcompany.Plasma",
+					"JucePlugin_AAXIdentifier=com.Dimethoxy.Plasma",
 					"JucePlugin_AAXManufacturerCode=JucePlugin_ManufacturerCode",
 					"JucePlugin_AAXProductId=JucePlugin_PluginCode",
 					"JucePlugin_AAXCategory=0",
@@ -691,7 +697,7 @@
 					"JucePlugin_AAXDisableMultiMono=0",
 					"JucePlugin_IAAType=0x61757278",
 					"JucePlugin_IAASubType=JucePlugin_PluginCode",
-					"JucePlugin_IAAName=\\\"yourcompany:\\ Plasma\\\"",
+					"JucePlugin_IAAName=\\\"Dimethoxy:\\ Plasma\\\"",
 					"JucePlugin_VSTNumMidiInputs=16",
 					"JucePlugin_VSTNumMidiOutputs=16",
 					"JUCE_STANDALONE_APPLICATION=JucePlugin_Build_Standalone",
@@ -711,7 +717,7 @@
 				INSTALL_PATH = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_HEADER_SEARCH_PATHS = "$(HOME)/JUCE/modules/juce_audio_processors/format_types/VST3_SDK $(SRCROOT)/../../JuceLibraryCode $(HOME)/JUCE/modules $(HOME)/JUCE/modules/juce_audio_plugin_client";
-				PRODUCT_BUNDLE_IDENTIFIER = com.yourcompany.Plasma;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Dimethoxy.Plasma;
 				PRODUCT_NAME = "Plasma";
 				SKIP_INSTALL = YES;
 				USE_HEADERMAP = NO;
@@ -823,7 +829,7 @@
 					"JucePlugin_Enable_IAA=0",
 					"JucePlugin_Name=\\\"Plasma\\\"",
 					"JucePlugin_Desc=\\\"Plasma\\\"",
-					"JucePlugin_Manufacturer=\\\"yourcompany\\\"",
+					"JucePlugin_Manufacturer=\\\"Dimethoxy\\\"",
 					"JucePlugin_ManufacturerWebsite=\\\"\\\"",
 					"JucePlugin_ManufacturerEmail=\\\"\\\"",
 					"JucePlugin_ManufacturerCode=0x4d616e75",
@@ -844,13 +850,13 @@
 					"JucePlugin_AUExportPrefix=PlasmaAU",
 					"JucePlugin_AUExportPrefixQuoted=\\\"PlasmaAU\\\"",
 					"JucePlugin_AUManufacturerCode=JucePlugin_ManufacturerCode",
-					"JucePlugin_CFBundleIdentifier=com.yourcompany.Plasma",
+					"JucePlugin_CFBundleIdentifier=com.Dimethoxy.Plasma",
 					"JucePlugin_RTASCategory=0",
 					"JucePlugin_RTASManufacturerCode=JucePlugin_ManufacturerCode",
 					"JucePlugin_RTASProductId=JucePlugin_PluginCode",
 					"JucePlugin_RTASDisableBypass=0",
 					"JucePlugin_RTASDisableMultiMono=0",
-					"JucePlugin_AAXIdentifier=com.yourcompany.Plasma",
+					"JucePlugin_AAXIdentifier=com.Dimethoxy.Plasma",
 					"JucePlugin_AAXManufacturerCode=JucePlugin_ManufacturerCode",
 					"JucePlugin_AAXProductId=JucePlugin_PluginCode",
 					"JucePlugin_AAXCategory=0",
@@ -858,7 +864,7 @@
 					"JucePlugin_AAXDisableMultiMono=0",
 					"JucePlugin_IAAType=0x61757278",
 					"JucePlugin_IAASubType=JucePlugin_PluginCode",
-					"JucePlugin_IAAName=\\\"yourcompany:\\ Plasma\\\"",
+					"JucePlugin_IAAName=\\\"Dimethoxy:\\ Plasma\\\"",
 					"JucePlugin_VSTNumMidiInputs=16",
 					"JucePlugin_VSTNumMidiOutputs=16",
 					"JUCE_STANDALONE_APPLICATION=JucePlugin_Build_Standalone",
@@ -883,7 +889,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_HEADER_SEARCH_PATHS = "$(HOME)/JUCE/modules/juce_audio_processors/format_types/VST3_SDK $(SRCROOT)/../../JuceLibraryCode $(HOME)/JUCE/modules $(HOME)/JUCE/modules/juce_audio_plugin_client";
 				OTHER_LDFLAGS = "-bundle -lPlasma";
-				PRODUCT_BUNDLE_IDENTIFIER = com.yourcompany.Plasma;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Dimethoxy.Plasma;
 				PRODUCT_NAME = "Plasma";
 				USE_HEADERMAP = NO;
 				VALID_ARCHS = "i386 x86_64 arm64 arm64e";
@@ -938,7 +944,7 @@
 					"JucePlugin_Enable_IAA=0",
 					"JucePlugin_Name=\\\"Plasma\\\"",
 					"JucePlugin_Desc=\\\"Plasma\\\"",
-					"JucePlugin_Manufacturer=\\\"yourcompany\\\"",
+					"JucePlugin_Manufacturer=\\\"Dimethoxy\\\"",
 					"JucePlugin_ManufacturerWebsite=\\\"\\\"",
 					"JucePlugin_ManufacturerEmail=\\\"\\\"",
 					"JucePlugin_ManufacturerCode=0x4d616e75",
@@ -959,13 +965,13 @@
 					"JucePlugin_AUExportPrefix=PlasmaAU",
 					"JucePlugin_AUExportPrefixQuoted=\\\"PlasmaAU\\\"",
 					"JucePlugin_AUManufacturerCode=JucePlugin_ManufacturerCode",
-					"JucePlugin_CFBundleIdentifier=com.yourcompany.Plasma",
+					"JucePlugin_CFBundleIdentifier=com.Dimethoxy.Plasma",
 					"JucePlugin_RTASCategory=0",
 					"JucePlugin_RTASManufacturerCode=JucePlugin_ManufacturerCode",
 					"JucePlugin_RTASProductId=JucePlugin_PluginCode",
 					"JucePlugin_RTASDisableBypass=0",
 					"JucePlugin_RTASDisableMultiMono=0",
-					"JucePlugin_AAXIdentifier=com.yourcompany.Plasma",
+					"JucePlugin_AAXIdentifier=com.Dimethoxy.Plasma",
 					"JucePlugin_AAXManufacturerCode=JucePlugin_ManufacturerCode",
 					"JucePlugin_AAXProductId=JucePlugin_PluginCode",
 					"JucePlugin_AAXCategory=0",
@@ -973,7 +979,7 @@
 					"JucePlugin_AAXDisableMultiMono=0",
 					"JucePlugin_IAAType=0x61757278",
 					"JucePlugin_IAASubType=JucePlugin_PluginCode",
-					"JucePlugin_IAAName=\\\"yourcompany:\\ Plasma\\\"",
+					"JucePlugin_IAAName=\\\"Dimethoxy:\\ Plasma\\\"",
 					"JucePlugin_VSTNumMidiInputs=16",
 					"JucePlugin_VSTNumMidiOutputs=16",
 					"JUCE_STANDALONE_APPLICATION=JucePlugin_Build_Standalone",
@@ -997,7 +1003,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_HEADER_SEARCH_PATHS = "$(HOME)/JUCE/modules/juce_audio_processors/format_types/VST3_SDK $(SRCROOT)/../../JuceLibraryCode $(HOME)/JUCE/modules $(HOME)/JUCE/modules/juce_audio_plugin_client";
 				OTHER_LDFLAGS = "-bundle -lPlasma";
-				PRODUCT_BUNDLE_IDENTIFIER = com.yourcompany.Plasma;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Dimethoxy.Plasma;
 				PRODUCT_NAME = "Plasma";
 				USE_HEADERMAP = NO;
 				VALID_ARCHS = "i386 x86_64 arm64 arm64e";
@@ -1058,7 +1064,7 @@
 					"JucePlugin_Enable_IAA=0",
 					"JucePlugin_Name=\\\"Plasma\\\"",
 					"JucePlugin_Desc=\\\"Plasma\\\"",
-					"JucePlugin_Manufacturer=\\\"yourcompany\\\"",
+					"JucePlugin_Manufacturer=\\\"Dimethoxy\\\"",
 					"JucePlugin_ManufacturerWebsite=\\\"\\\"",
 					"JucePlugin_ManufacturerEmail=\\\"\\\"",
 					"JucePlugin_ManufacturerCode=0x4d616e75",
@@ -1079,13 +1085,13 @@
 					"JucePlugin_AUExportPrefix=PlasmaAU",
 					"JucePlugin_AUExportPrefixQuoted=\\\"PlasmaAU\\\"",
 					"JucePlugin_AUManufacturerCode=JucePlugin_ManufacturerCode",
-					"JucePlugin_CFBundleIdentifier=com.yourcompany.Plasma",
+					"JucePlugin_CFBundleIdentifier=com.Dimethoxy.Plasma",
 					"JucePlugin_RTASCategory=0",
 					"JucePlugin_RTASManufacturerCode=JucePlugin_ManufacturerCode",
 					"JucePlugin_RTASProductId=JucePlugin_PluginCode",
 					"JucePlugin_RTASDisableBypass=0",
 					"JucePlugin_RTASDisableMultiMono=0",
-					"JucePlugin_AAXIdentifier=com.yourcompany.Plasma",
+					"JucePlugin_AAXIdentifier=com.Dimethoxy.Plasma",
 					"JucePlugin_AAXManufacturerCode=JucePlugin_ManufacturerCode",
 					"JucePlugin_AAXProductId=JucePlugin_PluginCode",
 					"JucePlugin_AAXCategory=0",
@@ -1093,7 +1099,7 @@
 					"JucePlugin_AAXDisableMultiMono=0",
 					"JucePlugin_IAAType=0x61757278",
 					"JucePlugin_IAASubType=JucePlugin_PluginCode",
-					"JucePlugin_IAAName=\\\"yourcompany:\\ Plasma\\\"",
+					"JucePlugin_IAAName=\\\"Dimethoxy:\\ Plasma\\\"",
 					"JucePlugin_VSTNumMidiInputs=16",
 					"JucePlugin_VSTNumMidiOutputs=16",
 					"JUCE_STANDALONE_APPLICATION=JucePlugin_Build_Standalone",
@@ -1114,7 +1120,7 @@
 				LLVM_LTO = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_HEADER_SEARCH_PATHS = "$(HOME)/JUCE/modules/juce_audio_processors/format_types/VST3_SDK $(SRCROOT)/../../JuceLibraryCode $(HOME)/JUCE/modules $(HOME)/JUCE/modules/juce_audio_plugin_client";
-				PRODUCT_BUNDLE_IDENTIFIER = com.yourcompany.Plasma;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Dimethoxy.Plasma;
 				PRODUCT_NAME = "Plasma";
 				SKIP_INSTALL = YES;
 				USE_HEADERMAP = NO;

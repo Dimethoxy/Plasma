@@ -481,6 +481,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\WaveformComponent.cpp">
+      <Filter>Plasma\Source</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\PlasmaLabel.cpp">
       <Filter>Plasma\Source</Filter>
     </ClCompile>
@@ -2724,6 +2727,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\WaveformComponent.h">
+      <Filter>Plasma\Source</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\PlasmaLabel.h">
       <Filter>Plasma\Source</Filter>
     </ClInclude>

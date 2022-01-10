@@ -9,14 +9,14 @@ public:
 		//1024/4
 		setBufferSize(1024);
 		setSamplesPerBlock(4);
-		setColours(Colour(18, 20, 20), Colours::white);
+		setColours(Colour::fromRGBA(18, 20, 20, 255), Colours::white);
 	}
 	void paintChannel(
 		Graphics&,
 		Rectangle<float> bounds,
 		const Range<float>* levels,
 		int numLevels,
-		int nextSample);
+		int nextSample) override;
 private:
 };
 

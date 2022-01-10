@@ -178,7 +178,11 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	//Waveform
 	waveformComponent = &p.waveformComponent;
 	addAndMakeVisible(waveformComponent);
-	waveformComponent->setVisible(false);
+	int analyser = analyserSlider.getValue();
+	if (analyser != AnalyserType::Waveform)
+	{
+		waveformComponent->setVisible(false);
+	}
 
 	//Tooltip
 	Typeface::Ptr tface = Typeface::createSystemTypefaceFor(BinaryData::PoppinsMedium_ttf, BinaryData::PoppinsMedium_ttfSize);
@@ -470,11 +474,6 @@ void PlasmaAudioProcessorEditor::resized()
 	responseCurveComponent.setPadding(sc(padding));
 	//loudnessMeterIn.setBounds(220, 60, 620, 155);
 	//loudnessMeterOut.setBounds(220, 215, 620, 155);
-	tooltipLabel.setBounds(
-		monitorArea().getX() + 2 * sc(padding),
-		monitorArea().getY() + sc(padding),
-		sc(300),
-		sc(40));
 	auto logoX = headerArea().getCentreX() - sc(100);
 	plasmaLabel.setBounds(logoX, sc(-42), sc(200), sc(100));
 	plasmaLabel.setCustomFontSize(sc(100));
@@ -827,6 +826,11 @@ void PlasmaAudioProcessorEditor::resized()
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Analyser
 	waveformComponent->setBounds(monitorArea().reduced(sc(padding)));
+	tooltipLabel.setBounds(
+		sc(padding),
+		sc(padding),
+		sc(300),
+		sc(40));
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Update Labels
 	for (auto* label : getLabels())

@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="qMF8Un" name="Plasma" projectType="audioplug" useAppConfig="0"
-              jucerFormatVersion="1" pluginFormats="buildVST3">
+              jucerFormatVersion="1" pluginFormats="buildVST3" bundleIdentifier="com.Dimethoxy.Plasma"
+              companyName="Dimethoxy">
   <MAINGROUP id="JL3O3j" name="Plasma">
     <GROUP id="{C06EE6F1-1336-2987-2A83-453AE370713C}" name="Source">
+      <FILE id="xQZPHP" name="WaveformComponent.cpp" compile="1" resource="0"
+            file="Source/WaveformComponent.cpp"/>
+      <FILE id="VLv875" name="WaveformComponent.h" compile="0" resource="0"
+            file="Source/WaveformComponent.h"/>
       <FILE id="Cwd2IN" name="PlasmaLabel.cpp" compile="1" resource="0" file="Source/PlasmaLabel.cpp"/>
       <FILE id="xJmQke" name="PlasmaLabel.h" compile="0" resource="0" file="Source/PlasmaLabel.h"/>
       <FILE id="KWlHso" name="CustomTextButton.cpp" compile="1" resource="0"
