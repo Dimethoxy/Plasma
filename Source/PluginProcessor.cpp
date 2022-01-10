@@ -1,5 +1,29 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+
+void WaveformComponent::paintChannel(
+	Graphics& g,
+	Rectangle<float> area,
+	const Range<float>* levels,
+	int numLevels,
+	int nextSample)
+{
+	Path p;
+	getChannelAsPath(p, levels, numLevels, nextSample);
+
+	/*
+	g.fillPath(p, AffineTransform::fromTargetPoints(0.0f, -1.0f, area.getX(), area.getY(),
+		0.0f, 1.0f, area.getX(), area.getBottom(),
+		(float)numLevels, -1.0f, area.getRight(), area.getY()));
+	*/
+	if (isVisible())
+	{
+		g.strokePath(p, PathStrokeType(2.0), AffineTransform::fromTargetPoints(0.0f, -1.0f, area.getX(), area.getY(),
+			0.0f, 1.0f, area.getX(), area.getBottom(),
+			(float)numLevels, -1.0f, area.getRight(), area.getY()));
+	}
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //JUCE
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -177,6 +201,8 @@ void PlasmaAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 	//Allocate Clean Buffer
 	cleanBuffer.setSize(getNumInputChannels(), samplesPerBlock);
 
+	//Waveform
+	waveformComponent.clear();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -265,32 +291,43 @@ void PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
 		auto* cleanData = tmpBuffer.getWritePointer(channel);
 		for (int sample = 0; sample < buffer.getNumSamples(); sample++)
 		{
-			if (channelData[sample] != 0.0)
+			//Reduce Loudness
+			channelData[sample] = clamp(channelData[sample], -1, 1);
+
+			//Girth
+			channelData[sample] = channelData[sample] *
+				((((float)(rand() % 100)) / 100 * chainSettings.lateGirth) + 1);
+
+			//Drive 
+			distort(channelData[sample], chainSettings.lateDrive, chainSettings.lateDriveType);
+
+			//Bias 
+			if (channelData[sample] > 0)
 			{
-				//Girth
-				channelData[sample] = channelData[sample] *
-					((((float)(rand() % 100)) / 100 * chainSettings.lateGirth) + 1);
-
-				//Drive 
-				distort(channelData[sample], chainSettings.lateDrive, chainSettings.lateDriveType);
-
-				//Bias 
-				//channelData[sample] = clamp(channelData[sample] + chainSettings.lateBias, -1.0, 1.0);
-				if (channelData[sample] > 0)
-				{
-					channelData[sample] += channelData[sample] * chainSettings.lateBias;
-				}
-				else if (channelData[sample] < 0)
-				{
-					channelData[sample] -= channelData[sample] * chainSettings.lateBias;
-				}
+				channelData[sample] += channelData[sample] * chainSettings.lateBias;
 			}
-
+			else if (channelData[sample] < 0)
+			{
+				channelData[sample] -= channelData[sample] * chainSettings.lateBias;
+			}
 			//Mix
 			channelData[sample] = cleanData[sample] * mixDry + channelData[sample] * mixWet;
 
+			//Reduce Loudness
+			channelData[sample] = 0.5 * clamp(channelData[sample], -1, 1);
+
+		}
+	}
+
+	waveformComponent.pushBuffer(buffer);
+
+	for (int channel = 0; channel < totalNumInputChannels; ++channel)
+	{
+		auto* channelData = buffer.getWritePointer(channel);
+		for (int sample = 0; sample < buffer.getNumSamples(); sample++)
+		{
 			//Gain
-			channelData[sample] = channelData[sample] * gain;
+			channelData[sample] = channelData[sample] * gain * 2;
 		}
 
 	}
@@ -409,8 +446,6 @@ juce::AudioProcessorValueTreeState::ParameterLayout PlasmaAudioProcessor::create
 	}
 	layout.add(std::make_unique<juce::AudioParameterChoice>
 		("Analyser Type", "Analyser Type", analyserArray, 0));
-	layout.add(std::make_unique<juce::AudioParameterBool>
-		("Show Options", "Show Options", 0));
 	return layout;
 }
 

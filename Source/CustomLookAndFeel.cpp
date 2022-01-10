@@ -26,6 +26,11 @@ void CustomLookAndFeel::drawButtonBackground(
 		g.setFont(getCustomFont().withHeight(4 * iconSize));
 		g.drawText("Options", area, Justification::centred, false);
 	}
+	else if (text == "S")
+	{
+		g.setFont(getCustomFont().withHeight(4 * iconSize));
+		g.drawText("Save", area, Justification::centred, false);
+	}
 	else if (text == "+")
 	{
 		Point<float> p1(center.x, center.y - iconSize);

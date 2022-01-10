@@ -6,7 +6,7 @@
 class CustomLabel : public Label
 {
 public:
-    CustomLabel(String text, int size, Justification justification, bool underline);
+    CustomLabel(String text, int size, Justification justification);
     void resize();
 private:
     int mainSize = 20;

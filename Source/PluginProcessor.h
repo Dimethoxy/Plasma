@@ -1,6 +1,25 @@
 #pragma once
 #include <JuceHeader.h>
 
+class WaveformComponent : public AudioVisualiserComponent
+{
+public:
+	WaveformComponent() : AudioVisualiserComponent(2)
+	{
+		//1024/4
+		setBufferSize(1024);
+		setSamplesPerBlock(4);
+		setColours(Colour(18, 20, 20), Colours::white);
+	}
+	void paintChannel(
+		Graphics&,
+		Rectangle<float> bounds,
+		const Range<float>* levels,
+		int numLevels,
+		int nextSample);
+private:
+};
+
 //Math
 const float pi = 3.14159265358979323846;
 float clamp(float d, float min, float max);
@@ -42,7 +61,7 @@ enum Distortion
 	Atan,
 	Bitcrush,
 	Sine,
-	Cosine,
+	Cosine
 };
 
 //Chain Settings
@@ -192,6 +211,8 @@ public:
 
 	static juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
 	juce::AudioProcessorValueTreeState apvts{ *this, nullptr, "Parameters", createParameterLayout() };
+
+	WaveformComponent waveformComponent;
 
 private:
 	//Clean Buffer

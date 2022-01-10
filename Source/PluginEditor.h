@@ -18,7 +18,8 @@ enum FontSizes
 
 class PlasmaAudioProcessorEditor : public juce::AudioProcessorEditor,
 	public Timer,
-	public Button::Listener
+	public Button::Listener,
+	public Slider::Listener
 {
 public:
 	PlasmaAudioProcessorEditor(PlasmaAudioProcessor&);
@@ -29,6 +30,7 @@ public:
 
 	void timerCallback() override;
 	void buttonClicked(Button* button) override;
+	void sliderValueChanged(Slider* slider);
 private:
 	//Scaling
 	CustomTextButton scaleUpButton;
@@ -45,7 +47,7 @@ private:
 	int scale = 100;
 	bool showConfig = false;
 	void configWindow(bool visibility);
-
+	WaveformComponent* waveformComponent;
 	//Sliders
 	CustomRotarySlider
 		//Drive
@@ -183,7 +185,8 @@ private:
 		backgroundColorLabel,
 		foregroundColorLabel,
 		accentColorLabel,
-		scaleLabel;
+		scaleLabel,
+		optionsLabel;
 
 
 	//Label Vector

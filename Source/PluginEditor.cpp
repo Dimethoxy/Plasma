@@ -77,53 +77,54 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Labels
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	tooltipLabel("", FontSizes::Main, Justification::centredLeft, false),
+	tooltipLabel("", FontSizes::Main, Justification::centredLeft),
 	//Drive
-	gainLabel("Gain", FontSizes::Main, Justification::centredTop, false),
-	driveLabel("Drive", FontSizes(Main), Justification::centredTop, false),
-	girthLabel("Girth", FontSizes(Main), Justification::centredTop, false),
-	biasLabel("Symmetry", FontSizes(Main), Justification::centredTop, false),
-	driveTypeLabel("Type", FontSizes(Main), Justification::centredTop, false),
+	gainLabel("Gain", FontSizes::Main, Justification::centredTop),
+	driveLabel("Drive", FontSizes::Main, Justification::centredTop),
+	girthLabel("Girth", FontSizes::Main, Justification::centredTop),
+	biasLabel("Symmetry", FontSizes::Main, Justification::centredTop),
+	driveTypeLabel("Type", FontSizes::Main, Justification::centredTop),
 	//Highpass
-	highPassFreqLabel("Frequency", FontSizes(Main), Justification::centredTop, false),
-	highPassResonanceLabel("Resonance", FontSizes(Main), Justification::centredTop, false),
-	highPassResonanceQualityLabel("Q", FontSizes(Main), Justification::centredTop, false),
-	highPassSlopeLabel("Slope", FontSizes(Main), Justification::centredTop, false),
+	highPassFreqLabel("Frequency", FontSizes::Main, Justification::centredTop),
+	highPassResonanceLabel("Resonance", FontSizes::Main, Justification::centredTop),
+	highPassResonanceQualityLabel("Q", FontSizes::Main, Justification::centredTop),
+	highPassSlopeLabel("Slope", FontSizes::Main, Justification::centredTop),
 	//Peak
-	peakStereoLabel("Stereo", FontSizes(Main), Justification::centredTop, false),
-	peakFreqLabel("Frequency", FontSizes(Main), Justification::centredTop, false),
-	peakGainLabel("Gain", FontSizes(Main), Justification::centredTop, false),
-	peakQualityLabel("Q", FontSizes(Main), Justification::centredTop, false),
+	peakStereoLabel("Stereo", FontSizes::Main, Justification::centredTop),
+	peakFreqLabel("Frequency", FontSizes::Main, Justification::centredTop),
+	peakGainLabel("Gain", FontSizes::Main, Justification::centredTop),
+	peakQualityLabel("Q", FontSizes::Main, Justification::centredTop),
 	//Lowpass
-	lowPassFreqLabel("Frequency", FontSizes(Main), Justification::centredTop, false),
-	lowPassResonanceLabel("Resonance", FontSizes(Main), Justification::centredTop, false),
-	lowPassResonanceQualityLabel("Q", FontSizes(Main), Justification::centredTop, false),
-	lowPassSlopeLabel("Slope", FontSizes(Main), Justification::centredTop, false),
+	lowPassFreqLabel("Frequency", FontSizes::Main, Justification::centredTop),
+	lowPassResonanceLabel("Resonance", FontSizes::Main, Justification::centredTop),
+	lowPassResonanceQualityLabel("Q", FontSizes::Main, Justification::centredTop),
+	lowPassSlopeLabel("Slope", FontSizes::Main, Justification::centredTop),
 	//lateDrive
-	lateBiasLabel("Symmetry", FontSizes(Main), Justification::centredTop, false),
-	lateDriveTypeLabel("Type", FontSizes(Main), Justification::centredTop, false),
-	lateGirthLabel("Girth", FontSizes(Main), Justification::centredTop, false),
-	lateDriveLabel("Drive", FontSizes(Main), Justification::centredTop, false),
-	preGainLabel("Gain", FontSizes(Main), Justification::centredTop, false),
-	mixLabel("Mix", FontSizes(Main), Justification::centredTop, false),
-	analyserLabel("Analyser", FontSizes(Main), Justification::centredTop, false),
+	lateBiasLabel("Symmetry", FontSizes::Main, Justification::centredTop),
+	lateDriveTypeLabel("Type", FontSizes::Main, Justification::centredTop),
+	lateGirthLabel("Girth", FontSizes::Main, Justification::centredTop),
+	lateDriveLabel("Drive", FontSizes::Main, Justification::centredTop),
+	preGainLabel("Gain", FontSizes::Main, Justification::centredTop),
+	mixLabel("Mix", FontSizes::Main, Justification::centredTop),
+	analyserLabel("Analyser", FontSizes::Main, Justification::centredTop),
 	//Titels
-	inLabel("Input", FontSizes(Titel), Justification::centredTop, true),
-	outLabel("Output", FontSizes(Titel), Justification::centredTop, true),
-	earlyLabel("Distortion", FontSizes(Titel), Justification::centredTop, true),
-	highpassLabel("Highpass", FontSizes(Titel), Justification::centredTop, true),
-	peakLabel("Peak", FontSizes(Titel), Justification::centredTop, true),
-	lowpassLabel("Lowpass", FontSizes(Titel), Justification::centredTop, true),
-	lateLabel("Distortion", FontSizes(Titel), Justification::centredTop, true),
+	inLabel("Input", FontSizes::Titel, Justification::centredTop),
+	outLabel("Output", FontSizes::Titel, Justification::centredTop),
+	earlyLabel("Distortion", FontSizes::Titel, Justification::centredTop),
+	highpassLabel("Highpass", FontSizes::Titel, Justification::centredTop),
+	peakLabel("Peak", FontSizes::Titel, Justification::centredTop),
+	lowpassLabel("Lowpass", FontSizes::Titel, Justification::centredTop),
+	lateLabel("Distortion", FontSizes::Titel, Justification::centredTop),
 	plasmaLabel(),
 	configButton(),
 	scaleUpButton(),
 	scaleDownButton(),
 	//Options
-	backgroundColorLabel("Background Color", FontSizes::Titel, Justification::centredLeft, true),
-	foregroundColorLabel("Foreground Color", FontSizes::Titel, Justification::centredLeft, true),
-	accentColorLabel("Accent Color", FontSizes::Titel, Justification::centredLeft, true),
-	scaleLabel("Scale", FontSizes::Titel, Justification::centredLeft, true)
+	backgroundColorLabel("Background Color", FontSizes::Main, Justification::centredLeft),
+	foregroundColorLabel("Foreground Color", FontSizes::Main, Justification::centredLeft),
+	accentColorLabel("Accent Color", FontSizes::Main, Justification::centredLeft),
+	scaleLabel("Scale", FontSizes::Main, Justification::centredLeft),
+	optionsLabel("Options", FontSizes::Titel, Justification::centredLeft)
 {
 	//Load Config File
 	options.applicationName = "Plasma";
@@ -159,7 +160,25 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	scaleDownButton.addListener(this);
 	addAndMakeVisible(scaleDownButton);
 
+	//Save Options
+	safeConfigButton.setButtonText("S");
+	safeConfigButton.addListener(this);
+	addAndMakeVisible(safeConfigButton);
+	safeConfigButton.setVisible(false);
+
+	//Analyser
+	analyserSlider.addListener(this);
+
+	//Logo
 	addAndMakeVisible(plasmaLabel);
+
+	//Hide Options Menu
+	optionsLabel.setVisible(false);
+
+	//Waveform
+	waveformComponent = &p.waveformComponent;
+	addAndMakeVisible(waveformComponent);
+	waveformComponent->setVisible(false);
 
 	//Tooltip
 	Typeface::Ptr tface = Typeface::createSystemTypefaceFor(BinaryData::PoppinsMedium_ttf, BinaryData::PoppinsMedium_ttfSize);
@@ -179,19 +198,37 @@ PlasmaAudioProcessorEditor::~PlasmaAudioProcessorEditor()
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Options
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
- 
+
 void PlasmaAudioProcessorEditor::configWindow(bool visibility)
 {
+	//Make visible
 	if (visibility)
 	{
+		//Show Option Components
+		safeConfigButton.setVisible(true);
+		optionsLabel.setVisible(true);
+
+		//Hide Analyser Components
 		tooltipLabel.setVisible(false);
 		responseCurveComponent.setVisible(false);
+		//waveformComponent->setVisible(false);
+
+		//Set Config to visible
 		showConfig = true;
 	}
+	//Hide
 	else
 	{
-		tooltipLabel.setVisible(false);
+		//Hide Options Components
+		safeConfigButton.setVisible(false);
+		optionsLabel.setVisible(false);
+
+		//Show Analyser Components
+		tooltipLabel.setVisible(true);
 		responseCurveComponent.setVisible(true);
+		//waveformComponent->setVisible(true);
+
+		//Set Config to hidden
 		showConfig = false;
 	}
 }
@@ -244,37 +281,54 @@ void PlasmaAudioProcessorEditor::paint(juce::Graphics& g)
 	if (clear) {
 		tooltipLabel.setText("", juce::dontSendNotification);
 	}
+
+
 	float lineSize = sc(2.0f);
 	float lineOffset = 0.0f;
-	Line<float> inLine(Point<float>(inArea().getCentreX() - sc(33), inArea().getY() + fs_titelLabel()),
+	Line<float> inLine(
+		Point<float>(inArea().getCentreX() - sc(33), inArea().getY() + fs_titelLabel()),
 		Point<float>(inArea().getCentreX() + sc(33), inArea().getY() + fs_titelLabel()));
 
-	Line<float> outLine(Point<float>(outArea().getCentreX() - sc(43), outArea().getY() + fs_titelLabel()),
+	Line<float> outLine(
+		Point<float>(outArea().getCentreX() - sc(43), outArea().getY() + fs_titelLabel()),
 		Point<float>(outArea().getCentreX() + sc(43), outArea().getY() + fs_titelLabel()));
 
-	Line<float> earlyLine(Point<float>(earlyArea().getCentreX() - sc(59), earlyArea().getY() + fs_titelLabel()),
+	Line<float> earlyLine(
+		Point<float>(earlyArea().getCentreX() - sc(59), earlyArea().getY() + fs_titelLabel()),
 		Point<float>(earlyArea().getCentreX() + sc(59), earlyArea().getY() + fs_titelLabel()));
 
-	Line<float> highpassArea(Point<float>(highpassArea().getCentreX() - sc(56), highpassArea().getY() + fs_titelLabel()),
+	Line<float> highpassLine(
+		Point<float>(highpassArea().getCentreX() - sc(56), highpassArea().getY() + fs_titelLabel()),
 		Point<float>(highpassArea().getCentreX() + sc(56), highpassArea().getY() + fs_titelLabel()));
 
-	Line<float> peakArea(Point<float>(peakArea().getCentreX() - sc(29), peakArea().getY() + fs_titelLabel()),
+	Line<float> peakLine(
+		Point<float>(peakArea().getCentreX() - sc(29), peakArea().getY() + fs_titelLabel()),
 		Point<float>(peakArea().getCentreX() + sc(29), peakArea().getY() + fs_titelLabel()));
 
-	Line<float> lowpassArea(Point<float>(lowpassArea().getCentreX() - sc(54), lowpassArea().getY() + fs_titelLabel()),
+	Line<float> lowpassLine(
+		Point<float>(lowpassArea().getCentreX() - sc(54), lowpassArea().getY() + fs_titelLabel()),
 		Point<float>(lowpassArea().getCentreX() + sc(54), lowpassArea().getY() + fs_titelLabel()));
 
-	Line<float> lateArea(Point<float>(lateArea().getCentreX() - sc(59), lateArea().getY() + fs_titelLabel()),
+	Line<float> lateLine(
+		Point<float>(lateArea().getCentreX() - sc(59), lateArea().getY() + fs_titelLabel()),
 		Point<float>(lateArea().getCentreX() + sc(59), lateArea().getY() + fs_titelLabel()));
+
+	Line<float> optionsLine(
+		Point<float>(optionsLabel.getBounds().getCentreX() - sc(46), optionsLabel.getBounds().getY() + sc(37)),
+		Point<float>(optionsLabel.getBounds().getCentreX() + sc(46), optionsLabel.getBounds().getY() + sc(37)));
 
 	g.setColour(Colours::white);
 	g.drawLine(inLine, lineSize);
 	g.drawLine(outLine, lineSize);
 	g.drawLine(earlyLine, lineSize);
-	g.drawLine(highpassArea, lineSize);
-	g.drawLine(peakArea, lineSize);
-	g.drawLine(lowpassArea, lineSize);
-	g.drawLine(lateArea, lineSize);
+	g.drawLine(highpassLine, lineSize);
+	g.drawLine(peakLine, lineSize);
+	g.drawLine(lowpassLine, lineSize);
+	g.drawLine(lateLine, lineSize);
+	if (showConfig)
+	{
+		g.drawLine(optionsLine, lineSize);
+	}
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Timer Callback
@@ -322,6 +376,21 @@ void PlasmaAudioProcessorEditor::buttonClicked(Button* button)
 		else
 		{
 			configWindow(false);
+		}
+	}
+}
+void PlasmaAudioProcessorEditor::sliderValueChanged(Slider* slider)
+{
+	if (slider == &analyserSlider)
+	{
+		int analyser = analyserSlider.getValue();
+		if (analyser == AnalyserType::Waveform)
+		{
+			waveformComponent->setVisible(true);
+		}
+		else
+		{
+			waveformComponent->setVisible(false);
 		}
 	}
 }
@@ -388,6 +457,7 @@ float PlasmaAudioProcessorEditor::fs_titelLabel()
 }
 void PlasmaAudioProcessorEditor::resized()
 {
+
 	int knobSize = 120;
 	///////////////////////////////////////////////////////////////////////////////////////////
 	//Monitor
@@ -692,6 +762,7 @@ void PlasmaAudioProcessorEditor::resized()
 		lateDriveSlider.getBounds().getY() + lateDriveSlider.getBounds().getHeight() * knobLabelHeight,
 		lateDriveSlider.getBounds().getWidth(),
 		sc(40));
+
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Out
 	outLabel.setBounds(
@@ -721,13 +792,7 @@ void PlasmaAudioProcessorEditor::resized()
 		mixSlider.getBounds().getY() + mixSlider.getBounds().getHeight() * knobLabelHeight,
 		mixSlider.getBounds().getWidth(),
 		sc(40));
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//Update Labels
-	for (auto* label : getLabels())
-	{
-		label->resize();
-	}
-	setSize(lateArea().getRight() + sc(padding), lateArea().getBottom() + sc(padding));
+
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Scale Knobs
 	int scaleKnobSize = headerArea().getHeight() - 2 * (sc(padding));
@@ -746,7 +811,29 @@ void PlasmaAudioProcessorEditor::resized()
 		sc(padding),
 		scaleKnobSize,
 		scaleKnobSize);
-
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//Options
+	auto s = sc(30);
+	optionsLabel.setBounds(
+		monitorArea().getX() + 2 * sc(padding),
+		monitorArea().getY() + 2 * sc(padding),
+		sc(100),
+		sc(40));
+	safeConfigButton.setBounds(
+		monitorArea().getRight() - s * 2.5 - sc(padding),
+		monitorArea().getY() + 3 * sc(padding),
+		2 * s,
+		s);
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//Analyser
+	waveformComponent->setBounds(monitorArea().reduced(sc(padding)));
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//Update Labels
+	for (auto* label : getLabels())
+	{
+		label->resize();
+	}
+	setSize(lateArea().getRight() + sc(padding), lateArea().getBottom() + sc(padding));
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Misc
@@ -826,7 +913,8 @@ std::vector<CustomLabel*> PlasmaAudioProcessorEditor::getLabels()
 		&highpassLabel,
 		&peakLabel,
 		&lowpassLabel,
-		&lateLabel
+		&lateLabel,
+		&optionsLabel
 	};
 }
 
