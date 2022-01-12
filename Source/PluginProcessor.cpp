@@ -335,9 +335,9 @@ juce::AudioProcessorValueTreeState::ParameterLayout PlasmaAudioProcessor::create
 	distortionArray.add("Cosine");
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Drive", "Drive",
-			juce::NormalisableRange<float>(1.0f, 10.0f, 0.01f, 1.0f), 10.0f));
+			juce::NormalisableRange<float>(1.0f, 10.0f, 0.01f, 1.0f), 0.0f));
 	layout.add(std::make_unique<juce::AudioParameterChoice>
-		("Distortion Type", "Distortion Type", distortionArray, 1));
+		("Distortion Type", "Distortion Type", distortionArray, 0));
 	//Girth
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Girth", "Girth",
@@ -355,7 +355,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout PlasmaAudioProcessor::create
 			juce::NormalisableRange<float>(20.0f, 20000.0f, 1.0f, 0.5f), 450.0f));
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Peak Gain", "Peak Gain",
-			juce::NormalisableRange<float>(-48.0f, 48.0f, 0.1f, 1.0f), 16.0f));
+			juce::NormalisableRange<float>(-48.0f, 48.0f, 0.1f, 1.0f), 0.0f));
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Peak Q", "Peak Q",
 			juce::NormalisableRange<float>(0.1f, 5.0f, 0.01f, 0.5f), 1.0f));
@@ -372,7 +372,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout PlasmaAudioProcessor::create
 		("Highpass Slope", "Highpass Slope", slopeArray, 1));
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Highpass Freq", "Highpass Freq",
-			juce::NormalisableRange<float>(20.0f, 20000.0f, 1.0f, 0.5f), 80.0f));
+			juce::NormalisableRange<float>(20.0f, 20000.0f, 1.0f, 0.5f), 20.0f));
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Highpass Resonance", "Highpass Resonance",
 			juce::NormalisableRange<float>(0.0f, 64.0f, 0.1f, 1.0f), 0.0f));
@@ -396,7 +396,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout PlasmaAudioProcessor::create
 		("Late Distortion Type", "Late Distortion Type", distortionArray, 0));
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Late Drive", "Late Drive",
-			juce::NormalisableRange<float>(1.0f, 10.0f, 0.01f, 1.0f), 10.0f));
+			juce::NormalisableRange<float>(1.0f, 10.0f, 0.01f, 1.0f), 0.0f));
 	//Late Girth
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Late Girth", "Late Girth",
@@ -408,7 +408,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout PlasmaAudioProcessor::create
 	//Gain
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Gain", "Gain",
-			juce::NormalisableRange<float>(-12.0f, 12.0f, 0.2f, 0.5f), -12.0f));
+			juce::NormalisableRange<float>(-12.0f, 12.0f, 0.2f, 0.5f), 0.0f));
 	//Mix
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Mix", "Mix",
@@ -422,7 +422,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout PlasmaAudioProcessor::create
 		analyserArray.add(str);
 	}
 	layout.add(std::make_unique<juce::AudioParameterChoice>
-		("Analyser Type", "Analyser Type", analyserArray, 0));
+		("Analyser Type", "Analyser Type", analyserArray, 1));
 	return layout;
 }
 

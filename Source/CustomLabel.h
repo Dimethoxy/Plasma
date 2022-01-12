@@ -15,6 +15,7 @@ protected:
 private:
     int mainSize = 20;
     int titelSize = 29;
+    int TooltipSize = 18;
     int customFontSize;
     void setCustomFontSize(int size);
     Typeface::Ptr getTypeface();

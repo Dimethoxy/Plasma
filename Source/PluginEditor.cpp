@@ -77,7 +77,7 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Labels
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	tooltipLabel("", FontSizes::Main, Justification::centredLeft),
+	tooltipLabel("", FontSizes::Tooltipp, Justification::centredLeft),
 	//Drive
 	gainLabel("Gain", FontSizes::Main, Justification::centredTop),
 	driveLabel("Drive", FontSizes::Main, Justification::centredTop),
@@ -182,13 +182,7 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	//Reloader Analyser Knob
 	analyserSlider.valueChanged();
 
-	//Tooltip
-	Typeface::Ptr tface = Typeface::createSystemTypefaceFor(BinaryData::PoppinsMedium_ttf, BinaryData::PoppinsMedium_ttfSize);
-	Font popFont(tface);
-	tooltipLabel.setFont(popFont.withHeight(sc(28.0)));
-	tooltipLabel.setJustificationType(juce::Justification::centredLeft);
-	tooltipLabel.setText("", juce::dontSendNotification);
-	addAndMakeVisible(tooltipLabel);
+
 
 	setResizable(false, false);
 	setSize(sc(810), sc(940)); //810 ... 1060
@@ -272,6 +266,14 @@ void PlasmaAudioProcessorEditor::paint(juce::Graphics& g)
 	}
 	if (clear) {
 		tooltipLabel.setText("", juce::dontSendNotification);
+	}
+	if (tooltipLabel.getText() != "" && false)
+	{
+		Rectangle<int> border(tooltipLabel.getBounds().reduced(8.0));
+		g.setColour(Colours::black);
+		g.fillRect(border);
+		g.setColour(Colours::white);
+		g.drawRect(border, ceil(sc(2)));
 	}
 
 
@@ -827,10 +829,11 @@ void PlasmaAudioProcessorEditor::resized()
 	//Analyser
 	waveformComponent->setBounds(monitorArea().reduced(sc(padding)));
 	tooltipLabel.setBounds(
-		sc(padding),
-		sc(padding),
+		sc(padding) + monitorArea().getX(),
+		monitorArea().getY(),
 		sc(300),
 		sc(40));
+	tooltipLabel.setAlwaysOnTop(true);
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Update Labels
 	for (auto* label : getLabels())

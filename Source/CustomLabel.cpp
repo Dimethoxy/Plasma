@@ -50,6 +50,10 @@ float CustomLabel::getCustomFontSize()
 	{
 		return titelSize * factor;
 	}
+	case FontSizes::Tooltipp:
+	{
+		return TooltipSize * factor;
+	}
 	}
 }
 
@@ -65,6 +69,10 @@ float CustomLabel::getScaledCustomFontSize()
 	case FontSizes::Titel:
 	{
 		return titelSize * factor;
+	}
+	case FontSizes::Tooltipp:
+	{
+		return TooltipSize * factor;
 	}
 	}
 }
