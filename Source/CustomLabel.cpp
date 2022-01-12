@@ -7,6 +7,12 @@ CustomLabel::CustomLabel(String text, int size, Justification justification)
 	setText(text, juce::dontSendNotification);
 	setFont(getFont().withHeight(getCustomFontSize()));
 	setJustificationType(justification);
+	setLookAndFeel(&lnf);
+}
+
+CustomLabel::~CustomLabel()
+{
+	setLookAndFeel(nullptr);
 }
 
 void CustomLabel::resize()
@@ -63,3 +69,7 @@ float CustomLabel::getScaledCustomFontSize()
 	}
 }
 
+void CustomLabel::paint(Graphics& g)
+{
+	getLookAndFeel().drawLabel(g, *this);
+}

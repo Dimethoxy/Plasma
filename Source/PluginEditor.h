@@ -8,6 +8,7 @@
 #include "CustomLabel.h"
 #include "CustomTextButton.h"
 #include "PlasmaLabel.h"
+#include "WaveformCOmponent.h"
 
 enum FontSizes
 {

@@ -178,11 +178,9 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	//Waveform
 	waveformComponent = &p.waveformComponent;
 	addAndMakeVisible(waveformComponent);
-	int analyser = analyserSlider.getValue();
-	if (analyser != AnalyserType::Waveform)
-	{
-		waveformComponent->setVisible(false);
-	}
+
+	//Reloader Analyser Knob
+	analyserSlider.valueChanged();
 
 	//Tooltip
 	Typeface::Ptr tface = Typeface::createSystemTypefaceFor(BinaryData::PoppinsMedium_ttf, BinaryData::PoppinsMedium_ttfSize);
@@ -212,11 +210,6 @@ void PlasmaAudioProcessorEditor::configWindow(bool visibility)
 		safeConfigButton.setVisible(true);
 		optionsLabel.setVisible(true);
 
-		//Hide Analyser Components
-		tooltipLabel.setVisible(false);
-		responseCurveComponent.setVisible(false);
-		//waveformComponent->setVisible(false);
-
 		//Set Config to visible
 		showConfig = true;
 	}
@@ -226,11 +219,6 @@ void PlasmaAudioProcessorEditor::configWindow(bool visibility)
 		//Hide Options Components
 		safeConfigButton.setVisible(false);
 		optionsLabel.setVisible(false);
-
-		//Show Analyser Components
-		tooltipLabel.setVisible(true);
-		responseCurveComponent.setVisible(true);
-		//waveformComponent->setVisible(true);
 
 		//Set Config to hidden
 		showConfig = false;
@@ -373,14 +361,7 @@ void PlasmaAudioProcessorEditor::buttonClicked(Button* button)
 	}
 	else if (button == &configButton)
 	{
-		if (!showConfig)
-		{
-			configWindow(true);
-		}
-		else
-		{
-			configWindow(false);
-		}
+		analyserSlider.setValue(AnalyserType::Options);
 	}
 }
 void PlasmaAudioProcessorEditor::sliderValueChanged(Slider* slider)
@@ -388,6 +369,7 @@ void PlasmaAudioProcessorEditor::sliderValueChanged(Slider* slider)
 	if (slider == &analyserSlider)
 	{
 		int analyser = analyserSlider.getValue();
+
 		if (analyser == AnalyserType::Waveform)
 		{
 			waveformComponent->setVisible(true);
@@ -395,6 +377,24 @@ void PlasmaAudioProcessorEditor::sliderValueChanged(Slider* slider)
 		else
 		{
 			waveformComponent->setVisible(false);
+		}
+
+		if (analyser == AnalyserType::Response)
+		{
+			responseCurveComponent.setVisible(true);
+		}
+		else
+		{
+			responseCurveComponent.setVisible(false);
+		}
+
+		if (analyser == AnalyserType::Options)
+		{
+			configWindow(true);
+		}
+		else
+		{
+			configWindow(false);
 		}
 	}
 }

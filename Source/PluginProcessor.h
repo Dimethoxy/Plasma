@@ -1,24 +1,7 @@
 #pragma once
 #include <JuceHeader.h>
+#include "WaveformComponent.h"
 
-class WaveformComponent : public AudioVisualiserComponent
-{
-public:
-	WaveformComponent() : AudioVisualiserComponent(2)
-	{
-		//1024/4
-		setBufferSize(1024);
-		setSamplesPerBlock(4);
-		setColours(Colour::fromRGBA(18, 20, 20, 255), Colours::white);
-	}
-	void paintChannel(
-		Graphics&,
-		Rectangle<float> bounds,
-		const Range<float>* levels,
-		int numLevels,
-		int nextSample) override;
-private:
-};
 
 //Math
 const float pi = 3.14159265358979323846;
@@ -49,8 +32,8 @@ enum AnalyserType
 	Response,
 	Waveform,
 	Spectrum,
-	Stereo,
-	Loudness
+	Loudness,
+	Options
 };
 enum Distortion
 {
@@ -261,10 +244,11 @@ private:
 		}
 		case Bitcrush:
 		{
-			auto k = (1 / drive) * (1 / drive);
-			data = data * k;
-			data = ceil(data);
-			data = data / k;
+			float bitDepth = 11.0 - drive;
+			float exponent = bitDepth - 1;
+			float possibleValues = pow(2, exponent);
+			float quantized = ceil(data * possibleValues);
+			data = quantized / possibleValues;
 			break;
 		}
 		case Root:
