@@ -268,31 +268,33 @@ void PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
 		auto* cleanData = tmpBuffer.getWritePointer(channel);
 		for (int sample = 0; sample < buffer.getNumSamples(); sample++)
 		{
-			//Reduce Loudness
-			channelData[sample] = clamp(channelData[sample], -1, 1);
-
-			//Girth
-			channelData[sample] = channelData[sample] *
-				((((float)(rand() % 100)) / 100 * chainSettings.lateGirth) + 1);
-
-			//Drive 
-			distort(channelData[sample], chainSettings.lateDrive, chainSettings.lateDriveType);
-
-			//Bias 
-			if (channelData[sample] > 0)
+			if (channelData[sample] != 0.0)
 			{
-				channelData[sample] += channelData[sample] * chainSettings.lateBias;
-			}
-			else if (channelData[sample] < 0)
-			{
-				channelData[sample] -= channelData[sample] * chainSettings.lateBias;
-			}
-			//Mix
-			channelData[sample] = cleanData[sample] * mixDry + channelData[sample] * mixWet;
+				//Reduce Loudness
+				channelData[sample] = clamp(channelData[sample], -1, 1);
 
-			//Reduce Loudness
-			channelData[sample] = 0.5 * clamp(channelData[sample], -1, 1);
+				//Girth
+				channelData[sample] = channelData[sample] *
+					((((float)(rand() % 100)) / 100 * chainSettings.lateGirth) + 1);
 
+				//Drive 
+				distort(channelData[sample], chainSettings.lateDrive, chainSettings.lateDriveType);
+
+				//Bias 
+				if (channelData[sample] > 0)
+				{
+					channelData[sample] += channelData[sample] * chainSettings.lateBias;
+				}
+				else if (channelData[sample] < 0)
+				{
+					channelData[sample] -= channelData[sample] * chainSettings.lateBias;
+				}
+				//Mix
+				channelData[sample] = cleanData[sample] * mixDry + channelData[sample] * mixWet;
+
+				//Reduce Loudness
+				channelData[sample] = 0.5 * clamp(channelData[sample], -1, 1);
+			}
 		}
 	}
 
@@ -322,7 +324,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout PlasmaAudioProcessor::create
 	//Pre Gain
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Pre Gain", "Pre Gain",
-			juce::NormalisableRange<float>(-12.0f, 12.0f, 0.2f, 0.5f), 0.0f));
+			juce::NormalisableRange<float>(-32.0f, 32.0f, 0.2f, 0.5f), 0.0f));
 	//Drive
 	juce::StringArray distortionArray;
 	distortionArray.add("Hardclip");
@@ -369,7 +371,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout PlasmaAudioProcessor::create
 	}
 	//Highpass
 	layout.add(std::make_unique<juce::AudioParameterChoice>
-		("Highpass Slope", "Highpass Slope", slopeArray, 1));
+		("Highpass Slope", "Highpass Slope", slopeArray, 0));
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Highpass Freq", "Highpass Freq",
 			juce::NormalisableRange<float>(20.0f, 20000.0f, 1.0f, 0.5f), 20.0f));
@@ -408,7 +410,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout PlasmaAudioProcessor::create
 	//Gain
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Gain", "Gain",
-			juce::NormalisableRange<float>(-12.0f, 12.0f, 0.2f, 0.5f), 0.0f));
+			juce::NormalisableRange<float>(-32.0f, 32.0f, 0.2f, 0.5f), 0.0f));
 	//Mix
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Mix", "Mix",

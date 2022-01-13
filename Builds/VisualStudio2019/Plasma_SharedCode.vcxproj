@@ -137,6 +137,8 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\SpectrumComponent.cpp"/>
+    <ClCompile Include="..\..\Source\ShapercurveComponent.cpp"/>
     <ClCompile Include="..\..\Source\WaveformComponent.cpp"/>
     <ClCompile Include="..\..\Source\PlasmaLabel.cpp"/>
     <ClCompile Include="..\..\Source\CustomTextButton.cpp"/>
@@ -2208,6 +2210,8 @@
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_gui_extra.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\SpectrumComponent.h"/>
+    <ClInclude Include="..\..\Source\ShapercurveComponent.h"/>
     <ClInclude Include="..\..\Source\WaveformComponent.h"/>
     <ClInclude Include="..\..\Source\PlasmaLabel.h"/>
     <ClInclude Include="..\..\Source\CustomTextButton.h"/>

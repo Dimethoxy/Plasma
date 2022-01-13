@@ -40,9 +40,9 @@ enum Distortion
 	Hardclip,
 	Softclip,
 	Root,
-	Scream,
 	Atan,
 	Bitcrush,
+	Scream,
 	Sine,
 	Cosine
 };
@@ -233,12 +233,11 @@ private:
 		{
 			if (data > 0.0) {
 				data = pow(data, 1.0f / drive);
-				data = 0.9 * tan(atan(data));
+				data = 1.27 * atan(data);
 			}
 			else {
-				data = pow(-data, 1.0f / drive);
-				data = 0.9 * tan(atan(data));
-				data = -data;
+				data = clamp(sin(drive * data), -1.0, 1.0);
+				data = clamp(drive * data, -1.0, 1.0);
 			};
 			break;
 		}
@@ -247,7 +246,15 @@ private:
 			float bitDepth = 11.0 - drive;
 			float exponent = bitDepth - 1;
 			float possibleValues = pow(2, exponent);
-			float quantized = ceil(data * possibleValues);
+			float quantized = data * possibleValues;
+			if (quantized >= 0)
+			{
+				quantized = ceil(quantized);
+			}
+			else if (quantized < 0)
+			{
+				quantized = floor(quantized);
+			}
 			data = quantized / possibleValues;
 			break;
 		}

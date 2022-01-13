@@ -5,6 +5,14 @@
               companyName="Dimethoxy">
   <MAINGROUP id="JL3O3j" name="Plasma">
     <GROUP id="{C06EE6F1-1336-2987-2A83-453AE370713C}" name="Source">
+      <FILE id="Dpr09h" name="SpectrumComponent.cpp" compile="1" resource="0"
+            file="Source/SpectrumComponent.cpp"/>
+      <FILE id="zBiltF" name="SpectrumComponent.h" compile="0" resource="0"
+            file="Source/SpectrumComponent.h"/>
+      <FILE id="nGNotj" name="ShapercurveComponent.cpp" compile="1" resource="0"
+            file="Source/ShapercurveComponent.cpp"/>
+      <FILE id="hnFBEP" name="ShapercurveComponent.h" compile="0" resource="0"
+            file="Source/ShapercurveComponent.h"/>
       <FILE id="xQZPHP" name="WaveformComponent.cpp" compile="1" resource="0"
             file="Source/WaveformComponent.cpp"/>
       <FILE id="VLv875" name="WaveformComponent.h" compile="0" resource="0"

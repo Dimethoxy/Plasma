@@ -95,7 +95,7 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 			slider.setHelpText("Distortion Type : Softclip");
 			break;
 		case Root:
-			slider.setHelpText("Distortion Type : Root");
+			slider.setHelpText("Distortion Type : Root Extraction");
 			break;
 		case Atan:
 			slider.setHelpText("Distortion Type : Atan");
@@ -150,11 +150,7 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 		isSelector = true;
 		numOptions = 5;
 		selectedOption = (int)slider.getValue();
-		String str;
-		str << (round(slider.getValue() * 100)) / 100;
-		slider.setHelpText((String)slider.getName() + " : " +
-			str + " " +
-			(String)slider.getTextValueSuffix());
+		slider.setHelpText("");
 	}
 	else if (slider.getName() == "Lowpass" || slider.getName() == "Highpass" || slider.getName() == "Peak")
 	{

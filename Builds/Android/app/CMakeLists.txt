@@ -34,6 +34,10 @@ add_library( ${BINARY_NAME}
 
     SHARED
 
+    "../../../Source/SpectrumComponent.cpp"
+    "../../../Source/SpectrumComponent.h"
+    "../../../Source/ShapercurveComponent.cpp"
+    "../../../Source/ShapercurveComponent.h"
     "../../../Source/WaveformComponent.cpp"
     "../../../Source/WaveformComponent.h"
     "../../../Source/PlasmaLabel.cpp"
@@ -1769,6 +1773,8 @@ add_library( ${BINARY_NAME}
     "../../../JuceLibraryCode/JucePluginDefines.h"
 )
 
+set_source_files_properties("../../../Source/SpectrumComponent.h" PROPERTIES HEADER_FILE_ONLY TRUE)
+set_source_files_properties("../../../Source/ShapercurveComponent.h" PROPERTIES HEADER_FILE_ONLY TRUE)
 set_source_files_properties("../../../Source/WaveformComponent.h" PROPERTIES HEADER_FILE_ONLY TRUE)
 set_source_files_properties("../../../Source/PlasmaLabel.h" PROPERTIES HEADER_FILE_ONLY TRUE)
 set_source_files_properties("../../../Source/CustomTextButton.h" PROPERTIES HEADER_FILE_ONLY TRUE)
