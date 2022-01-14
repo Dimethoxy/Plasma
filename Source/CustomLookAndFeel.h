@@ -27,4 +27,5 @@ class CustomLookAndFeel : public LookAndFeel_V4
 private:
 	Typeface::Ptr getCustomTypeface();
 	Font getCustomFont();
+	String getAnalyserName(AnalyserType analyserType);
 };

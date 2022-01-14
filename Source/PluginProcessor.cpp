@@ -250,18 +250,14 @@ void PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
 
 	//DSP
 	juce::dsp::AudioBlock<float> block(buffer);
-
 	auto leftBlock = block.getSingleChannelBlock(0);
 	auto rightBlock = block.getSingleChannelBlock(1);
-
 	juce::dsp::ProcessContextReplacing<float> leftContext(leftBlock);
 	juce::dsp::ProcessContextReplacing<float> rightContext(rightBlock);
-
 	leftChain.process(leftContext);
 	rightChain.process(rightContext);
 
 	//Late Stage
-
 	for (int channel = 0; channel < totalNumInputChannels; ++channel)
 	{
 		auto* channelData = buffer.getWritePointer(channel);
@@ -292,14 +288,13 @@ void PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
 				//Mix
 				channelData[sample] = cleanData[sample] * mixDry + channelData[sample] * mixWet;
 
-				//Reduce Loudness
+				//Reduce Loudness for Waveform Analyser
 				channelData[sample] = 0.5 * clamp(channelData[sample], -1, 1);
 			}
 		}
 	}
-
+	//Update Waveform Analyser
 	waveformComponent.pushBuffer(buffer);
-
 	for (int channel = 0; channel < totalNumInputChannels; ++channel)
 	{
 		auto* channelData = buffer.getWritePointer(channel);
@@ -308,7 +303,7 @@ void PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
 			//Gain
 			channelData[sample] = channelData[sample] * gain * 2;
 		}
-		
+
 	}
 }
 
@@ -424,7 +419,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout PlasmaAudioProcessor::create
 		analyserArray.add(str);
 	}
 	layout.add(std::make_unique<juce::AudioParameterChoice>
-		("Analyser Type", "Analyser Type", analyserArray, 1));
+		("Analyser Type", "Analyser Type", analyserArray, 0));
 	return layout;
 }
 

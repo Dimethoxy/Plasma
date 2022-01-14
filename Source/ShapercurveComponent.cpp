@@ -31,19 +31,8 @@ void ShapercurveComponent::timerCallback()
 {
 	if (parametersChanged.compareAndSetBool(false, true))
 	{
-		update();
+		repaint();
 	}
-}
-
-void ShapercurveComponent::update()
-{
-	//Update Monochain
-	auto chainSettings = getChainSettings(audioProcessor.apvts);
-
-	//TODO: Update Parameters
-
-	//Repaint
-	repaint();
 }
 
 void ShapercurveComponent::paint(juce::Graphics& g)
@@ -87,10 +76,9 @@ void ShapercurveComponent::paint(juce::Graphics& g)
 		break;
 	}
 	}
-	
-
 	float sampleSize = 2.0 / w;
 
+	//Draw
 	std::vector<double> samples;
 	samples.resize(w);
 	for (int i = 0; i < w; ++i)
@@ -115,8 +103,6 @@ void ShapercurveComponent::paint(juce::Graphics& g)
 			samples[i] -= samples[i] * bias;
 		}
 	}
-
-
 	Path shaperCurve;
 	const double outputMin = y + h;
 	const double outputMax = y;
@@ -133,8 +119,8 @@ void ShapercurveComponent::paint(juce::Graphics& g)
 	if (true)
 	{
 		g.setColour(Colours::white);
-		g.drawRect(x, y, w, h, 2.0*lineSize);
-		g.strokePath(shaperCurve, PathStrokeType(1.5*lineSize));
+		g.drawRect(x, y, w, h, 2.0 * lineSize);
+		g.strokePath(shaperCurve, PathStrokeType(1.5 * lineSize));
 	}
 }
 

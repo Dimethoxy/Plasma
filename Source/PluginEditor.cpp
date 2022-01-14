@@ -140,9 +140,15 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	scale = userSettings->getIntValue("scale", 100);
 
 	//Make all components visible
+
 	for (auto* comp : getComps())
 	{
 		addAndMakeVisible(comp);
+	}
+	for (auto* comp : getSliders())
+	{
+		addAndMakeVisible(comp);
+		comp->addListener(this);
 	}
 	for (auto* label : getLabels())
 	{
@@ -169,9 +175,6 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	addAndMakeVisible(safeConfigButton);
 	safeConfigButton.setVisible(false);
 
-	//Analyser
-	analyserSlider.addListener(this);
-
 	//Logo
 	addAndMakeVisible(plasmaLabel);
 
@@ -183,8 +186,9 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	addAndMakeVisible(waveformComponent);
 
 	//Reloader Analyser Knob
-	analyserSlider.valueChanged();
+	sliderValueChanged(&analyserSlider);
 
+	//WIndow
 	setResizable(false, false);
 	setSize(sc(810), sc(940)); //810 ... 1060
 }
@@ -192,34 +196,6 @@ PlasmaAudioProcessorEditor::~PlasmaAudioProcessorEditor()
 {
 
 }
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//Options
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void PlasmaAudioProcessorEditor::configWindow(bool visibility)
-{
-	//Make visible
-	if (visibility)
-	{
-		//Show Option Components
-		safeConfigButton.setVisible(true);
-		optionsLabel.setVisible(true);
-
-		//Set Config to visible
-		showConfig = true;
-	}
-	//Hide
-	else
-	{
-		//Hide Options Components
-		safeConfigButton.setVisible(false);
-		optionsLabel.setVisible(false);
-
-		//Set Config to hidden
-		showConfig = false;
-	}
-}
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Draw
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -231,7 +207,6 @@ Colour PlasmaAudioProcessorEditor::c_front()
 {
 	return Colour(24, 26, 27);
 }
-
 void PlasmaAudioProcessorEditor::paint(juce::Graphics& g)
 {
 	using namespace juce;
@@ -254,29 +229,6 @@ void PlasmaAudioProcessorEditor::paint(juce::Graphics& g)
 	//Monitor Background
 	g.setColour(c_back());
 	g.fillRect(monitorArea().reduced(sc(padding)));
-
-	//Add and make visible all components
-	bool clear = true;
-	for (auto* component : getComps())
-	{
-		if (component->isMouseButtonDown())
-		{
-			tooltipLabel.setText(component->getHelpText(), juce::dontSendNotification);
-			clear = false;
-		}
-	}
-	if (clear) {
-		tooltipLabel.setText("", juce::dontSendNotification);
-	}
-	if (tooltipLabel.getText() != "" && false)
-	{
-		Rectangle<int> border(tooltipLabel.getBounds().reduced(8.0));
-		g.setColour(Colours::black);
-		g.fillRect(border);
-		g.setColour(Colours::white);
-		g.drawRect(border, ceil(sc(2)));
-	}
-
 
 	float lineSize = sc(2.0f);
 	float lineOffset = 0.0f;
@@ -334,8 +286,37 @@ void PlasmaAudioProcessorEditor::timerCallback()
 	loudnessMeterOut.repaint();
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//Button Click
+//Interaction
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void PlasmaAudioProcessorEditor::configWindow(bool visibility)
+{
+	//Make visible
+	if (visibility)
+	{
+		//Show Option Components
+		safeConfigButton.setVisible(true);
+		optionsLabel.setVisible(true);
+
+		//Hide Tooltip
+		tooltipLabel.setVisible(false);
+
+		//Set Config to visible
+		showConfig = true;
+	}
+	//Hide
+	else
+	{
+		//Hide Options Components
+		safeConfigButton.setVisible(false);
+		optionsLabel.setVisible(false);
+
+		//Show Tooltip
+		tooltipLabel.setVisible(true);
+
+		//Set Config to hidden
+		showConfig = false;
+	}
+}
 void PlasmaAudioProcessorEditor::buttonClicked(Button* button)
 {
 	if (button == &scaleUpButton)
@@ -367,53 +348,114 @@ void PlasmaAudioProcessorEditor::buttonClicked(Button* button)
 		analyserSlider.setValue(AnalyserType::Options);
 	}
 }
+void PlasmaAudioProcessorEditor::sliderDragStarted(Slider* slider)
+{
+	if (
+		slider == &driveSlider ||
+		slider == &girthSlider ||
+		slider == &biasSlider ||
+		slider == &driveTypeSlider ||
+		slider == &lateDriveSlider ||
+		slider == &lateGirthSlider ||
+		slider == &lateBiasSlider ||
+		slider == &lateDriveTypeSlider)
+	{
+		autoAnalyserType = AnalyserType::Shapercurve;
+	}
+	else if (
+		slider == &highPassFreqSlider ||
+		slider == &highPassResonanceSlider ||
+		slider == &highPassResonanceQualitySlider ||
+		slider == &highPassSlopeSlider ||
+		slider == &peakStereoSlider ||
+		slider == &peakFreqSlider ||
+		slider == &peakGainSlider ||
+		slider == &peakQualitySlider ||
+		slider == &lowPassFreqSlider ||
+		slider == &lowPassResonanceSlider ||
+		slider == &lowPassResonanceQualitySlider ||
+		slider == &lowPassSlopeSlider)
+	{
+		autoAnalyserType = AnalyserType::Response;
+	}
+	else
+	{
+		autoAnalyserType = AnalyserType::Waveform;
+	}
+	if (isAutoAnalyser)
+	{
+		setAnalyserType(autoAnalyserType);
+	}
+	tooltipLabel.setText(slider->getHelpText(), juce::dontSendNotification);
+}
+void PlasmaAudioProcessorEditor::sliderDragEnded(Slider* slider)
+{
+	autoAnalyserType = AnalyserType::Waveform;
+	if (isAutoAnalyser)
+	{
+		setAnalyserType(autoAnalyserType);
+	}
+	tooltipLabel.setText("", juce::dontSendNotification);
+}
 void PlasmaAudioProcessorEditor::sliderValueChanged(Slider* slider)
 {
 	if (slider == &analyserSlider)
 	{
-		int analyser = analyserSlider.getValue();
-
-		//Waveform
-		if (analyser == AnalyserType::Waveform)
+		AnalyserType analyser = static_cast<AnalyserType>(analyserSlider.getValue());
+		if (analyser == AnalyserType::Automatic)
 		{
-			waveformComponent->setVisible(true);
+			isAutoAnalyser = true;
 		}
 		else
 		{
-			waveformComponent->setVisible(false);
+			isAutoAnalyser = false;
+			setAnalyserType(analyser);
 		}
+	}
+	tooltipLabel.setText(slider->getHelpText(), juce::dontSendNotification);
+}
+void PlasmaAudioProcessorEditor::setAnalyserType(AnalyserType analyser)
+{
+	//Waveform
+	if (analyser == AnalyserType::Waveform)
+	{
+		waveformComponent->setVisible(true);
+	}
+	else
+	{
+		waveformComponent->setVisible(false);
+	}
 
-		//Repsonse
-		if (analyser == AnalyserType::Response)
-		{
-			responseCurveComponent.setVisible(true);
-		}
-		else
-		{
-			responseCurveComponent.setVisible(false);
-		}
+	//Repsonse
+	if (analyser == AnalyserType::Response)
+	{
+		responseCurveComponent.setVisible(true);
+	}
+	else
+	{
+		responseCurveComponent.setVisible(false);
+	}
 
-		//Distortion
-		if (analyser == AnalyserType::Shapercurve)
-		{
-			earlyShapercurveComponent.setVisible(true);
-			lateShapercurveComponent.setVisible(true);
-		}
-		else
-		{
-			earlyShapercurveComponent.setVisible(false);
-			lateShapercurveComponent.setVisible(false);
-		}
+	//Distortion
+	if (analyser == AnalyserType::Shapercurve)
+	{
+		earlyShapercurveComponent.setVisible(true);
+		lateShapercurveComponent.setVisible(true);
+	}
+	else
+	{
+		earlyShapercurveComponent.setVisible(false);
+		lateShapercurveComponent.setVisible(false);
+	}
 
-		//Options
-		if (analyser == AnalyserType::Options)
-		{
-			configWindow(true);
-		}
-		else
-		{
-			configWindow(false);
-		}
+	//Options
+	if (analyser == AnalyserType::Options)
+	{
+		configWindow(true);
+	}
+	else
+	{
+		configWindow(false);
 	}
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -849,18 +891,17 @@ void PlasmaAudioProcessorEditor::resized()
 		monitorArea().getY(),
 		sc(300),
 		sc(40));
-	tooltipLabel.setAlwaysOnTop(true);
 	earlyShapercurveComponent.setBounds(
 		monitorArea().getCentreX() - sc(200) - sc(padding),
 		monitorArea().getCentreY() - sc(200) / 2,
 		sc(200),
 		sc(200));
 	lateShapercurveComponent.setBounds(
-		monitorArea().getCentreX()+ sc(padding),
+		monitorArea().getCentreX() + sc(padding),
 		monitorArea().getCentreY() - sc(200) / 2,
 		sc(200),
 		sc(200));
-
+	tooltipLabel.setAlwaysOnTop(true);
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Update Labels
 	for (auto* label : getLabels())
@@ -873,6 +914,18 @@ void PlasmaAudioProcessorEditor::resized()
 //Misc
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 std::vector<juce::Component*> PlasmaAudioProcessorEditor::getComps()
+{
+	return
+	{
+		&responseCurveComponent,
+		&earlyShapercurveComponent,
+		&lateShapercurveComponent,
+		&loudnessMeterIn,
+		&loudnessMeterOut
+	};
+}
+
+std::vector<CustomRotarySlider*> PlasmaAudioProcessorEditor::getSliders()
 {
 	return
 	{
@@ -898,13 +951,8 @@ std::vector<juce::Component*> PlasmaAudioProcessorEditor::getComps()
 		&preGainSlider,
 		&driveTypeSlider,
 		&lateDriveTypeSlider,
-		&responseCurveComponent,
-		&earlyShapercurveComponent,
-		&lateShapercurveComponent,
 		&mixSlider,
 		&analyserSlider,
-		&loudnessMeterIn,
-		&loudnessMeterOut
 	};
 }
 

@@ -1,3 +1,12 @@
+/*
+-Fix Tooltip
+-Implement spectrum analyser
+-Implement option menu
+-Fix global color settings
+-Fix WaveformComponent line size
+-Factory Presets
+*/
+
 #pragma once
 
 #include <JuceHeader.h>
@@ -32,6 +41,8 @@ public:
 	void timerCallback() override;
 	void buttonClicked(Button* button) override;
 	void sliderValueChanged(Slider* slider);
+	void sliderDragStarted(Slider* slider);
+	void sliderDragEnded(Slider* slider);
 private:
 	//Scaling
 	CustomTextButton scaleUpButton;
@@ -49,6 +60,9 @@ private:
 	bool showConfig = false;
 	void configWindow(bool visibility);
 	WaveformComponent* waveformComponent;
+	AnalyserType autoAnalyserType;
+	bool isAutoAnalyser;
+	void setAnalyserType(AnalyserType analyser);
 
 	//Sliders
 	CustomRotarySlider
@@ -196,6 +210,7 @@ private:
 
 	//Label Vector
 	std::vector<CustomLabel*> getLabels();
+	std::vector<CustomRotarySlider*> getSliders();
 
 	//End
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PlasmaAudioProcessorEditor);

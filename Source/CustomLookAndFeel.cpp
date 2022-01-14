@@ -86,7 +86,7 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 		isSelector = true;
 		numOptions = 8;
 		selectedOption = (int)slider.getValue();
-		switch ((int)slider.getValue())
+		switch (selectedOption)
 		{
 		case Hardclip:
 			slider.setHelpText("Distortion Type : Hardclip");
@@ -119,7 +119,7 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 		isSelector = true;
 		numOptions = 8;
 		selectedOption = (int)slider.getValue();
-		int slope = ((int)slider.getValue() + 1) * 12;
+		int slope = (selectedOption + 1) * 12;
 		String str;
 		str << "Slope : ";
 		str << slope;
@@ -150,7 +150,9 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 		isSelector = true;
 		numOptions = 5;
 		selectedOption = (int)slider.getValue();
-		slider.setHelpText("");
+		AnalyserType analyserType = static_cast<AnalyserType>(selectedOption);
+		String str = getAnalyserName(analyserType);
+		slider.setHelpText("Analyser Type : " + (String)selectedOption);
 	}
 	else if (slider.getName() == "Lowpass" || slider.getName() == "Highpass" || slider.getName() == "Peak")
 	{
@@ -349,4 +351,37 @@ Font CustomLookAndFeel::getCustomFont()
 {
 	Font font(getCustomTypeface());
 	return font;
+}
+
+String CustomLookAndFeel::getAnalyserName(AnalyserType analyserType)
+{
+	switch (analyserType)
+	{
+	case AnalyserType::Automatic:
+	{
+		return "Automatic";
+		break;
+	}
+	case AnalyserType::Options:
+	{
+		return "Options";
+		break;
+	}
+	case AnalyserType::Response:
+	{
+		return "Filter Response";
+		break;
+	}
+	case AnalyserType::Shapercurve:
+	{
+		return "Shapercurve";
+		break;
+	}
+	case AnalyserType::Waveform:
+	{
+		return "Waveform";
+		break;
+	}
+	}
+	return "Unknown Analyser Type";
 }
