@@ -1,10 +1,9 @@
 /*
--Fix Tooltip
 -Implement spectrum analyser
 -Implement option menu
 -Fix global color settings
--Fix WaveformComponent line size
--Factory Presets
+-Fix analyser lines getting fucked when scaling GUI
+-Implementing Factory Presets
 */
 
 #pragma once

@@ -30,7 +30,9 @@ public:
 	Rectangle<int> getSliderBounds() const;
 	int getTexHeight() const { return 14; }
 	String getDisplayString() const;
+	String getTooltipString();
 private:
 	CustomLookAndFeel lnf;
 	RangedAudioParameter* param;
+	String getAnalyserName(AnalyserType analyserType);
 };

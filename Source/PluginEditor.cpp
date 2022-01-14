@@ -187,8 +187,9 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 
 	//Reloader Analyser Knob
 	sliderValueChanged(&analyserSlider);
+	sliderDragEnded(&analyserSlider);
 
-	//WIndow
+	//Window
 	setResizable(false, false);
 	setSize(sc(810), sc(940)); //810 ... 1060
 }
@@ -386,7 +387,7 @@ void PlasmaAudioProcessorEditor::sliderDragStarted(Slider* slider)
 	{
 		setAnalyserType(autoAnalyserType);
 	}
-	tooltipLabel.setText(slider->getHelpText(), juce::dontSendNotification);
+	tooltipLabel.setText(static_cast<CustomRotarySlider*>(slider)->getTooltipString(), juce::dontSendNotification);
 }
 void PlasmaAudioProcessorEditor::sliderDragEnded(Slider* slider)
 {
@@ -412,7 +413,7 @@ void PlasmaAudioProcessorEditor::sliderValueChanged(Slider* slider)
 			setAnalyserType(analyser);
 		}
 	}
-	tooltipLabel.setText(slider->getHelpText(), juce::dontSendNotification);
+	tooltipLabel.setText(static_cast<CustomRotarySlider*>(slider)->getTooltipString(), juce::dontSendNotification);
 }
 void PlasmaAudioProcessorEditor::setAnalyserType(AnalyserType analyser)
 {

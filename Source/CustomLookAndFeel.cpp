@@ -81,113 +81,41 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 	auto range = rotaryEndAngle - rotaryStartAngle;
 	auto center = range / 2;
 
+	//Style Setup
 	if (slider.getName() == "Distortion")
 	{
 		isSelector = true;
 		numOptions = 8;
 		selectedOption = (int)slider.getValue();
-		switch (selectedOption)
-		{
-		case Hardclip:
-			slider.setHelpText("Distortion Type : Hardclip");
-			break;
-		case Softclip:
-			slider.setHelpText("Distortion Type : Softclip");
-			break;
-		case Root:
-			slider.setHelpText("Distortion Type : Root Extraction");
-			break;
-		case Atan:
-			slider.setHelpText("Distortion Type : Atan");
-			break;
-		case Scream:
-			slider.setHelpText("Distortion Type : Scream");
-			break;
-		case Bitcrush:
-			slider.setHelpText("Distortion Type : Bitcrush");
-			break;
-		case Sine:
-			slider.setHelpText("Distortion Type : Sine");
-			break;
-		case Cosine:
-			slider.setHelpText("Distortion Type : Cosine");
-			break;
-		}
 	}
 	else if (slider.getName() == "Slope")
 	{
 		isSelector = true;
 		numOptions = 8;
 		selectedOption = (int)slider.getValue();
-		int slope = (selectedOption + 1) * 12;
-		String str;
-		str << "Slope : ";
-		str << slope;
-		str << " db/oct";
-		slider.setHelpText(str);
 	}
 	else if (slider.getName() == "Symmetry")
 	{
 		isCentered = true;
 		auto value = round(slider.getValue() * 100);
-		String str;
-		str << "Symmetry : ";
-		if (value == 0)
-		{
-			str << "Centered";
-		}
-		else
-		{
-			str << value;
-			str << "%";
-		}
-
-
-		slider.setHelpText(str);
 	}
 	else if (slider.getName() == "Analyser Type")
 	{
 		isSelector = true;
 		numOptions = 5;
 		selectedOption = (int)slider.getValue();
-		AnalyserType analyserType = static_cast<AnalyserType>(selectedOption);
-		String str = getAnalyserName(analyserType);
-		slider.setHelpText("Analyser Type : " + (String)selectedOption);
 	}
 	else if (slider.getName() == "Lowpass" || slider.getName() == "Highpass" || slider.getName() == "Peak")
 	{
 		skewFactor = 0.80;
-		String str;
-		str << (round(slider.getValue() * 100)) / 100;
-		slider.setHelpText((String)slider.getName() + " : " +
-			str + " " +
-			(String)slider.getTextValueSuffix());
 	}
 	else if (slider.getName() == "Peak Resonance")
 	{
 		isCentered = true;
-		String str;
-		str << (round(slider.getValue() * 100)) / 100;
-		slider.setHelpText("Resonance : " +
-			str + " " +
-			(String)slider.getTextValueSuffix());
 	}
 	else if (slider.getName() == "Girth")
 	{
 		String str;
-		str << (round(slider.getValue() * 100));
-		str << "%";
-		slider.setHelpText((String)slider.getName() + " : " +
-			str + " " +
-			(String)slider.getTextValueSuffix());
-	}
-	else
-	{
-		String str;
-		str << (round(slider.getValue() * 100)) / 100;
-		slider.setHelpText((String)slider.getName() + " : " +
-			str + " " +
-			(String)slider.getTextValueSuffix());
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -353,35 +281,3 @@ Font CustomLookAndFeel::getCustomFont()
 	return font;
 }
 
-String CustomLookAndFeel::getAnalyserName(AnalyserType analyserType)
-{
-	switch (analyserType)
-	{
-	case AnalyserType::Automatic:
-	{
-		return "Automatic";
-		break;
-	}
-	case AnalyserType::Options:
-	{
-		return "Options";
-		break;
-	}
-	case AnalyserType::Response:
-	{
-		return "Filter Response";
-		break;
-	}
-	case AnalyserType::Shapercurve:
-	{
-		return "Shapercurve";
-		break;
-	}
-	case AnalyserType::Waveform:
-	{
-		return "Waveform";
-		break;
-	}
-	}
-	return "Unknown Analyser Type";
-}
