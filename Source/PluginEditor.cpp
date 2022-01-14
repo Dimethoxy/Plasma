@@ -41,6 +41,9 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	analyserSlider(*audioProcessor.apvts.getParameter("Analyser Type"), "", "Analyser Type"),
 	//ResponseCurve
 	responseCurveComponent(audioProcessor),
+	//Shapercurve
+	earlyShapercurveComponent(audioProcessor, 0),
+	lateShapercurveComponent(audioProcessor, 1),
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Attachments
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -181,8 +184,6 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 
 	//Reloader Analyser Knob
 	analyserSlider.valueChanged();
-
-
 
 	setResizable(false, false);
 	setSize(sc(810), sc(940)); //810 ... 1060
@@ -372,6 +373,7 @@ void PlasmaAudioProcessorEditor::sliderValueChanged(Slider* slider)
 	{
 		int analyser = analyserSlider.getValue();
 
+		//Waveform
 		if (analyser == AnalyserType::Waveform)
 		{
 			waveformComponent->setVisible(true);
@@ -381,6 +383,7 @@ void PlasmaAudioProcessorEditor::sliderValueChanged(Slider* slider)
 			waveformComponent->setVisible(false);
 		}
 
+		//Repsonse
 		if (analyser == AnalyserType::Response)
 		{
 			responseCurveComponent.setVisible(true);
@@ -390,6 +393,19 @@ void PlasmaAudioProcessorEditor::sliderValueChanged(Slider* slider)
 			responseCurveComponent.setVisible(false);
 		}
 
+		//Distortion
+		if (analyser == AnalyserType::Shapercurve)
+		{
+			earlyShapercurveComponent.setVisible(true);
+			lateShapercurveComponent.setVisible(true);
+		}
+		else
+		{
+			earlyShapercurveComponent.setVisible(false);
+			lateShapercurveComponent.setVisible(false);
+		}
+
+		//Options
 		if (analyser == AnalyserType::Options)
 		{
 			configWindow(true);
@@ -834,6 +850,17 @@ void PlasmaAudioProcessorEditor::resized()
 		sc(300),
 		sc(40));
 	tooltipLabel.setAlwaysOnTop(true);
+	earlyShapercurveComponent.setBounds(
+		monitorArea().getCentreX() - sc(200) - sc(padding),
+		monitorArea().getCentreY() - sc(200) / 2,
+		sc(200),
+		sc(200));
+	lateShapercurveComponent.setBounds(
+		monitorArea().getCentreX()+ sc(padding),
+		monitorArea().getCentreY() - sc(200) / 2,
+		sc(200),
+		sc(200));
+
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Update Labels
 	for (auto* label : getLabels())
@@ -872,6 +899,8 @@ std::vector<juce::Component*> PlasmaAudioProcessorEditor::getComps()
 		&driveTypeSlider,
 		&lateDriveTypeSlider,
 		&responseCurveComponent,
+		&earlyShapercurveComponent,
+		&lateShapercurveComponent,
 		&mixSlider,
 		&analyserSlider,
 		&loudnessMeterIn,

@@ -8,7 +8,7 @@
 #include "CustomLabel.h"
 #include "CustomTextButton.h"
 #include "PlasmaLabel.h"
-#include "WaveformCOmponent.h"
+#include "ShapercurveComponent.h"
 
 enum FontSizes
 {
@@ -49,6 +49,7 @@ private:
 	bool showConfig = false;
 	void configWindow(bool visibility);
 	WaveformComponent* waveformComponent;
+
 	//Sliders
 	CustomRotarySlider
 		//Drive
@@ -78,12 +79,15 @@ private:
 		lateGirthSlider,
 		lateDriveSlider,
 		preGainSlider,
+		//Output
 		mixSlider,
 		analyserSlider;
 
 
 	//Response Curve Component
 	ResponseCurveComponent responseCurveComponent;
+	ShapercurveComponent earlyShapercurveComponent;
+	ShapercurveComponent lateShapercurveComponent;
 
 	//Loudness Meter Components
 	Gui::LoudnessMeterComponent loudnessMeterIn, loudnessMeterOut;

@@ -1,11 +1,11 @@
 /*
   ==============================================================================
 
-    SpectrumComponent.cpp
-    Created: 13 Jan 2022 4:38:46pm
+    PlasmaDistortionProcessor.cpp
+    Created: 14 Jan 2022 12:05:54am
     Author:  david
 
   ==============================================================================
 */
 
-#include "SpectrumComponent.h"
+#include "PlasmaDistortionProcessor.h"

@@ -229,7 +229,7 @@ void PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
 					((((float)(rand() % 100)) / 100 * chainSettings.girth) + 1);
 
 				//Drive          
-				distort(channelData[sample], chainSettings.drive, chainSettings.driveType);
+				distortionProcessor.distort(channelData[sample], chainSettings.drive, chainSettings.driveType);
 
 				//Bias
 				//channelData[sample] = clamp(channelData[sample] + chainSettings.bias, -1.0, 1.0);
@@ -278,7 +278,7 @@ void PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
 					((((float)(rand() % 100)) / 100 * chainSettings.lateGirth) + 1);
 
 				//Drive 
-				distort(channelData[sample], chainSettings.lateDrive, chainSettings.lateDriveType);
+				distortionProcessor.distort(channelData[sample], chainSettings.lateDrive, chainSettings.lateDriveType);
 
 				//Bias 
 				if (channelData[sample] > 0)
@@ -308,7 +308,7 @@ void PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
 			//Gain
 			channelData[sample] = channelData[sample] * gain * 2;
 		}
-
+		
 	}
 }
 

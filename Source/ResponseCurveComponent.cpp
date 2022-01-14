@@ -157,11 +157,8 @@ void ResponseCurveComponent::paint(juce::Graphics& g)
 	{
 		responseCurve.lineTo(x + i, map(mags[i]));
 	}
-	if (chainSettings.analyserType == 0)
-	{
-		g.setColour(Colours::white);
-		g.strokePath(responseCurve, PathStrokeType(lineSize));
-	}
+	g.setColour(Colours::white);
+	g.strokePath(responseCurve, PathStrokeType(lineSize));
 }
 
 void ResponseCurveComponent::setPadding(float newPadding)
