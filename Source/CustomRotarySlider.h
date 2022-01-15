@@ -28,8 +28,7 @@ public:
 	const String name = "Slider";
 	void paint(Graphics& g) override;
 	Rectangle<int> getSliderBounds() const;
-	int getTexHeight() const { return 14; }
-	String getDisplayString() const;
+	int getTexHeight() const { return 14; };
 	String getTooltipString();
 private:
 	CustomLookAndFeel lnf;
