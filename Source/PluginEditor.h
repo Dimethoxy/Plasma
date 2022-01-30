@@ -54,6 +54,15 @@ public:
 	void sliderDragEnded(Slider* slider) override;
 	void labelTextChanged(Label* label) override;
 	void editorHidden(Label* label, TextEditor& textEditor) override;
+
+	//Colors
+	Colour getBackgroundColor();
+	Colour getForegroundColor();
+	Colour getAccentColor();
+
+	void setBackgroundColor(Colour c);
+	void setForegroundColor(Colour c);
+	void setAccentColor(Colour c);
 private:
 	//Scaling
 	CustomTextButton scaleUpButton;
@@ -159,10 +168,6 @@ private:
 	int boxWidth = 150;
 	int boxHeight = 550;
 
-	//Colors
-	Colour c_back();
-	Colour c_front();
-
 	//Fontsizes
 	float fs_mainLabel();
 	float fs_titelLabel();
@@ -227,6 +232,10 @@ private:
 
 	//Color
 	bool testColorString(String string);
+	Colour backgroundColor = Colour(18, 20, 20);
+	Colour foregroundColor = Colour(24, 26, 27);
+	Colour accentColor = Colour(255, 0, 0);
+	Colour parseColourFromString(String str);
 
 	//Component Vectors
 	std::vector<CustomLabel*> getLabels();

@@ -215,23 +215,15 @@ PlasmaAudioProcessorEditor::~PlasmaAudioProcessorEditor()
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Draw
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-Colour PlasmaAudioProcessorEditor::c_back()
-{
-	return Colour(18, 20, 20);
-}
-Colour PlasmaAudioProcessorEditor::c_front()
-{
-	return Colour(24, 26, 27);
-}
 void PlasmaAudioProcessorEditor::paint(juce::Graphics& g)
 {
 	using namespace juce;
 
 	//Back
-	g.fillAll(c_back());
+	g.fillAll(getBackgroundColor());
 
 	//Front
-	g.setColour(c_front());
+	g.setColour(getForegroundColor());
 	g.fillRect(headerArea());
 	g.fillRect(monitorArea());
 	g.fillRect(inArea());
@@ -243,7 +235,7 @@ void PlasmaAudioProcessorEditor::paint(juce::Graphics& g)
 	g.fillRect(lateArea());
 
 	//Monitor Background
-	g.setColour(c_back());
+	g.setColour(getBackgroundColor());
 	g.fillRect(monitorArea().reduced(sc(padding)));
 
 	float lineSize = sc(2.0f);
@@ -1038,12 +1030,40 @@ void PlasmaAudioProcessorEditor::resized()
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void PlasmaAudioProcessorEditor::editorHidden(Label* label, TextEditor& textEditor)
 {
-	//jassert("Test");
+	auto text = label->getText();
+
 	if (label = &configBackgroundColorTextbox)
 	{
-		if (!testColorString(label->getText()))
+		if (!testColorString(text))
 		{
-			label->setText("#000000", NotificationType::dontSendNotification);
+			label->setText("#" + getBackgroundColor().toDisplayString(false), NotificationType::dontSendNotification);
+		}
+		else
+		{
+			setBackgroundColor(parseColourFromString(text));
+		}
+	}
+	if (label = &configForegroundColorTextbox)
+	{
+		if (!testColorString(text))
+		{
+			label->setText("#" + getForegroundColor().toDisplayString(false), NotificationType::dontSendNotification);
+		}
+		else
+		{
+
+			setBackgroundColor(parseColourFromString(text));
+		}
+	}
+	if (label = &configAccentColorTextbox)
+	{
+		if (!testColorString(text))
+		{
+			label->setText("#" + getAccentColor().toDisplayString(false), NotificationType::dontSendNotification);
+		}
+		else
+		{
+			setBackgroundColor(parseColourFromString(text));
 		}
 	}
 }
@@ -1055,12 +1075,44 @@ void PlasmaAudioProcessorEditor::labelTextChanged(Label* label)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Misc
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Colour PlasmaAudioProcessorEditor::parseColourFromString(String str)
+{
+	int r, g, b;
+	r = str.substring(1, 3).getHexValue32();
+	g = str.substring(3, 5).getHexValue32();
+	b = str.substring(5, 7).getHexValue32();
+	return Colour(r, g, b);
+}
+Colour PlasmaAudioProcessorEditor::getBackgroundColor()
+{
+	return backgroundColor;
+}
+Colour PlasmaAudioProcessorEditor::getForegroundColor()
+{
+	return foregroundColor;
+}
+Colour PlasmaAudioProcessorEditor::getAccentColor()
+{
+	return accentColor;
+}
+void PlasmaAudioProcessorEditor::setBackgroundColor(Colour c)
+{
+	backgroundColor = c;
+}
+void PlasmaAudioProcessorEditor::setForegroundColor(Colour c)
+{
+	foregroundColor = c;
+}
+void PlasmaAudioProcessorEditor::setAccentColor(Colour c)
+{
+	accentColor = c;
+}
 bool PlasmaAudioProcessorEditor::testColorString(String string)
 {
 	if (string[0] != '#')
 		return false;
 
-	if (!(string.length() == 4 || string.length() == 7))
+	if (!(string.length() == 7))
 		return false;
 
 	for (int i = 1; i < string.length(); i++)
