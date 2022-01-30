@@ -20,10 +20,8 @@ void CustomLookAndFeel::drawLabel(Graphics& g, Label& label)
 
 		g.setColour(label.findColour(Label::outlineColourId).withMultipliedAlpha(alpha));
 	}
-	else if (label.isEnabled())
-	{
-		g.setColour(label.findColour(Label::outlineColourId));
-	}
+
+	//Border for textbox
 	if (label.isEditable())
 	{
 		g.setColour(Colours::white);

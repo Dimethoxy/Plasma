@@ -130,13 +130,13 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	configForegroundColorLabel("Foreground Color", FontSizes::Main, Justification::centredLeft),
 	configAccentColorLabel("Accent Color", FontSizes::Main, Justification::centredLeft),
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//Labels
+	//Textboxes
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	configOscilloscopeBufferSizeTextbox("Oscilloscope Buffer Size", FontSizes::Main, Justification::centredLeft),
-	configOscilloscopeSamplesPerBlockTextbox("Oscilloscope Block Size", FontSizes::Main, Justification::centredLeft),
-	configBackgroundColorTextbox("Background Color", FontSizes::Main, Justification::centredLeft),
-	configForegroundColorTextbox("Foreground Color", FontSizes::Main, Justification::centredLeft),
-	configAccentColorTextbox("Accent Color", FontSizes::Main, Justification::centredLeft)
+	configOscilloscopeBufferSizeTextbox("16", FontSizes::Main, Justification::centredLeft),
+	configOscilloscopeSamplesPerBlockTextbox("128", FontSizes::Main, Justification::centredLeft),
+	configBackgroundColorTextbox("#182020", FontSizes::Main, Justification::centredLeft),
+	configForegroundColorTextbox("#242627", FontSizes::Main, Justification::centredLeft),
+	configAccentColorTextbox("#FF0000", FontSizes::Main, Justification::centredLeft)
 {
 	//Load Config File
 	options.applicationName = "Plasma";
@@ -165,6 +165,7 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	for (auto* textbox : getTextboxes())
 	{
 		addAndMakeVisible(textbox);
+		textbox->addListener(this);
 	}
 
 	//Options Button
@@ -311,11 +312,20 @@ void PlasmaAudioProcessorEditor::configWindow(bool visibility)
 		//Show Option Components
 		safeConfigButton.setVisible(true);
 		optionsLabel.setVisible(true);
+
+		//Show Config Labels
 		configOscilloscopeBufferSizeLabel.setVisible(true);
 		configOscilloscopeSamplesPerBlockLabel.setVisible(true);
 		configBackgroundColorLabel.setVisible(true);
 		configForegroundColorLabel.setVisible(true);
 		configAccentColorLabel.setVisible(true);
+
+		//Show Config Inputs
+		configOscilloscopeBufferSizeTextbox.setVisible(true);
+		configOscilloscopeSamplesPerBlockTextbox.setVisible(true);
+		configBackgroundColorTextbox.setVisible(true);
+		configForegroundColorTextbox.setVisible(true);
+		configAccentColorTextbox.setVisible(true);
 
 		//Hide Tooltip
 		tooltipLabel.setVisible(false);
@@ -329,11 +339,20 @@ void PlasmaAudioProcessorEditor::configWindow(bool visibility)
 		//Hide Options Components
 		safeConfigButton.setVisible(false);
 		optionsLabel.setVisible(false);
+
+		//Hide Config Labels
 		configOscilloscopeBufferSizeLabel.setVisible(false);
 		configOscilloscopeSamplesPerBlockLabel.setVisible(false);
 		configBackgroundColorLabel.setVisible(false);
 		configForegroundColorLabel.setVisible(false);
 		configAccentColorLabel.setVisible(false);
+
+		//Hide Config Inputs
+		configOscilloscopeBufferSizeTextbox.setVisible(false);
+		configOscilloscopeSamplesPerBlockTextbox.setVisible(false);
+		configBackgroundColorTextbox.setVisible(false);
+		configForegroundColorTextbox.setVisible(false);
+		configAccentColorTextbox.setVisible(false);
 
 		//Show Tooltip
 		tooltipLabel.setVisible(true);
@@ -897,43 +916,92 @@ void PlasmaAudioProcessorEditor::resized()
 		scaleKnobSize);
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Options
-	int lineSize = sc(30);
-	int labelOffset = sc(10);
-	optionsLabel.setBounds(
+	int lineSize = sc(40);
+	int labelOffset = sc(5);
+	int textBoxSize = sc(30);
+	//Title
+	optionsLabel.setBounds
+	(
 		monitorArea().getX() + 2 * sc(padding),
 		monitorArea().getY() + 2 * sc(padding),
 		sc(100),
-		sc(40));
-	safeConfigButton.setBounds(
+		sc(40)
+	);
+	//Save
+	safeConfigButton.setBounds
+	(
 		monitorArea().getRight() - sc(30) * 2.5 - sc(padding),
 		monitorArea().getY() + 3 * sc(padding),
 		2 * sc(30),
-		sc(30));
-	configOscilloscopeBufferSizeLabel.setBounds(
+		sc(30)
+	);
+	//Oscilloscope Buffer Size 
+	configOscilloscopeBufferSizeLabel.setBounds
+	(
 		monitorArea().getX() + 2 * sc(padding),
 		monitorArea().getY() + 2 * sc(padding) + 1 * lineSize + labelOffset,
 		sc(200),
-		lineSize);
+		lineSize
+	);
+	configOscilloscopeBufferSizeTextbox.setBounds
+	(
+		configOscilloscopeBufferSizeLabel.getBounds().getRight() + sc(padding),
+		configOscilloscopeBufferSizeLabel.getBounds().getY() + sc(5),
+		sc(50),
+		textBoxSize
+	);
+	//Oscilloscope Samples Per Block Label
 	configOscilloscopeSamplesPerBlockLabel.setBounds(
 		monitorArea().getX() + 2 * sc(padding),
 		monitorArea().getY() + 2 * sc(padding) + 2 * lineSize + labelOffset,
 		sc(200),
 		lineSize);
+	configOscilloscopeSamplesPerBlockTextbox.setBounds
+	(
+		configOscilloscopeSamplesPerBlockLabel.getBounds().getRight() + sc(padding),
+		configOscilloscopeSamplesPerBlockLabel.getBounds().getY() + sc(5),
+		sc(50),
+		textBoxSize
+	);
+	//Background Color
 	configBackgroundColorLabel.setBounds(
 		monitorArea().getX() + 2 * sc(padding),
 		monitorArea().getY() + 2 * sc(padding) + 3 * lineSize + labelOffset,
-		sc(200),
+		sc(150),
 		lineSize);
+	configBackgroundColorTextbox.setBounds
+	(
+		configBackgroundColorLabel.getBounds().getRight() + sc(padding),
+		configBackgroundColorLabel.getBounds().getY() + sc(5),
+		sc(70),
+		textBoxSize
+	);
+	//Foreground Color
 	configForegroundColorLabel.setBounds(
 		monitorArea().getX() + 2 * sc(padding),
 		monitorArea().getY() + 2 * sc(padding) + 4 * lineSize + labelOffset,
-		sc(200),
+		sc(150),
 		lineSize);
+	configForegroundColorTextbox.setBounds
+	(
+		configForegroundColorLabel.getBounds().getRight() + sc(padding),
+		configForegroundColorLabel.getBounds().getY() + sc(5),
+		sc(70),
+		textBoxSize
+	);
+	//Accent Color
 	configAccentColorLabel.setBounds(
 		monitorArea().getX() + 2 * sc(padding),
 		monitorArea().getY() + 2 * sc(padding) + 5 * lineSize + labelOffset,
-		sc(200),
+		sc(110),
 		lineSize);
+	configAccentColorTextbox.setBounds
+	(
+		configAccentColorLabel.getBounds().getRight() + sc(padding),
+		configAccentColorLabel.getBounds().getY() + sc(5),
+		sc(70),
+		textBoxSize
+	);
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Analyser
 	waveformComponent->setBounds(monitorArea().reduced(sc(padding)));
@@ -954,16 +1022,56 @@ void PlasmaAudioProcessorEditor::resized()
 		sc(200));
 	tooltipLabel.setAlwaysOnTop(true);
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//Update Labels
+	//Update Labels & Textboxes
 	for (auto* label : getLabels())
 	{
 		label->resize();
 	}
+	for (auto* textbox : getTextboxes())
+	{
+		textbox->resize();
+	}
 	setSize(lateArea().getRight() + sc(padding), lateArea().getBottom() + sc(padding));
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Textboxes
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void PlasmaAudioProcessorEditor::editorHidden(Label* label, TextEditor& textEditor)
+{
+	//jassert("Test");
+	if (label = &configBackgroundColorTextbox)
+	{
+		if (!testColorString(label->getText()))
+		{
+			label->setText("#000000", NotificationType::dontSendNotification);
+		}
+	}
+}
+
+void PlasmaAudioProcessorEditor::labelTextChanged(Label* label)
+{
+
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Misc
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+bool PlasmaAudioProcessorEditor::testColorString(String string)
+{
+	if (string[0] != '#')
+		return false;
+
+	if (!(string.length() == 4 || string.length() == 7))
+		return false;
+
+	for (int i = 1; i < string.length(); i++)
+		if (!((string[i] >= '0' && string[i] <= 9)
+			|| (string[i] >= 'a' && string[i] <= 'f')
+			|| (string[i] >= 'A' || string[i] <= 'F')))
+			return false;
+
+	return true;
+}
+
 std::vector<juce::Component*> PlasmaAudioProcessorEditor::getComps()
 {
 	return

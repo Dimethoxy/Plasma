@@ -34,10 +34,11 @@ enum FontSizes
 	Tooltipp
 };
 
-class PlasmaAudioProcessorEditor : public juce::AudioProcessorEditor,
+class PlasmaAudioProcessorEditor : public AudioProcessorEditor,
 	public Timer,
 	public Button::Listener,
-	public Slider::Listener
+	public Slider::Listener,
+	public Label::Listener
 {
 public:
 	PlasmaAudioProcessorEditor(PlasmaAudioProcessor&);
@@ -48,9 +49,11 @@ public:
 
 	void timerCallback() override;
 	void buttonClicked(Button* button) override;
-	void sliderValueChanged(Slider* slider);
-	void sliderDragStarted(Slider* slider);
-	void sliderDragEnded(Slider* slider);
+	void sliderValueChanged(Slider* slider) override;
+	void sliderDragStarted(Slider* slider) override;
+	void sliderDragEnded(Slider* slider) override;
+	void labelTextChanged(Label* label) override;
+	void editorHidden(Label* label, TextEditor& textEditor) override;
 private:
 	//Scaling
 	CustomTextButton scaleUpButton;
@@ -221,6 +224,9 @@ private:
 		configBackgroundColorTextbox,
 		configForegroundColorTextbox,
 		configAccentColorTextbox;
+
+	//Color
+	bool testColorString(String string);
 
 	//Component Vectors
 	std::vector<CustomLabel*> getLabels();
