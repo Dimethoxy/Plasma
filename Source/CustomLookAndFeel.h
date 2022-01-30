@@ -19,11 +19,8 @@ class CustomLookAndFeel : public LookAndFeel_V4
 		bool isMouseOverButton,
 		bool isButtonDown) override;
 
-	void drawButtonText(
-		Graphics& g,
-		Button& button,
-		bool isMouseOverButton,
-		bool isButtonDown);
+	void drawLabel(Graphics&, Label&) override;
+
 private:
 	Typeface::Ptr getCustomTypeface();
 	Font getCustomFont();

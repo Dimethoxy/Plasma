@@ -190,7 +190,6 @@ private:
 
 	//LoudnessMeter
 	float rmsLevelLeft, rmsLevelRight;
-
 	//Filters
 	MonoChain leftChain, rightChain;
 	void updatePeakFilter(const ChainSettings& chainSettings);

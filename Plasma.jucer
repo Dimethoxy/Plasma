@@ -7,8 +7,6 @@
     <GROUP id="{C06EE6F1-1336-2987-2A83-453AE370713C}" name="Source">
       <FILE id="AV032y" name="PlasmaDistortionProcessor.h" compile="0" resource="0"
             file="Source/PlasmaDistortionProcessor.h"/>
-      <FILE id="m9sFbM" name="PlasmaDistortionProcessor.cpp" compile="1"
-            resource="0" file="Source/PlasmaDistortionProcessor.cpp"/>
       <FILE id="nGNotj" name="ShapercurveComponent.cpp" compile="1" resource="0"
             file="Source/ShapercurveComponent.cpp"/>
       <FILE id="hnFBEP" name="ShapercurveComponent.h" compile="0" resource="0"

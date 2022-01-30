@@ -1,5 +1,36 @@
 #include "CustomLookAndFeel.h"
 
+void CustomLookAndFeel::drawLabel(Graphics& g, Label& label)
+{
+	g.fillAll(label.findColour(Label::backgroundColourId));
+
+	if (!label.isBeingEdited())
+	{
+		auto alpha = label.isEnabled() ? 1.0f : 0.5f;
+		const Font font(getLabelFont(label));
+
+		g.setColour(label.findColour(Label::textColourId).withMultipliedAlpha(alpha));
+		g.setFont(font);
+
+		auto textArea = getLabelBorderSize(label).subtractedFrom(label.getLocalBounds());
+
+		g.drawFittedText(label.getText(), textArea, label.getJustificationType(),
+			jmax(1, (int)((float)textArea.getHeight() / font.getHeight())),
+			label.getMinimumHorizontalScale());
+
+		g.setColour(label.findColour(Label::outlineColourId).withMultipliedAlpha(alpha));
+	}
+	else if (label.isEnabled())
+	{
+		g.setColour(label.findColour(Label::outlineColourId));
+	}
+	if (label.isEditable())
+	{
+		g.setColour(Colours::white);
+		g.drawRect(label.getLocalBounds());
+	}
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Buttons
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -263,7 +294,6 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 	g.drawEllipse(circleBounds, lineSize);
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 }
 

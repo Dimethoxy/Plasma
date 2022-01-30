@@ -35,7 +35,6 @@ add_library( ${BINARY_NAME}
     SHARED
 
     "../../../Source/PlasmaDistortionProcessor.h"
-    "../../../Source/PlasmaDistortionProcessor.cpp"
     "../../../Source/ShapercurveComponent.cpp"
     "../../../Source/ShapercurveComponent.h"
     "../../../Source/WaveformComponent.cpp"

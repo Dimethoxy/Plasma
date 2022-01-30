@@ -481,9 +481,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Source\PlasmaDistortionProcessor.cpp">
-      <Filter>Plasma\Source</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Source\ShapercurveComponent.cpp">
       <Filter>Plasma\Source</Filter>
     </ClCompile>

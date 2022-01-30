@@ -123,11 +123,20 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	scaleUpButton(),
 	scaleDownButton(),
 	//Options
-	backgroundColorLabel("Background Color", FontSizes::Main, Justification::centredLeft),
-	foregroundColorLabel("Foreground Color", FontSizes::Main, Justification::centredLeft),
-	accentColorLabel("Accent Color", FontSizes::Main, Justification::centredLeft),
-	scaleLabel("Scale", FontSizes::Main, Justification::centredLeft),
-	optionsLabel("Options", FontSizes::Titel, Justification::centredLeft)
+	optionsLabel("Options", FontSizes::Titel, Justification::centredLeft),
+	configOscilloscopeBufferSizeLabel("Oscilloscope Buffer Size", FontSizes::Main, Justification::centredLeft),
+	configOscilloscopeSamplesPerBlockLabel("Oscilloscope Block Size", FontSizes::Main, Justification::centredLeft),
+	configBackgroundColorLabel("Background Color", FontSizes::Main, Justification::centredLeft),
+	configForegroundColorLabel("Foreground Color", FontSizes::Main, Justification::centredLeft),
+	configAccentColorLabel("Accent Color", FontSizes::Main, Justification::centredLeft),
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//Labels
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	configOscilloscopeBufferSizeTextbox("Oscilloscope Buffer Size", FontSizes::Main, Justification::centredLeft),
+	configOscilloscopeSamplesPerBlockTextbox("Oscilloscope Block Size", FontSizes::Main, Justification::centredLeft),
+	configBackgroundColorTextbox("Background Color", FontSizes::Main, Justification::centredLeft),
+	configForegroundColorTextbox("Foreground Color", FontSizes::Main, Justification::centredLeft),
+	configAccentColorTextbox("Accent Color", FontSizes::Main, Justification::centredLeft)
 {
 	//Load Config File
 	options.applicationName = "Plasma";
@@ -140,7 +149,6 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	scale = userSettings->getIntValue("scale", 100);
 
 	//Make all components visible
-
 	for (auto* comp : getComps())
 	{
 		addAndMakeVisible(comp);
@@ -154,6 +162,11 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	{
 		addAndMakeVisible(label);
 	}
+	for (auto* textbox : getTextboxes())
+	{
+		addAndMakeVisible(textbox);
+	}
+
 	//Options Button
 	configButton.setButtonText("O");
 	configButton.addListener(this);
@@ -180,6 +193,7 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 
 	//Hide Options Menu
 	optionsLabel.setVisible(false);
+	configOscilloscopeBufferSizeLabel.setVisible(true);
 
 	//Waveform
 	waveformComponent = &p.waveformComponent;
@@ -297,6 +311,11 @@ void PlasmaAudioProcessorEditor::configWindow(bool visibility)
 		//Show Option Components
 		safeConfigButton.setVisible(true);
 		optionsLabel.setVisible(true);
+		configOscilloscopeBufferSizeLabel.setVisible(true);
+		configOscilloscopeSamplesPerBlockLabel.setVisible(true);
+		configBackgroundColorLabel.setVisible(true);
+		configForegroundColorLabel.setVisible(true);
+		configAccentColorLabel.setVisible(true);
 
 		//Hide Tooltip
 		tooltipLabel.setVisible(false);
@@ -310,6 +329,11 @@ void PlasmaAudioProcessorEditor::configWindow(bool visibility)
 		//Hide Options Components
 		safeConfigButton.setVisible(false);
 		optionsLabel.setVisible(false);
+		configOscilloscopeBufferSizeLabel.setVisible(false);
+		configOscilloscopeSamplesPerBlockLabel.setVisible(false);
+		configBackgroundColorLabel.setVisible(false);
+		configForegroundColorLabel.setVisible(false);
+		configAccentColorLabel.setVisible(false);
 
 		//Show Tooltip
 		tooltipLabel.setVisible(true);
@@ -873,17 +897,43 @@ void PlasmaAudioProcessorEditor::resized()
 		scaleKnobSize);
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Options
-	auto s = sc(30);
+	int lineSize = sc(30);
+	int labelOffset = sc(10);
 	optionsLabel.setBounds(
 		monitorArea().getX() + 2 * sc(padding),
 		monitorArea().getY() + 2 * sc(padding),
 		sc(100),
 		sc(40));
 	safeConfigButton.setBounds(
-		monitorArea().getRight() - s * 2.5 - sc(padding),
+		monitorArea().getRight() - sc(30) * 2.5 - sc(padding),
 		monitorArea().getY() + 3 * sc(padding),
-		2 * s,
-		s);
+		2 * sc(30),
+		sc(30));
+	configOscilloscopeBufferSizeLabel.setBounds(
+		monitorArea().getX() + 2 * sc(padding),
+		monitorArea().getY() + 2 * sc(padding) + 1 * lineSize + labelOffset,
+		sc(200),
+		lineSize);
+	configOscilloscopeSamplesPerBlockLabel.setBounds(
+		monitorArea().getX() + 2 * sc(padding),
+		monitorArea().getY() + 2 * sc(padding) + 2 * lineSize + labelOffset,
+		sc(200),
+		lineSize);
+	configBackgroundColorLabel.setBounds(
+		monitorArea().getX() + 2 * sc(padding),
+		monitorArea().getY() + 2 * sc(padding) + 3 * lineSize + labelOffset,
+		sc(200),
+		lineSize);
+	configForegroundColorLabel.setBounds(
+		monitorArea().getX() + 2 * sc(padding),
+		monitorArea().getY() + 2 * sc(padding) + 4 * lineSize + labelOffset,
+		sc(200),
+		lineSize);
+	configAccentColorLabel.setBounds(
+		monitorArea().getX() + 2 * sc(padding),
+		monitorArea().getY() + 2 * sc(padding) + 5 * lineSize + labelOffset,
+		sc(200),
+		lineSize);
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Analyser
 	waveformComponent->setBounds(monitorArea().reduced(sc(padding)));
@@ -999,7 +1049,24 @@ std::vector<CustomLabel*> PlasmaAudioProcessorEditor::getLabels()
 		&peakLabel,
 		&lowpassLabel,
 		&lateLabel,
-		&optionsLabel
+		&optionsLabel,
+		//Config Labels
+		&configOscilloscopeBufferSizeLabel,
+		&configOscilloscopeSamplesPerBlockLabel,
+		&configBackgroundColorLabel,
+		&configForegroundColorLabel,
+		&configAccentColorLabel
 	};
 }
 
+std::vector<CustomTextbox*> PlasmaAudioProcessorEditor::getTextboxes()
+{
+	return
+	{
+		&configOscilloscopeBufferSizeTextbox,
+		&configOscilloscopeSamplesPerBlockTextbox,
+		&configBackgroundColorTextbox,
+		&configForegroundColorTextbox,
+		&configAccentColorTextbox
+	};
+}

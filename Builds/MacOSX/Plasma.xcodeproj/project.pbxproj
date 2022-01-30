@@ -53,7 +53,6 @@
 		BD5922DBA4982AB8E33FD23A /* BinaryData.cpp */ = {isa = PBXBuildFile; fileRef = 60DF70CA736BA243FA506FE4; };
 		C8ED5666B2045E095C4C554E /* Carbon.framework */ = {isa = PBXBuildFile; fileRef = 7A51D6D23634AED9BDDB9B33; };
 		CCDFB58740B3FE35EAAB7030 /* include_juce_audio_basics.mm */ = {isa = PBXBuildFile; fileRef = 7026DEF417DA5D55F207860B; };
-		D7CD44F7651CD393ED10035A /* PlasmaDistortionProcessor.cpp */ = {isa = PBXBuildFile; fileRef = 5DF18E4C378F8980FB97C0B7; };
 		DD19AC5FBCC25810A6A54ACC /* include_juce_audio_plugin_client_utils.cpp */ = {isa = PBXBuildFile; fileRef = 626C91A882D5EAFFDDBDE001; };
 		DEF1A2F2F12AB97FB226CEF1 /* AudioToolbox.framework */ = {isa = PBXBuildFile; fileRef = 51A7B308420A55B25095E419; };
 		E0441F80A4104B4F94B4164F /* include_juce_gui_extra.mm */ = {isa = PBXBuildFile; fileRef = D7E91FD1F5C9C0AB81D5B4AA; };
@@ -99,7 +98,6 @@
 		56F00B9BB31B37C8C6BD1471 /* Poppins-Bold.ttf */ /* Poppins-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file.ttf; name = "Poppins-Bold.ttf"; path = "../../Resources/Poppins/Poppins-Bold.ttf"; sourceTree = SOURCE_ROOT; };
 		5BA208C317B1D1A0F1800CD2 /* PluginProcessor.h */ /* PluginProcessor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PluginProcessor.h; path = ../../Source/PluginProcessor.h; sourceTree = SOURCE_ROOT; };
 		5D91782C3B7E81A9F3BEBAB6 /* Poppins-Medium.ttf */ /* Poppins-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file.ttf; name = "Poppins-Medium.ttf"; path = "../../Resources/Poppins/Poppins-Medium.ttf"; sourceTree = SOURCE_ROOT; };
-		5DF18E4C378F8980FB97C0B7 /* PlasmaDistortionProcessor.cpp */ /* PlasmaDistortionProcessor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PlasmaDistortionProcessor.cpp; path = ../../Source/PlasmaDistortionProcessor.cpp; sourceTree = SOURCE_ROOT; };
 		5E46FF0072036908FAD49694 /* juce_audio_plugin_client */ /* juce_audio_plugin_client */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_audio_plugin_client; path = "~/JUCE/modules/juce_audio_plugin_client"; sourceTree = "<absolute>"; };
 		60DF70CA736BA243FA506FE4 /* BinaryData.cpp */ /* BinaryData.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BinaryData.cpp; path = ../../JuceLibraryCode/BinaryData.cpp; sourceTree = SOURCE_ROOT; };
 		626C91A882D5EAFFDDBDE001 /* include_juce_audio_plugin_client_utils.cpp */ /* include_juce_audio_plugin_client_utils.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = include_juce_audio_plugin_client_utils.cpp; path = ../../JuceLibraryCode/include_juce_audio_plugin_client_utils.cpp; sourceTree = SOURCE_ROOT; };
@@ -299,7 +297,6 @@
 			isa = PBXGroup;
 			children = (
 				D91A45C0EA551D60DED887B0,
-				5DF18E4C378F8980FB97C0B7,
 				F77EFFF7C9D500272C353C2B,
 				0412AE04D872C711AE29E1BF,
 				4A984BB0FA44D72C62E04D60,
@@ -533,7 +530,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D7CD44F7651CD393ED10035A,
 				504DDEC2C8BBB737F1B741E2,
 				1C13F85BA747A4D63525840A,
 				5E63DCA8C554A5D03E03EB83,

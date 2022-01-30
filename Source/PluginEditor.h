@@ -18,6 +18,15 @@
 #include "PlasmaLabel.h"
 #include "ShapercurveComponent.h"
 
+class CustomTextbox : public CustomLabel
+{
+public:
+	CustomTextbox(String text, int size, Justification justification) : CustomLabel(text, size, justification)
+	{
+		setEditable(true);
+	};
+};
+
 enum FontSizes
 {
 	Main,
@@ -132,7 +141,6 @@ private:
 		gainSliderAttachment,
 		analyserSliderAttachment,
 		mixSliderAttachment;
-	std::vector<juce::Component*> getComps();
 
 	//Layout
 	float sc(float val);
@@ -200,16 +208,25 @@ private:
 		lowpassLabel,
 		lateLabel,
 		//Options
-		backgroundColorLabel,
-		foregroundColorLabel,
-		accentColorLabel,
-		scaleLabel,
 		optionsLabel;
 
+	//Options Labels
+	CustomLabel configOscilloscopeBufferSizeLabel,
+		configOscilloscopeSamplesPerBlockLabel,
+		configBackgroundColorLabel,
+		configForegroundColorLabel,
+		configAccentColorLabel;
+	CustomTextbox configOscilloscopeBufferSizeTextbox,
+		configOscilloscopeSamplesPerBlockTextbox,
+		configBackgroundColorTextbox,
+		configForegroundColorTextbox,
+		configAccentColorTextbox;
 
-	//Label Vector
+	//Component Vectors
 	std::vector<CustomLabel*> getLabels();
 	std::vector<CustomRotarySlider*> getSliders();
+	std::vector<Component*> getComps();
+	std::vector<CustomTextbox*> getTextboxes();
 
 	//End
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PlasmaAudioProcessorEditor);

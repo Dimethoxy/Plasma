@@ -137,7 +137,6 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Source\PlasmaDistortionProcessor.cpp"/>
     <ClCompile Include="..\..\Source\ShapercurveComponent.cpp"/>
     <ClCompile Include="..\..\Source\WaveformComponent.cpp"/>
     <ClCompile Include="..\..\Source\PlasmaLabel.cpp"/>
