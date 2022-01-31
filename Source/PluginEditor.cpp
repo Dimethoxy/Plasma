@@ -1052,7 +1052,7 @@ void PlasmaAudioProcessorEditor::editorHidden(Label* label, TextEditor& textEdit
 		else
 		{
 
-			setBackgroundColor(parseColourFromString(text));
+			setForegroundColor(parseColourFromString(text));
 		}
 	}
 	if (label = &configAccentColorTextbox)
@@ -1063,7 +1063,7 @@ void PlasmaAudioProcessorEditor::editorHidden(Label* label, TextEditor& textEdit
 		}
 		else
 		{
-			setBackgroundColor(parseColourFromString(text));
+			setAccentColor(parseColourFromString(text));
 		}
 	}
 }
@@ -1102,10 +1102,26 @@ void PlasmaAudioProcessorEditor::setBackgroundColor(Colour c)
 void PlasmaAudioProcessorEditor::setForegroundColor(Colour c)
 {
 	foregroundColor = c;
+	if (c.getLightness() <= 128)
+	{
+		setFontColor(Colours::white);
+	}
+	else
+	{
+		setFontColor(Colours::black);
+	}
 }
 void PlasmaAudioProcessorEditor::setAccentColor(Colour c)
 {
 	accentColor = c;
+}
+void PlasmaAudioProcessorEditor::setFontColor(Colour c)
+{
+	fontColor = c;
+	for (auto* label : getLabels())
+	{
+		label->setColour(Label::ColourIds::textColourId, c);
+	}
 }
 bool PlasmaAudioProcessorEditor::testColorString(String string)
 {

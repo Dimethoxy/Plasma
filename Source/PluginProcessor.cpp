@@ -225,8 +225,7 @@ void PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
 				channelData[sample] = clamp(channelData[sample] * preGain, -1.0, 1.0);
 
 				//Girth
-				channelData[sample] = channelData[sample] *
-					((((float)(rand() % 100)) / 100 * chainSettings.girth) + 1);
+				channelData[sample] = channelData[sample] * ((((float)(rand() % 100)) / 100 * chainSettings.girth) + 1);
 
 				//Drive          
 				distortionProcessor.distort(channelData[sample], chainSettings.drive, chainSettings.driveType);
@@ -447,6 +446,7 @@ ChainSettings getChainSettings(juce::AudioProcessorValueTreeState& apvts)
 	settings.lowPassResonance = apvts.getRawParameterValue("Lowpass Resonance")->load();
 	settings.lowPassResonanceQuality = apvts.getRawParameterValue("Lowpass Resonance Q")->load();
 	settings.lowPassSlope = static_cast<Slope>(apvts.getRawParameterValue("Lowpass Slope")->load());
+
 	//Late
 	settings.lateDriveType = static_cast<Distortion>(apvts.getRawParameterValue("Late Distortion Type")->load());
 	settings.lateDrive = apvts.getRawParameterValue("Late Drive")->load();

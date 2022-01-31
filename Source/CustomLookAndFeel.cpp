@@ -24,7 +24,7 @@ void CustomLookAndFeel::drawLabel(Graphics& g, Label& label)
 	//Border for textbox
 	if (label.isEditable())
 	{
-		g.setColour(Colours::white);
+		g.setColour(label.findColour(Label::textColourId));
 		g.drawRect(label.getLocalBounds());
 	}
 }
@@ -46,7 +46,7 @@ void CustomLookAndFeel::drawButtonBackground(
 	float lineSize = bounds.getHeight() / 15.0;
 
 	//Select Color
-	g.setColour(Colours::white);
+	g.setColour(button.findColour(Label::textColourId));
 
 	//Draw Foreground
 	float iconSize = 2.5 * lineSize;
@@ -155,7 +155,6 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 	targetRange.setSkewForCentre(skewFactor);
 	auto normalisedPos = targetRange.convertFrom0to1(sliderPosProportional);
 	auto outline = slider.findColour(Slider::rotarySliderOutlineColourId);
-	auto fill = slider.findColour(Slider::rotarySliderFillColourId);
 	auto bounds = Rectangle<int>(x, y, width, height).toFloat().reduced(width / 12);
 	auto radius = jmin(bounds.getWidth(), bounds.getHeight()) / 2.3f;
 	auto toAngle = rotaryStartAngle + normalisedPos * (rotaryEndAngle - rotaryStartAngle);
@@ -163,8 +162,10 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 	auto arcRadius = radius - lineW * 0.5f;
 	auto thumbWidth = lineW * 2.0f;
 	auto lineSize = bounds.getHeight() / 40;
-
-	Colour backgroundColor(18, 20, 20);
+	Colour fill = slider.findColour(Slider::rotarySliderFillColourId);
+	Colour color = slider.findColour(Slider::ColourIds::thumbColourId);
+	Colour trackColor = slider.findColour(Slider::ColourIds::trackColourId);
+	Colour backgroundColor = slider.findColour(Slider::ColourIds::backgroundColourId);
 	//Draw Rail or Selector
 	if (!isSelector)
 	{
@@ -178,7 +179,7 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 			rotaryStartAngle,
 			rotaryEndAngle,
 			true);
-		g.setColour(Colour(18, 20, 20));
+		g.setColour(backgroundColor);
 		g.strokePath(backgroundArc, PathStrokeType(lineW, PathStrokeType::curved, PathStrokeType::rounded));
 
 		//Draw Light Rail

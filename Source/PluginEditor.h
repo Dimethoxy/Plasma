@@ -59,10 +59,12 @@ public:
 	Colour getBackgroundColor();
 	Colour getForegroundColor();
 	Colour getAccentColor();
+	Colour getFontColor();
 
 	void setBackgroundColor(Colour c);
 	void setForegroundColor(Colour c);
 	void setAccentColor(Colour c);
+	void setFontColor(Colour c);
 private:
 	//Scaling
 	CustomTextButton scaleUpButton;
@@ -235,6 +237,7 @@ private:
 	Colour backgroundColor = Colour(18, 20, 20);
 	Colour foregroundColor = Colour(24, 26, 27);
 	Colour accentColor = Colour(255, 0, 0);
+	Colour fontColor = Colour(255, 255, 255);
 	Colour parseColourFromString(String str);
 
 	//Component Vectors
