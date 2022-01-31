@@ -215,7 +215,7 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 			bounds.getCentreY() + arcRadius * std::sin(toAngle - MathConstants<float>::halfPi));
 		g.setColour(backgroundColor);
 		g.fillEllipse(Rectangle<float>(thumbWidth, thumbWidth).withCentre(thumbPoint));
-		g.setColour(Colours::white);
+		g.setColour(color);
 		g.drawEllipse(Rectangle<float>(thumbWidth, thumbWidth).withCentre(thumbPoint), lineSize);
 	}
 	else {
@@ -237,19 +237,19 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 			{
 
 				//Dot Ring Unselected
-				Point<float> dot(bounds.getCentreX() + x, bounds.getCentreY() + y);
-				g.setColour(Colours::white);
-				g.drawEllipse(Rectangle<float>(dotSize / 2, dotSize / 2).withCentre(dot), lineSize);
+				Point<float> outer(bounds.getCentreX() + x, bounds.getCentreY() + y);
+				g.setColour(color);
+				g.drawEllipse(Rectangle<float>(dotSize / 2, dotSize / 2).withCentre(outer), lineSize);
 
 			}
 			else
 			{
-				Point<float> fill(bounds.getCentreX() + x, bounds.getCentreY() + y);
-				g.setColour(Colours::red);
-				g.fillEllipse(Rectangle<float>(dotSize / 2, dotSize / 2).withCentre(fill));
-				Point<float> dot(bounds.getCentreX() + x, bounds.getCentreY() + y);
-				g.setColour(Colours::white);
-				g.drawEllipse(Rectangle<float>(dotSize, dotSize).withCentre(dot), lineSize);
+				Point<float> inner(bounds.getCentreX() + x, bounds.getCentreY() + y);
+				g.setColour(fill);
+				g.fillEllipse(Rectangle<float>(dotSize / 2, dotSize / 2).withCentre(inner));
+				Point<float> outer(bounds.getCentreX() + x, bounds.getCentreY() + y);
+				g.setColour(color);
+				g.drawEllipse(Rectangle<float>(dotSize, dotSize).withCentre(outer), lineSize);
 
 			}
 			angle += spacing;
@@ -288,7 +288,7 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 	y2 = y2 + y0;
 
 	//Draw Knob
-	g.setColour(Colours::white);
+	g.setColour(color);
 	g.drawLine(x1, y1, x2, y2, lineSize);
 	g.drawEllipse(circleBounds, lineSize);
 
