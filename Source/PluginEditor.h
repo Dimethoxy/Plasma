@@ -60,17 +60,20 @@ public:
 	Colour getForegroundColor();
 	Colour getAccentColor();
 	Colour getFontColor();
+	Colour getOptionsFontColor();
 
 	void setBackgroundColor(Colour c);
 	void setForegroundColor(Colour c);
 	void setAccentColor(Colour c);
 	void setFontColor(Colour c);
+	void setOptionsFontColor(Colour c);
+
 private:
 	//Scaling
-	CustomTextButton scaleUpButton;
-	CustomTextButton scaleDownButton;
-	CustomTextButton configButton;
-	CustomTextButton safeConfigButton;
+	CustomTextButton scaleUpButton,
+		scaleDownButton,
+		configButton,
+		safeConfigButton;
 
 	//Audio Processor
 	PlasmaAudioProcessor& audioProcessor;
@@ -239,11 +242,17 @@ private:
 	Colour accentColor = Colour(255, 0, 0);
 	Colour fontColor = Colour(255, 255, 255);
 	Colour parseColourFromString(String str);
+	void loadBackgroundColor(PropertiesFile* commonSettings);
+	void loadForegroundColor(PropertiesFile* commonSettings);
+	void loadAccentColor(PropertiesFile* commonSettings);
+	void loadFontColor(PropertiesFile* commonSettings);
 
 	//Component Vectors
 	std::vector<CustomLabel*> getLabels();
+	std::vector<CustomLabel*> getOptionsLabels();
 	std::vector<CustomRotarySlider*> getSliders();
 	std::vector<Component*> getComps();
+	std::vector<CustomTextButton*> getButtons();
 	std::vector<CustomTextbox*> getTextboxes();
 
 	//End

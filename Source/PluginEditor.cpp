@@ -147,6 +147,10 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 
 	//Load Config Data
 	scale = userSettings->getIntValue("scale", 100);
+	loadBackgroundColor(commonSettings);
+	loadForegroundColor(commonSettings);
+	loadAccentColor(commonSettings);
+	loadFontColor(commonSettings);
 
 	//Make all components visible
 	for (auto* comp : getComps())
@@ -159,6 +163,10 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 		comp->addListener(this);
 	}
 	for (auto* label : getLabels())
+	{
+		addAndMakeVisible(label);
+	}
+	for (auto* label : getOptionsLabels())
 	{
 		addAndMakeVisible(label);
 	}
@@ -272,7 +280,7 @@ void PlasmaAudioProcessorEditor::paint(juce::Graphics& g)
 		Point<float>(optionsLabel.getBounds().getCentreX() - sc(46), optionsLabel.getBounds().getY() + sc(37)),
 		Point<float>(optionsLabel.getBounds().getCentreX() + sc(46), optionsLabel.getBounds().getY() + sc(37)));
 
-	g.setColour(Colours::white);
+	//g.setColour(getFontColor());
 	g.drawLine(inLine, lineSize);
 	g.drawLine(outLine, lineSize);
 	g.drawLine(earlyLine, lineSize);
@@ -1032,7 +1040,7 @@ void PlasmaAudioProcessorEditor::editorHidden(Label* label, TextEditor& textEdit
 {
 	auto text = label->getText();
 
-	if (label = &configBackgroundColorTextbox)
+	if (label == &configBackgroundColorTextbox)
 	{
 		if (!testColorString(text))
 		{
@@ -1043,7 +1051,7 @@ void PlasmaAudioProcessorEditor::editorHidden(Label* label, TextEditor& textEdit
 			setBackgroundColor(parseColourFromString(text));
 		}
 	}
-	if (label = &configForegroundColorTextbox)
+	else if (label == &configForegroundColorTextbox)
 	{
 		if (!testColorString(text))
 		{
@@ -1055,7 +1063,7 @@ void PlasmaAudioProcessorEditor::editorHidden(Label* label, TextEditor& textEdit
 			setForegroundColor(parseColourFromString(text));
 		}
 	}
-	if (label = &configAccentColorTextbox)
+	else if (label == &configAccentColorTextbox)
 	{
 		if (!testColorString(text))
 		{
@@ -1075,6 +1083,38 @@ void PlasmaAudioProcessorEditor::labelTextChanged(Label* label)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Misc
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void PlasmaAudioProcessorEditor::loadBackgroundColor(PropertiesFile* commonSettings)
+{
+	auto r = commonSettings->getIntValue("backgroundColorRed", backgroundColor.getRed());
+	auto g = commonSettings->getIntValue("backgroundColorGreen", backgroundColor.getGreen());
+	auto b = commonSettings->getIntValue("backgroundColorBlue", backgroundColor.getBlue());
+	setBackgroundColor(Colour(r, g, b));
+}
+
+void PlasmaAudioProcessorEditor::loadForegroundColor(PropertiesFile* commonSettings)
+{
+	auto r = commonSettings->getIntValue("foregroundColorRed", foregroundColor.getRed());
+	auto g = commonSettings->getIntValue("foregroundColorGreen", foregroundColor.getGreen());
+	auto b = commonSettings->getIntValue("foregroundColorBlue", foregroundColor.getBlue());
+	setForegroundColor(Colour(r, g, b));
+}
+
+void PlasmaAudioProcessorEditor::loadAccentColor(PropertiesFile* commonSettings)
+{
+	auto r = commonSettings->getIntValue("accentColorRed", accentColor.getRed());
+	auto g = commonSettings->getIntValue("accentColorGreen", accentColor.getGreen());
+	auto b = commonSettings->getIntValue("accentColorBlue", accentColor.getBlue());
+	setAccentColor(Colour(r, g, b));
+}
+
+void PlasmaAudioProcessorEditor::loadFontColor(PropertiesFile* commonSettings)
+{
+	auto r = commonSettings->getIntValue("fontColorRed", fontColor.getRed());
+	auto g = commonSettings->getIntValue("fontColorGreen", fontColor.getGreen());
+	auto b = commonSettings->getIntValue("fontColorBlue", fontColor.getBlue());
+	setFontColor(Colour(r, g, b));
+}
+
 Colour PlasmaAudioProcessorEditor::parseColourFromString(String str)
 {
 	int r, g, b;
@@ -1083,26 +1123,50 @@ Colour PlasmaAudioProcessorEditor::parseColourFromString(String str)
 	b = str.substring(5, 7).getHexValue32();
 	return Colour(r, g, b);
 }
+
 Colour PlasmaAudioProcessorEditor::getBackgroundColor()
 {
 	return backgroundColor;
 }
+
 Colour PlasmaAudioProcessorEditor::getForegroundColor()
 {
 	return foregroundColor;
 }
+
 Colour PlasmaAudioProcessorEditor::getAccentColor()
 {
 	return accentColor;
 }
+
+Colour PlasmaAudioProcessorEditor::getFontColor()
+{
+	return fontColor;
+}
+
 void PlasmaAudioProcessorEditor::setBackgroundColor(Colour c)
 {
 	backgroundColor = c;
+	auto brightness = c.getBrightness();
+	if (brightness <= 0.5)
+	{
+		setOptionsFontColor(Colours::white);
+	}
+	else
+	{
+		setOptionsFontColor(Colours::black);
+	}
+	for (auto* slider : getSliders())
+	{
+		slider->setColour(Slider::ColourIds::backgroundColourId, c);
+	}
 }
+
 void PlasmaAudioProcessorEditor::setForegroundColor(Colour c)
 {
 	foregroundColor = c;
-	if (c.getLightness() <= 128)
+	auto brightness = c.getBrightness();
+	if (brightness <= 0.5)
 	{
 		setFontColor(Colours::white);
 	}
@@ -1111,18 +1175,46 @@ void PlasmaAudioProcessorEditor::setForegroundColor(Colour c)
 		setFontColor(Colours::black);
 	}
 }
+
 void PlasmaAudioProcessorEditor::setAccentColor(Colour c)
 {
 	accentColor = c;
+	for (auto* slider : getSliders())
+	{
+		slider->setColour(Slider::ColourIds::rotarySliderFillColourId, c);
+	}
 }
+
 void PlasmaAudioProcessorEditor::setFontColor(Colour c)
 {
 	fontColor = c;
+	for (auto* slider : getSliders())
+	{
+		slider->setColour(Slider::ColourIds::thumbColourId, c);
+	}
 	for (auto* label : getLabels())
 	{
 		label->setColour(Label::ColourIds::textColourId, c);
 	}
+	for (auto* textbox : getTextboxes())
+	{
+		textbox->setColour(Label::ColourIds::textColourId, c);
+	}
+	for (auto* button : getButtons())
+	{
+		button->setColour(TextButton::ColourIds::textColourOnId, c);
+	}
 }
+
+void PlasmaAudioProcessorEditor::setOptionsFontColor(Colour c)
+{
+	fontColor = c;
+	for (auto* label : getOptionsLabels())
+	{
+		label->setColour(Label::ColourIds::textColourId, c);
+	}
+}
+
 bool PlasmaAudioProcessorEditor::testColorString(String string)
 {
 	if (string[0] != '#')
@@ -1187,7 +1279,6 @@ std::vector<CustomLabel*> PlasmaAudioProcessorEditor::getLabels()
 {
 	return
 	{
-		&tooltipLabel,
 		//Drive
 		&gainLabel,
 		&driveLabel,
@@ -1224,9 +1315,16 @@ std::vector<CustomLabel*> PlasmaAudioProcessorEditor::getLabels()
 		&highpassLabel,
 		&peakLabel,
 		&lowpassLabel,
-		&lateLabel,
+		&lateLabel
+	};
+}
+
+std::vector<CustomLabel*> PlasmaAudioProcessorEditor::getOptionsLabels()
+{
+	return
+	{
+		&tooltipLabel,
 		&optionsLabel,
-		//Config Labels
 		&configOscilloscopeBufferSizeLabel,
 		&configOscilloscopeSamplesPerBlockLabel,
 		&configBackgroundColorLabel,
@@ -1244,5 +1342,16 @@ std::vector<CustomTextbox*> PlasmaAudioProcessorEditor::getTextboxes()
 		&configBackgroundColorTextbox,
 		&configForegroundColorTextbox,
 		&configAccentColorTextbox
+	};
+}
+
+std::vector<CustomTextButton*> PlasmaAudioProcessorEditor::getButtons()
+{
+	return
+	{
+		&scaleUpButton,
+		&scaleDownButton,
+		&configButton,
+		&safeConfigButton
 	};
 }

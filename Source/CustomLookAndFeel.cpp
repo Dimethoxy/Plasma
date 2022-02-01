@@ -46,7 +46,7 @@ void CustomLookAndFeel::drawButtonBackground(
 	float lineSize = bounds.getHeight() / 15.0;
 
 	//Select Color
-	g.setColour(button.findColour(Label::textColourId));
+	g.setColour(button.findColour(TextButton::ColourIds::textColourOnId));
 
 	//Draw Foreground
 	float iconSize = 2.5 * lineSize;
@@ -164,7 +164,6 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 	auto lineSize = bounds.getHeight() / 40;
 	Colour fill = slider.findColour(Slider::rotarySliderFillColourId);
 	Colour color = slider.findColour(Slider::ColourIds::thumbColourId);
-	Colour trackColor = slider.findColour(Slider::ColourIds::trackColourId);
 	Colour backgroundColor = slider.findColour(Slider::ColourIds::backgroundColourId);
 	//Draw Rail or Selector
 	if (!isSelector)
