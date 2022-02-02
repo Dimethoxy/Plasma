@@ -249,6 +249,9 @@ private:
 	void saveBackgroundColor(PropertiesFile* commonSettings);
 	void saveForegroundColor(PropertiesFile* commonSettings);
 	void saveAccentColor(PropertiesFile* commonSettings);
+	Colour backgroundColorFallback = Colour(18, 20, 20);
+	Colour foregroundColorFallback = Colour(24, 26, 27);
+	Colour accentColorFallback = Colour(255, 0, 0);
 
 	//Component Vectors
 	std::vector<CustomLabel*> getLabels();

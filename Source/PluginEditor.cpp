@@ -390,6 +390,23 @@ void PlasmaAudioProcessorEditor::buttonClicked(Button* button)
 	{
 		analyserSlider.setValue(AnalyserType::Options);
 	}
+	else if (button == &safeConfigButton)
+	{
+		//Load Config File
+		options.applicationName = "Plasma";
+		options.filenameSuffix = ".config";
+		applicationProperties.setStorageParameters(options);
+		auto userSettings = applicationProperties.getUserSettings();
+		auto commonSettings = applicationProperties.getCommonSettings(false);
+
+		//Save Colors
+		saveBackgroundColor(commonSettings);
+		saveForegroundColor(commonSettings);
+		saveAccentColor(commonSettings);
+
+		//Repaint
+		repaint();
+	}
 }
 void PlasmaAudioProcessorEditor::sliderDragStarted(Slider* slider)
 {
@@ -1087,25 +1104,25 @@ void PlasmaAudioProcessorEditor::labelTextChanged(Label* label)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void PlasmaAudioProcessorEditor::loadBackgroundColor(PropertiesFile* commonSettings)
 {
-	auto r = commonSettings->getIntValue("backgroundColorRed", backgroundColor.getRed());
-	auto g = commonSettings->getIntValue("backgroundColorGreen", backgroundColor.getGreen());
-	auto b = commonSettings->getIntValue("backgroundColorBlue", backgroundColor.getBlue());
+	auto r = commonSettings->getIntValue("backgroundColorRed", backgroundColorFallback.getRed());
+	auto g = commonSettings->getIntValue("backgroundColorGreen", backgroundColorFallback.getGreen());
+	auto b = commonSettings->getIntValue("backgroundColorBlue", backgroundColorFallback.getBlue());
 	setBackgroundColor(Colour(r, g, b));
 }
 
 void PlasmaAudioProcessorEditor::loadForegroundColor(PropertiesFile* commonSettings)
 {
-	auto r = commonSettings->getIntValue("foregroundColorRed", foregroundColor.getRed());
-	auto g = commonSettings->getIntValue("foregroundColorGreen", foregroundColor.getGreen());
-	auto b = commonSettings->getIntValue("foregroundColorBlue", foregroundColor.getBlue());
+	auto r = commonSettings->getIntValue("foregroundColorRed", foregroundColorFallback.getRed());
+	auto g = commonSettings->getIntValue("foregroundColorGreen", foregroundColorFallback.getGreen());
+	auto b = commonSettings->getIntValue("foregroundColorBlue", foregroundColorFallback.getBlue());
 	setForegroundColor(Colour(r, g, b));
 }
 
 void PlasmaAudioProcessorEditor::loadAccentColor(PropertiesFile* commonSettings)
 {
-	auto r = commonSettings->getIntValue("accentColorRed", accentColor.getRed());
-	auto g = commonSettings->getIntValue("accentColorGreen", accentColor.getGreen());
-	auto b = commonSettings->getIntValue("accentColorBlue", accentColor.getBlue());
+	auto r = commonSettings->getIntValue("accentColorRed", accentColorFallback.getRed());
+	auto g = commonSettings->getIntValue("accentColorGreen", accentColorFallback.getGreen());
+	auto b = commonSettings->getIntValue("accentColorBlue", accentColorFallback.getBlue());
 	setAccentColor(Colour(r, g, b));
 }
 
@@ -1269,7 +1286,6 @@ bool PlasmaAudioProcessorEditor::testColorString(String string)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Misc
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 std::vector<juce::Component*> PlasmaAudioProcessorEditor::getComps()
 {
 	return
