@@ -1081,7 +1081,7 @@ void PlasmaAudioProcessorEditor::labelTextChanged(Label* label)
 
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//Misc
+//Colors
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void PlasmaAudioProcessorEditor::loadBackgroundColor(PropertiesFile* commonSettings)
 {
@@ -1196,22 +1196,29 @@ void PlasmaAudioProcessorEditor::setFontColor(Colour c)
 	{
 		label->setColour(Label::ColourIds::textColourId, c);
 	}
-	for (auto* textbox : getTextboxes())
-	{
-		textbox->setColour(Label::ColourIds::textColourId, c);
-	}
 	for (auto* button : getButtons())
 	{
 		button->setColour(TextButton::ColourIds::textColourOnId, c);
+		button->setColour(TextButton::ColourIds::textColourOffId, c);
 	}
+	plasmaLabel.setColour(Label::ColourIds::textColourId, c);
 }
 
 void PlasmaAudioProcessorEditor::setOptionsFontColor(Colour c)
 {
-	fontColor = c;
+	optionsFontColor = c;
 	for (auto* label : getOptionsLabels())
 	{
 		label->setColour(Label::ColourIds::textColourId, c);
+	}
+	for (auto* textbox : getTextboxes())
+	{
+		textbox->setColour(Label::ColourIds::textColourId, c);
+	}
+	for (auto* button : getOptionsButtons())
+	{
+		button->setColour(TextButton::ColourIds::textColourOnId, c);
+		button->setColour(TextButton::ColourIds::textColourOffId, c);
 	}
 }
 
@@ -1231,6 +1238,10 @@ bool PlasmaAudioProcessorEditor::testColorString(String string)
 
 	return true;
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Misc
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 std::vector<juce::Component*> PlasmaAudioProcessorEditor::getComps()
 {
@@ -1352,6 +1363,13 @@ std::vector<CustomTextButton*> PlasmaAudioProcessorEditor::getButtons()
 		&scaleUpButton,
 		&scaleDownButton,
 		&configButton,
+	};
+}
+
+std::vector<CustomTextButton*> PlasmaAudioProcessorEditor::getOptionsButtons()
+{
+	return
+	{
 		&safeConfigButton
 	};
 }

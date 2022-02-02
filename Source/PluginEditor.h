@@ -241,6 +241,7 @@ private:
 	Colour foregroundColor = Colour(24, 26, 27);
 	Colour accentColor = Colour(255, 0, 0);
 	Colour fontColor = Colour(255, 255, 255);
+	Colour optionsFontColor = Colour(255, 255, 255);
 	Colour parseColourFromString(String str);
 	void loadBackgroundColor(PropertiesFile* commonSettings);
 	void loadForegroundColor(PropertiesFile* commonSettings);
@@ -253,6 +254,7 @@ private:
 	std::vector<CustomRotarySlider*> getSliders();
 	std::vector<Component*> getComps();
 	std::vector<CustomTextButton*> getButtons();
+	std::vector<CustomTextButton*> getOptionsButtons();
 	std::vector<CustomTextbox*> getTextboxes();
 
 	//End
