@@ -150,7 +150,6 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	loadBackgroundColor(commonSettings);
 	loadForegroundColor(commonSettings);
 	loadAccentColor(commonSettings);
-	loadFontColor(commonSettings);
 
 	//Make all components visible
 	for (auto* comp : getComps())
@@ -1049,6 +1048,7 @@ void PlasmaAudioProcessorEditor::editorHidden(Label* label, TextEditor& textEdit
 		else
 		{
 			setBackgroundColor(parseColourFromString(text));
+			repaint();
 		}
 	}
 	else if (label == &configForegroundColorTextbox)
@@ -1061,6 +1061,7 @@ void PlasmaAudioProcessorEditor::editorHidden(Label* label, TextEditor& textEdit
 		{
 
 			setForegroundColor(parseColourFromString(text));
+			repaint();
 		}
 	}
 	else if (label == &configAccentColorTextbox)
@@ -1072,6 +1073,7 @@ void PlasmaAudioProcessorEditor::editorHidden(Label* label, TextEditor& textEdit
 		else
 		{
 			setAccentColor(parseColourFromString(text));
+			repaint();
 		}
 	}
 }
@@ -1107,12 +1109,37 @@ void PlasmaAudioProcessorEditor::loadAccentColor(PropertiesFile* commonSettings)
 	setAccentColor(Colour(r, g, b));
 }
 
-void PlasmaAudioProcessorEditor::loadFontColor(PropertiesFile* commonSettings)
+void PlasmaAudioProcessorEditor::saveBackgroundColor(PropertiesFile* commonSettings)
 {
-	auto r = commonSettings->getIntValue("fontColorRed", fontColor.getRed());
-	auto g = commonSettings->getIntValue("fontColorGreen", fontColor.getGreen());
-	auto b = commonSettings->getIntValue("fontColorBlue", fontColor.getBlue());
-	setFontColor(Colour(r, g, b));
+	auto c = getBackgroundColor();
+	auto r = c.getRed();
+	auto g = c.getGreen();
+	auto b = c.getBlue();
+	commonSettings->setValue("backgroundColorRed", r);
+	commonSettings->setValue("backgroundColorGreen", g);
+	commonSettings->setValue("backgroundColorBlue", b);
+}
+
+void PlasmaAudioProcessorEditor::saveForegroundColor(PropertiesFile* commonSettings)
+{
+	auto c = getForegroundColor();
+	auto r = c.getRed();
+	auto g = c.getGreen();
+	auto b = c.getBlue();
+	commonSettings->setValue("foregroundColorRed", r);
+	commonSettings->setValue("foregroundColorGreen", g);
+	commonSettings->setValue("foregroundColorBlue", b);
+}
+
+void PlasmaAudioProcessorEditor::saveAccentColor(PropertiesFile* commonSettings)
+{
+	auto c = getAccentColor();
+	auto r = c.getRed();
+	auto g = c.getGreen();
+	auto b = c.getBlue();
+	commonSettings->setValue("accentColorRed", r);
+	commonSettings->setValue("accentColorGreen", g);
+	commonSettings->setValue("accentColorBlue", b);
 }
 
 Colour PlasmaAudioProcessorEditor::parseColourFromString(String str)

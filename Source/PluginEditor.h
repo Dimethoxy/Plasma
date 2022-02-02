@@ -246,7 +246,9 @@ private:
 	void loadBackgroundColor(PropertiesFile* commonSettings);
 	void loadForegroundColor(PropertiesFile* commonSettings);
 	void loadAccentColor(PropertiesFile* commonSettings);
-	void loadFontColor(PropertiesFile* commonSettings);
+	void saveBackgroundColor(PropertiesFile* commonSettings);
+	void saveForegroundColor(PropertiesFile* commonSettings);
+	void saveAccentColor(PropertiesFile* commonSettings);
 
 	//Component Vectors
 	std::vector<CustomLabel*> getLabels();
