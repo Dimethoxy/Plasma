@@ -279,7 +279,7 @@ void PlasmaAudioProcessorEditor::paint(juce::Graphics& g)
 		Point<float>(optionsLabel.getBounds().getCentreX() - sc(46), optionsLabel.getBounds().getY() + sc(37)),
 		Point<float>(optionsLabel.getBounds().getCentreX() + sc(46), optionsLabel.getBounds().getY() + sc(37)));
 
-	//g.setColour(getFontColor());
+	g.setColour(getFontColor());
 	g.drawLine(inLine, lineSize);
 	g.drawLine(outLine, lineSize);
 	g.drawLine(earlyLine, lineSize);
@@ -289,6 +289,7 @@ void PlasmaAudioProcessorEditor::paint(juce::Graphics& g)
 	g.drawLine(lateLine, lineSize);
 	if (showConfig)
 	{
+		g.setColour(getOptionsFontColor());
 		g.drawLine(optionsLine, lineSize);
 	}
 }
@@ -1186,6 +1187,11 @@ Colour PlasmaAudioProcessorEditor::getAccentColor()
 Colour PlasmaAudioProcessorEditor::getFontColor()
 {
 	return fontColor;
+}
+
+Colour PlasmaAudioProcessorEditor::getOptionsFontColor()
+{
+	return optionsFontColor;
 }
 
 void PlasmaAudioProcessorEditor::setBackgroundColor(Colour c)
