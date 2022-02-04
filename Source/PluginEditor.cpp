@@ -138,6 +138,11 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	configForegroundColorTextbox("#242627", FontSizes::Main, Justification::centredLeft),
 	configAccentColorTextbox("#FF0000", FontSizes::Main, Justification::centredLeft)
 {
+
+	//Waveform
+	waveformComponent = &p.waveformComponent;
+	addAndMakeVisible(waveformComponent);
+
 	//Load Config File
 	options.applicationName = "Plasma";
 	options.filenameSuffix = ".config";
@@ -202,10 +207,6 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	//Hide Options Menu
 	optionsLabel.setVisible(false);
 	configOscilloscopeBufferSizeLabel.setVisible(true);
-
-	//Waveform
-	waveformComponent = &p.waveformComponent;
-	addAndMakeVisible(waveformComponent);
 
 	//Reloader Analyser Knob
 	sliderValueChanged(&analyserSlider);
@@ -1270,6 +1271,10 @@ void PlasmaAudioProcessorEditor::setOptionsFontColor(Colour c)
 		button->setColour(TextButton::ColourIds::textColourOnId, c);
 		button->setColour(TextButton::ColourIds::textColourOffId, c);
 	}
+	waveformComponent->setColor(c);
+	responseCurveComponent.setColor(c);
+	earlyShapercurveComponent.setColor(c);
+	lateShapercurveComponent.setColor(c);
 }
 
 bool PlasmaAudioProcessorEditor::testColorString(String string)

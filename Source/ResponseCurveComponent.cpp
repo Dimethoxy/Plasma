@@ -157,11 +157,16 @@ void ResponseCurveComponent::paint(juce::Graphics& g)
 	{
 		responseCurve.lineTo(x + i, map(mags[i]));
 	}
-	g.setColour(Colours::white);
+	g.setColour(color);
 	g.strokePath(responseCurve, PathStrokeType(lineSize));
 }
 
 void ResponseCurveComponent::setPadding(float newPadding)
 {
 	padding = newPadding;
+}
+
+void ResponseCurveComponent::setColor(Colour c)
+{
+	color = c;
 }

@@ -17,9 +17,11 @@ public:
 	void update();
 	void paint(juce::Graphics& g) override;
 	void setPadding(float newPadding);
+	void setColor(Colour c);
 private:
 	PlasmaAudioProcessor& audioProcessor;
 	juce::Atomic<bool> parametersChanged{ false };
 	MonoChain monoChain;
 	float padding = 10;
+	Colour color = Colour(255, 255, 255);
 };

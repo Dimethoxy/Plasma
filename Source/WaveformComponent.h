@@ -10,7 +10,6 @@ public:
 		//1024/4
 		setBufferSize(1024);
 		setSamplesPerBlock(4);
-		setColours(Colour::fromRGBA(18, 20, 20, 255), Colours::white);
 	}
 	void paintChannel(
 		Graphics&,
@@ -18,5 +17,7 @@ public:
 		const Range<float>* levels,
 		int numLevels,
 		int nextSample) override;
+	void setColor(Colour c);
 private:
+	Colour color = Colour(255, 255, 255);
 };

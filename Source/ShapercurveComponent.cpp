@@ -118,9 +118,13 @@ void ShapercurveComponent::paint(juce::Graphics& g)
 	}
 	if (true)
 	{
-		g.setColour(Colours::white);
+		g.setColour(color);
 		g.drawRect(x, y, w, h, 2.0 * lineSize);
 		g.strokePath(shaperCurve, PathStrokeType(1.5 * lineSize));
 	}
 }
 
+void ShapercurveComponent::setColor(Colour c)
+{
+	color = c;
+}

@@ -16,6 +16,7 @@ public:
 	void parameterGestureChanged(int parameterIndex, bool gestureIsStarting) override {};
 	void timerCallback() override;
 	void paint(juce::Graphics& g) override;
+	void setColor(Colour c);
 private:
 	PlasmaAudioProcessor& audioProcessor;
 	juce::Atomic<bool> parametersChanged{ false };
@@ -25,4 +26,5 @@ private:
 	Distortion lateType = Distortion::Hardclip;
 	int stage = 0;
 	PlasmaDistortionProcessor distortionProcessor;
+	Colour color = Colour(255, 255, 255);
 };
