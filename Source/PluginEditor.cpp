@@ -156,6 +156,11 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	loadForegroundColor(commonSettings);
 	loadAccentColor(commonSettings);
 
+	//Update Config Textboxes
+	configBackgroundColorTextbox.setText("#" + getBackgroundColor().toDisplayString(false), NotificationType::dontSendNotification);
+	configForegroundColorTextbox.setText("#" + getForegroundColor().toDisplayString(false), NotificationType::dontSendNotification);
+	configAccentColorTextbox.setText("#" + getAccentColor().toDisplayString(false), NotificationType::dontSendNotification);
+
 	//Make all components visible
 	for (auto* comp : getComps())
 	{
@@ -1265,6 +1270,7 @@ void PlasmaAudioProcessorEditor::setOptionsFontColor(Colour c)
 	for (auto* textbox : getTextboxes())
 	{
 		textbox->setColour(Label::ColourIds::textColourId, c);
+		textbox->setColour(Label::ColourIds::textWhenEditingColourId, c);
 	}
 	for (auto* button : getOptionsButtons())
 	{
