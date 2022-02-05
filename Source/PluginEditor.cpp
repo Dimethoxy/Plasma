@@ -1029,7 +1029,7 @@ void PlasmaAudioProcessorEditor::resized()
 	waveformComponent->setBounds(monitorArea().reduced(sc(padding)));
 	tooltipLabel.setBounds(
 		sc(padding) + monitorArea().getX(),
-		monitorArea().getY(),
+		sc(5) + monitorArea().getY(),
 		sc(300),
 		sc(40));
 	earlyShapercurveComponent.setBounds(
@@ -1046,6 +1046,10 @@ void PlasmaAudioProcessorEditor::resized()
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Update Labels & Textboxes
 	for (auto* label : getLabels())
+	{
+		label->resize();
+	}
+	for (auto* label : getOptionsLabels())
 	{
 		label->resize();
 	}
