@@ -184,6 +184,8 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 		addAndMakeVisible(textbox);
 		textbox->addListener(this);
 	}
+	//Logo
+	addAndMakeVisible(plasmaLabel);
 
 	//Options Button
 	configButton.setButtonText("O");
@@ -205,9 +207,6 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	safeConfigButton.addListener(this);
 	addAndMakeVisible(safeConfigButton);
 	safeConfigButton.setVisible(false);
-
-	//Logo
-	addAndMakeVisible(plasmaLabel);
 
 	//Hide Options Menu
 	optionsLabel.setVisible(false);
