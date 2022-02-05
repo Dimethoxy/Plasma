@@ -5,7 +5,6 @@
 
 //Math
 const float pi = 3.14159265358979323846;
-float clamp(float d, float min, float max);
 
 //Enums
 enum ChainPositions
@@ -34,17 +33,6 @@ enum AnalyserType
 	Response,
 	Shapercurve,
 	Options
-};
-enum Distortion
-{
-	Hardclip,
-	Softclip,
-	Root,
-	Atan,
-	Bitcrush,
-	Scream,
-	Sine,
-	Cosine
 };
 
 //Chain Settings
@@ -183,7 +171,6 @@ public:
 	juce::AudioProcessorValueTreeState apvts{ *this, nullptr, "Parameters", createParameterLayout() };
 
 	WaveformComponent waveformComponent;
-	PlasmaDistortionProcessor distortionProcessor;
 private:
 	//Clean Buffer
 	AudioSampleBuffer cleanBuffer;

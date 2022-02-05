@@ -25,6 +25,5 @@ private:
 	Distortion earlyType = Distortion::Hardclip;
 	Distortion lateType = Distortion::Hardclip;
 	int stage = 0;
-	PlasmaDistortionProcessor distortionProcessor;
 	Colour color = Colour(255, 255, 255);
 };

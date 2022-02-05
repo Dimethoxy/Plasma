@@ -156,10 +156,6 @@ juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 	return new PlasmaAudioProcessor();
 }
 
-float clamp(float d, float min, float max) {
-	const float t = d < min ? min : d;
-	return t > max ? max : t;
-}
 void PlasmaAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
 	juce::dsp::ProcessSpec spec;
@@ -222,13 +218,13 @@ void PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
 			if (channelData[sample] != 0.0)
 			{
 				//Pre Gain
-				channelData[sample] = clamp(channelData[sample] * preGain, -1.0, 1.0);
+				channelData[sample] = DistortionProcessor::clamp(channelData[sample] * preGain, -1.0, 1.0);
 
 				//Girth
 				channelData[sample] = channelData[sample] * ((((float)(rand() % 100)) / 100 * chainSettings.girth) + 1);
 
 				//Drive          
-				distortionProcessor.distort(channelData[sample], chainSettings.drive, chainSettings.driveType);
+				DistortionProcessor::distort(channelData[sample], chainSettings.drive, chainSettings.driveType);
 
 				//Bias
 				//channelData[sample] = clamp(channelData[sample] + chainSettings.bias, -1.0, 1.0);
@@ -266,14 +262,14 @@ void PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
 			if (channelData[sample] != 0.0)
 			{
 				//Reduce Loudness
-				channelData[sample] = clamp(channelData[sample], -1, 1);
+				channelData[sample] = DistortionProcessor::clamp(channelData[sample], -1, 1);
 
 				//Girth
 				channelData[sample] = channelData[sample] *
 					((((float)(rand() % 100)) / 100 * chainSettings.lateGirth) + 1);
 
 				//Drive 
-				distortionProcessor.distort(channelData[sample], chainSettings.lateDrive, chainSettings.lateDriveType);
+				DistortionProcessor::distort(channelData[sample], chainSettings.lateDrive, chainSettings.lateDriveType);
 
 				//Bias 
 				if (channelData[sample] > 0)
@@ -288,7 +284,7 @@ void PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
 				channelData[sample] = cleanData[sample] * mixDry + channelData[sample] * mixWet;
 
 				//Reduce Loudness for Waveform Analyser
-				channelData[sample] = 0.5 * clamp(channelData[sample], -1, 1);
+				channelData[sample] = 0.5 * DistortionProcessor::clamp(channelData[sample], -1, 1);
 			}
 		}
 	}
@@ -476,7 +472,7 @@ void PlasmaAudioProcessor::updateFilters()
 Coefficients makePeakFilter(const ChainSettings& chainSettings, double sampleRate, float offset)
 {
 	return juce::dsp::IIR::Coefficients<float>::makePeakFilter(sampleRate,
-		clamp(chainSettings.peakFreq + offset, 20, 20000),
+		DistortionProcessor::clamp(chainSettings.peakFreq + offset, 20, 20000),
 		chainSettings.peakQuality,
 		juce::Decibels::decibelsToGain(chainSettings.peakGain));
 }

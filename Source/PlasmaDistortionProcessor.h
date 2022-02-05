@@ -3,23 +3,39 @@
 #include "JuceHeader.h"
 #include "PluginProcessor.h"
 
-class PlasmaDistortionProcessor
+enum Distortion
 {
-public:
+	Hardclip,
+	Softclip,
+	Root,
+	Atan,
+	Bitcrush,
+	Scream,
+	Sine,
+	Cosine
+};
+namespace DistortionProcessor
+{
+	inline float clamp(float d, float min, float max)
+	{
+		const float t = d < min ? min : d;
+		return t > max ? max : t;
+	}
+
 	template<typename Data, typename Drive, typename Distortion>
 	void distort(Data& data, Drive& drive, Distortion& type) {
 		switch (type) {
-		case Hardclip:
+		case Distortion::Hardclip:
 		{
 			data = clamp(drive * data, -1.0, 1.0);
 			break;
 		}
-		case Softclip:
+		case Distortion::Softclip:
 		{
 			data = 1.27 * atan(drive * data);
 			break;
 		}
-		case Scream:
+		case Distortion::Scream:
 		{
 			if (data > 0.0) {
 				data = pow(data, 1.0f / drive);
@@ -31,7 +47,7 @@ public:
 			};
 			break;
 		}
-		case Bitcrush:
+		case Distortion::Bitcrush:
 		{
 			float bitDepth = 11.0 - drive;
 			float exponent = bitDepth - 1;
@@ -48,7 +64,7 @@ public:
 			data = quantized / possibleValues;
 			break;
 		}
-		case Root:
+		case Distortion::Root:
 		{
 			if (data > 0.0) {
 				data = clamp(pow(data, 1.0 / ((drive / 4) + 0.75)), -1.0, 1.0);
@@ -58,7 +74,7 @@ public:
 			}
 			break;
 		}
-		case Atan:
+		case Distortion::Atan:
 		{
 			if (data > 0.0) {
 				data = pow(data, 1.0f / drive);
@@ -71,14 +87,14 @@ public:
 			};
 			break;
 		}
-		case Sine: {
+		case Distortion::Sine: {
 			data = clamp(sin(drive * data), -1.0, 1.0);
 			break;
 		}
-		case Cosine: {
+		case Distortion::Cosine: {
 			data = clamp(cos(drive * data), -1.0, 1.0);
 			break;
 		}
 		}
 	}
-};
+}

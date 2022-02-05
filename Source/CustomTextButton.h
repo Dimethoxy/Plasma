@@ -15,7 +15,7 @@ public:
 private:
 
 	Typeface::Ptr getCustomTypeface();
-	Font CustomTextButton::getCustomFont();
+	Font getCustomFont();
 	CustomLookAndFeel lnf;
 };
 

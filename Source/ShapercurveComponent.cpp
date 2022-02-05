@@ -87,7 +87,7 @@ void ShapercurveComponent::paint(juce::Graphics& g)
 		samples[i] = i * sampleSize - 1;
 
 		//Distort
-		distortionProcessor.distort(samples[i], drive, type);
+		DistortionProcessor::distort(samples[i], drive, type);
 
 		//Girth
 		samples[i] = samples[i] *
