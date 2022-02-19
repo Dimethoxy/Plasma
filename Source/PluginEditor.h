@@ -68,6 +68,8 @@ public:
 	void setFontColor(Colour c);
 	void setOptionsFontColor(Colour c);
 
+	void setOscilloscopeBufferSize(int size);
+	void setOscilloscopeSamplesPerBlock(int size);
 private:
 	//Scaling
 	CustomTextButton scaleUpButton,
@@ -252,6 +254,10 @@ private:
 	Colour backgroundColorFallback = Colour(18, 20, 20);
 	Colour foregroundColorFallback = Colour(24, 26, 27);
 	Colour accentColorFallback = Colour(255, 0, 0);
+
+	//Oscilloscope Settings
+	void loadOscilloscopeBufferSize(int size);
+	void loadOscilloscopeSamplesPerBlock(int size);
 
 	//Component Vectors
 	std::vector<CustomLabel*> getLabels();

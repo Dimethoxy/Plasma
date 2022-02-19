@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="JUCE Modules\juce_audio_plugin_client\VST3">
       <UniqueIdentifier>{68760A18-ED41-41C7-2560-F3A65E9AD133}</UniqueIdentifier>

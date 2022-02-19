@@ -132,8 +132,8 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Textboxes
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	configOscilloscopeBufferSizeTextbox("16", FontSizes::Main, Justification::centredLeft),
-	configOscilloscopeSamplesPerBlockTextbox("128", FontSizes::Main, Justification::centredLeft),
+	configOscilloscopeBufferSizeTextbox("1024", FontSizes::Main, Justification::centredLeft),
+	configOscilloscopeSamplesPerBlockTextbox("4", FontSizes::Main, Justification::centredLeft),
 	configBackgroundColorTextbox("#182020", FontSizes::Main, Justification::centredLeft),
 	configForegroundColorTextbox("#242627", FontSizes::Main, Justification::centredLeft),
 	configAccentColorTextbox("#FF0000", FontSizes::Main, Justification::centredLeft)
@@ -1304,8 +1304,23 @@ bool PlasmaAudioProcessorEditor::testColorString(String string)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//Misc
+//Oscilloscope Settings
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void PlasmaAudioProcessorEditor::setOscilloscopeBufferSize(int size)
+{
+
+}
+
+void PlasmaAudioProcessorEditor::setOscilloscopeSamplesPerBlock(int size)
+{
+
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Component Vectors
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 std::vector<juce::Component*> PlasmaAudioProcessorEditor::getComps()
 {
 	return
