@@ -75,7 +75,8 @@ private:
 	CustomTextButton scaleUpButton,
 		scaleDownButton,
 		configButton,
-		safeConfigButton;
+		safeConfigButton,
+		resetConfigButton;
 
 	//Audio Processor
 	PlasmaAudioProcessor& audioProcessor;
@@ -258,6 +259,7 @@ private:
 	//Oscilloscope Settings
 	void loadOscilloscopeBufferSize(int size);
 	void loadOscilloscopeSamplesPerBlock(int size);
+
 
 	//Component Vectors
 	std::vector<CustomLabel*> getLabels();

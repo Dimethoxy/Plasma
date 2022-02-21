@@ -9,7 +9,7 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	: AudioProcessorEditor(&p), audioProcessor(p),
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Sliders
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////	/////////////////////////////////////////////////////////////////
 	//Pregain
 	preGainSlider(*audioProcessor.apvts.getParameter("Pre Gain"), "dB", "Gain"),
 	driveSlider(*audioProcessor.apvts.getParameter("Drive"), "", "Drive"),
@@ -120,6 +120,7 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	lateLabel("Distortion", FontSizes::Titel, Justification::centredTop),
 	plasmaLabel(),
 	configButton(),
+	resetConfigButton(),
 	scaleUpButton(),
 	scaleDownButton(),
 	//Options
@@ -206,7 +207,11 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	safeConfigButton.setButtonText("S");
 	safeConfigButton.addListener(this);
 	addAndMakeVisible(safeConfigButton);
-	safeConfigButton.setVisible(false);
+
+	//Reset Button
+	resetConfigButton.setButtonText("R");
+	resetConfigButton.addListener(this);
+	addAndMakeVisible(resetConfigButton);
 
 	//Hide Options Menu
 	optionsLabel.setVisible(false);
@@ -316,6 +321,7 @@ void PlasmaAudioProcessorEditor::configWindow(bool visibility)
 	{
 		//Show Option Components
 		safeConfigButton.setVisible(true);
+		resetConfigButton.setVisible(true);
 		optionsLabel.setVisible(true);
 
 		//Show Config Labels
@@ -343,6 +349,7 @@ void PlasmaAudioProcessorEditor::configWindow(bool visibility)
 	{
 		//Hide Options Components
 		safeConfigButton.setVisible(false);
+		resetConfigButton.setVisible(false);
 		optionsLabel.setVisible(false);
 
 		//Hide Config Labels
@@ -404,6 +411,28 @@ void PlasmaAudioProcessorEditor::buttonClicked(Button* button)
 		applicationProperties.setStorageParameters(options);
 		auto userSettings = applicationProperties.getUserSettings();
 		auto commonSettings = applicationProperties.getCommonSettings(false);
+
+		//Save Colors
+		saveBackgroundColor(commonSettings);
+		saveForegroundColor(commonSettings);
+		saveAccentColor(commonSettings);
+
+		//Repaint
+		repaint();
+	}
+	else if (button == &resetConfigButton)
+	{
+		//Load Config File
+		options.applicationName = "Plasma";
+		options.filenameSuffix = ".config";
+		applicationProperties.setStorageParameters(options);
+		auto userSettings = applicationProperties.getUserSettings();
+		auto commonSettings = applicationProperties.getCommonSettings(false);
+
+		//Reset Colors
+		setBackgroundColor(backgroundColorFallback);
+		setForegroundColor(foregroundColorFallback);
+		setAccentColor(accentColorFallback);
 
 		//Save Colors
 		saveBackgroundColor(commonSettings);
@@ -957,6 +986,14 @@ void PlasmaAudioProcessorEditor::resized()
 		2 * sc(30),
 		sc(30)
 	);
+	//Reset
+	resetConfigButton.setBounds
+	(
+		safeConfigButton.getBounds().getX() - sc(60),
+		monitorArea().getY() + 3 * sc(padding),
+		2 * sc(30),
+		sc(30)
+	);
 	//Oscilloscope Buffer Size 
 	configOscilloscopeBufferSizeLabel.setBounds
 	(
@@ -1219,6 +1256,7 @@ void PlasmaAudioProcessorEditor::setBackgroundColor(Colour c)
 	{
 		slider->setColour(Slider::ColourIds::backgroundColourId, c);
 	}
+	waveformComponent->setBackgroundColor(c);
 }
 
 void PlasmaAudioProcessorEditor::setForegroundColor(Colour c)
@@ -1448,6 +1486,7 @@ std::vector<CustomTextButton*> PlasmaAudioProcessorEditor::getOptionsButtons()
 {
 	return
 	{
-		&safeConfigButton
+		&safeConfigButton,
+		&resetConfigButton
 	};
 }
