@@ -156,6 +156,8 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	loadBackgroundColor(commonSettings);
 	loadForegroundColor(commonSettings);
 	loadAccentColor(commonSettings);
+	loadOscilloscopeBufferSize(commonSettings);
+	loadOscilloscopeSamplesPerBlock(commonSettings);
 
 	//Update Config Textboxes
 	configBackgroundColorTextbox.setText("#" + getBackgroundColor().toDisplayString(false), NotificationType::dontSendNotification);
@@ -1140,6 +1142,10 @@ void PlasmaAudioProcessorEditor::editorHidden(Label* label, TextEditor& textEdit
 			repaint();
 		}
 	}
+	else if (label == &configOscilloscopeBufferSizeTextbox)
+	{
+
+	}
 }
 
 void PlasmaAudioProcessorEditor::labelTextChanged(Label* label)
@@ -1345,14 +1351,36 @@ bool PlasmaAudioProcessorEditor::testColorString(String string)
 //Oscilloscope Settings
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void PlasmaAudioProcessorEditor::setOscilloscopeBufferSize(int size)
+void PlasmaAudioProcessorEditor::loadOscilloscopeBufferSize(PropertiesFile* commonSettings)
 {
-
+	oscilloscopeBufferSize = commonSettings->getIntValue("oscilloscopeBufferSize", oscilloscopeBufferSizeFallback);
+	waveformComponent->setBufferSize(oscilloscopeBufferSize);
 }
 
-void PlasmaAudioProcessorEditor::setOscilloscopeSamplesPerBlock(int size)
+void PlasmaAudioProcessorEditor::loadOscilloscopeSamplesPerBlock(PropertiesFile* commonSettings)
 {
+	oscilloscopeSamplesPerBlock = commonSettings->getIntValue("oscilloscopeSamplesPerBlock", oscilloscopeSamplesPerBlockFallback);
+	waveformComponent->setSamplesPerBlock(oscilloscopeSamplesPerBlockFallback);
+}
 
+void PlasmaAudioProcessorEditor::setOscilloscopeBufferSize(int oscilloscopeBufferSize)
+{
+	waveformComponent->setBufferSize(oscilloscopeBufferSize);
+}
+
+void PlasmaAudioProcessorEditor::setOscilloscopeSamplesPerBlock(int oscilloscopeSamplesPerBlock)
+{
+	waveformComponent->setBufferSize(oscilloscopeSamplesPerBlock);
+}
+
+void PlasmaAudioProcessorEditor::saveOscilloscopeBufferSize(PropertiesFile* commonSettings)
+{
+	commonSettings->setValue("oscilloscopeBufferSize", oscilloscopeBufferSize);
+}
+
+void PlasmaAudioProcessorEditor::saveOscilloscopeSamplesPerBlock(PropertiesFile* commonSettings)
+{
+	commonSettings->setValue("oscilloscopeSamplesPerBlock", oscilloscopeSamplesPerBlock);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

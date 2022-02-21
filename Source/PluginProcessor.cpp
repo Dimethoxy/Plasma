@@ -333,7 +333,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout PlasmaAudioProcessor::create
 	//Girth
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Girth", "Girth",
-			juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f, 1.0f), 0.0f));
+			juce::NormalisableRange<float>(0.0f, 1.0f, 0.001f, 1.0f), 0.0f));
 	//Bias
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Bias", "Bias",

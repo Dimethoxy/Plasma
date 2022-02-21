@@ -139,7 +139,9 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 		numOptions = 5;
 		selectedOption = (int)slider.getValue();
 	}
-	else if (slider.getName() == "Lowpass" || slider.getName() == "Highpass" || slider.getName() == "Peak")
+	else if (slider.getName() == "Lowpass" ||
+		slider.getName() == "Highpass" ||
+		slider.getName() == "Peak")
 	{
 		skewFactor = 0.80;
 	}
@@ -150,6 +152,7 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 	else if (slider.getName() == "Girth")
 	{
 		String str;
+		skewFactor = 0.65;
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
