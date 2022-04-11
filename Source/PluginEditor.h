@@ -1,11 +1,3 @@
-/*
--Implement spectrum analyser
--Implement option menu
--Fix global color settings
--Fix analyser lines getting fucked when scaling GUI
--Implementing Factory Presets
-*/
-
 #pragma once
 
 #include <JuceHeader.h>
@@ -67,7 +59,7 @@ public:
 	void setAccentColor(Colour c);
 	void setFontColor(Colour c);
 	void setOptionsFontColor(Colour c);
-
+	void updateTextboxes();
 
 private:
 	//Scaling
@@ -75,7 +67,8 @@ private:
 		scaleDownButton,
 		configButton,
 		safeConfigButton,
-		resetConfigButton;
+		resetConfigButton,
+		killRingingButton;
 
 	//Audio Processor
 	PlasmaAudioProcessor& audioProcessor;

@@ -76,15 +76,18 @@ namespace DistortionProcessor
 		}
 		case Distortion::Atan:
 		{
-			if (data > 0.0) {
-				data = pow(data, 1.0f / drive);
-				data = 1.27 * atan(data);
+			if (data != 0.0f)
+			{
+				if (data > 0.0f) {
+					data = pow(data, 1.0f / drive);
+					data = 1.27f * atan(data);
+				}
+				else {
+					data = pow(-data, 1.0f / drive);
+					data = 1.27f * atan(data);
+					data = -data;
+				}
 			}
-			else {
-				data = pow(-data, 1.0f / drive);
-				data = 1.27 * atan(data);
-				data = -data;
-			};
 			break;
 		}
 		case Distortion::Sine: {
@@ -98,3 +101,4 @@ namespace DistortionProcessor
 		}
 	}
 }
+

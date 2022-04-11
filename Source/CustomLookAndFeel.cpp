@@ -83,7 +83,16 @@ void CustomLookAndFeel::drawButtonBackground(
 		Line<float> l2(p3, p4);
 		g.drawLine(l2, lineSize);
 	}
-	g.drawRoundedRectangle(area.reduced(lineSize), 4 * lineSize, lineSize);
+
+	if (!button.isMouseButtonDown())
+	{
+		g.drawRoundedRectangle(area.reduced(lineSize * 1.5), 4 * lineSize, lineSize);
+	}
+	else
+	{
+		g.drawRoundedRectangle(area.reduced(lineSize), 4 * lineSize, lineSize);
+	}
+
 	//Outline
 	//
 
@@ -112,6 +121,7 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 
 	//Symmertry
 	bool isCentered = false;
+	bool isInverted = false;
 	auto range = rotaryEndAngle - rotaryStartAngle;
 	auto center = range / 2;
 
@@ -143,7 +153,8 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 		slider.getName() == "Highpass" ||
 		slider.getName() == "Peak")
 	{
-		skewFactor = 0.80;
+		skewFactor = 0.82;
+		if (slider.getName() == "Lowpass") isInverted = true;
 	}
 	else if (slider.getName() == "Peak Resonance")
 	{
@@ -194,14 +205,28 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 		{
 			Path valueArc;
 			if (!isCentered) {
-				valueArc.addCentredArc(bounds.getCentreX(),
-					bounds.getCentreY(),
-					arcRadius,
-					arcRadius,
-					0.0f,
-					rotaryStartAngle,
-					toAngle,
-					true);
+				if (!isInverted)
+				{
+					valueArc.addCentredArc(bounds.getCentreX(),
+						bounds.getCentreY(),
+						arcRadius,
+						arcRadius,
+						0.0f,
+						rotaryStartAngle,
+						toAngle,
+						true);
+				}
+				else
+				{
+					valueArc.addCentredArc(bounds.getCentreX(),
+						bounds.getCentreY(),
+						arcRadius,
+						arcRadius,
+						0.0f,
+						rotaryEndAngle,
+						toAngle,
+						true);
+				}
 			}
 			else
 			{

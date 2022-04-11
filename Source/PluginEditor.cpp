@@ -12,7 +12,7 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	///////////////////////////////////////////////////	/////////////////////////////////////////////////////////////////
 	//Pregain
 	preGainSlider(*audioProcessor.apvts.getParameter("Pre Gain"), "dB", "Gain"),
-	driveSlider(*audioProcessor.apvts.getParameter("Drive"), "", "Drive"),
+	driveSlider(*audioProcessor.apvts.getParameter("Drive"), "x", "Drive"),
 	girthSlider(*audioProcessor.apvts.getParameter("Girth"), "", "Girth"),
 	biasSlider(*audioProcessor.apvts.getParameter("Bias"), "", "Symmetry"),
 	driveTypeSlider(*audioProcessor.apvts.getParameter("Distortion Type"), "", "Distortion"),
@@ -24,7 +24,7 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	//Peak
 	peakStereoSlider(*audioProcessor.apvts.getParameter("Peak Stereo"), "%", "Peak Stereo"),
 	peakFreqSlider(*audioProcessor.apvts.getParameter("Peak Freq"), "Hz", "Peak"),
-	peakGainSlider(*audioProcessor.apvts.getParameter("Peak Gain"), "dB", "Peak Resonance"),
+	peakGainSlider(*audioProcessor.apvts.getParameter("Peak Gain"), "dB", "Resonance"),
 	peakQualitySlider(*audioProcessor.apvts.getParameter("Peak Quality"), "", "Quality"),
 	//Lowpass
 	lowPassFreqSlider(*audioProcessor.apvts.getParameter("Lowpass Freq"), "Hz", "Lowpass"),
@@ -33,7 +33,7 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	lowPassSlopeSlider(*audioProcessor.apvts.getParameter("Lowpass Slope"), "dB/oct", "Slope"),
 	//Lategain
 	gainSlider(*audioProcessor.apvts.getParameter("Gain"), "dB", "Gain"),
-	lateDriveSlider(*audioProcessor.apvts.getParameter("Late Drive"), "", "Drive"),
+	lateDriveSlider(*audioProcessor.apvts.getParameter("Late Drive"), "x", "Drive"),
 	lateGirthSlider(*audioProcessor.apvts.getParameter("Girth"), "", "Girth"),
 	lateBiasSlider(*audioProcessor.apvts.getParameter("Late Bias"), "", "Symmetry"),
 	lateDriveTypeSlider(*audioProcessor.apvts.getParameter("Late Distortion Type"), "", "Distortion"),
@@ -109,7 +109,7 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	lateDriveLabel("Drive", FontSizes::Main, Justification::centredTop),
 	preGainLabel("Gain", FontSizes::Main, Justification::centredTop),
 	mixLabel("Mix", FontSizes::Main, Justification::centredTop),
-	analyserLabel("Analyser", FontSizes::Main, Justification::centredTop),
+	analyserLabel("Display", FontSizes::Main, Justification::centredTop),
 	//Titels
 	inLabel("Input", FontSizes::Titel, Justification::centredTop),
 	outLabel("Output", FontSizes::Titel, Justification::centredTop),
@@ -160,9 +160,7 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	loadOscilloscopeSamplesPerBlock(commonSettings);
 
 	//Update Config Textboxes
-	configBackgroundColorTextbox.setText("#" + getBackgroundColor().toDisplayString(false), NotificationType::dontSendNotification);
-	configForegroundColorTextbox.setText("#" + getForegroundColor().toDisplayString(false), NotificationType::dontSendNotification);
-	configAccentColorTextbox.setText("#" + getAccentColor().toDisplayString(false), NotificationType::dontSendNotification);
+	updateTextboxes();
 
 	//Make all components visible
 	for (auto* comp : getComps())
@@ -223,9 +221,12 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	sliderValueChanged(&analyserSlider);
 	sliderDragEnded(&analyserSlider);
 
+	//Reset Tooltip Label
+	tooltipLabel.setText("", NotificationType::dontSendNotification);
+
 	//Window
 	setResizable(false, false);
-	setSize(sc(810), sc(940)); //810 ... 1060
+	setSize(sc(810), sc(940));
 }
 PlasmaAudioProcessorEditor::~PlasmaAudioProcessorEditor()
 {
@@ -310,12 +311,21 @@ void PlasmaAudioProcessorEditor::paint(juce::Graphics& g)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void PlasmaAudioProcessorEditor::timerCallback()
 {
-	loudnessMeterIn.repaint();
-	loudnessMeterOut.repaint();
+	tooltipLabel.setText("", juce::dontSendNotification);
+	stopTimer();
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Interaction
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void PlasmaAudioProcessorEditor::updateTextboxes()
+{
+	configBackgroundColorTextbox.setText("#" + getBackgroundColor().toDisplayString(false), NotificationType::dontSendNotification);
+	configForegroundColorTextbox.setText("#" + getForegroundColor().toDisplayString(false), NotificationType::dontSendNotification);
+	configAccentColorTextbox.setText("#" + getAccentColor().toDisplayString(false), NotificationType::dontSendNotification);
+	configOscilloscopeBufferSizeTextbox.setText(String(oscilloscopeBufferSize), NotificationType::dontSendNotification);
+	configOscilloscopeSamplesPerBlockTextbox.setText(String(oscilloscopeSamplesPerBlock), NotificationType::dontSendNotification);
+	repaint();
+}
 void PlasmaAudioProcessorEditor::configWindow(bool visibility)
 {
 	//Make visible
@@ -418,6 +428,8 @@ void PlasmaAudioProcessorEditor::buttonClicked(Button* button)
 		saveBackgroundColor(commonSettings);
 		saveForegroundColor(commonSettings);
 		saveAccentColor(commonSettings);
+		saveOscilloscopeBufferSize(commonSettings);
+		saveOscilloscopeSamplesPerBlock(commonSettings);
 
 		//Repaint
 		repaint();
@@ -435,11 +447,15 @@ void PlasmaAudioProcessorEditor::buttonClicked(Button* button)
 		setBackgroundColor(backgroundColorFallback);
 		setForegroundColor(foregroundColorFallback);
 		setAccentColor(accentColorFallback);
+		setOscilloscopeBufferSize(oscilloscopeBufferSizeFallback);
+		setOscilloscopeSamplesPerBlock(oscilloscopeSamplesPerBlockFallback);
 
 		//Save Colors
 		saveBackgroundColor(commonSettings);
 		saveForegroundColor(commonSettings);
 		saveAccentColor(commonSettings);
+		saveOscilloscopeBufferSize(commonSettings);
+		saveOscilloscopeSamplesPerBlock(commonSettings);
 
 		//Repaint
 		repaint();
@@ -492,7 +508,7 @@ void PlasmaAudioProcessorEditor::sliderDragEnded(Slider* slider)
 	{
 		setAnalyserType(autoAnalyserType);
 	}
-	tooltipLabel.setText("", juce::dontSendNotification);
+	startTimer(1000);
 }
 void PlasmaAudioProcessorEditor::sliderValueChanged(Slider* slider)
 {
@@ -950,7 +966,7 @@ void PlasmaAudioProcessorEditor::resized()
 		sc(40));
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//Scale Knobs
+	//Header Knobs
 	int scaleKnobSize = headerArea().getHeight() - 2 * (sc(padding));
 	configButton.setBounds(
 		getWidth() - 2.34 * scaleKnobSize - sc(padding),
@@ -991,7 +1007,7 @@ void PlasmaAudioProcessorEditor::resized()
 	//Reset
 	resetConfigButton.setBounds
 	(
-		safeConfigButton.getBounds().getX() - sc(60),
+		safeConfigButton.getBounds().getX() - sc(70),
 		monitorArea().getY() + 3 * sc(padding),
 		2 * sc(30),
 		sc(30)
@@ -1144,7 +1160,43 @@ void PlasmaAudioProcessorEditor::editorHidden(Label* label, TextEditor& textEdit
 	}
 	else if (label == &configOscilloscopeBufferSizeTextbox)
 	{
-
+		auto value = text.getIntValue();
+		if (value >= 64 && value <= 8192)
+		{
+			setOscilloscopeBufferSize(value);
+		}
+		else if (value >= 8192)
+		{
+			setOscilloscopeBufferSize(8192);
+		}
+		else if (value <= 64)
+		{
+			setOscilloscopeBufferSize(64);
+		}
+		else
+		{
+			setOscilloscopeBufferSize(oscilloscopeBufferSizeFallback);
+		}
+	}
+	else if (label == &configOscilloscopeSamplesPerBlockTextbox)
+	{
+		auto value = text.getIntValue();
+		if (value >= 4 && value <= 1024)
+		{
+			setOscilloscopeSamplesPerBlock(value);
+		}
+		else if (value >= 1024)
+		{
+			setOscilloscopeSamplesPerBlock(1024);
+		}
+		else if (value <= 4)
+		{
+			setOscilloscopeSamplesPerBlock(4);
+		}
+		else
+		{
+			setOscilloscopeSamplesPerBlock(oscilloscopeSamplesPerBlockFallback);
+		}
 	}
 }
 
@@ -1365,12 +1417,16 @@ void PlasmaAudioProcessorEditor::loadOscilloscopeSamplesPerBlock(PropertiesFile*
 
 void PlasmaAudioProcessorEditor::setOscilloscopeBufferSize(int oscilloscopeBufferSize)
 {
-	waveformComponent->setBufferSize(oscilloscopeBufferSize);
+	this->oscilloscopeBufferSize = oscilloscopeBufferSize;
+	waveformComponent->setBufferSize(this->oscilloscopeBufferSize);
+	updateTextboxes();
 }
 
 void PlasmaAudioProcessorEditor::setOscilloscopeSamplesPerBlock(int oscilloscopeSamplesPerBlock)
 {
-	waveformComponent->setBufferSize(oscilloscopeSamplesPerBlock);
+	this->oscilloscopeSamplesPerBlock = oscilloscopeSamplesPerBlock;
+	waveformComponent->setSamplesPerBlock(this->oscilloscopeSamplesPerBlock);
+	updateTextboxes();
 }
 
 void PlasmaAudioProcessorEditor::saveOscilloscopeBufferSize(PropertiesFile* commonSettings)
@@ -1507,6 +1563,7 @@ std::vector<CustomTextButton*> PlasmaAudioProcessorEditor::getButtons()
 		&scaleUpButton,
 		&scaleDownButton,
 		&configButton,
+		&killRingingButton
 	};
 }
 

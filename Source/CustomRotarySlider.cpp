@@ -53,7 +53,7 @@ String CustomRotarySlider::getTooltipString()
 			return("Distortion Type : Scream");
 			break;
 		case Bitcrush:
-		     return("Distortion Type : Bitcrush");
+			return("Distortion Type : Bitcrush");
 			break;
 		case Sine:
 			return("Distortion Type : Sine");
@@ -98,7 +98,7 @@ String CustomRotarySlider::getTooltipString()
 	{
 		String str;
 		str << (round(getValue() * 100)) / 100;
-		return 
+		return
 			(String)getName() + " : " +
 			str + " " +
 			(String)getTextValueSuffix();
@@ -117,7 +117,7 @@ String CustomRotarySlider::getTooltipString()
 		String str;
 		str << (round(getValue() * 100));
 		str << "%";
-		return 
+		return
 			(String)getName() + " : " +
 			str + " " +
 			(String)getTextValueSuffix();
@@ -128,7 +128,7 @@ String CustomRotarySlider::getTooltipString()
 		str << (round(getValue() * 100)) / 100;
 		return
 			(String)getName() + " : " +
-			str + " " +
+			str + "" +
 			(String)getTextValueSuffix();
 	}
 	return "";
