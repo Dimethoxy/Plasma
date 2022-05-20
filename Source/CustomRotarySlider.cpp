@@ -40,17 +40,14 @@ String CustomRotarySlider::getTooltipString()
 		case Hardclip:
 			return("Distortion Type : Hardclip");
 			break;
-		case Softclip:
-			return("Distortion Type : Softclip");
-			break;
 		case Root:
 			return("Distortion Type : Root Extraction");
 			break;
 		case Atan:
 			return("Distortion Type : Atan");
 			break;
-		case Scream:
-			return("Distortion Type : Scream");
+		case Crunch:
+			return("Distortion Type : Crunch");
 			break;
 		case Bitcrush:
 			return("Distortion Type : Bitcrush");
@@ -60,6 +57,15 @@ String CustomRotarySlider::getTooltipString()
 			break;
 		case Cosine:
 			return("Distortion Type : Cosine");
+			break;
+		case Upwards:
+			return("Distortion Type : Upwards Compressor Simulation");
+			break;
+		case Harmonize:
+			return("Distortion Type : Harmonics Generator");
+			break;
+		case Plasma:
+			return("Distortion Type : Plasma Extreme");
 			break;
 		}
 	}

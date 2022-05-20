@@ -129,7 +129,7 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 	if (slider.getName() == "Distortion")
 	{
 		isSelector = true;
-		numOptions = 8;
+		numOptions = 10;
 		selectedOption = (int)slider.getValue();
 	}
 	else if (slider.getName() == "Slope")

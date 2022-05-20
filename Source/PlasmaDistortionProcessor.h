@@ -6,13 +6,15 @@
 enum Distortion
 {
 	Hardclip,
-	Softclip,
 	Root,
 	Atan,
 	Bitcrush,
-	Scream,
+	Crunch,
 	Sine,
-	Cosine
+	Cosine,
+	Upwards,
+	Harmonize,
+	Plasma,
 };
 namespace DistortionProcessor
 {
@@ -30,12 +32,7 @@ namespace DistortionProcessor
 			data = clamp(drive * data, -1.0, 1.0);
 			break;
 		}
-		case Distortion::Softclip:
-		{
-			data = 1.27 * atan(drive * data);
-			break;
-		}
-		case Distortion::Scream:
+		case Distortion::Crunch:
 		{
 			if (data > 0.0) {
 				data = pow(data, 1.0f / drive);
@@ -96,6 +93,30 @@ namespace DistortionProcessor
 		}
 		case Distortion::Cosine: {
 			data = clamp(cos(drive * data), -1.0, 1.0);
+			break;
+		}
+		case Distortion::Upwards: {
+			if (std::abs(data) >= ((drive-1) / 9.0f))
+			{
+				auto signbit = (std::signbit(data) ? -1 : 1);
+				data = signbit;
+			} 
+			break;
+		}
+		case Distortion::Harmonize: {
+			data = data * (drive * 5);
+			float h1 = sin(2*data);
+			float h2 = sin(3*data);
+			float h3 = sin(4*data);
+			data = (h1 + h2 + h3 + data) / (drive * 5);
+			break;
+		}
+		case Distortion::Plasma: {
+			data = data * (drive * 2);
+			float h1 = sin(2 * data);
+			float h2 = sin(3 * data);
+			float h3 = sin(4 * data);
+			data = sin(h1 + h2 + h3 + data);
 			break;
 		}
 		}

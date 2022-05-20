@@ -500,6 +500,7 @@ void PlasmaAudioProcessorEditor::sliderDragStarted(Slider* slider)
 		setAnalyserType(autoAnalyserType);
 	}
 	tooltipLabel.setText(static_cast<CustomRotarySlider*>(slider)->getTooltipString(), juce::dontSendNotification);
+	stopTimer();
 }
 void PlasmaAudioProcessorEditor::sliderDragEnded(Slider* slider)
 {
@@ -1085,7 +1086,7 @@ void PlasmaAudioProcessorEditor::resized()
 	tooltipLabel.setBounds(
 		sc(padding) + monitorArea().getX(),
 		sc(5) + monitorArea().getY(),
-		sc(300),
+		sc(500),
 		sc(40));
 	earlyShapercurveComponent.setBounds(
 		monitorArea().getCentreX() - sc(200) - sc(padding),

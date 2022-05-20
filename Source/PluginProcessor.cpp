@@ -330,13 +330,15 @@ juce::AudioProcessorValueTreeState::ParameterLayout PlasmaAudioProcessor::create
 	//Drive
 	juce::StringArray distortionArray;
 	distortionArray.add("Hardclip");
-	distortionArray.add("Softclip");
 	distortionArray.add("Root");
-	distortionArray.add("Scream");
-	distortionArray.add("Atan");
+	distortionArray.add("Atan");	
 	distortionArray.add("Bitcrush");
+	distortionArray.add("Crunch");
 	distortionArray.add("Sine");
 	distortionArray.add("Cosine");
+	distortionArray.add("Upwards");
+	distortionArray.add("Harmonize");
+	distortionArray.add("Plasma");
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Drive", "Drive",
 			juce::NormalisableRange<float>(1.0f, 10.0f, 0.01f, 1.0f), 0.0f));
