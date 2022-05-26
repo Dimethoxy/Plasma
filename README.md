@@ -4,7 +4,7 @@ Plasma is a free digital audio effect targeting VST3 hosts.
 It's designed as a assymetrical distortion inspired by Logic's Clips Distortion, but offers more tools to shape the sound and create aggressive sounds.
 Plasma ist primarly designed for hard dance genres like Gabber, Hardstyle or Hardcore.
 
-We offer prebuild binaries for Windows 64 bit.
+We will offer prebuild binaries for Windows 64 bit soon.
 Mac and Linux releases are planned for the near future. 
 
 # Features
@@ -20,7 +20,7 @@ If you download the source or create builds you must comply with that license.
 For more infos, see [http://www.gnu.org/licenses/](http://www.gnu.org/licenses/).
 
 This source code does not give you rights to infringe on our trademarks.
-Do not use any names related to this project like "Dimethoxy Plasma" or "Plasma Distortion" for marketing or naming any distribution of binaries built with this source. 
+Do not use any names related to this project for marketing or naming any distribution of binaries built with this source. 
 
 # Warranty
 You and your end users use the software at your own risk.
