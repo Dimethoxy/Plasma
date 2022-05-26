@@ -9,10 +9,10 @@ Mac and Linux releases are planned for the near future.
 
 # Features
 
-Plasma is equiped with 2 disortion modules and a filter section between them.
+Plasma is equiped with 2 distortion modules and a filter section between them.
 The filter section gives you more options then the classic "tone knob" other clip distortions use. Combined with the second distortion you can create a nice character in one plugin.
 
-You are also not limited to using normal clip distortion. Plasma comes with 8 diffrent styles of distortion. On top of that you get a nice oscilloscope to see how you shape the waveform of your sound.
+You are also not limited to using normal clip distortion. Plasma comes with 10 diffrent styles of distortion. On top of that you get a nice oscilloscope to see how you shape the waveform of your sound.
 
 # License
 The source code is licensed under **GPLv3**. 
