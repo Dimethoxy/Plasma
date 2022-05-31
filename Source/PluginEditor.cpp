@@ -59,7 +59,7 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	highPassResonanceQualitySliderAttachment(audioProcessor.apvts, "Highpass Resonance Q", highPassResonanceQualitySlider),
 	highPassFreqSliderAttachment(audioProcessor.apvts, "Highpass Freq", highPassFreqSlider),
 	highPassSlopeSliderAttachment(audioProcessor.apvts, "Highpass Slope", highPassSlopeSlider),
-	//Peak
+	//Peak	
 	peakStereoSliderAttachment(audioProcessor.apvts, "Peak Stereo", peakStereoSlider),
 	peakFreqSliderAttachment(audioProcessor.apvts, "Peak Freq", peakFreqSlider),
 	peakGainSliderAttachment(audioProcessor.apvts, "Peak Gain", peakGainSlider),
@@ -526,7 +526,10 @@ void PlasmaAudioProcessorEditor::sliderValueChanged(Slider* slider)
 			setAnalyserType(analyser);
 		}
 	}
-	tooltipLabel.setText(static_cast<CustomRotarySlider*>(slider)->getTooltipString(), juce::dontSendNotification);
+	if (slider->isMouseButtonDown())
+	{
+		tooltipLabel.setText(static_cast<CustomRotarySlider*>(slider)->getTooltipString(), juce::dontSendNotification);
+	}
 }
 void PlasmaAudioProcessorEditor::setAnalyserType(AnalyserType analyser)
 {
