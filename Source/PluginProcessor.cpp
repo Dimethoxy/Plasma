@@ -207,8 +207,8 @@ void PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
 		tmpBuffer.copyFrom(ch, 0, buffer, ch, 0, buffer.getNumSamples());
 
 	//Clean RMS
-	rmsLevelLeft = Decibels::gainToDecibels(buffer.getRMSLevel(0, 0, buffer.getNumSamples()));
-	rmsLevelRight = Decibels::gainToDecibels(buffer.getRMSLevel(1, 0, buffer.getNumSamples()));
+	auto leftRms = buffer.getRMSLevel(0, 0, buffer.getNumSamples());
+	auto rightRms = buffer.getRMSLevel(1, 0, buffer.getNumSamples());
 
 	//Distortion Unit
 	for (int channel = 0; channel < 2; ++channel)
@@ -246,8 +246,8 @@ void PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
 	updateFilters();
 	bool skipGate = false;
 	auto threshold = 0.0f;
-	if (buffer.getRMSLevel(0, 0, buffer.getNumSamples()) != threshold
-		&& buffer.getRMSLevel(1, 0, buffer.getNumSamples()) != threshold
+	if (leftRms != threshold
+		&& rightRms != threshold
 		|| skipGate)
 	{
 		//DSP
@@ -331,7 +331,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout PlasmaAudioProcessor::create
 	juce::StringArray distortionArray;
 	distortionArray.add("Hardclip");
 	distortionArray.add("Root");
-	distortionArray.add("Atan");	
+	distortionArray.add("Atan");
 	distortionArray.add("Bitcrush");
 	distortionArray.add("Crunch");
 	distortionArray.add("Sine");
