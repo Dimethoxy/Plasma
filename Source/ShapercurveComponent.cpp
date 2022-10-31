@@ -91,7 +91,7 @@ void ShapercurveComponent::paint(juce::Graphics& g)
 
 		//Girth
 		samples[i] = samples[i] *
-			((((float)(rand() % 100)) / 100 * girth) + 1);
+			((((float)(rand() % 100)) / 100 * abs(girth)) + 1);
 
 		//Bias
 		if (samples[i] > 0)

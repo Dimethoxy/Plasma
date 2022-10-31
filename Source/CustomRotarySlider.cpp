@@ -38,7 +38,10 @@ String CustomRotarySlider::getTooltipString()
 		switch ((int)selectedOption)
 		{
 		case Hardclip:
-			return("Distortion Type : Hardclip");
+			return("Distortion Type : Hard Clip");
+			break;
+		case Softclip:
+			return("Distortion Type : Soft Clip");
 			break;
 		case Root:
 			return("Distortion Type : Root Extraction");
@@ -52,17 +55,14 @@ String CustomRotarySlider::getTooltipString()
 		case Bitcrush:
 			return("Distortion Type : Bitcrush");
 			break;
+		case Upwards:
+			return("Distortion Type : Upwards Compressor Simulation");
+			break;
 		case Sine:
 			return("Distortion Type : Sine");
 			break;
 		case Cosine:
 			return("Distortion Type : Cosine");
-			break;
-		case Upwards:
-			return("Distortion Type : Upwards Compressor Simulation");
-			break;
-		case Harmonize:
-			return("Distortion Type : Harmonics Generator");
 			break;
 		case Plasma:
 			return("Distortion Type : Plasma Extreme");
@@ -120,13 +120,27 @@ String CustomRotarySlider::getTooltipString()
 	}
 	else if (getName() == "Girth")
 	{
-		String str;
-		str << (round(getValue() * 100));
-		str << "%";
-		return
-			(String)getName() + " : " +
-			str + " " +
-			(String)getTextValueSuffix();
+		int value = round(getValue() * 100);
+		if(value >= 0)
+		{
+			String str;
+			str << value;
+			str << "%";
+			return
+				(String)getName() + " Stereo : " +
+				str + " " +
+				(String)getTextValueSuffix();
+		}
+		else 
+		{
+			String str;
+			str << -value;
+			str << "%";
+			return
+				(String)getName() + " Mono : " +
+				str + " " +
+				(String)getTextValueSuffix();
+		}
 	}
 	else
 	{

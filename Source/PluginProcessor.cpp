@@ -63,7 +63,7 @@ double PlasmaAudioProcessor::getTailLengthSeconds() const
 int PlasmaAudioProcessor::getNumPrograms()
 {
 	return 1;   // NB: some hosts don't cope very well if you tell them there are 0 programs,
-				// so this should be at least 1, even if you're not really implementing programs.
+	// so this should be at least 1, even if you're not really implementing programs.
 }
 
 int PlasmaAudioProcessor::getCurrentProgram()
@@ -211,6 +211,8 @@ void PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
 	auto rightRms = buffer.getRMSLevel(1, 0, buffer.getNumSamples());
 
 	//Distortion Unit
+	std::vector<int> randoms(buffer.getNumSamples());
+	for (int& n : randoms) n = rand();
 	for (int channel = 0; channel < 2; ++channel)
 	{
 		auto* channelData = buffer.getWritePointer(channel);
@@ -223,7 +225,11 @@ void PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
 				channelData[sample] = DistortionProcessor::clamp(channelData[sample] * preGain, -1.0, 1.0);
 
 				//Girth
+				if(chainSettings.girth >= 0.0f)
 				channelData[sample] = channelData[sample] * ((((float)(rand() % 100)) / 100 * chainSettings.girth) + 1);
+				else {
+					channelData[sample] = channelData[sample] * ((((float)(randoms[sample] % 100)) / 100 * -chainSettings.girth) + 1);
+				}
 
 				//Drive          
 				DistortionProcessor::distort(channelData[sample], chainSettings.drive, chainSettings.driveType);
@@ -264,6 +270,7 @@ void PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
 	}
 
 	//Late Stage
+	for (int& n : randoms) n = rand();
 	for (int channel = 0; channel < totalNumInputChannels; ++channel)
 	{
 		auto* channelData = buffer.getWritePointer(channel);
@@ -276,8 +283,11 @@ void PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
 				channelData[sample] = DistortionProcessor::clamp(channelData[sample], -1, 1);
 
 				//Girth
-				channelData[sample] = channelData[sample] *
-					((((float)(rand() % 100)) / 100 * chainSettings.lateGirth) + 1);
+				if (chainSettings.girth >= 0.0f)
+					channelData[sample] = channelData[sample] * ((((float)(rand() % 100)) / 100 * chainSettings.girth) + 1);
+				else {
+					channelData[sample] = channelData[sample] * ((((float)(randoms[sample] % 100)) / 100 * -chainSettings.girth) + 1);
+				}
 
 				//Drive 
 				DistortionProcessor::distort(channelData[sample], chainSettings.lateDrive, chainSettings.lateDriveType);
@@ -329,25 +339,25 @@ juce::AudioProcessorValueTreeState::ParameterLayout PlasmaAudioProcessor::create
 			juce::NormalisableRange<float>(-32.0f, 32.0f, 0.2f, 1.0f), 0.0f));
 	//Drive
 	juce::StringArray distortionArray;
-	distortionArray.add("Hardclip");
+	distortionArray.add("Hard Clip");
+	distortionArray.add("Soft Clip");
 	distortionArray.add("Root");
 	distortionArray.add("Atan");
 	distortionArray.add("Bitcrush");
 	distortionArray.add("Crunch");
+	distortionArray.add("Upwards");
 	distortionArray.add("Sine");
 	distortionArray.add("Cosine");
-	distortionArray.add("Upwards");
-	distortionArray.add("Harmonize");
 	distortionArray.add("Plasma");
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Drive", "Drive",
-			juce::NormalisableRange<float>(1.0f, 10.0f, 0.01f, 1.0f), 0.0f));
+			juce::NormalisableRange<float>(1.0f, 10.0f, 0.01f, 0.5f), 0.0f));
 	layout.add(std::make_unique<juce::AudioParameterChoice>
 		("Distortion Type", "Distortion Type", distortionArray, 0));
 	//Girth
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Girth", "Girth",
-			juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f, 0.35f), 0.0f));
+			juce::NormalisableRange<float>(-1.0f, 1.0f, 0.01f, 1.0f), 0.0f));
 	//Bias
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Bias", "Bias",
@@ -402,11 +412,11 @@ juce::AudioProcessorValueTreeState::ParameterLayout PlasmaAudioProcessor::create
 		("Late Distortion Type", "Late Distortion Type", distortionArray, 0));
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Late Drive", "Late Drive",
-			juce::NormalisableRange<float>(1.0f, 10.0f, 0.01f, 1.0f), 0.0f));
+			juce::NormalisableRange<float>(1.0f, 10.0f, 0.01f, 0.5f), 0.0f));
 	//Late Girth
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Late Girth", "Late Girth",
-			juce::NormalisableRange<float>(0.0f, 1.0f, 0.01f, 0.35f), 0.0f));
+			juce::NormalisableRange<float>(-1.0f, 1.0f, 0.01f, 1.0f), 0.0f));
 	//Late Bias
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Late Bias", "Late Bias",

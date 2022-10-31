@@ -163,7 +163,7 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 	else if (slider.getName() == "Girth")
 	{
 		String str;
-		skewFactor = 0.65;
+		isCentered = true;
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
