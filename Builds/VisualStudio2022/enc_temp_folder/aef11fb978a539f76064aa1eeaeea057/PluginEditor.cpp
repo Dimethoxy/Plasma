@@ -147,7 +147,6 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	//Load Config File
 	options.applicationName = "Plasma";
 	options.filenameSuffix = ".config";
-	options.osxLibrarySubFolder = "Application Support";
 	applicationProperties.setStorageParameters(options);
 	auto userSettings = applicationProperties.getUserSettings();
 	auto commonSettings = applicationProperties.getCommonSettings(false);
