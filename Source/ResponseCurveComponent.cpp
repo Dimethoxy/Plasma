@@ -59,10 +59,7 @@ void ResponseCurveComponent::update()
 
 void ResponseCurveComponent::paint(juce::Graphics& g)
 {
-	using namespace juce;
-
-	//Get Chain Settings
-	auto chainSettings = getChainSettings(audioProcessor.apvts);
+    using namespace juce;
 
 	//bounds
 	auto bounds = getBounds();

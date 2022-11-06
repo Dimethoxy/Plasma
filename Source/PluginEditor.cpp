@@ -260,7 +260,6 @@ void PlasmaAudioProcessorEditor::paint(juce::Graphics& g)
 	g.fillRect(monitorArea().reduced(sc(padding)));
 
 	float lineSize = sc(2.0f);
-	float lineOffset = 0.0f;
 	Line<float> inLine(
 		Point<float>(inArea().getCentreX() - sc(33), inArea().getY() + fs_titelLabel()),
 		Point<float>(inArea().getCentreX() + sc(33), inArea().getY() + fs_titelLabel()));
@@ -394,7 +393,6 @@ void PlasmaAudioProcessorEditor::buttonClicked(Button* button)
 		{
 			scale += 20;
 			auto userSettings = applicationProperties.getUserSettings();
-			auto commonSettings = applicationProperties.getCommonSettings(false);
 			userSettings->setValue("scale", scale);
 			userSettings->save();
 			resized();
@@ -406,8 +404,7 @@ void PlasmaAudioProcessorEditor::buttonClicked(Button* button)
 		{
 			scale -= 20;
 			auto userSettings = applicationProperties.getUserSettings();
-			auto commonSettings = applicationProperties.getCommonSettings(false);
-			userSettings->setValue("scale", scale);
+            userSettings->setValue("scale", scale);
 			userSettings->save();
 			resized();
 		}
@@ -422,7 +419,6 @@ void PlasmaAudioProcessorEditor::buttonClicked(Button* button)
 		options.applicationName = "Plasma";
 		options.filenameSuffix = ".config";
 		applicationProperties.setStorageParameters(options);
-		auto userSettings = applicationProperties.getUserSettings();
 		auto commonSettings = applicationProperties.getCommonSettings(false);
 
 		//Save Colors
@@ -441,7 +437,6 @@ void PlasmaAudioProcessorEditor::buttonClicked(Button* button)
 		options.applicationName = "Plasma";
 		options.filenameSuffix = ".config";
 		applicationProperties.setStorageParameters(options);
-		auto userSettings = applicationProperties.getUserSettings();
 		auto commonSettings = applicationProperties.getCommonSettings(false);
 
 		//Reset Colors
@@ -653,8 +648,17 @@ void PlasmaAudioProcessorEditor::resized()
 	//loudnessMeterIn.setBounds(220, 60, 620, 155);
 	//loudnessMeterOut.setBounds(220, 215, 620, 155);
 	auto logoX = headerArea().getCentreX() - sc(100);
-	plasmaLabel.setBounds(logoX, sc(-42), sc(200), sc(100));
-	plasmaLabel.setCustomFontSize(sc(100));
+	if(JUCE_MAC)
+    {
+        plasmaLabel.setBounds(logoX, sc(5), sc(200), sc(100));
+        plasmaLabel.setCustomFontSize(sc(50));
+    }
+    else
+    {
+        plasmaLabel.setBounds(logoX, sc(-42), sc(200), sc(100));
+        plasmaLabel.setCustomFontSize(sc(100));
+    }
+    
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//In
 	inLabel.setBounds(

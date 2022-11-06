@@ -54,6 +54,10 @@ float CustomLabel::getCustomFontSize()
 	{
 		return TooltipSize * factor;
 	}
+    default:
+    {
+        return mainSize * factor;
+    }
 	}
 }
 

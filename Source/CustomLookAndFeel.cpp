@@ -173,7 +173,6 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 	NormalisableRange<float> targetRange{ 0, 1 };
 	targetRange.setSkewForCentre(skewFactor);
 	auto normalisedPos = targetRange.convertFrom0to1(sliderPosProportional);
-	auto outline = slider.findColour(Slider::rotarySliderOutlineColourId);
 	auto bounds = Rectangle<int>(x, y, width, height).toFloat().reduced(width / 12);
 	auto radius = jmin(bounds.getWidth(), bounds.getHeight()) / 2.3f;
 	auto toAngle = rotaryStartAngle + normalisedPos * (rotaryEndAngle - rotaryStartAngle);

@@ -42,6 +42,4 @@ void CustomTextButton::paintButton(Graphics& g,
 		shouldDrawButtonAsHighlighted,
 		shouldDrawButtonAsDown);
 	*/
-
-	auto bounds = getBounds();
 }

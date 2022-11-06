@@ -1,7 +1,7 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "CustomLookAndFeel.h";
+#include "CustomLookAndFeel.h"
 
 class CustomRotarySlider : public Slider
 {

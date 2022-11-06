@@ -166,8 +166,6 @@ void PlasmaAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 	leftChain.prepare(spec);
 	rightChain.prepare(spec);
 
-	auto chainSettings = getChainSettings(apvts);
-
 	//Filter
 	updateFilters();
 
@@ -252,8 +250,8 @@ void PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
 	updateFilters();
 	bool skipGate = false;
 	auto threshold = 0.0f;
-	if (leftRms != threshold
-		&& rightRms != threshold
+	if ((leftRms != threshold
+		&& rightRms != threshold)
 		|| skipGate)
 	{
 		//DSP
