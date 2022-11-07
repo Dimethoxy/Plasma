@@ -195,8 +195,9 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 			0.0f,
 			rotaryStartAngle,
 			rotaryEndAngle,
-			true);
-		g.setColour(backgroundColor);
+            true);
+        juce::Colour halfFill(fill.getHue(), fill.getSaturation(), fill.getLightness()/2.0f, fill.getAlpha());
+		g.setColour(halfFill);
 		g.strokePath(backgroundArc, PathStrokeType(lineW, PathStrokeType::curved, PathStrokeType::rounded));
 
 		//Draw Light Rail
