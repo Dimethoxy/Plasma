@@ -83,6 +83,7 @@ private:
 	AnalyserType autoAnalyserType;
 	bool isAutoAnalyser;
 	void setAnalyserType(AnalyserType analyser);
+	AnalyserType lastAnalyserType = AnalyserType::Automatic;
 
 	//Sliders
 	CustomRotarySlider

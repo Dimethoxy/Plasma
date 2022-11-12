@@ -121,7 +121,7 @@ String CustomRotarySlider::getTooltipString()
 	else if (getName() == "Girth")
 	{
 		int value = round(getValue() * 100);
-		if(value >= 0)
+		if (value >= 0)
 		{
 			String str;
 			str << value;
@@ -131,7 +131,7 @@ String CustomRotarySlider::getTooltipString()
 				str + " " +
 				(String)getTextValueSuffix();
 		}
-		else 
+		else
 		{
 			String str;
 			str << -value;

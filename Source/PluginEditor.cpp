@@ -1,5 +1,6 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include "JuceHeader.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Constructor
@@ -404,14 +405,24 @@ void PlasmaAudioProcessorEditor::buttonClicked(Button* button)
 		{
 			scale -= 20;
 			auto userSettings = applicationProperties.getUserSettings();
-            userSettings->setValue("scale", scale);
+			userSettings->setValue("scale", scale);
 			userSettings->save();
 			resized();
 		}
 	}
 	else if (button == &configButton)
 	{
-		analyserSlider.setValue(AnalyserType::Options);
+		auto currentAnalyser = static_cast<AnalyserType>((int)analyserSlider.getValue());
+
+		if (currentAnalyser != AnalyserType::Options)
+		{
+			lastAnalyserType = currentAnalyser;
+			analyserSlider.setValue(AnalyserType::Options);
+		}
+		else
+		{
+			analyserSlider.setValue(lastAnalyserType);
+		}
 	}
 	else if (button == &safeConfigButton)
 	{
@@ -511,10 +522,12 @@ void PlasmaAudioProcessorEditor::sliderValueChanged(Slider* slider)
 {
 	if (slider == &analyserSlider)
 	{
-		AnalyserType analyser = static_cast<AnalyserType>(analyserSlider.getValue());
+		AnalyserType analyser = static_cast<AnalyserType>((int)analyserSlider.getValue());
 		if (analyser == AnalyserType::Automatic)
 		{
 			isAutoAnalyser = true;
+			setAnalyserType(AnalyserType::Automatic);
+			sliderDragEnded(slider);
 		}
 		else
 		{
@@ -648,17 +661,17 @@ void PlasmaAudioProcessorEditor::resized()
 	//loudnessMeterIn.setBounds(220, 60, 620, 155);
 	//loudnessMeterOut.setBounds(220, 215, 620, 155);
 	auto logoX = headerArea().getCentreX() - sc(100);
-	if(JUCE_MAC)
-    {
-        plasmaLabel.setBounds(logoX, sc(5), sc(200), sc(100));
-        plasmaLabel.setCustomFontSize(sc(50));
-    }
-    else
-    {
-        plasmaLabel.setBounds(logoX, sc(-42), sc(200), sc(100));
-        plasmaLabel.setCustomFontSize(sc(100));
-    }
-    
+	if (!JUCE_WINDOWS)
+	{
+		plasmaLabel.setBounds(logoX, sc(5), sc(200), sc(100));
+		plasmaLabel.setCustomFontSize(sc(50));
+	}
+	else
+	{
+		plasmaLabel.setBounds(logoX, sc(-42), sc(200), sc(100));
+		plasmaLabel.setCustomFontSize(sc(100));
+	}
+
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//In
 	inLabel.setBounds(
