@@ -189,8 +189,6 @@ void PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
 	for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
 		buffer.clear(i, 0, buffer.getNumSamples());
 
-
-
 	//Get Settings
 	auto chainSettings = getChainSettings(apvts);
 	float gain = Decibels::decibelsToGain(chainSettings.gain);
@@ -223,8 +221,8 @@ void PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
 				channelData[sample] = DistortionProcessor::clamp(channelData[sample] * preGain, -1.0, 1.0);
 
 				//Girth
-				if(chainSettings.girth >= 0.0f)
-				channelData[sample] = channelData[sample] * ((((float)(rand() % 100)) / 100 * chainSettings.girth) + 1);
+				if (chainSettings.girth >= 0.0f)
+					channelData[sample] = channelData[sample] * ((((float)(rand() % 100)) / 100 * chainSettings.girth) + 1);
 				else {
 					channelData[sample] = channelData[sample] * ((((float)(randoms[sample] % 100)) / 100 * -chainSettings.girth) + 1);
 				}
@@ -281,10 +279,10 @@ void PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
 				channelData[sample] = DistortionProcessor::clamp(channelData[sample], -1, 1);
 
 				//Girth
-				if (chainSettings.girth >= 0.0f)
-					channelData[sample] = channelData[sample] * ((((float)(rand() % 100)) / 100 * chainSettings.girth) + 1);
+				if (chainSettings.lateGirth >= 0.0f)
+					channelData[sample] = channelData[sample] * ((((float)(rand() % 100)) / 100 * chainSettings.lateGirth) + 1);
 				else {
-					channelData[sample] = channelData[sample] * ((((float)(randoms[sample] % 100)) / 100 * -chainSettings.girth) + 1);
+					channelData[sample] = channelData[sample] * ((((float)(randoms[sample] % 100)) / 100 * -chainSettings.lateGirth) + 1);
 				}
 
 				//Drive 
@@ -339,17 +337,18 @@ juce::AudioProcessorValueTreeState::ParameterLayout PlasmaAudioProcessor::create
 	juce::StringArray distortionArray;
 	distortionArray.add("Hard Clip");
 	distortionArray.add("Soft Clip");
-	distortionArray.add("Root");
+	distortionArray.add("Saturate");
 	distortionArray.add("Atan");
-	distortionArray.add("Bitcrush");
 	distortionArray.add("Crunch");
-	distortionArray.add("Upwards");
+	distortionArray.add("Bitcrush");
+	distortionArray.add("Extreme");
+	distortionArray.add("Scream");
 	distortionArray.add("Sine");
 	distortionArray.add("Cosine");
-	distortionArray.add("Plasma");
+	distortionArray.add("Weird");
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Drive", "Drive",
-			juce::NormalisableRange<float>(1.0f, 10.0f, 0.01f, 0.5f), 0.0f));
+			juce::NormalisableRange<float>(1.0f, 11.0f, 0.01f, 0.5f), 0.0f));
 	layout.add(std::make_unique<juce::AudioParameterChoice>
 		("Distortion Type", "Distortion Type", distortionArray, 0));
 	//Girth

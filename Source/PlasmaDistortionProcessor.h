@@ -7,14 +7,15 @@ enum Distortion
 {
 	Hardclip,
 	Softclip,
-	Root,
+	Saturate,
 	Atan,
-	Bitcrush,
 	Crunch,
-	Upwards,
+	Bitcrush,
+	Extreme,
+	Scream,
 	Sine,
 	Cosine,
-	Plasma,
+	Weird,
 };
 namespace DistortionProcessor
 {
@@ -61,7 +62,7 @@ namespace DistortionProcessor
 			data = quantized / possibleValues;
 			break;
 		}
-		case Distortion::Root:
+		case Distortion::Saturate:
 		{
 			if (data > 0.0) {
 				data = clamp(pow(data, 1.0 / ((drive / 4) + 0.75)), -1.0, 1.0);
@@ -95,7 +96,7 @@ namespace DistortionProcessor
 			data = clamp(cos(drive * data), -1.0, 1.0);
 			break;
 		}
-		case Distortion::Upwards: {
+		case Distortion::Extreme: {
 			float invertedDrive = (10.0f / drive);
 			if (std::abs(data) >= ((invertedDrive - 1) / 9.0f))
 			{
@@ -122,13 +123,46 @@ namespace DistortionProcessor
 			data *= 0.95;
 			break;
 		}
-		case Distortion::Plasma: {
+		case Distortion::Weird: {
 			data = data * (drive * 2);
 			float h1 = sin(2 * data);
 			float h2 = sin(3 * data);
 			float h3 = sin(4 * data);
 			data = sin(h1 + h2 + h3 + data);
 			break;
+		}
+		case Distortion::Scream: {
+			auto temp = data;
+			auto normalizedDrive = (drive - 1) / 10.0f;
+
+			if (data > 0.0) {
+				data = clamp(pow(data, 1.0 / ((drive / 4) + 0.75)), -1.0, 1.0);
+			}
+			else {
+				data = -clamp(pow(-data, 1.0 / ((drive / 4) + 0.75)), -1.0, 1.0);
+			}
+
+
+			if (data <= -0.5)
+			{
+				auto offset = 3.0;
+				temp = 4 * data + offset;
+			}
+			else if (data > -0.5 && data < 0.5)
+			{
+				temp = -2 * data;
+			}
+			else
+			{
+				auto offset = -3.0;
+				temp = 4 * data + offset;
+			}
+
+			data = (temp * normalizedDrive) + (data * (1 - normalizedDrive));
+
+
+			break;
+
 		}
 		}
 	}

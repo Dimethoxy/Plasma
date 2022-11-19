@@ -129,7 +129,7 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 	if (slider.getName() == "Distortion")
 	{
 		isSelector = true;
-		numOptions = 10;
+		numOptions = 11;
 		selectedOption = (int)slider.getValue();
 	}
 	else if (slider.getName() == "Slope")
@@ -196,8 +196,8 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 			rotaryStartAngle,
 			rotaryEndAngle,
             true);
-        juce::Colour halfFill(fill.getHue(), fill.getSaturation(), fill.getLightness()/3.0f, fill.getAlpha());
-		g.setColour(halfFill);
+        //juce::Colour halfFill(fill.getHue(), fill.getSaturation(), fill.getLightness()/3.0f, fill.getAlpha());
+		g.setColour(backgroundColor);
 		g.strokePath(backgroundArc, PathStrokeType(lineW, PathStrokeType::curved, PathStrokeType::rounded));
 
 		//Draw Light Rail

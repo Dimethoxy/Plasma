@@ -43,8 +43,8 @@ String CustomRotarySlider::getTooltipString()
 		case Softclip:
 			return("Distortion Type : Soft Clip");
 			break;
-		case Root:
-			return("Distortion Type : Root Extraction");
+		case Saturate:
+			return("Distortion Type : Saturate");
 			break;
 		case Atan:
 			return("Distortion Type : Atan");
@@ -55,8 +55,11 @@ String CustomRotarySlider::getTooltipString()
 		case Bitcrush:
 			return("Distortion Type : Bitcrush");
 			break;
-		case Upwards:
-			return("Distortion Type : Upwards Compressor Simulation");
+		case Extreme:
+			return("Distortion Type : Extreme");
+			break;
+		case Scream:
+			return("Distortion Type : Scream");
 			break;
 		case Sine:
 			return("Distortion Type : Sine");
@@ -64,8 +67,8 @@ String CustomRotarySlider::getTooltipString()
 		case Cosine:
 			return("Distortion Type : Cosine");
 			break;
-		case Plasma:
-			return("Distortion Type : Plasma Extreme");
+		case Weird:
+			return("Distortion Type : Weird");
 			break;
 		}
 	}
@@ -117,6 +120,15 @@ String CustomRotarySlider::getTooltipString()
 			"Resonance : " +
 			str + " " +
 			(String)getTextValueSuffix();
+	}
+	else if (getName() == "Drive")
+	{
+		String str;
+		//auto valueNormalized
+			//str << round((getValue() - 1) * 1000.0f) / 10.0f;
+		return
+			"Drive : " +
+			str + "%";
 	}
 	else if (getName() == "Girth")
 	{
