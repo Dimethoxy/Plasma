@@ -9,16 +9,16 @@ The possibilities are endless with Plasma.
 Try it out now and discover the power of Plasma.
 
 ## Features
-Featuring two distortion modules and three filters, Plasma offers more options than the classic "tone knob" found on other clip distortions.\
-With 10 different styles of distortion and a sleek oscilloscope, you'll have everything you need to shape and create the perfect sound.
-- 2 distortion modules
-- 3 filters
+Don't settle for a standard clip distortion - upgrade to Plasma and take your audio to the next level.
+- Assymetrical distortion
+- 3 filters for shaping the sound
 - 10 different styles of distortion
+- Innovative "Girth" effect to add treble to your sound
 - Oscilloscope for visualizing waveform shaping
+- Minimal design for great performance
 - Color customizable GUI
 
 Plasma is licensed under GPLv3 and pre-built binaries are available for Windows, MacOS, and Archlinux. \
-Don't settle for a standard clip distortion - upgrade to Plasma and take your audio to the next level.
 
 ## Donations
 If you have enjoyed using our software, please consider making a donation via PayPal at the following link: \
@@ -27,7 +27,6 @@ https://www.paypal.com/donate/?hosted_button_id=8SJXCUYV5ZHKG
 We are dedicated to providing high-quality audio tools to the community for free, and your support helps us to continue our work. \
 Your donation will go towards maintaining and improving our software, as well as supporting the development of new tools and features. \
 We greatly appreciate your support and thank you for helping us to continue our work.
-
 
 ## License
 The source code is licensed under **GPLv3**. 
