@@ -8,9 +8,6 @@ The possibilities are endless with Plasma.
 
 Try it out now and discover the power of Plasma.
 
-Plasma is licensed under GPLv3 and pre-built binaries are available for Windows, MacOS, and Archlinux.\
-Download it now and discover the power of Plasma.
-
 ## Features
 Featuring two distortion modules and three filters, Plasma offers more options than the classic "tone knob" found on other clip distortions.\
 With 10 different styles of distortion and a sleek oscilloscope, you'll have everything you need to shape and create the perfect sound.
