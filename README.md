@@ -17,7 +17,8 @@ With 10 different styles of distortion and a sleek oscilloscope, you'll have eve
 - 3 filters
 - 10 different styles of distortion
 - Oscilloscope for visualizing waveform shaping
-- Color customizable GUI \
+- Color customizable GUI
+
 Don't settle for a standard clip distortion - upgrade to Plasma and take your audio to the next level.
 
 ## Donations
