@@ -18,7 +18,7 @@ Don't settle for a standard clip distortion - upgrade to Plasma and take your au
 - Minimal design for great performance
 - Color customizable GUI
 
-Plasma is licensed under GPLv3 and pre-built binaries are available for Windows, MacOS, and Archlinux. \
+Plasma is licensed under GPLv3 and pre-built binaries are available for Windows, MacOS, and Archlinux. 
 
 ## Donations
 If you have enjoyed using our software, please consider making a donation via PayPal at the following link: \
