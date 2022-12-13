@@ -21,9 +21,8 @@ Don't settle for a standard clip distortion - upgrade to Plasma and take your au
 Plasma is licensed under GPLv3 and pre-built binaries are available for Windows, MacOS, and Archlinux. 
 
 ## Donations
-If you have enjoyed using our software, please consider making a donation via PayPal at the following link: \
-
-[Donate via PayPal](https://www.paypal.com/donate/?hosted_button_id=8SJXCUYV5ZHKG/).
+If you have enjoyed using our software, please consider making a donation. \
+[Donate via PayPal](https://www.paypal.com/donate/?hosted_button_id=8SJXCUYV5ZHKG/)
 
 We are dedicated to providing high-quality audio tools to the community for free, and your support helps us to continue our work. \
 Your donation will go towards maintaining and improving our software, as well as supporting the development of new tools and features. \
