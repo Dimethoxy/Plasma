@@ -17,8 +17,14 @@ With 10 different styles of distortion and a sleek oscilloscope, you'll have eve
 - 3 filters
 - 10 different styles of distortion
 - Oscilloscope for visualizing waveform shaping
-- Color customizable GUI
+- Color customizable GUI \
 Don't settle for a standard clip distortion - upgrade to Plasma and take your audio to the next level.
+
+## Donations
+If you have enjoyed using our software, please consider making a donation via PayPal at the following link: https://www.paypal.com/donate/?hosted_button_id=8SJXCUYV5ZHKG
+We are dedicated to providing high-quality audio tools to the community for free, and your support helps us to continue our work. \n
+Your donation will go towards maintaining and improving our software, as well as supporting the development of new tools and features. We greatly appreciate your support and thank you for helping us to continue our work. \n
+
 
 ## License
 The source code is licensed under **GPLv3**. 
@@ -27,7 +33,6 @@ For more infos, see [http://www.gnu.org/licenses/](http://www.gnu.org/licenses/)
 
 Please note that this source code does not give you rights to infringe on our trademarks. 
 Do not use any names related to this project for marketing or naming any distribution of binaries built with this source.
-
 
 ## Warranty
 You and your end users use the software at your own risk.
