@@ -4,7 +4,8 @@ With its asymmetrical distortion and multiple shaping tools, Plasma is the perfe
 
 But Plasma is not just for hard dance genres - it's a versatile tool that can be used in any music production scenario. Use it to add grit and character to your guitar tracks, or to create punishing basslines in your dubstep tracks. The possibilities are endless with Plasma.
 
-Plasma is licensed under GPLv3 and pre-built binaries are available for Windows, MacOS, and Archlinux. Download it now and discover the power of Plasma.
+Plasma is licensed under GPLv3 and pre-built binaries are available for Windows, MacOS, and Archlinux. 
+Download it now and discover the power of Plasma.
 
 ## Features
 Featuring two distortion modules and three filters, Plasma offers more options than the classic "tone knob" found on other clip distortions.
