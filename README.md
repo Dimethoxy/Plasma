@@ -17,6 +17,7 @@ With 10 different styles of distortion and a sleek oscilloscope, you'll have eve
 - Oscilloscope for visualizing waveform shaping
 - Color customizable GUI
 
+Plasma is licensed under GPLv3 and pre-built binaries are available for Windows, MacOS, and Archlinux. \
 Don't settle for a standard clip distortion - upgrade to Plasma and take your audio to the next level.
 
 ## Donations
