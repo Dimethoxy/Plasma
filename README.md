@@ -12,7 +12,7 @@ Download it now and discover the power of Plasma.
 
 ## Features
 Featuring two distortion modules and three filters, Plasma offers more options than the classic "tone knob" found on other clip distortions.\
-With 10 different styles of distortion and a sleek oscilloscope, you'll have everything you need to shape and create the perfect sound.\
+With 10 different styles of distortion and a sleek oscilloscope, you'll have everything you need to shape and create the perfect sound.
 - 2 distortion modules
 - 3 filters
 - 10 different styles of distortion
