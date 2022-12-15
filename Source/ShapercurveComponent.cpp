@@ -9,7 +9,7 @@ ShapercurveComponent::ShapercurveComponent(PlasmaAudioProcessor& p, int stage) :
 	{
 		param->addListener(this);
 	}
-	startTimer(60);
+	startTimerHz(60);
 	this->stage = stage;
 }
 
@@ -45,6 +45,7 @@ void ShapercurveComponent::paint(juce::Graphics& g)
 	//bounds
 	auto bounds = getBounds();
 	auto lineSize = bounds.getHeight() / 100;
+    lineSize = (lineSize < 1.0) ? 1.0f : lineSize;
 
 	//Screen
 	auto x = 0;
@@ -116,12 +117,10 @@ void ShapercurveComponent::paint(juce::Graphics& g)
 	{
 		shaperCurve.lineTo(x + i, map(samples[i]));
 	}
-	if (true)
-	{
-		g.setColour(color);
-		g.drawRect(x, y, w, h, 2.0 * lineSize);
-		g.strokePath(shaperCurve, PathStrokeType(1.5 * lineSize));
-	}
+    
+    g.setColour(Colours::white);
+    g.drawRect(x, y, w, h, 2.0 * lineSize);
+    g.strokePath(shaperCurve, PathStrokeType(1.5 * lineSize));
 }
 
 void ShapercurveComponent::setColor(Colour c)

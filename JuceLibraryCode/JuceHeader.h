@@ -49,7 +49,7 @@ namespace ProjectInfo
 {
     const char* const  projectName    = "Plasma";
     const char* const  companyName    = "Dimethoxy";
-    const char* const  versionString  = "1.0.59";
-    const int          versionNumber  = 0x1003b;
+    const char* const  versionString  = "1.0.0";
+    const int          versionNumber  = 0x10000;
 }
 #endif

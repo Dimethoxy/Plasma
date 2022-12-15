@@ -124,8 +124,7 @@ String CustomRotarySlider::getTooltipString()
 	else if (getName() == "Drive")
 	{
 		String str;
-		//auto valueNormalized
-			//str << round((getValue() - 1) * 1000.0f) / 10.0f;
+			str << round((getValue() - 1) * 10);
 		return
 			"Drive : " +
 			str + "%";

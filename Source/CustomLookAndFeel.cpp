@@ -141,7 +141,7 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 	else if (slider.getName() == "Symmetry")
 	{
 		isCentered = true;
-		auto value = round(slider.getValue() * 100);
+		//auto value = round(slider.getValue() * 100);
 	}
 	else if (slider.getName() == "Analyser Type")
 	{

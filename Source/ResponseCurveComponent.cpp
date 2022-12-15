@@ -64,6 +64,7 @@ void ResponseCurveComponent::paint(juce::Graphics& g)
 	//bounds
 	auto bounds = getBounds();
 	auto lineSize = bounds.getHeight() / 100;
+    lineSize = (lineSize < 1.0f) ? 1.0f : lineSize;
 
 	//Screen
 	auto x = padding;

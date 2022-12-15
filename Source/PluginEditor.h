@@ -233,8 +233,8 @@ private:
 
 	//Color
 	bool testColorString(String string);
-	Colour backgroundColor = Colour(18, 20, 20);
-	Colour foregroundColor = Colour(24, 26, 27);
+	Colour backgroundColor = Colour(12, 13, 14);
+	Colour foregroundColor = Colour(29, 31, 32);
 	Colour accentColor = Colour(255, 0, 0);
 	Colour fontColor = Colour(255, 255, 255);
 	Colour optionsFontColor = Colour(255, 255, 255);
@@ -245,8 +245,8 @@ private:
 	void saveBackgroundColor(PropertiesFile* commonSettings);
 	void saveForegroundColor(PropertiesFile* commonSettings);
 	void saveAccentColor(PropertiesFile* commonSettings);
-	Colour backgroundColorFallback = Colour(18, 20, 20);
-	Colour foregroundColorFallback = Colour(24, 26, 27);
+	Colour backgroundColorFallback = Colour(12, 13, 14);
+	Colour foregroundColorFallback = Colour(29, 31, 32);
 	Colour accentColorFallback = Colour(255, 0, 0);
 
 	//Oscilloscope Settings

@@ -2,6 +2,14 @@
 #include "PluginEditor.h"
 #include "JuceHeader.h"
 
+enum Target {
+    Windows,
+    Mac,
+    Linux
+};
+
+const Target OS = Mac;
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Constructor
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -136,8 +144,8 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	configOscilloscopeBufferSizeTextbox("1024", FontSizes::Main, Justification::centredLeft),
 	configOscilloscopeSamplesPerBlockTextbox("4", FontSizes::Main, Justification::centredLeft),
-	configBackgroundColorTextbox("#182020", FontSizes::Main, Justification::centredLeft),
-	configForegroundColorTextbox("#242627", FontSizes::Main, Justification::centredLeft),
+	configBackgroundColorTextbox("#0c0d0e", FontSizes::Main, Justification::centredLeft),
+	configForegroundColorTextbox("#1c1f21", FontSizes::Main, Justification::centredLeft),
 	configAccentColorTextbox("#FF0000", FontSizes::Main, Justification::centredLeft)
 {
 
@@ -661,7 +669,7 @@ void PlasmaAudioProcessorEditor::resized()
 	//loudnessMeterIn.setBounds(220, 60, 620, 155);
 	//loudnessMeterOut.setBounds(220, 215, 620, 155);
 	auto logoX = headerArea().getCentreX() - sc(100);
-	if (!JUCE_WINDOWS)
+	if (OS == Mac)
 	{
 		plasmaLabel.setBounds(logoX, sc(5), sc(200), sc(100));
 		plasmaLabel.setCustomFontSize(sc(50));
