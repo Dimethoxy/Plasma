@@ -197,9 +197,8 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	}
 
 	//Check for updates
-	bool isLatest = isUpToDate(PLASMA_VERSION, userSettings);
-
-	//scale = userSettings->getIntValue("scale", 100);
+	bool isLatest = isUpToDate(PLASMA_VERSION);
+	juce::URL("https://dimethoxy.com/").launchInDefaultBrowser();
 	updateButton.setButtonText("Update available\nVisit Dimethoxy.com");
 
 	//Logo

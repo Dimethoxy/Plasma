@@ -300,40 +300,21 @@ private:
 		return version;
 	}
 
-	bool isUpToDate(const juce::String& currentVersion, juce::PropertiesFile *userSettings)
+	bool isUpToDate(const juce::String& currentVersion)
 	{
-		// If key does not exist, create it
-		if (!userSettings->containsKey("isLatest"))
-		{
-			userSettings->setValue("isLatest", true);
-		}
-
-		// Ask API
 		try
 		{
 			juce::String apiResponse = sendRequest("version?program=plasma");
 			juce::String latestVersion = extractVersionNumber(apiResponse);
-			bool isLatest = (latestVersion == currentVersion);
-			if (isLatest)
-			{
-				userSettings->setValue("isLatest", isLatest);
-				return true;
-			}
-			else
-			{
-				userSettings->setValue("isLatest", isLatest);
-				return false;
-			}
+			return latestVersion == currentVersion;
 		}
 		catch (...)
 		{
-			return (userSettings->getBoolValue("isLatest"));
+			// If the request fails or returns an error, assume the program is up to date
+			return true;
 		}
 	}
 
 	//End
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PlasmaAudioProcessorEditor);
 };
-
-//Launch Website
-//juce::URL("https://dimethoxy.com/").launchInDefaultBrowser();
