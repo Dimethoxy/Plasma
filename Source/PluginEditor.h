@@ -12,6 +12,14 @@
 
 //=============================================================================================
 
+enum Target {
+	Windows,
+	Mac,
+	Linux
+};
+
+const Target OS = Windows;
+const juce::String PLASMA_VERSION = "0.0.0";
 
 
 //=============================================================================================
@@ -300,7 +308,7 @@ private:
 		return version;
 	}
 
-	bool isUpToDate(const juce::String& currentVersion, juce::PropertiesFile *userSettings)
+	bool isUpToDate(const juce::String& currentVersion, juce::PropertiesFile* userSettings)
 	{
 		// If key does not exist, create it
 		if (!userSettings->containsKey("isLatest"))
@@ -310,7 +318,7 @@ private:
 		// Ask API
 		try
 		{
-			juce::String apiResponse = sendRequest("version?program=plasma");
+			juce::String apiResponse = sendRequest("version?product=plasma");
 			juce::String latestVersion = extractVersionNumber(apiResponse);
 			bool isLatest = (latestVersion == currentVersion);
 			if (isLatest)
@@ -330,6 +338,25 @@ private:
 			return (userSettings->getBoolValue("isLatest"));
 		}
 	}
+
+	juce::String  getDownloadLink()
+	{
+		juce::String osString;
+		if (OS == Windows) {
+			osString = "windows";
+		}
+		else if (OS == Mac) {
+			osString = "mac";
+		}
+		else {
+			osString = "archlinux";
+		}
+
+		juce::String apiResponse = sendRequest("download?product=plasma&os=" + osString);
+		juce::var responseJSON = juce::JSON::parse(apiResponse);
+		return responseJSON["download_url"].toString();
+	}
+
 
 	//End
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PlasmaAudioProcessorEditor);

@@ -2,14 +2,7 @@
 #include "PluginEditor.h"
 #include "JuceHeader.h"
 
-enum Target {
-	Windows,
-	Mac,
-	Linux
-};
 
-const Target OS = Windows;
-const juce::String PLASMA_VERSION = "1.0.0";
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Constructor
@@ -32,9 +25,9 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	highPassResonanceQualitySlider(*audioProcessor.apvts.getParameter("Highpass Resonance Q"), "", "Quality"),
 	highPassSlopeSlider(*audioProcessor.apvts.getParameter("Highpass Slope"), "dB/oct", "Slope"),
 	//Peak
-	peakStereoSlider(*audioProcessor.apvts.getParameter("Peak Stereo"), "%", "Peak Stereo"),
+	peakStereoSlider(*audioProcessor.apvts.getParameter("Peak Stereo"), "%", "Stereo"),
 	peakFreqSlider(*audioProcessor.apvts.getParameter("Peak Freq"), "Hz", "Peak"),
-	peakGainSlider(*audioProcessor.apvts.getParameter("Peak Gain"), "dB", "Resonance"),
+	peakGainSlider(*audioProcessor.apvts.getParameter("Peak Gain"), "dB", "Peak Resonance"),
 	peakQualitySlider(*audioProcessor.apvts.getParameter("Peak Quality"), "", "Quality"),
 	//Lowpass
 	lowPassFreqSlider(*audioProcessor.apvts.getParameter("Lowpass Freq"), "Hz", "Lowpass"),
@@ -105,7 +98,7 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 	//Peak
 	peakStereoLabel("Stereo", FontSizes::Main, Justification::centredTop),
 	peakFreqLabel("Frequency", FontSizes::Main, Justification::centredTop),
-	peakGainLabel("Gain", FontSizes::Main, Justification::centredTop),
+	peakGainLabel("Resonance", FontSizes::Main, Justification::centredTop),
 	peakQualityLabel("Q", FontSizes::Main, Justification::centredTop),
 	//Lowpass
 	lowPassFreqLabel("Frequency", FontSizes::Main, Justification::centredTop),
@@ -406,6 +399,11 @@ void PlasmaAudioProcessorEditor::configWindow(bool visibility)
 }
 void PlasmaAudioProcessorEditor::buttonClicked(Button* button)
 {
+	if (button == &updateButton)
+	{
+		juce::URL(getDownloadLink()).launchInDefaultBrowser();
+
+	}
 	if (button == &scaleUpButton)
 	{
 		if (scale <= 400)

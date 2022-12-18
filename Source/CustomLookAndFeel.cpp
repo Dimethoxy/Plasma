@@ -201,8 +201,8 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 			0.0f,
 			rotaryStartAngle,
 			rotaryEndAngle,
-            true);
-        //juce::Colour halfFill(fill.getHue(), fill.getSaturation(), fill.getLightness()/3.0f, fill.getAlpha());
+			true);
+		//juce::Colour halfFill(fill.getHue(), fill.getSaturation(), fill.getLightness()/3.0f, fill.getAlpha());
 		g.setColour(backgroundColor);
 		g.strokePath(backgroundArc, PathStrokeType(lineW, PathStrokeType::curved, PathStrokeType::rounded));
 
