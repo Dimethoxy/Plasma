@@ -196,11 +196,10 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 		textbox->addListener(this);
 	}
 
-	//Check for updates
-	bool isLatest = isUpToDate(PLASMA_VERSION, userSettings);
-
-	//scale = userSettings->getIntValue("scale", 100);
-	updateButton.setButtonText("Update available\nVisit Dimethoxy.com");
+	//Update Button
+	updateButton.setButtonText("U");
+	updateButton.addListener(this);
+	addAndMakeVisible(updateButton);
 
 	//Logo
 	addAndMakeVisible(plasmaLabel);
@@ -240,6 +239,10 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 
 	//Reset Tooltip Label
 	tooltipLabel.setText("", NotificationType::dontSendNotification);
+
+	//Check for Updates
+	bool isLatest = isUpToDate(PLASMA_VERSION, userSettings);
+	updateButton.setVisible(!isLatest);
 
 	//Window
 	setResizable(false, false);
@@ -687,8 +690,6 @@ void PlasmaAudioProcessorEditor::resized()
 		plasmaLabel.setCustomFontSize(sc(100));
 	}
 
-	updateButton.setBounds(sc(5), sc(5), sc(200), sc(50));
-
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//In
 	inLabel.setBounds(
@@ -1008,7 +1009,7 @@ void PlasmaAudioProcessorEditor::resized()
 	//Header Knobs
 	int scaleKnobSize = headerArea().getHeight() - 2 * (sc(padding));
 	configButton.setBounds(
-		getWidth() - 2.34 * scaleKnobSize - sc(padding),
+		getWidth() - 2.34 * scaleKnobSize - 1.5 * sc(padding),
 		sc(padding),
 		2.34 * scaleKnobSize,
 		scaleKnobSize);
@@ -1022,6 +1023,7 @@ void PlasmaAudioProcessorEditor::resized()
 		sc(padding),
 		scaleKnobSize,
 		scaleKnobSize);
+	updateButton.setBounds(1.5 * sc(padding), sc(padding), 4.4 * scaleKnobSize, scaleKnobSize);
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Options
 	int lineSize = sc(40);

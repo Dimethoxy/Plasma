@@ -50,19 +50,25 @@ void CustomLookAndFeel::drawButtonBackground(
 
 	//Draw Foreground
 	float iconSize = 2.5 * lineSize;
+	float fontSize = 4.4 * iconSize;
 	if (text == "O")
 	{
-		g.setFont(getCustomFont().withHeight(4 * iconSize));
+		g.setFont(getCustomFont().withHeight(fontSize));
 		g.drawText("Options", area, Justification::centred, false);
+	}
+	if (text == "U")
+	{
+		g.setFont(getCustomFont().withHeight(fontSize));
+		g.drawText("Update available", area, Justification::centred, false);
 	}
 	else if (text == "S")
 	{
-		g.setFont(getCustomFont().withHeight(4 * iconSize));
+		g.setFont(getCustomFont().withHeight(fontSize));
 		g.drawText("Save", area, Justification::centred, false);
 	}
 	else if (text == "R")
 	{
-		g.setFont(getCustomFont().withHeight(4 * iconSize));
+		g.setFont(getCustomFont().withHeight(fontSize));
 		g.drawText("Reset", area, Justification::centred, false);
 	}
 	else if (text == "+")

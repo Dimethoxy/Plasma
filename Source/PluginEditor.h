@@ -307,7 +307,6 @@ private:
 		{
 			userSettings->setValue("isLatest", true);
 		}
-
 		// Ask API
 		try
 		{
@@ -327,6 +326,7 @@ private:
 		}
 		catch (...)
 		{
+			// If request fails, load information from config
 			return (userSettings->getBoolValue("isLatest"));
 		}
 	}
