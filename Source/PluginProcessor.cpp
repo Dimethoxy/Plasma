@@ -428,7 +428,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout PlasmaAudioProcessor::create
 		("Late Distortion Type", "Late Distortion Type", distortionArray, 0));
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Late Drive", "Late Drive",
-			juce::NormalisableRange<float>(1.0f, 10.0f, 0.01f, 0.5f), 0.0f));
+			juce::NormalisableRange<float>(1.0f, 11.0f, 0.01f, 0.5f), 0.0f));
 	//Late Girth
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Late Girth", "Late Girth",

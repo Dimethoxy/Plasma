@@ -47,7 +47,7 @@ namespace DistortionProcessor
 		}
 		case Distortion::Bitcrush:
 		{
-			float bitDepth = 10.0f - drive;
+			float bitDepth = 10.0f - (drive-1);
 			float exponent = bitDepth - 1;
 			float possibleValues = pow(2, exponent);
 			float quantized = (data + 1.0f) * possibleValues;
@@ -114,7 +114,7 @@ namespace DistortionProcessor
 				data = -1.0f + powf(2.0f + 3.0f * data, 2.0f) / 3.0f;
 			else
 				data = 2.0f * data;
-			data *= 0.95;
+
 			break;
 		}
 		case Distortion::Weird: {
