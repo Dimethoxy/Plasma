@@ -24,7 +24,8 @@ enum Slope
 	Slope_60,
 	Slope_72,
 	Slope_84,
-	Slope_96
+	Slope_96,
+	None
 };
 enum AnalyserType
 {

@@ -244,25 +244,43 @@ void PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
 		}
 	}
 
+	//DSP
+	juce::dsp::AudioBlock<float> block(buffer);
+
 	//Filter
 	updateFilters();
 	bool skipGate = false;
+	bool leftPocessed = false;
+	bool rightPocessed = false;
 	auto threshold = 0.0f;
-	if ((leftRms != threshold
-		&& rightRms != threshold)
-		|| skipGate)
+	if (leftRms != threshold)
 	{
-		//DSP
-		juce::dsp::AudioBlock<float> block(buffer);
 		auto leftBlock = block.getSingleChannelBlock(0);
-		auto rightBlock = block.getSingleChannelBlock(1);
 		juce::dsp::ProcessContextReplacing<float> leftContext(leftBlock);
-		juce::dsp::ProcessContextReplacing<float> rightContext(rightBlock);
 		leftChain.process(leftContext);
-		rightChain.process(rightContext);
+		leftPocessed = true;
 	}
 	else {
-		buffer.clear();
+		auto data = buffer.getWritePointer(0);
+		for (int sample = 0; sample < buffer.getNumSamples(); sample++)
+		{
+			data[sample] = 0.0f;
+		}
+	}
+
+	if (rightRms != threshold)
+	{
+		auto rightBlock = block.getSingleChannelBlock(1);
+		juce::dsp::ProcessContextReplacing<float> rightContext(rightBlock);
+		rightChain.process(rightContext);
+		bool rightPocessed = true;
+	}
+	else {
+		auto data = buffer.getWritePointer(1);
+		for (int sample = 0; sample < buffer.getNumSamples(); sample++)
+		{
+			data[sample] = 0.0f;
+		}
 	}
 
 	//Late Stage
@@ -380,6 +398,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout PlasmaAudioProcessor::create
 		str << " db/Oct";
 		slopeArray.add(str);
 	}
+	slopeArray.add("Bypass");
 	//Highpass
 	layout.add(std::make_unique<juce::AudioParameterChoice>
 		("Highpass Slope", "Highpass Slope", slopeArray, 0));

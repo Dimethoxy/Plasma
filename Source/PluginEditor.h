@@ -19,8 +19,7 @@ enum Target {
 };
 
 const Target OS = Windows;
-const juce::String PLASMA_VERSION = "0.0.0";
-
+const juce::String PLASMA_VERSION = ProjectInfo::versionString;
 
 //=============================================================================================
 
@@ -76,6 +75,7 @@ public:
 	void updateTextboxes();
 
 private:
+
 	//Scaling
 	CustomTextButton scaleUpButton,
 		scaleDownButton,
@@ -362,5 +362,3 @@ private:
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PlasmaAudioProcessorEditor);
 };
 
-//Launch Website
-//juce::URL("https://dimethoxy.com/").launchInDefaultBrowser();

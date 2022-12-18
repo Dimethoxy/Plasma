@@ -329,6 +329,7 @@ void PlasmaAudioProcessorEditor::timerCallback()
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Interaction
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void PlasmaAudioProcessorEditor::updateTextboxes()
 {
 	configBackgroundColorTextbox.setText("#" + getBackgroundColor().toDisplayString(false), NotificationType::dontSendNotification);
@@ -554,6 +555,48 @@ void PlasmaAudioProcessorEditor::sliderValueChanged(Slider* slider)
 	if (slider->isMouseButtonDown())
 	{
 		tooltipLabel.setText(static_cast<CustomRotarySlider*>(slider)->getTooltipString(), juce::dontSendNotification);
+	}
+	if (slider == &lowPassSlopeSlider)
+	{
+		if (static_cast<Slope>(slider->getValue()) == Slope::None)
+		{
+			lowPassFreqSlider.setVisible(false);
+			lowPassResonanceQualitySlider.setVisible(false);
+			lowPassResonanceSlider.setVisible(false);
+			lowPassFreqLabel.setVisible(false);
+			lowPassResonanceQualityLabel.setVisible(false);
+			lowPassResonanceLabel.setVisible(false);
+		}
+		else
+		{
+			lowPassFreqSlider.setVisible(true);
+			lowPassResonanceQualitySlider.setVisible(true);
+			lowPassResonanceSlider.setVisible(true);
+			lowPassFreqLabel.setVisible(true);
+			lowPassResonanceQualityLabel.setVisible(true);
+			lowPassResonanceLabel.setVisible(true);
+		}
+	}
+	if (slider == &highPassSlopeSlider)
+	{
+		if (static_cast<Slope>(slider->getValue()) == Slope::None)
+		{
+			highPassFreqSlider.setVisible(false);
+			highPassResonanceQualitySlider.setVisible(false);
+			highPassResonanceSlider.setVisible(false);
+			highPassFreqLabel.setVisible(false);
+			highPassResonanceQualityLabel.setVisible(false);
+			highPassResonanceLabel.setVisible(false);
+		}
+		else
+		{
+			highPassFreqSlider.setVisible(true);
+			highPassResonanceQualitySlider.setVisible(true);
+			highPassResonanceSlider.setVisible(true);
+			highPassFreqLabel.setVisible(true);
+			highPassResonanceQualityLabel.setVisible(true);
+			highPassResonanceLabel.setVisible(true);
+		}
 	}
 }
 void PlasmaAudioProcessorEditor::setAnalyserType(AnalyserType analyser)

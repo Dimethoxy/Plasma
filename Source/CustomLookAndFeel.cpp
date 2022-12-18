@@ -141,7 +141,7 @@ void CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
 	else if (slider.getName() == "Slope")
 	{
 		isSelector = true;
-		numOptions = 8;
+		numOptions = 9;
 		selectedOption = (int)slider.getValue();
 	}
 	else if (slider.getName() == "Symmetry")

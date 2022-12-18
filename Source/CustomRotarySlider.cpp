@@ -74,6 +74,7 @@ String CustomRotarySlider::getTooltipString()
 	}
 	else if (getName() == "Slope")
 	{
+		if (selectedOption >= 8) return "Slope : Bypassed";
 		int slope = (selectedOption + 1) * 12;
 		String str;
 		str << "Slope : ";
@@ -124,7 +125,7 @@ String CustomRotarySlider::getTooltipString()
 	else if (getName() == "Drive")
 	{
 		String str;
-			str << round((getValue() - 1) * 10);
+		str << round((getValue() - 1) * 10);
 		return
 			"Drive : " +
 			str + "%";

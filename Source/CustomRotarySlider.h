@@ -30,6 +30,7 @@ public:
 	Rectangle<int> getSliderBounds() const;
 	int getTexHeight() const { return 14; };
 	String getTooltipString();
+	bool toggle = false;
 private:
 	CustomLookAndFeel lnf;
 	RangedAudioParameter* param;

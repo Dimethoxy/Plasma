@@ -47,21 +47,15 @@ namespace DistortionProcessor
 		}
 		case Distortion::Bitcrush:
 		{
-			float bitDepth = 11.0 - drive;
+			float bitDepth = 10.0f - drive;
 			float exponent = bitDepth - 1;
 			float possibleValues = pow(2, exponent);
-			float quantized = data * possibleValues;
-			if (quantized > 0)
-			{
-				quantized = ceil(quantized);
-			}
-			else if (quantized < 0)
-			{
-				quantized = floor(quantized);
-			}
-			data = quantized / possibleValues;
+			float quantized = (data + 1.0f) * possibleValues;
+			quantized = round(quantized);
+			data = (quantized / possibleValues) - 1.0f;
 			break;
 		}
+
 		case Distortion::Saturate:
 		{
 			if (data > 0.0) {
