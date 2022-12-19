@@ -47,7 +47,7 @@ namespace DistortionProcessor
 		}
 		case Distortion::Bitcrush:
 		{
-			float bitDepth = 10.0f - (drive-1);
+			float bitDepth = 10.0f - (drive - 1);
 			float exponent = bitDepth - 1;
 			float possibleValues = pow(2, exponent);
 			float quantized = (data + 1.0f) * possibleValues;
@@ -91,7 +91,7 @@ namespace DistortionProcessor
 			break;
 		}
 		case Distortion::Extreme: {
-			float invertedDrive = (10.0f / drive);
+			float invertedDrive = 10.0f - (drive - 1);
 			if (std::abs(data) >= ((invertedDrive - 1) / 9.0f))
 			{
 				auto signbit = (std::signbit(data) ? -1 : 1);
