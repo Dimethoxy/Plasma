@@ -117,6 +117,9 @@ void updatePassFilter
 	case Slope_12: {
 		update<0>(filter, filterCoefficients);
 	}
+    case None: {
+        break;
+    }
 	}
 }
 

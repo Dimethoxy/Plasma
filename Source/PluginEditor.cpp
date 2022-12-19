@@ -1049,10 +1049,12 @@ void PlasmaAudioProcessorEditor::resized()
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Header Knobs
 	int scaleKnobSize = headerArea().getHeight() - 2 * (sc(padding));
+    float updateButtonScale = (OS == Mac) ? 4.8 : 4.4;
+    float configButtonScale = (OS == Mac) ? 2.5 : 2.34;
 	configButton.setBounds(
 		getWidth() - 2.34 * scaleKnobSize - 1.5 * sc(padding),
 		sc(padding),
-		2.34 * scaleKnobSize,
+        configButtonScale * scaleKnobSize,
 		scaleKnobSize);
 	scaleDownButton.setBounds(
 		configButton.getX() - sc(padding) - scaleKnobSize,
@@ -1064,7 +1066,7 @@ void PlasmaAudioProcessorEditor::resized()
 		sc(padding),
 		scaleKnobSize,
 		scaleKnobSize);
-	updateButton.setBounds(1.5 * sc(padding), sc(padding), 4.4 * scaleKnobSize, scaleKnobSize);
+	updateButton.setBounds(1.5 * sc(padding), sc(padding), updateButtonScale * scaleKnobSize, scaleKnobSize);
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Options
 	int lineSize = sc(40);

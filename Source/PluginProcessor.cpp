@@ -249,16 +249,12 @@ void PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
 
 	//Filter
 	updateFilters();
-	bool skipGate = false;
-	bool leftPocessed = false;
-	bool rightPocessed = false;
 	auto threshold = 0.0f;
 	if (leftRms != threshold)
 	{
 		auto leftBlock = block.getSingleChannelBlock(0);
 		juce::dsp::ProcessContextReplacing<float> leftContext(leftBlock);
 		leftChain.process(leftContext);
-		leftPocessed = true;
 	}
 	else {
 		auto data = buffer.getWritePointer(0);
@@ -273,7 +269,6 @@ void PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
 		auto rightBlock = block.getSingleChannelBlock(1);
 		juce::dsp::ProcessContextReplacing<float> rightContext(rightBlock);
 		rightChain.process(rightContext);
-		bool rightPocessed = true;
 	}
 	else {
 		auto data = buffer.getWritePointer(1);
