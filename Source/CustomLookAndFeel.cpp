@@ -1,4 +1,5 @@
 #include "CustomLookAndFeel.h"
+#include "PluginEditor.h"
 
 void CustomLookAndFeel::drawLabel(Graphics& g, Label& label)
 {
@@ -50,7 +51,10 @@ void CustomLookAndFeel::drawButtonBackground(
 
 	//Draw Foreground
 	float iconSize = 2.5 * lineSize;
-	float fontSize = 4.4 * iconSize;
+    float fontSize = 4.4 * iconSize;
+    if(OS == Mac){
+        fontSize = 4.0 * iconSize;
+    }
 	if (text == "O")
 	{
 		g.setFont(getCustomFont().withHeight(fontSize));

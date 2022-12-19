@@ -18,7 +18,7 @@ enum Target {
 	Linux
 };
 
-const Target OS = Windows;
+const Target OS = Mac;
 const juce::String PLASMA_VERSION = ProjectInfo::versionString;
 
 //=============================================================================================
