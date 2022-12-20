@@ -1,5 +1,5 @@
 # Plasma
-Introducing Plasma - a free digital audio effect that's perfect for VST3 hosts. \
+Introducing Plasma - a free digital audio effect for VST3 hosts. \
 With its asymmetrical distortion and multiple shaping tools, Plasma is the perfect tool for creating aggressive and unique sounds in hard dance genres like Gabber, Hardstyle, and Hardcore.
 
 But Plasma is not just for hard dance genres - it's a versatile tool that can be used in any music production scenario. \
