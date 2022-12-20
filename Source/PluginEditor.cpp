@@ -402,7 +402,17 @@ void PlasmaAudioProcessorEditor::buttonClicked(Button* button)
 {
 	if (button == &updateButton)
 	{
-		juce::URL(getDownloadLink()).launchInDefaultBrowser();
+		auto newestUrl = getDownloadLink();
+		if (newestUrl != "")
+		{
+			//Open Browser
+			URL(newestUrl).launchInDefaultBrowser();
+		}
+		else {
+			//Show Error
+			tooltipLabel.setText("Error: Can't connect to server", juce::dontSendNotification);
+			startTimer(3000);
+		}
 
 	}
 	if (button == &scaleUpButton)
@@ -1049,12 +1059,12 @@ void PlasmaAudioProcessorEditor::resized()
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Header Knobs
 	int scaleKnobSize = headerArea().getHeight() - 2 * (sc(padding));
-    float updateButtonScale = (OS == Mac) ? 4.8 : 4.4;
-    float configButtonScale = (OS == Mac) ? 2.5 : 2.34;
+	float updateButtonScale = (OS == Mac) ? 4.8 : 4.4;
+	float configButtonScale = (OS == Mac) ? 2.5 : 2.34;
 	configButton.setBounds(
 		getWidth() - 2.34 * scaleKnobSize - 1.5 * sc(padding),
 		sc(padding),
-        configButtonScale * scaleKnobSize,
+		configButtonScale * scaleKnobSize,
 		scaleKnobSize);
 	scaleDownButton.setBounds(
 		configButton.getX() - sc(padding) - scaleKnobSize,
