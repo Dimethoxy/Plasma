@@ -335,8 +335,7 @@ private:
 		catch (...)
 		{
 			// If request fails, load information from config
-			if (userSettings->containsKey("isLatest")) return (userSettings->getBoolValue("isLatest"));
-			else return true;
+			return (userSettings->getBoolValue("isLatest"));
 		}
 	}
 
