@@ -18,7 +18,7 @@ enum Target {
 	Linux
 };
 
-const Target OS = Mac;
+const Target OS = Windows;
 const juce::String PLASMA_VERSION = ProjectInfo::versionString;
 
 //=============================================================================================
@@ -320,7 +320,7 @@ private:
 		{
 			juce::String apiResponse = sendRequest("version?product=plasma");
 			juce::String latestVersion = extractVersionNumber(apiResponse);
-			bool isLatest = (latestVersion == currentVersion);
+			bool isLatest = (latestVersion == currentVersion) || latestVersion=="";
 			if (isLatest)
 			{
 				userSettings->setValue("isLatest", isLatest);
