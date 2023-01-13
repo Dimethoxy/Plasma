@@ -2,10 +2,10 @@
 
 <JUCERPROJECT id="qMF8Un" name="Plasma" projectType="audioplug" useAppConfig="0"
               jucerFormatVersion="1" bundleIdentifier="com.Dimethoxy.Plasma"
-              companyName="Dimethoxy" companyWebsite="Dimethoxy.com" version="1.0.0"
+              companyName="Dimethoxy" companyWebsite="Dimethoxy.com" version="1.0.1"
               pluginManufacturerCode="Dmtx" pluginDesc="Aggressive Distortion Plug-In"
-              cppLanguageStandard="latest" maxBinaryFileSize="20971520" pluginVST3Category="Distortion"
-              pluginFormats="buildVST3">
+              cppLanguageStandard="latest" maxBinaryFileSize="20971520" pluginVST3Category="Distortion,Fx"
+              pluginFormats="buildVST3" companyCopyright="COPYRIGHT &#169; 2023 DIMETHOXY.COM">
   <MAINGROUP id="JL3O3j" name="Plasma">
     <GROUP id="{C06EE6F1-1336-2987-2A83-453AE370713C}" name="Source">
       <FILE id="AV032y" name="PlasmaDistortionProcessor.h" compile="0" resource="0"

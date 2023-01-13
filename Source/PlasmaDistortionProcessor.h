@@ -15,6 +15,7 @@ enum Distortion
 	Scream,
 	Sine,
 	Cosine,
+	Harmonize,
 	Weird,
 };
 namespace DistortionProcessor
@@ -158,6 +159,14 @@ namespace DistortionProcessor
 			break;
 
 		}
+                case Distortion::Harmonize: {
+                        data = data * (drive * 5);
+                        float h1 = sin(2 * data);
+                        float h2 = sin(3 * data);
+                        float h3 = sin(4 * data);
+                        data = (h1 + h2 + h3 + data) / (drive * 5);
+                        break;
+                }
 		}
 	}
 }

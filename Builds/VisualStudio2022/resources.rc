@@ -9,17 +9,18 @@
 #include <windows.h>
 
 VS_VERSION_INFO VERSIONINFO
-FILEVERSION  1,0,0,0
+FILEVERSION  1,0,1,0
 BEGIN
   BLOCK "StringFileInfo"
   BEGIN
     BLOCK "040904E4"
     BEGIN
       VALUE "CompanyName",  "Dimethoxy\0"
+      VALUE "LegalCopyright",  "COPYRIGHT © 2023 DIMETHOXY.COM\0"
       VALUE "FileDescription",  "Plasma\0"
-      VALUE "FileVersion",  "1.0.0\0"
+      VALUE "FileVersion",  "1.0.1\0"
       VALUE "ProductName",  "Plasma\0"
-      VALUE "ProductVersion",  "1.0.0\0"
+      VALUE "ProductVersion",  "1.0.1\0"
     END
   END
 
