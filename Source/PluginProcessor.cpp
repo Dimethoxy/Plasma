@@ -358,6 +358,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout PlasmaAudioProcessor::create
 	distortionArray.add("Scream");
 	distortionArray.add("Sine");
 	distortionArray.add("Cosine");
+    distortionArray.add("Harmonic");
 	distortionArray.add("Weird");
 	layout.add(std::make_unique<juce::AudioParameterFloat>
 		("Drive", "Drive",
