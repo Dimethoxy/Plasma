@@ -3,9 +3,10 @@
 <JUCERPROJECT id="qMF8Un" name="Plasma" projectType="audioplug" useAppConfig="0"
               jucerFormatVersion="1" bundleIdentifier="com.Dimethoxy.Plasma"
               companyName="Dimethoxy" companyWebsite="Dimethoxy.com" version="1.0.1"
-              pluginManufacturerCode="Dmtx" pluginDesc="Aggressive Distortion Plug-In"
-              cppLanguageStandard="latest" maxBinaryFileSize="20971520" pluginVST3Category="Distortion,Fx"
-              pluginFormats="buildVST3" companyCopyright="COPYRIGHT &#169; 2023 DIMETHOXY.COM">
+              pluginManufacturerCode="Dmtx" pluginDesc="Distortion" cppLanguageStandard="latest"
+              maxBinaryFileSize="20971520" pluginVST3Category="Distortion,Fx"
+              companyCopyright="COPYRIGHT &#169; 2023 DIMETHOXY.COM" companyEmail="dimethoxy.audio@gmail.com"
+              pluginFormats="buildVST3">
   <MAINGROUP id="JL3O3j" name="Plasma">
     <GROUP id="{C06EE6F1-1336-2987-2A83-453AE370713C}" name="Source">
       <FILE id="AV032y" name="PlasmaDistortionProcessor.h" compile="0" resource="0"
@@ -55,11 +56,6 @@
         <FILE id="eLfw9d" name="OFL.txt" compile="0" resource="0" file="Resources/Sedgwick_Ave_Display/OFL.txt"/>
         <FILE id="jzJ8G2" name="SedgwickAveDisplay-Regular.ttf" compile="0"
               resource="1" file="Resources/Sedgwick_Ave_Display/SedgwickAveDisplay-Regular.ttf"/>
-      </GROUP>
-      <GROUP id="{51016F95-F64A-B043-192D-B57B1D5B207A}" name="Sedgwick_Ave">
-        <FILE id="vYmn1r" name="OFL.txt" compile="0" resource="0" file="Resources/Sedgwick_Ave/OFL.txt"/>
-        <FILE id="dUe9U2" name="SedgwickAve-Regular.ttf" compile="0" resource="0"
-              file="Resources/Sedgwick_Ave/SedgwickAve-Regular.ttf"/>
       </GROUP>
       <GROUP id="{D32D6830-8C4E-B646-23BC-E15AE2DA763B}" name="Poppins">
         <FILE id="XRxD5R" name="OFL.txt" compile="0" resource="0" file="Resources/Poppins/OFL.txt"/>
@@ -125,7 +121,7 @@
         <MODULEPATH id="juce_gui_extra" path="../../juce"/>
       </MODULEPATHS>
     </VS2022>
-    <XCODE_MAC targetFolder="Builds/MacOSX">
+    <XCODE_MAC targetFolder="Builds/MacOSX" iosInAppPurchases="0">
       <CONFIGURATIONS>
         <CONFIGURATION isDebug="1" name="Debug" macOSDeploymentTarget="10.13" osxCompatibility="10.13 SDK"/>
         <CONFIGURATION isDebug="0" name="Release" macOSDeploymentTarget="10.13" osxCompatibility="10.13 SDK"/>
@@ -167,6 +163,27 @@
         <MODULEPATH id="juce_gui_extra" path="D:\Dev\Ressources\JUCE\modules"/>
       </MODULEPATHS>
     </LINUX_MAKE>
+    <XCODE_IPHONE targetFolder="Builds/iOS">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug"/>
+        <CONFIGURATION isDebug="0" name="Release"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_audio_basics" path="/Users/davidhess/Documents/Dev/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="/Users/davidhess/Documents/Dev/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="/Users/davidhess/Documents/Dev/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="/Users/davidhess/Documents/Dev/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="/Users/davidhess/Documents/Dev/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="/Users/davidhess/Documents/Dev/JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="/Users/davidhess/Documents/Dev/JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="/Users/davidhess/Documents/Dev/JUCE/modules"/>
+        <MODULEPATH id="juce_dsp" path="/Users/davidhess/Documents/Dev/JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="/Users/davidhess/Documents/Dev/JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="/Users/davidhess/Documents/Dev/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="/Users/davidhess/Documents/Dev/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="/Users/davidhess/Documents/Dev/JUCE/modules"/>
+      </MODULEPATHS>
+    </XCODE_IPHONE>
   </EXPORTFORMATS>
   <MODULES>
     <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>

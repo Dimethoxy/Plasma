@@ -19,8 +19,13 @@ enum Target
   Linux
 };
 
-const Target OS = Windows;
+const Target OS = Mac;
 const juce::String PLASMA_VERSION = ProjectInfo::versionString;
+//
+
+const Colour backgroundColorFactory = Colour(40, 42, 54);
+const Colour foregroundColorFactory = Colour(68, 71, 90);
+const Colour accentColorFactory = Colour(80, 250, 123);
 
 //=============================================================================================
 
@@ -191,9 +196,9 @@ private:
 
   // Color
   bool testColorString(String string);
-  Colour backgroundColor = Colour(18, 20, 20);
-  Colour foregroundColor = Colour(24, 26, 27);
-  Colour accentColor = Colour(255, 0, 0);
+  Colour backgroundColor = backgroundColorFactory;
+  Colour foregroundColor = foregroundColorFactory;
+  Colour accentColor = accentColorFactory;
   Colour fontColor = Colour(255, 255, 255);
   Colour optionsFontColor = Colour(255, 255, 255);
   Colour parseColourFromString(String str);
@@ -203,9 +208,9 @@ private:
   void saveBackgroundColor(PropertiesFile* commonSettings);
   void saveForegroundColor(PropertiesFile* commonSettings);
   void saveAccentColor(PropertiesFile* commonSettings);
-  Colour backgroundColorFallback = Colour(18, 20, 20);
-  Colour foregroundColorFallback = Colour(24, 26, 27);
-  Colour accentColorFallback = Colour(255, 0, 0);
+  Colour backgroundColorFallback = backgroundColorFactory;
+  Colour foregroundColorFallback = foregroundColorFactory;
+  Colour accentColorFallback = accentColorFactory;
 
   // Oscilloscope Settings
   int oscilloscopeBufferSize = 1024;

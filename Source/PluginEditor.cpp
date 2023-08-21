@@ -448,7 +448,8 @@ void PlasmaAudioProcessorEditor::buttonClicked(Button* button)
 		}
 		else
 		{
-			analyserSlider.setValue(lastAnalyserType);
+			//analyserSlider.setValue(lastAnalyserType);
+            analyserSlider.setValue(AnalyserType::Automatic);
 		}
 	}
 	else if (button == &safeConfigButton)

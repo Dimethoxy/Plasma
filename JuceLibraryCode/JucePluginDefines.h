@@ -44,7 +44,7 @@
  #define JucePlugin_Name                   "Plasma"
 #endif
 #ifndef  JucePlugin_Desc
- #define JucePlugin_Desc                   "Aggressive Distortion Plug-In"
+ #define JucePlugin_Desc                   "Distortion"
 #endif
 #ifndef  JucePlugin_Manufacturer
  #define JucePlugin_Manufacturer           "Dimethoxy"
@@ -53,7 +53,7 @@
  #define JucePlugin_ManufacturerWebsite    "Dimethoxy.com"
 #endif
 #ifndef  JucePlugin_ManufacturerEmail
- #define JucePlugin_ManufacturerEmail      ""
+ #define JucePlugin_ManufacturerEmail      "dimethoxy.audio@gmail.com"
 #endif
 #ifndef  JucePlugin_ManufacturerCode
  #define JucePlugin_ManufacturerCode       0x446d7478
