@@ -3,7 +3,7 @@ Introducing Plasma – a free digital audio effect for VST3 hosts. With its asym
 
 However, Plasma is not just limited to hard dance genres – it's a versatile tool that can be used in any music production scenario. Use it to add grit and character to your guitar tracks or to create punishing basslines in your dubstep tracks. The possibilities with Plasma are endless.
 
-Give it a try now and discover the power of Plasma.
+Give it a try and discover the power of Plasma.
 
 ## Features
 - Free (as in freedom) and open-source
