@@ -17,7 +17,7 @@ Give it a try and discover the power of Plasma.
 
 ## Donations
 If you have enjoyed using our software, please consider donating.
-[Donate via PayPal](https://www.paypal.com/donate/?hosted_button_id=8SJXCUYV5ZHKG/)
+[Donate via PayPal]([https://www.paypal.com/donate/?hosted_button_id=8SJXCUYV5ZHKG/](https://www.paypal.com/donate/?hosted_button_id=8SJXCUYV5ZHKG))
 
 We are dedicated to providing high-quality audio tools to the community for free, and your support helps us to continue our work. Your donation will contribute to maintaining and improving our software, as well as supporting the development of new tools and features. We greatly appreciate your support and thank you for helping us to continue our work.
 
