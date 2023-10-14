@@ -1,4 +1,5 @@
 # Plasma
+
 ![Image of the GUI](Preview.png)
 
 Introducing Plasma – a free digital audio effect for VST3 hosts. With its asymmetrical distortion and filters, Plasma is the perfect tool for creating aggressive and unique sounds in hard dance genres like Gabber, Hardstyle, and Hardcore.
