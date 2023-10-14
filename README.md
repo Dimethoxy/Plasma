@@ -15,6 +15,10 @@ Give it a try and discover the power of Plasma.
 - Color-customizable GUI
 - Pre-built binaries for Windows and macOS.
 
+## Screenshot
+
+![Image of the GUI](Preview.png)
+
 ## Donations
 If you have enjoyed using our software, please consider donating.
 [Donate via PayPal](https://www.paypal.com/donate/?hosted_button_id=8SJXCUYV5ZHKG)
