@@ -17,6 +17,19 @@ However, Plasma is not just limited to hard dance genres – it's a versatile to
 - Color-customizable GUI
 - Pre-built binaries for Windows and macOS.
 
+## System Requirements
+### Windows
+- Windows 10 or later
+- Intel or AMD CPU with a quad-core processor
+- At least 50 MB of free disk space
+- A compatible host DAW that supports VST3 plugins
+- ARM versions of Windows are NOT supported
+### MacOS
+- MacOS 10.13 or later
+- Intel or Apple Silicon CPU
+- At least 100 MB of free disk space
+- A compatible host DAW that supports VST3 plugins
+
 ## Donations
 If you have enjoyed using our software, please consider donating.
 [Donate via PayPal](https://www.paypal.com/donate/?hosted_button_id=8SJXCUYV5ZHKG)
