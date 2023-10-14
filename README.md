@@ -26,7 +26,7 @@ However, Plasma is not just limited to hard dance genres – it's a versatile to
 - ARM versions of Windows are NOT supported
 ### MacOS
 - MacOS 10.13 or later
-- Intel 64-bit or Apple Silicon CPU
+- Intel or Apple Silicon CPU
 - At least 100 MB of free disk space
 - A compatible 64-bit host DAW that supports VST3 plugins
 
