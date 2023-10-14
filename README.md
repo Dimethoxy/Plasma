@@ -16,7 +16,10 @@ However, Plasma is not just limited to hard dance genres – it's a versatile to
 
 ## Images
 
-![Image of the GUI](Preview.png)
+<div align="center">
+  <img src="Preview.png" alt="Image of the GUI">
+</div>
+
 
 ## Donations
 If you have enjoyed using our software, please consider donating.
