@@ -1,7 +1,5 @@
 # Plasma
 
----
-
 Plasma is a free digital audio effect for VST3 hosts. With its asymmetrical distortion and warm filters, Plasma is the perfect tool for creating aggressive and unique sounds in hard dance genres like Gabber, Hardstyle, and Hardcore.
 
 However, Plasma is not just limited to hard dance genres – it's a versatile tool that can be used in any music production scenario. Use it to add grit and character to your guitar tracks or to create punishing basslines in your dubstep tracks. The possibilities with Plasma are endless.
@@ -11,8 +9,6 @@ However, Plasma is not just limited to hard dance genres – it's a versatile to
 </div>
 
 ## Features
-
----
 
 - Free (as in freedom) and open-source
 - Asymmetrical distortion
@@ -24,8 +20,6 @@ However, Plasma is not just limited to hard dance genres – it's a versatile to
 - Pre-built binaries for Windows and macOS.
 
 ## System Requirements
-
----
 
 ### Windows
 
@@ -44,8 +38,6 @@ However, Plasma is not just limited to hard dance genres – it's a versatile to
 
 ## Donations
 
----
-
 If you have enjoyed using our software, please consider donating.
 [Donate via PayPal](https://www.paypal.com/donate/?hosted_button_id=8SJXCUYV5ZHKG)
 
@@ -53,13 +45,9 @@ We are dedicated to providing high-quality audio tools to the community for free
 
 ## License
 
----
-
 The source code is licensed under the **GPLv3**. If you download the source or create builds, you must comply with that license. For more information, visit [http://www.gnu.org/licenses/](http://www.gnu.org/licenses/).
 
 ## Warranty
-
----
 
 You and your end-users use the software at your own risk.
 
