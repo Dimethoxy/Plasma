@@ -19,7 +19,7 @@ enum Target
   Linux
 };
 
-const Target OS = Mac;
+const Target OS = Windows;
 const juce::String PLASMA_VERSION = ProjectInfo::versionString;
 //
 
@@ -301,6 +301,35 @@ private:
     return responseJSON["download_url"].toString();
   }
 
+public:
+  class VersionManager : public juce::AsyncUpdater
+  {
+  public:
+    VersionManager(PlasmaAudioProcessorEditor& editor)
+      : juce::AsyncUpdater()
+      , editor(editor)
+    {
+    }
+    void handleAsyncUpdate()
+    {
+      std::thread([this] { editor.updateVersion(); }).detach();
+    }
+
+  private:
+    PlasmaAudioProcessorEditor& editor;
+  };
+  std::unique_ptr<VersionManager> versionManager;
+  void updateVersion()
+  {
+    applicationProperties.setStorageParameters(options);
+    auto userSettings = applicationProperties.getUserSettings();
+    bool isLatest = isUpToDate(PLASMA_VERSION, userSettings);
+    // updateButton.setVisible(!isLatest);
+    const MessageManagerLock mmLock;
+    updateButton.setVisible(true);
+  }
+
+private:
   // End
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PlasmaAudioProcessorEditor);
 };
