@@ -261,6 +261,10 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
                              FontSizes::Main,
                              Justification::centredLeft)
 {
+  // OpenGL Settings
+  openGLContext.setComponentPaintingEnabled(true);
+  openGLContext.setContinuousRepainting(false);
+  openGLContext.attachTo(*getTopLevelComponent());
 
   // Waveform
   waveformComponent = &p.waveformComponent;
@@ -356,7 +360,10 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
   setResizable(false, false);
   setSize(sc(810), sc(940));
 }
-PlasmaAudioProcessorEditor::~PlasmaAudioProcessorEditor() {}
+PlasmaAudioProcessorEditor::~PlasmaAudioProcessorEditor()
+{
+  openGLContext.detach();
+}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Draw
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

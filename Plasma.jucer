@@ -119,6 +119,7 @@
         <MODULEPATH id="juce_graphics" path="../../juce"/>
         <MODULEPATH id="juce_gui_basics" path="../../juce"/>
         <MODULEPATH id="juce_gui_extra" path="../../juce"/>
+        <MODULEPATH id="juce_opengl" path="../../Ressources/JUCE/modules"/>
       </MODULEPATHS>
     </VS2022>
     <XCODE_MAC targetFolder="Builds/MacOSX" iosInAppPurchases="0">
@@ -140,6 +141,7 @@
         <MODULEPATH id="juce_graphics" path="../../juce"/>
         <MODULEPATH id="juce_gui_basics" path="../../juce"/>
         <MODULEPATH id="juce_gui_extra" path="../../juce"/>
+        <MODULEPATH id="juce_opengl" path="../../Ressources/JUCE/modules"/>
       </MODULEPATHS>
     </XCODE_MAC>
     <LINUX_MAKE targetFolder="Builds/LinuxMakefile">
@@ -161,6 +163,7 @@
         <MODULEPATH id="juce_graphics" path="D:\Dev\Ressources\JUCE\modules"/>
         <MODULEPATH id="juce_gui_basics" path="D:\Dev\Ressources\JUCE\modules"/>
         <MODULEPATH id="juce_gui_extra" path="D:\Dev\Ressources\JUCE\modules"/>
+        <MODULEPATH id="juce_opengl" path="../../Ressources/JUCE/modules"/>
       </MODULEPATHS>
     </LINUX_MAKE>
     <XCODE_IPHONE targetFolder="Builds/iOS">
@@ -182,6 +185,7 @@
         <MODULEPATH id="juce_graphics" path="/Users/davidhess/Documents/Dev/JUCE/modules"/>
         <MODULEPATH id="juce_gui_basics" path="/Users/davidhess/Documents/Dev/JUCE/modules"/>
         <MODULEPATH id="juce_gui_extra" path="/Users/davidhess/Documents/Dev/JUCE/modules"/>
+        <MODULEPATH id="juce_opengl" path="../../Ressources/JUCE/modules"/>
       </MODULEPATHS>
     </XCODE_IPHONE>
   </EXPORTFORMATS>
@@ -200,5 +204,6 @@
     <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_opengl" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
   </MODULES>
 </JUCERPROJECT>
