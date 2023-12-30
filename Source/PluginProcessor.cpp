@@ -2,584 +2,699 @@
 #include "PluginEditor.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//JUCE
+// JUCE
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 PlasmaAudioProcessor::PlasmaAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
-	: AudioProcessor(BusesProperties()
-#if ! JucePlugin_IsMidiEffect
-#if ! JucePlugin_IsSynth
-		.withInput("Input", juce::AudioChannelSet::stereo(), true)
+  : AudioProcessor(
+      BusesProperties()
+#if !JucePlugin_IsMidiEffect
+#if !JucePlugin_IsSynth
+        .withInput("Input", juce::AudioChannelSet::stereo(), true)
 #endif
-		.withOutput("Output", juce::AudioChannelSet::stereo(), true)
+        .withOutput("Output", juce::AudioChannelSet::stereo(), true)
 #endif
-	)
+    )
 #endif
 {
 }
 
-PlasmaAudioProcessor::~PlasmaAudioProcessor()
-{
-}
+PlasmaAudioProcessor::~PlasmaAudioProcessor() {}
 
 //==============================================================================
-const juce::String PlasmaAudioProcessor::getName() const
+const juce::String
+PlasmaAudioProcessor::getName() const
 {
-	return JucePlugin_Name;
+  return JucePlugin_Name;
 }
 
-bool PlasmaAudioProcessor::acceptsMidi() const
+bool
+PlasmaAudioProcessor::acceptsMidi() const
 {
 #if JucePlugin_WantsMidiInput
-	return true;
+  return true;
 #else
-	return false;
+  return false;
 #endif
 }
 
-bool PlasmaAudioProcessor::producesMidi() const
+bool
+PlasmaAudioProcessor::producesMidi() const
 {
 #if JucePlugin_ProducesMidiOutput
-	return true;
+  return true;
 #else
-	return false;
+  return false;
 #endif
 }
 
-bool PlasmaAudioProcessor::isMidiEffect() const
+bool
+PlasmaAudioProcessor::isMidiEffect() const
 {
 #if JucePlugin_IsMidiEffect
-	return true;
+  return true;
 #else
-	return false;
+  return false;
 #endif
 }
 
-double PlasmaAudioProcessor::getTailLengthSeconds() const
+double
+PlasmaAudioProcessor::getTailLengthSeconds() const
 {
-	return 0.0;
+  return 0.0;
 }
 
-int PlasmaAudioProcessor::getNumPrograms()
+int
+PlasmaAudioProcessor::getNumPrograms()
 {
-	return 1;   // NB: some hosts don't cope very well if you tell them there are 0 programs,
-	// so this should be at least 1, even if you're not really implementing programs.
+  return 1; // NB: some hosts don't cope very well if you tell them there are 0
+            // programs,
+  // so this should be at least 1, even if you're not really implementing
+  // programs.
 }
 
-int PlasmaAudioProcessor::getCurrentProgram()
+int
+PlasmaAudioProcessor::getCurrentProgram()
 {
-	return 0;
+  return 0;
 }
 
-void PlasmaAudioProcessor::setCurrentProgram(int index)
+void
+PlasmaAudioProcessor::setCurrentProgram(int index)
 {
 }
 
-const juce::String PlasmaAudioProcessor::getProgramName(int index)
+const juce::String
+PlasmaAudioProcessor::getProgramName(int index)
 {
-	return {};
+  return {};
 }
 
-void PlasmaAudioProcessor::changeProgramName(int index, const juce::String& newName)
+void
+PlasmaAudioProcessor::changeProgramName(int index, const juce::String& newName)
 {
 }
 
 //==============================================================================
 
-void PlasmaAudioProcessor::releaseResources()
+void
+PlasmaAudioProcessor::releaseResources()
 {
-	// When playback stops, you can use this as an opportunity to free up any
-	// spare memory, etc.
+  // When playback stops, you can use this as an opportunity to free up any
+  // spare memory, etc.
 }
 
 #ifndef JucePlugin_PreferredChannelConfigurations
-bool PlasmaAudioProcessor::isBusesLayoutSupported(const BusesLayout& layouts) const
+bool
+PlasmaAudioProcessor::isBusesLayoutSupported(const BusesLayout& layouts) const
 {
 #if JucePlugin_IsMidiEffect
-	juce::ignoreUnused(layouts);
-	return true;
+  juce::ignoreUnused(layouts);
+  return true;
 #else
-	// This is the place where you check if the layout is supported.
-	// In this template code we only support mono or stereo.
-	// Some plugin hosts, such as certain GarageBand versions, will only
-	// load plugins that support stereo bus layouts.
-	if (layouts.getMainOutputChannelSet() != juce::AudioChannelSet::mono()
-		&& layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
-		return false;
+  // This is the place where you check if the layout is supported.
+  // In this template code we only support mono or stereo.
+  // Some plugin hosts, such as certain GarageBand versions, will only
+  // load plugins that support stereo bus layouts.
+  if (layouts.getMainOutputChannelSet() != juce::AudioChannelSet::mono() &&
+      layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
+    return false;
 
-	// This checks if the input layout matches the output layout
-#if ! JucePlugin_IsSynth
-	if (layouts.getMainOutputChannelSet() != layouts.getMainInputChannelSet())
-		return false;
+    // This checks if the input layout matches the output layout
+#if !JucePlugin_IsSynth
+  if (layouts.getMainOutputChannelSet() != layouts.getMainInputChannelSet())
+    return false;
 #endif
 
-	return true;
+  return true;
 #endif
 }
 #endif
 
 //==============================================================================
-bool PlasmaAudioProcessor::hasEditor() const
+bool
+PlasmaAudioProcessor::hasEditor() const
 {
-	return true; // (change this to false if you choose to not supply an editor)
+  return true; // (change this to false if you choose to not supply an editor)
 }
 
-juce::AudioProcessorEditor* PlasmaAudioProcessor::createEditor()
+juce::AudioProcessorEditor*
+PlasmaAudioProcessor::createEditor()
 {
-	//return new juce::GenericAudioProcessorEditor(*this);
-	return new PlasmaAudioProcessorEditor(*this);
+  // return new juce::GenericAudioProcessorEditor(*this);
+  return new PlasmaAudioProcessorEditor(*this);
 }
 
 //==============================================================================
-void PlasmaAudioProcessor::getStateInformation(juce::MemoryBlock& destData)
+void
+PlasmaAudioProcessor::getStateInformation(juce::MemoryBlock& destData)
 {
-	juce::MemoryOutputStream mos(destData, true);
-	apvts.state.writeToStream(mos);
+  juce::MemoryOutputStream mos(destData, true);
+  apvts.state.writeToStream(mos);
 }
 
-void PlasmaAudioProcessor::setStateInformation(const void* data, int sizeInBytes)
+void
+PlasmaAudioProcessor::setStateInformation(const void* data, int sizeInBytes)
 {
-	auto tree = juce::ValueTree::readFromData(data, sizeInBytes);
-	if (tree.isValid())
-	{
-		apvts.replaceState(tree);
-		updateFilters();
-	}
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//Prepare
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
-{
-	return new PlasmaAudioProcessor();
-}
-
-void PlasmaAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
-{
-	juce::dsp::ProcessSpec spec;
-	spec.maximumBlockSize = samplesPerBlock;
-	spec.numChannels = 1;
-	spec.sampleRate = sampleRate;
-
-	leftChain.prepare(spec);
-	rightChain.prepare(spec);
-
-	//Filter
-	updateFilters();
-
-	//Allocate Clean Buffer
-	cleanBuffer.setSize(getNumInputChannels(), samplesPerBlock);
-
-	//Waveform
-	waveformComponent.clear();
+  auto tree = juce::ValueTree::readFromData(data, sizeInBytes);
+  if (tree.isValid()) {
+    apvts.replaceState(tree);
+    updateFilters();
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//ProcessBlock
+// Prepare
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
+juce::AudioProcessor* JUCE_CALLTYPE
+createPluginFilter()
 {
-	juce::ScopedNoDenormals noDenormals;
-	auto totalNumInputChannels = getTotalNumInputChannels();
-	auto totalNumOutputChannels = getTotalNumOutputChannels();
-
-	for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
-		buffer.clear(i, 0, buffer.getNumSamples());
-
-	//Get Settings
-	auto chainSettings = getChainSettings(apvts);
-	float gain = Decibels::decibelsToGain(chainSettings.gain);
-	float preGain = Decibels::decibelsToGain(chainSettings.preGain);
-	float mixWet = chainSettings.mix / 100;
-	float mixDry = (100.0 - chainSettings.mix) / 100;
-	//bool killswitch = false;
-
-	//Clean
-	AudioSampleBuffer tmpBuffer(cleanBuffer.getArrayOfWritePointers(), buffer.getNumChannels(), buffer.getNumSamples());
-	for (int ch = 0; ch < buffer.getNumChannels(); ++ch)
-		tmpBuffer.copyFrom(ch, 0, buffer, ch, 0, buffer.getNumSamples());
-
-	//Clean RMS
-	auto leftRms = buffer.getRMSLevel(0, 0, buffer.getNumSamples());
-	auto rightRms = buffer.getRMSLevel(1, 0, buffer.getNumSamples());
-
-	//Distortion Unit
-	std::vector<int> randoms(buffer.getNumSamples());
-	for (int& n : randoms) n = rand();
-	for (int channel = 0; channel < 2; ++channel)
-	{
-		auto* channelData = buffer.getWritePointer(channel);
-
-		for (int sample = 0; sample < buffer.getNumSamples(); sample++)
-		{
-			if (channelData[sample] != 0.0)
-			{
-				//Pre Gain
-				channelData[sample] = DistortionProcessor::clamp(channelData[sample] * preGain, -1.0, 1.0);
-
-				//Girth
-				if (chainSettings.girth >= 0.0f)
-					channelData[sample] = channelData[sample] * ((((float)(rand() % 100)) / 100 * chainSettings.girth) + 1);
-				else {
-					channelData[sample] = channelData[sample] * ((((float)(randoms[sample] % 100)) / 100 * -chainSettings.girth) + 1);
-				}
-
-				//Drive          
-				DistortionProcessor::distort(channelData[sample], chainSettings.drive, chainSettings.driveType);
-
-				//Bias
-				//channelData[sample] = clamp(channelData[sample] + chainSettings.bias, -1.0, 1.0);
-				if (channelData[sample] > 0)
-				{
-					channelData[sample] += channelData[sample] * chainSettings.bias;
-				}
-				else if (channelData[sample] < 0)
-				{
-					channelData[sample] -= channelData[sample] * chainSettings.bias;
-				}
-			}
-		}
-	}
-
-	//DSP
-	juce::dsp::AudioBlock<float> block(buffer);
-
-	//Filter
-	updateFilters();
-	auto threshold = 0.0f;
-	if (leftRms != threshold)
-	{
-		auto leftBlock = block.getSingleChannelBlock(0);
-		juce::dsp::ProcessContextReplacing<float> leftContext(leftBlock);
-		leftChain.process(leftContext);
-	}
-	else {
-		auto data = buffer.getWritePointer(0);
-		for (int sample = 0; sample < buffer.getNumSamples(); sample++)
-		{
-			data[sample] = 0.0f;
-		}
-	}
-
-	if (rightRms != threshold)
-	{
-		auto rightBlock = block.getSingleChannelBlock(1);
-		juce::dsp::ProcessContextReplacing<float> rightContext(rightBlock);
-		rightChain.process(rightContext);
-	}
-	else {
-		auto data = buffer.getWritePointer(1);
-		for (int sample = 0; sample < buffer.getNumSamples(); sample++)
-		{
-			data[sample] = 0.0f;
-		}
-	}
-
-	//Late Stage
-	for (int& n : randoms) n = rand();
-	for (int channel = 0; channel < totalNumInputChannels; ++channel)
-	{
-		auto* channelData = buffer.getWritePointer(channel);
-		auto* cleanData = tmpBuffer.getWritePointer(channel);
-		for (int sample = 0; sample < buffer.getNumSamples(); sample++)
-		{
-			if (channelData[sample] != 0.0)
-			{
-				//Reduce Loudness
-				channelData[sample] = DistortionProcessor::clamp(channelData[sample], -1, 1);
-
-				//Girth
-				if (chainSettings.lateGirth >= 0.0f)
-					channelData[sample] = channelData[sample] * ((((float)(rand() % 100)) / 100 * chainSettings.lateGirth) + 1);
-				else {
-					channelData[sample] = channelData[sample] * ((((float)(randoms[sample] % 100)) / 100 * -chainSettings.lateGirth) + 1);
-				}
-
-				//Drive 
-				DistortionProcessor::distort(channelData[sample], chainSettings.lateDrive, chainSettings.lateDriveType);
-
-				//Bias 
-				if (channelData[sample] > 0)
-				{
-					channelData[sample] += channelData[sample] * chainSettings.lateBias;
-				}
-				else if (channelData[sample] < 0)
-				{
-					channelData[sample] -= channelData[sample] * chainSettings.lateBias;
-				}
-				//Mix
-				channelData[sample] = cleanData[sample] * mixDry + channelData[sample] * mixWet;
-
-				//Reduce Loudness for Waveform Analyser
-				channelData[sample] = 0.5 * DistortionProcessor::clamp(channelData[sample], -1, 1);
-			}
-		}
-	}
-
-	//Update Waveform Analyser
-	waveformComponent.pushBuffer(buffer);
-	for (int channel = 0; channel < totalNumInputChannels; ++channel)
-	{
-		auto* channelData = buffer.getWritePointer(channel);
-		for (int sample = 0; sample < buffer.getNumSamples(); sample++)
-		{
-			//Gain
-			channelData[sample] = channelData[sample] * gain * 2;
-		}
-
-	}
+  return new PlasmaAudioProcessor();
 }
 
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//AudioProcessorValueTreeState
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-juce::AudioProcessorValueTreeState::ParameterLayout PlasmaAudioProcessor::createParameterLayout()
+void
+PlasmaAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
-	juce::AudioProcessorValueTreeState::ParameterLayout layout;
+  juce::dsp::ProcessSpec spec;
+  spec.maximumBlockSize = samplesPerBlock;
+  spec.numChannels = 1;
+  spec.sampleRate = sampleRate;
 
-	//Pre Gain
-	layout.add(std::make_unique<juce::AudioParameterFloat>
-		("Pre Gain", "Pre Gain",
-			juce::NormalisableRange<float>(-32.0f, 32.0f, 0.2f, 1.0f), 0.0f));
-	//Drive
-	juce::StringArray distortionArray;
-	distortionArray.add("Hard Clip");
-	distortionArray.add("Soft Clip");
-	distortionArray.add("Saturate");
-	distortionArray.add("Atan");
-	distortionArray.add("Crunch");
-	distortionArray.add("Bitcrush");
-	distortionArray.add("Extreme");
-	distortionArray.add("Scream");
-	distortionArray.add("Sine");
-	distortionArray.add("Cosine");
-    distortionArray.add("Harmonic");
-	distortionArray.add("Weird");
-	layout.add(std::make_unique<juce::AudioParameterFloat>
-		("Drive", "Drive",
-			juce::NormalisableRange<float>(1.0f, 11.0f, 0.01f, 0.5f), 0.0f));
-	layout.add(std::make_unique<juce::AudioParameterChoice>
-		("Distortion Type", "Distortion Type", distortionArray, 0));
-	//Girth
-	layout.add(std::make_unique<juce::AudioParameterFloat>
-		("Girth", "Girth",
-			juce::NormalisableRange<float>(-1.0f, 1.0f, 0.01f, 1.0f), 0.0f));
-	//Bias
-	layout.add(std::make_unique<juce::AudioParameterFloat>
-		("Bias", "Bias",
-			juce::NormalisableRange<float>(-1.0f, 1.0f, 0.01f, 1.0f), 0.0f));
-	//Peak
-	layout.add(std::make_unique<juce::AudioParameterFloat>
-		("Peak Stereo", "Peak Stereo",
-			juce::NormalisableRange<float>(0.0f, 100.0f, 0.1f, 1.0f), 0.0f));
-	layout.add(std::make_unique<juce::AudioParameterFloat>
-		("Peak Freq", "Peak Freq",
-			juce::NormalisableRange<float>(20.0f, 20000.0f, 0.1f, 0.18), 450.0f));
-	layout.add(std::make_unique<juce::AudioParameterFloat>
-		("Peak Gain", "Peak Gain",
-			juce::NormalisableRange<float>(-48.0f, 48.0f, 0.1f, 1.0f), 0.0f));
-	layout.add(std::make_unique<juce::AudioParameterFloat>
-		("Peak Q", "Peak Q",
-			juce::NormalisableRange<float>(0.1f, 5.0f, 0.01f, 1.0f), 1.0f));
-	//Slope Array
-	juce::StringArray slopeArray;
-	for (int i = 0; i < 8; i++) {
-		juce::String str;
-		str << (12 + i * 12);
-		str << " db/Oct";
-		slopeArray.add(str);
-	}
-	slopeArray.add("Bypass");
-	//Highpass
-	layout.add(std::make_unique<juce::AudioParameterChoice>
-		("Highpass Slope", "Highpass Slope", slopeArray, 0));
-	layout.add(std::make_unique<juce::AudioParameterFloat>
-		("Highpass Freq", "Highpass Freq",
-			juce::NormalisableRange<float>(20.0f, 20000.0f, 0.1f, 0.18f), 20.0f));
-	layout.add(std::make_unique<juce::AudioParameterFloat>
-		("Highpass Resonance", "Highpass Resonance",
-			juce::NormalisableRange<float>(0.0f, 64.0f, 0.1f, 1.0f), 0.0f));
-	layout.add(std::make_unique<juce::AudioParameterFloat>
-		("Highpass Resonance Q", "Highpass Resonance Q",
-			juce::NormalisableRange<float>(0.1f, 5.0f, 0.01f, 1.0f), 1.0f));
-	//Lowpass
-	layout.add(std::make_unique<juce::AudioParameterChoice>
-		("Lowpass Slope", "Lowpass Slope", slopeArray, 0));
-	layout.add(std::make_unique<juce::AudioParameterFloat>
-		("Lowpass Freq", "Lowpass Freq",
-			juce::NormalisableRange<float>(20.0f, 20000.0f, 0.1f, 0.18f), 20000.0f));
-	layout.add(std::make_unique<juce::AudioParameterFloat>
-		("Lowpass Resonance", "Lowpass Resonance",
-			juce::NormalisableRange<float>(0.0f, 64.0f, 0.1f, 1.0f), 0.0f));
-	layout.add(std::make_unique<juce::AudioParameterFloat>
-		("Lowpass Resonance Q", "Lowpass Resonance Q",
-			juce::NormalisableRange<float>(0.1f, 5.0f, 0.01f, 1.0f), 1.0f));
-	//Late Drive
-	layout.add(std::make_unique<juce::AudioParameterChoice>
-		("Late Distortion Type", "Late Distortion Type", distortionArray, 0));
-	layout.add(std::make_unique<juce::AudioParameterFloat>
-		("Late Drive", "Late Drive",
-			juce::NormalisableRange<float>(1.0f, 11.0f, 0.01f, 0.5f), 0.0f));
-	//Late Girth
-	layout.add(std::make_unique<juce::AudioParameterFloat>
-		("Late Girth", "Late Girth",
-			juce::NormalisableRange<float>(-1.0f, 1.0f, 0.01f, 1.0f), 0.0f));
-	//Late Bias
-	layout.add(std::make_unique<juce::AudioParameterFloat>
-		("Late Bias", "Late Bias",
-			juce::NormalisableRange<float>(-1.0f, 1.0f, 0.01f, 1.0f), 0.0f));
-	//Gain
-	layout.add(std::make_unique<juce::AudioParameterFloat>
-		("Gain", "Gain",
-			juce::NormalisableRange<float>(-32.0f, 32.0f, 0.2f, 1.0f), 0.0f));
-	//Mix
-	layout.add(std::make_unique<juce::AudioParameterFloat>
-		("Mix", "Mix",
-			juce::NormalisableRange<float>(0.0f, 100.0f, 0.01f, 1.0f), 100.0f));
-	//Analyser
-	juce::StringArray analyserArray;
-	for (int i = 0; i < 5; i++) {
-		juce::String str;
-		str << "Type ";
-		str << i;
-		analyserArray.add(str);
-	}
-	layout.add(std::make_unique<juce::AudioParameterChoice>
-		("Analyser Type", "Analyser Type", analyserArray, 0));
-	return layout;
-}
+  leftChain.prepare(spec);
+  rightChain.prepare(spec);
 
-ChainSettings getChainSettings(juce::AudioProcessorValueTreeState& apvts)
-{
-	ChainSettings settings;
-	//Distortion Unit
-	settings.preGain = apvts.getRawParameterValue("Pre Gain")->load();
-	settings.drive = apvts.getRawParameterValue("Drive")->load();
-	settings.girth = apvts.getRawParameterValue("Girth")->load();
-	settings.bias = apvts.getRawParameterValue("Bias")->load();
-	settings.driveType = static_cast<Distortion>(apvts.getRawParameterValue("Distortion Type")->load());
-	//Peak
-	settings.peakStereo = apvts.getRawParameterValue("Peak Stereo")->load();
-	settings.peakFreq = apvts.getRawParameterValue("Peak Freq")->load();
-	settings.peakGain = apvts.getRawParameterValue("Peak Gain")->load();
-	settings.peakQuality = apvts.getRawParameterValue("Peak Q")->load();
-	//Highpass
-	settings.highPassFreq = apvts.getRawParameterValue("Highpass Freq")->load();
-	settings.highPassResonance = apvts.getRawParameterValue("Highpass Resonance")->load();
-	settings.highPassResonanceQuality = apvts.getRawParameterValue("Highpass Resonance Q")->load();
-	settings.highPassSlope = static_cast<Slope>(apvts.getRawParameterValue("Highpass Slope")->load());
-	//Lowpass
-	settings.lowPassFreq = apvts.getRawParameterValue("Lowpass Freq")->load();
-	settings.lowPassResonance = apvts.getRawParameterValue("Lowpass Resonance")->load();
-	settings.lowPassResonanceQuality = apvts.getRawParameterValue("Lowpass Resonance Q")->load();
-	settings.lowPassSlope = static_cast<Slope>(apvts.getRawParameterValue("Lowpass Slope")->load());
+  // Filter
+  updateFilters();
 
-	//Late
-	settings.lateDriveType = static_cast<Distortion>(apvts.getRawParameterValue("Late Distortion Type")->load());
-	settings.lateDrive = apvts.getRawParameterValue("Late Drive")->load();
-	settings.lateGirth = apvts.getRawParameterValue("Late Girth")->load();
-	settings.lateBias = apvts.getRawParameterValue("Late Bias")->load();
-	settings.gain = apvts.getRawParameterValue("Gain")->load();
-	//Mix
-	settings.mix = apvts.getRawParameterValue("Mix")->load();
-	//Analyser
-	settings.analyserType = static_cast<AnalyserType>(apvts.getRawParameterValue("Analyser Type")->load());
-	return settings;
+  // Allocate Clean Buffer
+  cleanBuffer.setSize(getNumInputChannels(), samplesPerBlock);
+
+  // Waveform
+  waveformComponent.clear();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//Filters
+// ProcessBlock
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void PlasmaAudioProcessor::updateFilters()
+void
+PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
+                                   juce::MidiBuffer& midiMessages)
 {
-	auto chainSettings = getChainSettings(apvts);
-	updateHighPass(chainSettings);
-	updateHighPassResonance(chainSettings);
-	updatePeakFilter(chainSettings);
-	updateLowPass(chainSettings);
-	updateLowPassResonance(chainSettings);
+  juce::ScopedNoDenormals noDenormals;
+  auto totalNumInputChannels = getTotalNumInputChannels();
+  auto totalNumOutputChannels = getTotalNumOutputChannels();
+
+  for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
+    buffer.clear(i, 0, buffer.getNumSamples());
+  float gain, preGain;
+  // Get Settings
+  auto chainSettings = getChainSettings(apvts);
+  if (chainSettings.preGain > -32.f) {
+    preGain = Decibels::decibelsToGain(chainSettings.preGain);
+
+  } else {
+    // If the gain is set to mute,
+    // might as well just clear the buffer and return
+    buffer.clear();
+    return;
+  }
+  if (chainSettings.gain > -32.f) {
+    gain = Decibels::decibelsToGain(chainSettings.gain);
+  } else {
+    gain = 0.f;
+  }
+  float mixWet = chainSettings.mix / 100;
+  float mixDry = (100.0 - chainSettings.mix) / 100;
+  // bool killswitch = false;
+
+  // Clean
+  AudioSampleBuffer tmpBuffer(cleanBuffer.getArrayOfWritePointers(),
+                              buffer.getNumChannels(),
+                              buffer.getNumSamples());
+  for (int ch = 0; ch < buffer.getNumChannels(); ++ch)
+    tmpBuffer.copyFrom(ch, 0, buffer, ch, 0, buffer.getNumSamples());
+
+  // Clean RMS
+  auto leftRms = buffer.getRMSLevel(0, 0, buffer.getNumSamples());
+  auto rightRms = buffer.getRMSLevel(1, 0, buffer.getNumSamples());
+
+  // Distortion Unit
+  std::vector<int> randoms(buffer.getNumSamples());
+  for (int& n : randoms)
+    n = rand();
+  for (int channel = 0; channel < 2; ++channel) {
+    auto* channelData = buffer.getWritePointer(channel);
+
+    for (int sample = 0; sample < buffer.getNumSamples(); sample++) {
+      if (channelData[sample] != 0.0) {
+        // Pre Gain
+        channelData[sample] =
+          DistortionProcessor::clamp(channelData[sample] * preGain, -1.0, 1.0);
+
+        // Girth
+        if (chainSettings.girth >= 0.0f)
+          channelData[sample] =
+            channelData[sample] *
+            ((((float)(rand() % 100)) / 100 * chainSettings.girth) + 1);
+        else {
+          channelData[sample] =
+            channelData[sample] *
+            ((((float)(randoms[sample] % 100)) / 100 * -chainSettings.girth) +
+             1);
+        }
+
+        // Drive
+        DistortionProcessor::distort(
+          channelData[sample], chainSettings.drive, chainSettings.driveType);
+
+        // Bias
+        // channelData[sample] = clamp(channelData[sample] +
+        // chainSettings.bias, -1.0, 1.0);
+        if (channelData[sample] > 0) {
+          channelData[sample] += channelData[sample] * chainSettings.bias;
+        } else if (channelData[sample] < 0) {
+          channelData[sample] -= channelData[sample] * chainSettings.bias;
+        }
+      }
+    }
+  }
+
+  // DSP
+  juce::dsp::AudioBlock<float> block(buffer);
+
+  // Filter
+  updateFilters();
+  auto threshold = 0.0f;
+  if (leftRms != threshold) {
+    auto leftBlock = block.getSingleChannelBlock(0);
+    juce::dsp::ProcessContextReplacing<float> leftContext(leftBlock);
+    leftChain.process(leftContext);
+  } else {
+    auto data = buffer.getWritePointer(0);
+    for (int sample = 0; sample < buffer.getNumSamples(); sample++) {
+      data[sample] = 0.0f;
+    }
+  }
+
+  if (rightRms != threshold) {
+    auto rightBlock = block.getSingleChannelBlock(1);
+    juce::dsp::ProcessContextReplacing<float> rightContext(rightBlock);
+    rightChain.process(rightContext);
+  } else {
+    auto data = buffer.getWritePointer(1);
+    for (int sample = 0; sample < buffer.getNumSamples(); sample++) {
+      data[sample] = 0.0f;
+    }
+  }
+
+  // Late Stage
+  for (int& n : randoms)
+    n = rand();
+  for (int channel = 0; channel < totalNumInputChannels; ++channel) {
+    auto* channelData = buffer.getWritePointer(channel);
+    auto* cleanData = tmpBuffer.getWritePointer(channel);
+    for (int sample = 0; sample < buffer.getNumSamples(); sample++) {
+      if (channelData[sample] != 0.0) {
+        // Reduce Loudness
+        channelData[sample] =
+          DistortionProcessor::clamp(channelData[sample], -1, 1);
+
+        // Girth
+        if (chainSettings.lateGirth >= 0.0f)
+          channelData[sample] =
+            channelData[sample] *
+            ((((float)(rand() % 100)) / 100 * chainSettings.lateGirth) + 1);
+        else {
+          channelData[sample] =
+            channelData[sample] * ((((float)(randoms[sample] % 100)) / 100 *
+                                    -chainSettings.lateGirth) +
+                                   1);
+        }
+
+        // Drive
+        DistortionProcessor::distort(channelData[sample],
+                                     chainSettings.lateDrive,
+                                     chainSettings.lateDriveType);
+
+        // Bias
+        if (channelData[sample] > 0) {
+          channelData[sample] += channelData[sample] * chainSettings.lateBias;
+        } else if (channelData[sample] < 0) {
+          channelData[sample] -= channelData[sample] * chainSettings.lateBias;
+        }
+        // Mix
+        channelData[sample] =
+          cleanData[sample] * mixDry + channelData[sample] * mixWet;
+
+        // Reduce Loudness for Waveform Analyser
+        channelData[sample] =
+          0.5 * DistortionProcessor::clamp(channelData[sample], -1, 1);
+      }
+    }
+  }
+
+  // Update Waveform Analyser
+  waveformComponent.pushBuffer(buffer);
+  for (int channel = 0; channel < totalNumInputChannels; ++channel) {
+    auto* channelData = buffer.getWritePointer(channel);
+    for (int sample = 0; sample < buffer.getNumSamples(); sample++) {
+      // Gain
+      channelData[sample] = channelData[sample] * gain * 2;
+    }
+  }
 }
-Coefficients makePeakFilter(const ChainSettings& chainSettings, double sampleRate, float offset)
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// AudioProcessorValueTreeState
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+juce::AudioProcessorValueTreeState::ParameterLayout
+PlasmaAudioProcessor::createParameterLayout()
 {
-	return juce::dsp::IIR::Coefficients<float>::makePeakFilter(sampleRate,
-		DistortionProcessor::clamp(chainSettings.peakFreq + offset, 20, 20000),
-		chainSettings.peakQuality,
-		juce::Decibels::decibelsToGain(chainSettings.peakGain));
+  juce::AudioProcessorValueTreeState::ParameterLayout layout;
+
+  // Pre Gain
+  layout.add(std::make_unique<juce::AudioParameterFloat>(
+    "Pre Gain",
+    "Pre Gain",
+    juce::NormalisableRange<float>(-32.0f, 32.0f, 0.2f, 1.0f),
+    0.0f));
+  // Drive
+  juce::StringArray distortionArray;
+  distortionArray.add("Hard Clip");
+  distortionArray.add("Soft Clip");
+  distortionArray.add("Saturate");
+  distortionArray.add("Atan");
+  distortionArray.add("Crunch");
+  distortionArray.add("Bitcrush");
+  distortionArray.add("Extreme");
+  distortionArray.add("Scream");
+  distortionArray.add("Sine");
+  distortionArray.add("Cosine");
+  distortionArray.add("Harmonic");
+  distortionArray.add("Weird");
+  layout.add(std::make_unique<juce::AudioParameterFloat>(
+    "Drive",
+    "Drive",
+    juce::NormalisableRange<float>(1.0f, 11.0f, 0.01f, 0.5f),
+    0.0f));
+  layout.add(std::make_unique<juce::AudioParameterChoice>(
+    "Distortion Type", "Distortion Type", distortionArray, 0));
+  // Girth
+  layout.add(std::make_unique<juce::AudioParameterFloat>(
+    "Girth",
+    "Girth",
+    juce::NormalisableRange<float>(-1.0f, 1.0f, 0.01f, 1.0f),
+    0.0f));
+  // Bias
+  layout.add(std::make_unique<juce::AudioParameterFloat>(
+    "Bias",
+    "Bias",
+    juce::NormalisableRange<float>(-1.0f, 1.0f, 0.01f, 1.0f),
+    0.0f));
+  // Peak
+  layout.add(std::make_unique<juce::AudioParameterFloat>(
+    "Peak Stereo",
+    "Peak Stereo",
+    juce::NormalisableRange<float>(0.0f, 100.0f, 0.1f, 1.0f),
+    0.0f));
+  layout.add(std::make_unique<juce::AudioParameterFloat>(
+    "Peak Freq",
+    "Peak Freq",
+    juce::NormalisableRange<float>(20.0f, 20000.0f, 0.1f, 0.18),
+    450.0f));
+  layout.add(std::make_unique<juce::AudioParameterFloat>(
+    "Peak Gain",
+    "Peak Gain",
+    juce::NormalisableRange<float>(-48.0f, 48.0f, 0.1f, 1.0f),
+    0.0f));
+  layout.add(std::make_unique<juce::AudioParameterFloat>(
+    "Peak Q",
+    "Peak Q",
+    juce::NormalisableRange<float>(0.1f, 5.0f, 0.01f, 1.0f),
+    1.0f));
+  // Slope Array
+  juce::StringArray slopeArray;
+  for (int i = 0; i < 8; i++) {
+    juce::String str;
+    str << (12 + i * 12);
+    str << " db/Oct";
+    slopeArray.add(str);
+  }
+  slopeArray.add("Bypass");
+  // Highpass
+  layout.add(std::make_unique<juce::AudioParameterChoice>(
+    "Highpass Slope", "Highpass Slope", slopeArray, 0));
+  layout.add(std::make_unique<juce::AudioParameterFloat>(
+    "Highpass Freq",
+    "Highpass Freq",
+    juce::NormalisableRange<float>(20.0f, 20000.0f, 0.1f, 0.18f),
+    20.0f));
+  layout.add(std::make_unique<juce::AudioParameterFloat>(
+    "Highpass Resonance",
+    "Highpass Resonance",
+    juce::NormalisableRange<float>(0.0f, 64.0f, 0.1f, 1.0f),
+    0.0f));
+  layout.add(std::make_unique<juce::AudioParameterFloat>(
+    "Highpass Resonance Q",
+    "Highpass Resonance Q",
+    juce::NormalisableRange<float>(0.1f, 5.0f, 0.01f, 1.0f),
+    1.0f));
+  // Lowpass
+  layout.add(std::make_unique<juce::AudioParameterChoice>(
+    "Lowpass Slope", "Lowpass Slope", slopeArray, 0));
+  layout.add(std::make_unique<juce::AudioParameterFloat>(
+    "Lowpass Freq",
+    "Lowpass Freq",
+    juce::NormalisableRange<float>(20.0f, 20000.0f, 0.1f, 0.18f),
+    20000.0f));
+  layout.add(std::make_unique<juce::AudioParameterFloat>(
+    "Lowpass Resonance",
+    "Lowpass Resonance",
+    juce::NormalisableRange<float>(0.0f, 64.0f, 0.1f, 1.0f),
+    0.0f));
+  layout.add(std::make_unique<juce::AudioParameterFloat>(
+    "Lowpass Resonance Q",
+    "Lowpass Resonance Q",
+    juce::NormalisableRange<float>(0.1f, 5.0f, 0.01f, 1.0f),
+    1.0f));
+  // Late Drive
+  layout.add(std::make_unique<juce::AudioParameterChoice>(
+    "Late Distortion Type", "Late Distortion Type", distortionArray, 0));
+  layout.add(std::make_unique<juce::AudioParameterFloat>(
+    "Late Drive",
+    "Late Drive",
+    juce::NormalisableRange<float>(1.0f, 11.0f, 0.01f, 0.5f),
+    0.0f));
+  // Late Girth
+  layout.add(std::make_unique<juce::AudioParameterFloat>(
+    "Late Girth",
+    "Late Girth",
+    juce::NormalisableRange<float>(-1.0f, 1.0f, 0.01f, 1.0f),
+    0.0f));
+  // Late Bias
+  layout.add(std::make_unique<juce::AudioParameterFloat>(
+    "Late Bias",
+    "Late Bias",
+    juce::NormalisableRange<float>(-1.0f, 1.0f, 0.01f, 1.0f),
+    0.0f));
+  // Gain
+  layout.add(std::make_unique<juce::AudioParameterFloat>(
+    "Gain",
+    "Gain",
+    juce::NormalisableRange<float>(-32.0f, 32.0f, 0.2f, 1.0f),
+    0.0f));
+  // Mix
+  layout.add(std::make_unique<juce::AudioParameterFloat>(
+    "Mix",
+    "Mix",
+    juce::NormalisableRange<float>(0.0f, 100.0f, 0.01f, 1.0f),
+    100.0f));
+  // Analyser
+  juce::StringArray analyserArray;
+  for (int i = 0; i < 5; i++) {
+    juce::String str;
+    str << "Type ";
+    str << i;
+    analyserArray.add(str);
+  }
+  layout.add(std::make_unique<juce::AudioParameterChoice>(
+    "Analyser Type", "Analyser Type", analyserArray, 0));
+  return layout;
 }
-Coefficients makeLowPassResonance(const ChainSettings& chainSettings, double sampleRate)
+
+ChainSettings
+getChainSettings(juce::AudioProcessorValueTreeState& apvts)
 {
-	return juce::dsp::IIR::Coefficients<float>::makePeakFilter(sampleRate,
-		chainSettings.lowPassFreq,
-		chainSettings.lowPassResonanceQuality,
-		juce::Decibels::decibelsToGain(chainSettings.lowPassResonance));
+  ChainSettings settings;
+  // Distortion Unit
+  settings.preGain = apvts.getRawParameterValue("Pre Gain")->load();
+  settings.drive = apvts.getRawParameterValue("Drive")->load();
+  settings.girth = apvts.getRawParameterValue("Girth")->load();
+  settings.bias = apvts.getRawParameterValue("Bias")->load();
+  settings.driveType = static_cast<Distortion>(
+    apvts.getRawParameterValue("Distortion Type")->load());
+  // Peak
+  settings.peakStereo = apvts.getRawParameterValue("Peak Stereo")->load();
+  settings.peakFreq = apvts.getRawParameterValue("Peak Freq")->load();
+  settings.peakGain = apvts.getRawParameterValue("Peak Gain")->load();
+  settings.peakQuality = apvts.getRawParameterValue("Peak Q")->load();
+  // Highpass
+  settings.highPassFreq = apvts.getRawParameterValue("Highpass Freq")->load();
+  settings.highPassResonance =
+    apvts.getRawParameterValue("Highpass Resonance")->load();
+  settings.highPassResonanceQuality =
+    apvts.getRawParameterValue("Highpass Resonance Q")->load();
+  settings.highPassSlope =
+    static_cast<Slope>(apvts.getRawParameterValue("Highpass Slope")->load());
+  // Lowpass
+  settings.lowPassFreq = apvts.getRawParameterValue("Lowpass Freq")->load();
+  settings.lowPassResonance =
+    apvts.getRawParameterValue("Lowpass Resonance")->load();
+  settings.lowPassResonanceQuality =
+    apvts.getRawParameterValue("Lowpass Resonance Q")->load();
+  settings.lowPassSlope =
+    static_cast<Slope>(apvts.getRawParameterValue("Lowpass Slope")->load());
+
+  // Late
+  settings.lateDriveType = static_cast<Distortion>(
+    apvts.getRawParameterValue("Late Distortion Type")->load());
+  settings.lateDrive = apvts.getRawParameterValue("Late Drive")->load();
+  settings.lateGirth = apvts.getRawParameterValue("Late Girth")->load();
+  settings.lateBias = apvts.getRawParameterValue("Late Bias")->load();
+  settings.gain = apvts.getRawParameterValue("Gain")->load();
+  // Mix
+  settings.mix = apvts.getRawParameterValue("Mix")->load();
+  // Analyser
+  settings.analyserType = static_cast<AnalyserType>(
+    apvts.getRawParameterValue("Analyser Type")->load());
+  return settings;
 }
-Coefficients makeHighPassResonance(const ChainSettings& chainSettings, double sampleRate)
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Filters
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void
+PlasmaAudioProcessor::updateFilters()
 {
-	return juce::dsp::IIR::Coefficients<float>::makePeakFilter(sampleRate,
-		chainSettings.highPassFreq,
-		chainSettings.highPassResonanceQuality,
-		juce::Decibels::decibelsToGain(chainSettings.highPassResonance));
+  auto chainSettings = getChainSettings(apvts);
+  updateHighPass(chainSettings);
+  updateHighPassResonance(chainSettings);
+  updatePeakFilter(chainSettings);
+  updateLowPass(chainSettings);
+  updateLowPassResonance(chainSettings);
 }
-void PlasmaAudioProcessor::updatePeakFilter(const ChainSettings& chainSettings)
+Coefficients
+makePeakFilter(const ChainSettings& chainSettings,
+               double sampleRate,
+               float offset)
 {
-	auto peakCoefficientsL = makePeakFilter(chainSettings, getSampleRate(), chainSettings.peakStereo);
-	auto peakCoefficientsR = makePeakFilter(chainSettings, getSampleRate(), -chainSettings.peakStereo);
-	updateCoefficients(leftChain.get<ChainPositions::Peak>().coefficients, *peakCoefficientsL);
-	updateCoefficients(rightChain.get<ChainPositions::Peak>().coefficients, *peakCoefficientsR);
+  return juce::dsp::IIR::Coefficients<float>::makePeakFilter(
+    sampleRate,
+    DistortionProcessor::clamp(chainSettings.peakFreq + offset, 20, 20000),
+    chainSettings.peakQuality,
+    juce::Decibels::decibelsToGain(chainSettings.peakGain));
 }
-
-void PlasmaAudioProcessor::updateHighPassResonance(const ChainSettings& chainSettings)
+Coefficients
+makeLowPassResonance(const ChainSettings& chainSettings, double sampleRate)
 {
-	auto peakCoefficients = juce::dsp::IIR::Coefficients<float>::makePeakFilter(getSampleRate(),
-		chainSettings.highPassFreq,
-		chainSettings.highPassResonanceQuality,
-		juce::Decibels::decibelsToGain(chainSettings.highPassResonance));
-
-	updateCoefficients(leftChain.get<ChainPositions::HighPassResonance>().coefficients, *peakCoefficients);
-	updateCoefficients(rightChain.get<ChainPositions::HighPassResonance>().coefficients, *peakCoefficients);
+  return juce::dsp::IIR::Coefficients<float>::makePeakFilter(
+    sampleRate,
+    chainSettings.lowPassFreq,
+    chainSettings.lowPassResonanceQuality,
+    juce::Decibels::decibelsToGain(chainSettings.lowPassResonance));
 }
-
-void PlasmaAudioProcessor::updateLowPassResonance(const ChainSettings& chainSettings)
+Coefficients
+makeHighPassResonance(const ChainSettings& chainSettings, double sampleRate)
 {
-	auto peakCoefficients = juce::dsp::IIR::Coefficients<float>::makePeakFilter(getSampleRate(),
-		chainSettings.lowPassFreq,
-		chainSettings.lowPassResonanceQuality,
-		juce::Decibels::decibelsToGain(chainSettings.lowPassResonance));
-
-	updateCoefficients(leftChain.get<ChainPositions::LowPassResonance>().coefficients, *peakCoefficients);
-	updateCoefficients(rightChain.get<ChainPositions::LowPassResonance>().coefficients, *peakCoefficients);
+  return juce::dsp::IIR::Coefficients<float>::makePeakFilter(
+    sampleRate,
+    chainSettings.highPassFreq,
+    chainSettings.highPassResonanceQuality,
+    juce::Decibels::decibelsToGain(chainSettings.highPassResonance));
 }
-
-void PlasmaAudioProcessor::updateHighPass(const ChainSettings& chainSettings)
+void
+PlasmaAudioProcessor::updatePeakFilter(const ChainSettings& chainSettings)
 {
-	auto highPassCoefficients = makeHighPassFilter(chainSettings, getSampleRate());
-
-	auto& leftHighPass = leftChain.get<ChainPositions::HighPass>();
-	updatePassFilter(leftHighPass, highPassCoefficients, chainSettings.highPassSlope);
-
-	auto& rightHighPass = rightChain.get<ChainPositions::HighPass>();
-	updatePassFilter(rightHighPass, highPassCoefficients, chainSettings.highPassSlope);
+  auto peakCoefficientsL =
+    makePeakFilter(chainSettings, getSampleRate(), chainSettings.peakStereo);
+  auto peakCoefficientsR =
+    makePeakFilter(chainSettings, getSampleRate(), -chainSettings.peakStereo);
+  updateCoefficients(leftChain.get<ChainPositions::Peak>().coefficients,
+                     *peakCoefficientsL);
+  updateCoefficients(rightChain.get<ChainPositions::Peak>().coefficients,
+                     *peakCoefficientsR);
 }
 
-void PlasmaAudioProcessor::updateLowPass(const ChainSettings& chainSettings)
+void
+PlasmaAudioProcessor::updateHighPassResonance(
+  const ChainSettings& chainSettings)
 {
-	auto lowPassCoefficients = makeLowPassFilter(chainSettings, getSampleRate());
+  auto peakCoefficients = juce::dsp::IIR::Coefficients<float>::makePeakFilter(
+    getSampleRate(),
+    chainSettings.highPassFreq,
+    chainSettings.highPassResonanceQuality,
+    juce::Decibels::decibelsToGain(chainSettings.highPassResonance));
 
-	auto& leftLowPass = leftChain.get<ChainPositions::LowPass>();
-	updatePassFilter(leftLowPass, lowPassCoefficients, chainSettings.lowPassSlope);
-
-	auto& rightLowPass = rightChain.get<ChainPositions::LowPass>();
-	updatePassFilter(rightLowPass, lowPassCoefficients, chainSettings.lowPassSlope);
+  updateCoefficients(
+    leftChain.get<ChainPositions::HighPassResonance>().coefficients,
+    *peakCoefficients);
+  updateCoefficients(
+    rightChain.get<ChainPositions::HighPassResonance>().coefficients,
+    *peakCoefficients);
 }
 
-void updateCoefficients(Coefficients& old, const Coefficients& replacements)
+void
+PlasmaAudioProcessor::updateLowPassResonance(const ChainSettings& chainSettings)
 {
-	*old = *replacements;
+  auto peakCoefficients = juce::dsp::IIR::Coefficients<float>::makePeakFilter(
+    getSampleRate(),
+    chainSettings.lowPassFreq,
+    chainSettings.lowPassResonanceQuality,
+    juce::Decibels::decibelsToGain(chainSettings.lowPassResonance));
+
+  updateCoefficients(
+    leftChain.get<ChainPositions::LowPassResonance>().coefficients,
+    *peakCoefficients);
+  updateCoefficients(
+    rightChain.get<ChainPositions::LowPassResonance>().coefficients,
+    *peakCoefficients);
 }
 
+void
+PlasmaAudioProcessor::updateHighPass(const ChainSettings& chainSettings)
+{
+  auto highPassCoefficients =
+    makeHighPassFilter(chainSettings, getSampleRate());
+
+  auto& leftHighPass = leftChain.get<ChainPositions::HighPass>();
+  updatePassFilter(
+    leftHighPass, highPassCoefficients, chainSettings.highPassSlope);
+
+  auto& rightHighPass = rightChain.get<ChainPositions::HighPass>();
+  updatePassFilter(
+    rightHighPass, highPassCoefficients, chainSettings.highPassSlope);
+}
+
+void
+PlasmaAudioProcessor::updateLowPass(const ChainSettings& chainSettings)
+{
+  auto lowPassCoefficients = makeLowPassFilter(chainSettings, getSampleRate());
+
+  auto& leftLowPass = leftChain.get<ChainPositions::LowPass>();
+  updatePassFilter(
+    leftLowPass, lowPassCoefficients, chainSettings.lowPassSlope);
+
+  auto& rightLowPass = rightChain.get<ChainPositions::LowPass>();
+  updatePassFilter(
+    rightLowPass, lowPassCoefficients, chainSettings.lowPassSlope);
+}
+
+void
+updateCoefficients(Coefficients& old, const Coefficients& replacements)
+{
+  *old = *replacements;
+}
