@@ -213,12 +213,8 @@ PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
   auto chainSettings = getChainSettings(apvts);
   if (chainSettings.preGain > -32.f) {
     preGain = Decibels::decibelsToGain(chainSettings.preGain);
-
   } else {
-    // If the gain is set to mute,
-    // might as well just clear the buffer and return
-    buffer.clear();
-    return;
+    preGain = 0.0f;
   }
   if (chainSettings.gain > -32.f) {
     gain = Decibels::decibelsToGain(chainSettings.gain);
