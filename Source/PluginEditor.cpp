@@ -260,6 +260,7 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
   , configAccentColorTextbox("#FF0000",
                              FontSizes::Main,
                              Justification::centredLeft)
+  , versionManager(p.versionManager)
 {
   // OpenGL Settings
   openGLContext.setComponentPaintingEnabled(true);
@@ -352,9 +353,8 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
   tooltipLabel.setText("", NotificationType::dontSendNotification);
 
   // Check for Updates
-  versionManager = std::make_unique<VersionManager>(*this);
-  versionManager->triggerAsyncUpdate();
   updateButton.setVisible(false);
+  startTimer(1, 1000 / 10);
 
   // Window
   setResizable(false, false);
@@ -451,11 +451,22 @@ PlasmaAudioProcessorEditor::paint(juce::Graphics& g)
 // Timer Callback
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void
-PlasmaAudioProcessorEditor::timerCallback()
+PlasmaAudioProcessorEditor::timerCallback(int timerID)
 {
-  tooltipLabel.setText("", juce::dontSendNotification);
-  stopTimer();
+  switch (timerID) {
+    case 0:
+      tooltipLabel.setText("", juce::dontSendNotification);
+      stopTimer(0);
+      break;
+    case 1:
+      if (versionManager.finished.load()) {
+        updateButton.setVisible(versionManager.isLatest.load());
+        stopTimer(1);
+      }
+      break;
+  }
 }
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Interaction
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -541,15 +552,15 @@ void
 PlasmaAudioProcessorEditor::buttonClicked(Button* button)
 {
   if (button == &updateButton) {
-    auto newestUrl = getDownloadLink();
-    if (newestUrl != "") {
+    juce::String newestUrl = versionManager.downloadLink;
+    if (newestUrl.compare("")) {
       // Open Browser
       URL(newestUrl).launchInDefaultBrowser();
     } else {
       // Show Error
       tooltipLabel.setText("Error: Can't connect to server",
                            juce::dontSendNotification);
-      startTimer(3000);
+      startTimer(0, 1500);
     }
   }
   if (button == &scaleUpButton) {
@@ -647,7 +658,7 @@ PlasmaAudioProcessorEditor::sliderDragStarted(Slider* slider)
   tooltipLabel.setText(
     static_cast<CustomRotarySlider*>(slider)->getTooltipString(),
     juce::dontSendNotification);
-  stopTimer();
+  stopTimer(0);
 }
 void
 PlasmaAudioProcessorEditor::sliderDragEnded(Slider* slider)
@@ -656,7 +667,7 @@ PlasmaAudioProcessorEditor::sliderDragEnded(Slider* slider)
   if (isAutoAnalyser) {
     setAnalyserType(autoAnalyserType);
   }
-  startTimer(1000);
+  startTimer(0, 1000);
 }
 void
 PlasmaAudioProcessorEditor::sliderValueChanged(Slider* slider)

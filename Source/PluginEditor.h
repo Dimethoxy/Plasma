@@ -8,18 +8,11 @@
 #include "PluginProcessor.h"
 #include "ResponseCurveComponent.h"
 #include "ShapercurveComponent.h"
+#include "Version.h"
 #include <JuceHeader.h>
 
 //=============================================================================================
 
-enum Target
-{
-  Windows,
-  Mac,
-  Linux
-};
-
-const Target OS = Windows;
 const juce::String PLASMA_VERSION = ProjectInfo::versionString;
 //
 
@@ -48,7 +41,7 @@ enum FontSizes
 
 class PlasmaAudioProcessorEditor
   : public AudioProcessorEditor
-  , public Timer
+  , public MultiTimer
   , public Button::Listener
   , public Slider::Listener
   , public Label::Listener
@@ -60,7 +53,7 @@ public:
   void paint(juce::Graphics&) override;
   void resized() override;
 
-  void timerCallback() override;
+  void timerCallback(int timerID) override;
   void buttonClicked(Button* button) override;
   void sliderValueChanged(Slider* slider) override;
   void sliderDragStarted(Slider* slider) override;
@@ -233,104 +226,8 @@ private:
   std::vector<CustomTextButton*> getOptionsButtons();
   std::vector<CustomTextbox*> getTextboxes();
 
-  juce::URL createURL(const juce::String& apiEndpoint)
-  {
-    // Replace "YOUR_API_URL_HERE" with the actual URL of your web API
-    return juce::URL("https://api.dimethoxy.com/" + apiEndpoint);
-  }
-
-  juce::String sendRequest(const juce::String& apiEndpoint)
-  {
-    juce::URL url = createURL(apiEndpoint);
-
-    // Send a GET request to the specified URL
-    juce::String responseString = url.readEntireTextStream();
-
-    return responseString;
-  }
-
-  juce::String extractVersionNumber(const juce::String& payload)
-  {
-    juce::var responseJSON = juce::JSON::parse(payload);
-    juce::String version = responseJSON["version"].toString();
-    return version;
-  }
-
-  bool isUpToDate(const juce::String& currentVersion,
-                  juce::PropertiesFile* userSettings)
-  {
-    // If key does not exist, create it
-    if (!userSettings->containsKey("isLatest")) {
-      userSettings->setValue("isLatest", true);
-    }
-    // Ask API
-    try {
-      juce::String apiResponse = sendRequest("version?product=plasma");
-      juce::String latestVersion = extractVersionNumber(apiResponse);
-      bool isLatest = (latestVersion == currentVersion) || latestVersion == "";
-      if (isLatest) {
-        userSettings->setValue("isLatest", isLatest);
-        return true;
-      } else {
-        userSettings->setValue("isLatest", isLatest);
-        return false;
-      }
-    } catch (...) {
-      // If request fails, load information from config
-      if (userSettings->containsKey("isLatest"))
-        return (userSettings->getBoolValue("isLatest"));
-      else
-        return true;
-    }
-  }
-
-  juce::String getDownloadLink()
-  {
-    juce::String osString;
-    if (OS == Windows) {
-      osString = "windows";
-    } else if (OS == Mac) {
-      osString = "mac";
-    } else {
-      osString = "archlinux";
-    }
-
-    juce::String apiResponse =
-      sendRequest("download?product=plasma&os=" + osString);
-    juce::var responseJSON = juce::JSON::parse(apiResponse);
-    return responseJSON["download_url"].toString();
-  }
-
-public:
-  class VersionManager : public juce::AsyncUpdater
-  {
-  public:
-    VersionManager(PlasmaAudioProcessorEditor& editor)
-      : juce::AsyncUpdater()
-      , editor(editor)
-    {
-    }
-    void handleAsyncUpdate()
-    {
-      std::thread([this] { editor.updateVersion(); }).detach();
-    }
-
-  private:
-    PlasmaAudioProcessorEditor& editor;
-  };
-  std::unique_ptr<VersionManager> versionManager;
-  void updateVersion()
-  {
-    applicationProperties.setStorageParameters(options);
-    auto userSettings = applicationProperties.getUserSettings();
-    bool isLatest = isUpToDate(PLASMA_VERSION, userSettings);
-    // updateButton.setVisible(!isLatest);
-    const MessageManagerLock mmLock;
-    updateButton.setVisible(true);
-  }
-
-private:
   OpenGLContext openGLContext;
+  VersionManager& versionManager;
   // End
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PlasmaAudioProcessorEditor);
 };

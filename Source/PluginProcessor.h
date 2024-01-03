@@ -1,8 +1,8 @@
 #pragma once
 #include "PlasmaDistortionProcessor.h"
+#include "Version.h"
 #include "WaveformComponent.h"
 #include <JuceHeader.h>
-
 // Math
 const float pi = 3.14159265358979323846;
 
@@ -199,6 +199,7 @@ public:
                                             createParameterLayout() };
 
   WaveformComponent waveformComponent;
+  VersionManager versionManager;
 
 private:
   // Clean Buffer

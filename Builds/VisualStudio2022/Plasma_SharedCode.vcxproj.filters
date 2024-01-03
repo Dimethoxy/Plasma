@@ -3141,6 +3141,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\Version.h">
+      <Filter>Plasma\Source</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\PlasmaDistortionProcessor.h">
       <Filter>Plasma\Source</Filter>
     </ClInclude>

@@ -77,6 +77,7 @@
 		0789CBA74E3A8CCC31770634 /* CustomLookAndFeel.cpp */ /* CustomLookAndFeel.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CustomLookAndFeel.cpp; path = ../../Source/CustomLookAndFeel.cpp; sourceTree = SOURCE_ROOT; };
 		0BF73DCF7B84C74F69182199 /* AVFoundation.framework */ /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		0D9EC26C32FD1B153A28897F /* include_juce_audio_processors_ara.cpp */ /* include_juce_audio_processors_ara.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = include_juce_audio_processors_ara.cpp; path = ../../JuceLibraryCode/include_juce_audio_processors_ara.cpp; sourceTree = SOURCE_ROOT; };
+		0EC0FADDA5D1C017EAA1D58C /* Version.h */ /* Version.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Version.h; path = ../../Source/Version.h; sourceTree = SOURCE_ROOT; };
 		1102503002104B6DB6B54BD2 /* LoudnessMeterComponent.cpp */ /* LoudnessMeterComponent.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = LoudnessMeterComponent.cpp; path = ../../Source/LoudnessMeterComponent.cpp; sourceTree = SOURCE_ROOT; };
 		1A00366EADCC101294AF1149 /* CoreAudioKit.framework */ /* CoreAudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioKit.framework; path = System/Library/Frameworks/CoreAudioKit.framework; sourceTree = SDKROOT; };
 		1D7AA8DF6AFC05B8611CDF73 /* OpenGLES.framework */ /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -276,6 +277,7 @@
 		D9C564B1466846598B2EE775 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				0EC0FADDA5D1C017EAA1D58C,
 				D91A45C0EA551D60DED887B0,
 				F77EFFF7C9D500272C353C2B,
 				0412AE04D872C711AE29E1BF,
@@ -629,7 +631,7 @@
 					"JucePlugin_ARAContentTypes=0",
 					"JucePlugin_ARATransformationFlags=0",
 					"JucePlugin_ARAFactoryID=\\\"com.Dimethoxy.Plasma.factory\\\"",
-					"JucePlugin_ARADocumentArchiveID=\\\"com.Dimethoxy.Plasma.aradocumentarchive.1.0.1\\\"",
+					"JucePlugin_ARADocumentArchiveID=\\\"com.Dimethoxy.Plasma.aradocumentarchive.1.0.2\\\"",
 					"JucePlugin_ARACompatibleArchiveIDs=\\\"\\\"",
 					"JUCE_STANDALONE_APPLICATION=JucePlugin_Build_Standalone",
 					"JUCER_XCODE_IPHONE_5BC26AE3=1",
@@ -739,7 +741,7 @@
 					"JucePlugin_ARAContentTypes=0",
 					"JucePlugin_ARATransformationFlags=0",
 					"JucePlugin_ARAFactoryID=\\\"com.Dimethoxy.Plasma.factory\\\"",
-					"JucePlugin_ARADocumentArchiveID=\\\"com.Dimethoxy.Plasma.aradocumentarchive.1.0.1\\\"",
+					"JucePlugin_ARADocumentArchiveID=\\\"com.Dimethoxy.Plasma.aradocumentarchive.1.0.2\\\"",
 					"JucePlugin_ARACompatibleArchiveIDs=\\\"\\\"",
 					"JUCE_STANDALONE_APPLICATION=JucePlugin_Build_Standalone",
 					"JUCER_XCODE_IPHONE_5BC26AE3=1",
@@ -896,7 +898,7 @@
 					"JucePlugin_ARAContentTypes=0",
 					"JucePlugin_ARATransformationFlags=0",
 					"JucePlugin_ARAFactoryID=\\\"com.Dimethoxy.Plasma.factory\\\"",
-					"JucePlugin_ARADocumentArchiveID=\\\"com.Dimethoxy.Plasma.aradocumentarchive.1.0.1\\\"",
+					"JucePlugin_ARADocumentArchiveID=\\\"com.Dimethoxy.Plasma.aradocumentarchive.1.0.2\\\"",
 					"JucePlugin_ARACompatibleArchiveIDs=\\\"\\\"",
 					"JUCE_STANDALONE_APPLICATION=JucePlugin_Build_Standalone",
 					"JUCER_XCODE_IPHONE_5BC26AE3=1",
@@ -1004,7 +1006,7 @@
 					"JucePlugin_ARAContentTypes=0",
 					"JucePlugin_ARATransformationFlags=0",
 					"JucePlugin_ARAFactoryID=\\\"com.Dimethoxy.Plasma.factory\\\"",
-					"JucePlugin_ARADocumentArchiveID=\\\"com.Dimethoxy.Plasma.aradocumentarchive.1.0.1\\\"",
+					"JucePlugin_ARADocumentArchiveID=\\\"com.Dimethoxy.Plasma.aradocumentarchive.1.0.2\\\"",
 					"JucePlugin_ARACompatibleArchiveIDs=\\\"\\\"",
 					"JUCE_STANDALONE_APPLICATION=JucePlugin_Build_Standalone",
 					"JUCER_XCODE_IPHONE_5BC26AE3=1",

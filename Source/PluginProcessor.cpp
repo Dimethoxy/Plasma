@@ -192,6 +192,9 @@ PlasmaAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 
   // Waveform
   waveformComponent.clear();
+
+  // Trigger VersionManager
+  versionManager.triggerAsyncUpdate();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
