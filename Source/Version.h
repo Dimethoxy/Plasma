@@ -49,7 +49,6 @@ private:
 
   juce::URL createURL(const juce::String& apiEndpoint)
   {
-    // Replace "YOUR_API_URL_HERE" with the actual URL of your web API
     return juce::URL("https://api.dimethoxy.com/" + apiEndpoint);
   }
 
