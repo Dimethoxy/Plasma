@@ -293,9 +293,11 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
   for (auto* comp : getComps()) {
     addAndMakeVisible(comp);
   }
+  auto* hostContext = getHostContext();
   for (auto* comp : getSliders()) {
     addAndMakeVisible(comp);
     comp->addListener(this);
+    comp->hostContext = hostContext;
   }
   for (auto* label : getLabels()) {
     addAndMakeVisible(label);
@@ -375,7 +377,7 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
     highPassResonanceQualitySlider.setVisible(false);
     highPassResonanceQualityLabel.setVisible(false);
   }
-
+  
   // Window
   setResizable(false, false);
   setSize(sc(810), sc(940));
