@@ -355,6 +355,26 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
   // Check for Updates
   updateButton.setVisible(false);
   startTimer(1, 1000 / 10);
+  
+  // Hide filter sliders if needed
+  if (static_cast<Slope>(lowPassSlopeSlider.getValue()) == Slope::None)
+  {
+    lowPassFreqSlider.setVisible(false);
+    lowPassFreqLabel.setVisible(false);
+    lowPassResonanceSlider.setVisible(false);
+    lowPassResonanceLabel.setVisible(false);
+    lowPassResonanceQualitySlider.setVisible(false);
+    lowPassResonanceQualityLabel.setVisible(false);
+  }
+  if (static_cast<Slope>(highPassSlopeSlider.getValue()) == Slope::None)
+  {
+    highPassFreqSlider.setVisible(false);
+    highPassFreqLabel.setVisible(false);
+    highPassResonanceSlider.setVisible(false);
+    highPassResonanceLabel.setVisible(false);
+    highPassResonanceQualitySlider.setVisible(false);
+    highPassResonanceQualityLabel.setVisible(false);
+  }
 
   // Window
   setResizable(false, false);
