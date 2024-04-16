@@ -57,7 +57,7 @@ CustomLookAndFeel::drawButtonBackground(Graphics& g,
   // Draw Foreground
   float iconSize = 2.5 * lineSize;
   float fontSize = 4.4 * iconSize;
-  if (OS == Mac) {
+  if (operatingSystemType != juce::SystemStats::OperatingSystemType::Windows) {
     fontSize = 4.0 * iconSize;
   }
   if (text == "O") {

@@ -861,7 +861,7 @@ PlasmaAudioProcessorEditor::resized()
   // loudnessMeterIn.setBounds(220, 60, 620, 155);
   // loudnessMeterOut.setBounds(220, 215, 620, 155);
   auto logoX = headerArea().getCentreX() - sc(100);
-  if (OS == Mac) {
+  if (operatingSystemType != juce::SystemStats::OperatingSystemType::Windows) {
     plasmaLabel.setBounds(logoX, sc(5), sc(200), sc(100));
     plasmaLabel.setCustomFontSize(sc(50));
   } else {
@@ -1179,8 +1179,8 @@ PlasmaAudioProcessorEditor::resized()
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Header Knobs
   int scaleKnobSize = headerArea().getHeight() - 2 * (sc(padding));
-  float updateButtonScale = (OS == Mac) ? 4.8 : 4.4;
-  float configButtonScale = (OS == Mac) ? 2.5 : 2.34;
+  float updateButtonScale = (operatingSystemType != juce::SystemStats::OperatingSystemType::Windows) ? 4.8 : 4.4;
+  float configButtonScale = (operatingSystemType != juce::SystemStats::OperatingSystemType::Windows) ? 2.5 : 2.34;
   configButton.setBounds(getWidth() - 2.34 * scaleKnobSize - 1.5 * sc(padding),
                          sc(padding),
                          configButtonScale * scaleKnobSize,

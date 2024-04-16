@@ -9,7 +9,7 @@ enum Target
   Linux
 };
 //=============================================================================================
-const Target OS = Windows;
+const auto operatingSystemType = juce::SystemStats::getOperatingSystemType();
 //=============================================================================================
 class VersionManager : public juce::AsyncUpdater
 {
@@ -84,11 +84,11 @@ private:
   juce::String getDownloadLink()
   {
     juce::String osString;
-    if (OS == Windows) {
+    if (operatingSystemType == juce::SystemStats::OperatingSystemType::Windows) {
       osString = "windows";
-    } else if (OS == Mac) {
+    } else if (operatingSystemType == juce::SystemStats::OperatingSystemType::MacOSX) {
       osString = "mac";
-    } else {
+    } else if (operatingSystemType == juce::SystemStats::OperatingSystemType::Linux){
       osString = "archlinux";
     }
     juce::String apiResponse =

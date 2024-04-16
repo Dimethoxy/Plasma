@@ -14,9 +14,9 @@
     <key>CFBundleDisplayName</key>
     <string>Plasma</string>
     <key>CFBundlePackageType</key>
-    <string>BNDL</string>
+    <string></string>
     <key>CFBundleSignature</key>
-    <string>????</string>
+    <string></string>
     <key>CFBundleShortVersionString</key>
     <string>1.0.4</string>
     <key>CFBundleVersion</key>
