@@ -8,8 +8,21 @@ enum Target
   Mac,
   Linux
 };
-//=============================================================================================
-const auto operatingSystemType = juce::SystemStats::getOperatingSystemType();
+const auto operatingSystemType = []() {
+  auto osType = juce::SystemStats::getOperatingSystemType();
+  auto win = juce::SystemStats::Windows;
+  auto win7 = juce::SystemStats::Windows7;
+  auto win8 = juce::SystemStats::Windows8_0 && juce::SystemStats::Windows8_1;
+  auto win10 = juce::SystemStats::Windows10;
+  auto win11 = juce::SystemStats::Windows11;
+  auto winXP = juce::SystemStats::WinXP;
+  bool isWindows = osType == win || osType == win7 || osType == win8 ||
+                   osType == win10 || osType == win11 || osType == winXP;
+  if (isWindows)
+    return juce::SystemStats::Windows;
+  else
+    return osType;
+}();
 //=============================================================================================
 class VersionManager : public juce::AsyncUpdater
 {
@@ -84,11 +97,14 @@ private:
   juce::String getDownloadLink()
   {
     juce::String osString;
-    if (operatingSystemType == juce::SystemStats::OperatingSystemType::Windows) {
+    if (operatingSystemType ==
+        juce::SystemStats::OperatingSystemType::Windows) {
       osString = "windows";
-    } else if (operatingSystemType == juce::SystemStats::OperatingSystemType::MacOSX) {
+    } else if (operatingSystemType ==
+               juce::SystemStats::OperatingSystemType::MacOSX) {
       osString = "mac";
-    } else if (operatingSystemType == juce::SystemStats::OperatingSystemType::Linux){
+    } else if (operatingSystemType ==
+               juce::SystemStats::OperatingSystemType::Linux) {
       osString = "archlinux";
     }
     juce::String apiResponse =

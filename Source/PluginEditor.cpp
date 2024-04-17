@@ -357,10 +357,9 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
   // Check for Updates
   updateButton.setVisible(false);
   startTimer(1, 1000 / 10);
-  
+
   // Hide filter sliders if needed
-  if (static_cast<Slope>(lowPassSlopeSlider.getValue()) == Slope::None)
-  {
+  if (static_cast<Slope>(lowPassSlopeSlider.getValue()) == Slope::None) {
     lowPassFreqSlider.setVisible(false);
     lowPassFreqLabel.setVisible(false);
     lowPassResonanceSlider.setVisible(false);
@@ -368,8 +367,7 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
     lowPassResonanceQualitySlider.setVisible(false);
     lowPassResonanceQualityLabel.setVisible(false);
   }
-  if (static_cast<Slope>(highPassSlopeSlider.getValue()) == Slope::None)
-  {
+  if (static_cast<Slope>(highPassSlopeSlider.getValue()) == Slope::None) {
     highPassFreqSlider.setVisible(false);
     highPassFreqLabel.setVisible(false);
     highPassResonanceSlider.setVisible(false);
@@ -377,7 +375,7 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
     highPassResonanceQualitySlider.setVisible(false);
     highPassResonanceQualityLabel.setVisible(false);
   }
-  
+
   // Window
   setResizable(false, false);
   setSize(sc(810), sc(940));
@@ -881,7 +879,6 @@ PlasmaAudioProcessorEditor::resized()
   responseCurveComponent.update();
   responseCurveComponent.setPadding(sc(padding));
   // loudnessMeterIn.setBounds(220, 60, 620, 155);
-  // loudnessMeterOut.setBounds(220, 215, 620, 155);
   auto logoX = headerArea().getCentreX() - sc(100);
   if (operatingSystemType != juce::SystemStats::OperatingSystemType::Windows) {
     plasmaLabel.setBounds(logoX, sc(5), sc(200), sc(100));
@@ -1201,8 +1198,14 @@ PlasmaAudioProcessorEditor::resized()
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Header Knobs
   int scaleKnobSize = headerArea().getHeight() - 2 * (sc(padding));
-  float updateButtonScale = (operatingSystemType != juce::SystemStats::OperatingSystemType::Windows) ? 4.8 : 4.4;
-  float configButtonScale = (operatingSystemType != juce::SystemStats::OperatingSystemType::Windows) ? 2.5 : 2.34;
+  float updateButtonScale =
+    (operatingSystemType != juce::SystemStats::OperatingSystemType::Windows)
+      ? 4.8
+      : 4.4;
+  float configButtonScale =
+    (operatingSystemType != juce::SystemStats::OperatingSystemType::Windows)
+      ? 2.5
+      : 2.34;
   configButton.setBounds(getWidth() - 2.34 * scaleKnobSize - 1.5 * sc(padding),
                          sc(padding),
                          configButtonScale * scaleKnobSize,
