@@ -36,6 +36,20 @@ However, Plasma is not just limited to hard dance genres – it's a versatile to
 - At least 100 MB of free disk space
 - A compatible 64-bit host DAW that supports VST3 plugins
 
+## Installation
+
+### Windows
+
+- Download the zip [here](https://github.com/Dimethoxy/Plasma/releases)
+- Unzip
+- Copy the Plasma.vst3 file to %CommonProgramFiles%\VST3
+
+### MacOS
+
+- Download the zip [here](https://github.com/Dimethoxy/Plasma/releases)
+- Unzip
+- Copy the Plasma.vst3 file to Library/Audio/Plug-ins/VST3
+
 ## Donations
 
 If you have enjoyed using our software, please consider donating.
