@@ -49,7 +49,7 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
   , peakGainSlider(*audioProcessor.apvts.getParameter("Peak Gain"),
                    "dB",
                    "Peak Resonance")
-  , peakQualitySlider(*audioProcessor.apvts.getParameter("Peak Quality"),
+  , peakQualitySlider(*audioProcessor.apvts.getParameter("Peak Q"),
                       "",
                       "Quality")
   ,
