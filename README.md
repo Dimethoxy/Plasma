@@ -19,6 +19,10 @@ However, Plasma is not just limited to hard dance genres – it's a versatile to
 - Color-customizable GUI
 - Pre-built binaries for Windows and macOS.
 
+## Downloads
+
+You can download our pre-built binaries for Windows and macOS [here](https://github.com/Dimethoxy/Plasma/releases)
+
 ## Installation
 
 ### Windows
