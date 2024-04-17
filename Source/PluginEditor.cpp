@@ -293,11 +293,9 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
   for (auto* comp : getComps()) {
     addAndMakeVisible(comp);
   }
-  auto* hostContext = getHostContext();
   for (auto* comp : getSliders()) {
     addAndMakeVisible(comp);
     comp->addListener(this);
-    comp->hostContext = hostContext;
   }
   for (auto* label : getLabels()) {
     addAndMakeVisible(label);

@@ -30,9 +30,16 @@ public:
     ModifierKeys modifiers = ModifierKeys::getCurrentModifiersRealtime();
 
     if (modifiers.isRightButtonDown() || modifiers.isCtrlDown()) {
+      auto* parent = this->getParentComponent();
+      auto* editor = dynamic_cast<AudioProcessorEditor*>(parent);
+      auto* hostContext = editor->getHostContext();
       if (hostContext == nullptr)
         return;
-      hostContext->getContextMenuForParameter(param);
+      auto contextMenu = hostContext->getContextMenuForParameter(param);
+      if (contextMenu == nullptr)
+        return;
+      auto position = editor->getMouseXYRelative();
+      contextMenu->showNativeMenu(position);
     } else {
       Slider::mouseDown(e); // to the usual thing .... drag the slider
     }
@@ -45,7 +52,6 @@ public:
   int getTexHeight() const { return 14; };
   String getTooltipString();
   bool toggle = false;
-  AudioProcessorEditorHostContext* hostContext;
 
 private:
   CustomLookAndFeel lnf;
