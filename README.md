@@ -19,6 +19,24 @@ However, Plasma is not just limited to hard dance genres – it's a versatile to
 - Color-customizable GUI
 - Pre-built binaries for Windows and macOS.
 
+## Downloads
+
+You can download our pre-built binaries for Windows and macOS [here](https://github.com/Dimethoxy/Plasma/releases)
+
+## Installation
+
+### Windows
+
+- Download the zip [here](https://github.com/Dimethoxy/Plasma/releases)
+- Unzip
+- Copy the Plasma.vst3 file to %CommonProgramFiles%\VST3
+
+### MacOS
+
+- Download the zip [here](https://github.com/Dimethoxy/Plasma/releases)
+- Unzip
+- Copy the Plasma.vst3 file to Library/Audio/Plug-ins/VST3
+
 ## System Requirements
 
 ### Windows
