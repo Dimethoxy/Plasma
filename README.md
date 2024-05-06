@@ -17,7 +17,7 @@ However, Plasma is not just limited to hard dance genres – it's a versatile to
 - Innovative "Girth" effect to add treble to your sound
 - Oscilloscope to visualize waveform shaping
 - Color-customizable GUI
-- Pre-built binaries for Windows and macOS.
+- Pre-built binaries for Windows and macOS (Linux is coming soon with the next release)
 
 ## Downloads
 
