@@ -5,7 +5,8 @@
               companyName="Dimethoxy" companyWebsite="Dimethoxy.com" version="1.1.0"
               pluginManufacturerCode="Dmtx" pluginDesc="Distortion" maxBinaryFileSize="20971520"
               pluginVST3Category="Distortion,Fx" companyCopyright="COPYRIGHT &#169; 2024 DIMETHOXY.COM"
-              companyEmail="dimethoxy.audio@gmail.com" pluginFormats="buildVST3">
+              companyEmail="dimethoxy.audio@gmail.com" pluginFormats="buildAAX,buildAUv3,buildLV2,buildStandalone,buildVST3"
+              lv2Uri="https://dimethoxy.com/plasma">
   <MAINGROUP id="JL3O3j" name="Plasma">
     <GROUP id="{C06EE6F1-1336-2987-2A83-453AE370713C}" name="Source">
       <FILE id="vu0wXC" name="Version.h" compile="0" resource="0" file="Source/Version.h"/>
