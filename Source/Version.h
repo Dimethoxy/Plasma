@@ -18,8 +18,27 @@ const auto operatingSystemType = []() {
   auto winXP = juce::SystemStats::WinXP;
   bool isWindows = osType == win || osType == win7 || osType == win8 ||
                    osType == win10 || osType == win11 || osType == winXP;
+  auto macOSX_10_7 = juce::SystemStats::MacOSX_10_7;
+  auto macOSX_10_8 = juce::SystemStats::MacOSX_10_8;
+  auto macOSX_10_9 = juce::SystemStats::MacOSX_10_9;
+  auto macOSX_10_10 = juce::SystemStats::MacOSX_10_10;
+  auto macOSX_10_11 = juce::SystemStats::MacOSX_10_11;
+  auto macOSX_10_12 = juce::SystemStats::MacOSX_10_12;
+  auto macOSX_10_13 = juce::SystemStats::MacOSX_10_13;
+  auto macOSX_10_14 = juce::SystemStats::MacOSX_10_14;
+  auto macOSX_10_15 = juce::SystemStats::MacOSX_10_15;
+  auto macOS_11 = juce::SystemStats::MacOS_11;
+  auto macOS_12 = juce::SystemStats::MacOS_12;
+  auto macOS_13 = juce::SystemStats::MacOS_13;
+  auto macOS_14 = juce::SystemStats::MacOS_14;
+  bool isMac = macOSX_10_7 || macOSX_10_8 || macOSX_10_9 || macOSX_10_10 ||
+  macOSX_10_11 || macOSX_10_12 || macOSX_10_13 || macOSX_10_14 ||
+  macOSX_10_15 || macOS_11 || macOS_12 || macOS_13 || macOS_14;
+
   if (isWindows)
     return juce::SystemStats::Windows;
+  if (isMac)
+    return juce::SystemStats::MacOSX;
   else
     return osType;
 }();
@@ -40,14 +59,14 @@ public:
   {
     const bool response = isUpToDate(ProjectInfo::versionString);
     juce::String link = "";
-    if (response) {
+    if (!response) {
       link = getDownloadLink();
     }
     if (killFlag.load()) {
       return;
     } else {
       downloadLink = link;
-      isLatest.store(response);
+      isLatest.store(!response);
       finished.store(true);
     }
   }
@@ -88,7 +107,7 @@ private:
       juce::String apiResponse = sendRequest("version?product=plasma");
       juce::String latestVersion = extractVersionNumber(apiResponse);
       bool isLatest = (latestVersion == currentVersion) || latestVersion == "";
-      return !isLatest;
+      return isLatest;
     } catch (...) {
       return true;
     }
