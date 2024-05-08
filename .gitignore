@@ -3,6 +3,7 @@ Builds/VisualStudio2022/
 Builds/VisualStudio2019/
 Builds/iOS/
 Builds/
+Installer/Mac/build
 
 # User-specific files
 *.rsuser
