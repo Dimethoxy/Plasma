@@ -9,8 +9,14 @@ jobs:
   import-certificates:
     runs-on: macos-latest
     steps:
-      - name: Import Certificates
+      - name: Import App Certificates
         uses: apple-actions/import-codesign-certs@v2
         with:
           p12-file-base64: ${{ secrets.DEV_ID_APP_CERT }}
           p12-password: ${{ secrets.DEV_ID_APP_PASSWORD }}
+           
+      - name: Import Installer Certificates
+        uses: apple-actions/import-codesign-certs@v2
+        with:
+          p12-file-base64: ${{ secrets.DEV_ID_INSTALLER_CERT }}
+          p12-password: ${{ secrets.DEV_ID_INSTALLER_PASSWORD }}
