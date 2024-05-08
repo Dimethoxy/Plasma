@@ -57,8 +57,8 @@ For Linux use our latest [pre-release version](https://github.com/Dimethoxy/Plas
 
 1. **Download:** Download the pre-release version of Plasma 1.1.0 from [here](https://github.com/Dimethoxy/Plasma/releases/tag/1.1.0).
 2. **Unzip:** Extract the downloaded archive. You can use archive manager tools like tar.
-3. **Locate Files:** After extraction, you should find a file named `Plasma.vst3`.
-4. **Move Files:** Move the `Plasma.vst3` file to your VST3 plugins directory. \
+3. **Locate Files:** After extraction, you should find a file named `Plasma.so`.
+4. **Move Files:** Move the `Plasma.so` file to your VST3 plugins directory. \
    The location of this directory may vary depending on your Linux distribution and DAW. \
    Common directories include `~/.vst3/` or `/usr/lib/vst3/`.
 
