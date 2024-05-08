@@ -7,7 +7,7 @@ on:
 
 jobs:
   import-certificates:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - name: Import Certificates
         uses: apple-actions/import-codesign-certs@v2
