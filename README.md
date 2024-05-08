@@ -12,11 +12,11 @@ However, Plasma is not just limited to hard dance genres – it's a versatile to
 
 - Free (as in freedom) and open-source
 - Asymmetrical distortion
-- 3 filters for shaping the sound
 - 10 different distortion styles
+- 3 filters for shaping the tone
 - Innovative "Girth" effect to add treble to your sound
-- Oscilloscope to visualize waveform shaping
-- Color-customizable GUI
+- Color-customizable minimalistic vector GUI, highly scalable and performant
+- Oscilloscope to visualize the output waveform
 - Support for Windows, MacOS and Linux
 
 ## Downloads
