@@ -17,7 +17,7 @@ However, Plasma is not just limited to hard dance genres – it's a versatile to
 - Innovative "Girth" effect to add treble to your sound
 - Oscilloscope to visualize waveform shaping
 - Color-customizable GUI
-- Pre-built binaries for Windows and macOS (Linux is coming soon with the next release)
+- Support for Windows, MacOS and Linux
 
 ## Downloads
 
@@ -75,6 +75,13 @@ For Linux use our latest [pre-release version](https://github.com/Dimethoxy/Plas
 - MacOS 10.13 or later
 - Intel or Apple Silicon CPU
 - At least 100 MB of free disk space
+- A compatible 64-bit host DAW that supports VST3 plugins
+
+### Linux
+
+- Mainstream x86_64 Linux distribution
+- Intel or AMD CPU with a 64-bit quad-core processor
+- At least 80 MB of free disk space
 - A compatible 64-bit host DAW that supports VST3 plugins
 
 ## Donations
