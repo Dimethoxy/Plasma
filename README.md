@@ -15,9 +15,11 @@ However, Plasma is not just limited to hard dance genres – it's a versatile to
 - 10 different distortion styles
 - 3 filters for shaping the tone
 - Innovative "Girth" effect to add treble to your sound
-- Color-customizable minimalistic vector GUI, highly scalable and performant
 - Oscilloscope to visualize the output waveform
-- Support for Windows, MacOS and Linux
+- Color-customizable minimalistic vector GUI
+- Scalable for high-resolution displays
+- Very low resource consumption
+- Support for Windows, macOS, and Linux
 
 ## Downloads
 
