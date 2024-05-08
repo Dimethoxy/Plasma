@@ -3,7 +3,7 @@ name: Import Code-signing Certificates
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   import-certificates:
