@@ -19,11 +19,11 @@ However, Plasma is not just limited to hard dance genres – it's a versatile to
 - Color-customizable minimalistic vector GUI
 - Scalable for high-resolution displays
 - Very low resource consumption
-- Support for Windows, macOS, and Linux
+- Support for Windows, MacOS, and Linux
 
 ## Downloads
 
-You can download our pre-built binaries for Windows and macOS [here](https://github.com/Dimethoxy/Plasma/releases). \
+You can download our pre-built binaries for Windows and MacOS [here](https://github.com/Dimethoxy/Plasma/releases). \
 For Linux use our latest [pre-release version](https://github.com/Dimethoxy/Plasma/releases/tag/1.1.0).
 
 ## Installation
@@ -41,7 +41,7 @@ For Linux use our latest [pre-release version](https://github.com/Dimethoxy/Plas
 
 1. **Download:** Download Plasma from [here](https://github.com/Dimethoxy/Plasma/releases).
 2. **Unzip:** Unzip the downloaded archive. \
-   Most macOS systems can unzip files by double-clicking the zip file.
+   Most MacOS systems can unzip files by double-clicking the zip file.
 3. **Locate Files:** After extraction, you should find a file named `Plasma.vst3`.
 4. **Move Files:** Move the `Plasma.vst3` file to your VST3 plugins directory. \
    The default location for VST3 plugins on MacOS is `/Library/Audio/Plug-ins/VST3`.
