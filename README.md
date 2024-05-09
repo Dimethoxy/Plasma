@@ -31,7 +31,7 @@ You can download our pre-built binaries for Windows, MacOS and Linux [here](http
 
 - Windows 10 or later
 - Intel or AMD CPU with a 64-bit quad-core processor
-- At least 50 MB of free disk space
+- At least 25 MB of free disk space
 - A compatible 64-bit host DAW that supports VST3 plugins
 - ARM versions of Windows are NOT supported
 
@@ -39,14 +39,14 @@ You can download our pre-built binaries for Windows, MacOS and Linux [here](http
 
 - MacOS 10.13 or later
 - Intel or Apple Silicon CPU
-- At least 100 MB of free disk space
+- At least 80 MB of free disk space
 - A compatible 64-bit host DAW that supports VST3 plugins
 
 ### Linux
 
 - Mainstream x86_64 Linux distribution
 - Intel or AMD CPU with a 64-bit quad-core processor
-- At least 80 MB of free disk space
+- At least 60 MB of free disk space
 - A compatible 64-bit host DAW that supports VST3 plugins
 
 ## Donations
