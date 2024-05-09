@@ -4,6 +4,7 @@ Builds/VisualStudio2019/
 Builds/iOS/
 Builds/
 Installer/Mac/build
+Installer/Windows/Output
 
 # User-specific files
 *.rsuser
