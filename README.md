@@ -23,7 +23,7 @@ However, Plasma is not just limited to hard dance genres – it's a versatile to
 
 ## Downloads
 
-You can download our pre-built binaries for Windows, MacOS and Linux [here](https://github.com/Dimethoxy/Plasma/releases). \
+You can download our pre-built binaries for Windows, MacOS and Linux [here](https://github.com/Dimethoxy/Plasma/releases).
 
 ## System Requirements
 
