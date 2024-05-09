@@ -8,24 +8,9 @@ on:
 jobs:
   import-certificates:
     runs-on: macos-latest
-    defaults:
-      run:
-        shell: bash -l {0}
-
     steps:
-      - name: Use Node.js 20.x
-        uses: actions/setup-node@v2
-        with:
-          node-version: '20.x'
-
-      - name: Import App Certificates
+      - name: Import Certificates
         uses: apple-actions/import-codesign-certs@v2
         with:
           p12-file-base64: ${{ secrets.DEV_ID_APP_CERT }}
           p12-password: ${{ secrets.DEV_ID_APP_PASSWORD }}
-           
-      - name: Import Installer Certificates
-        uses: apple-actions/import-codesign-certs@v2
-        with:
-          p12-file-base64: ${{ secrets.DEV_ID_INSTALLER_CERT }}
-          p12-password: ${{ secrets.DEV_ID_INSTALLER_PASSWORD }}
