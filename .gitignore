@@ -1,6 +1,7 @@
 Builds/
 Installer/Mac/build
 Installer/Windows/Output
+*.DS_Store
 
 # User-specific files
 *.rsuser
