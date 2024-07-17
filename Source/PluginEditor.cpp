@@ -263,10 +263,13 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
   , versionManager(p.versionManager)
 {
   // OpenGL Settings
-  openGLContext.setComponentPaintingEnabled(true);
-  openGLContext.setContinuousRepainting(false);
-  openGLContext.attachTo(*getTopLevelComponent());
-
+  if(operatingSystemType != juce::SystemStats::Windows)
+  {
+      openGLContext.setComponentPaintingEnabled(true);
+      openGLContext.setContinuousRepainting(false);
+      openGLContext.attachTo(*getTopLevelComponent());
+  }
+  
   // Waveform
   waveformComponent = &p.waveformComponent;
   addAndMakeVisible(waveformComponent);
