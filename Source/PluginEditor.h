@@ -129,16 +129,18 @@ private:
   using APVTS = juce::AudioProcessorValueTreeState;
   using Attachment = APVTS::SliderAttachment;
   Attachment highPassFreqSliderAttachment, lowPassFreqSliderAttachment,
-    peakFreqSliderAttachment, biasSliderAttachment, lateBiasSliderAttachment,
-    driveTypeSliderAttachment, lateDriveTypeSliderAttachment,
-    highPassResonanceSliderAttachment, lowPassResonanceSliderAttachment,
-    peakGainSliderAttachment, peakStereoSliderAttachment,
-    highPassResonanceQualitySliderAttachment,
-    lowPassResonanceQualitySliderAttachment, peakQualitySliderAttachment,
-    highPassSlopeSliderAttachment, lowPassSlopeSliderAttachment,
-    preGainSliderAttachment, driveSliderAttachment, girthSliderAttachment,
-    lateGirthSliderAttachment, lateDriveSliderAttachment, gainSliderAttachment,
-    analyserSliderAttachment, mixSliderAttachment;
+    biasSliderAttachment, lateBiasSliderAttachment, driveTypeSliderAttachment,
+    lateDriveTypeSliderAttachment, highPassResonanceSliderAttachment,
+    lowPassResonanceSliderAttachment, peakStereoSliderAttachment,
+    peakFreqSliderAttachment, peakGainSliderAttachment,
+    peakQualitySliderAttachment, dualPeakWidthSliderAttachment,
+    dualPeakFreqSliderAttachment, dualPeakGainSliderAttachment,
+    dualPeakQualitySliderAttachment, highPassResonanceQualitySliderAttachment,
+    lowPassResonanceQualitySliderAttachment, highPassSlopeSliderAttachment,
+    lowPassSlopeSliderAttachment, preGainSliderAttachment,
+    driveSliderAttachment, girthSliderAttachment, lateGirthSliderAttachment,
+    lateDriveSliderAttachment, gainSliderAttachment, analyserSliderAttachment,
+    mixSliderAttachment;
 
   // Layout
   float sc(float val);

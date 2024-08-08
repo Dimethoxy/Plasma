@@ -147,6 +147,20 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
                                 "Peak Q",
                                 peakQualitySlider)
   ,
+  // Peak
+  dualPeakWidthSliderAttachment(audioProcessor.apvts,
+                                "Dual Peak Width",
+                                dualPeakWidthSlider)
+  , dualPeakFreqSliderAttachment(audioProcessor.apvts,
+                                 "Dual Peak Freq",
+                                 dualPeakFreqSlider)
+  , dualPeakGainSliderAttachment(audioProcessor.apvts,
+                                 "Dual Peak Gain",
+                                 dualPeakGainSlider)
+  , dualPeakQualitySliderAttachment(audioProcessor.apvts,
+                                    "Dual Peak Q",
+                                    dualPeakQualitySlider)
+  ,
   // Lowpass
   lowPassFreqSliderAttachment(audioProcessor.apvts,
                               "Lowpass Freq",
