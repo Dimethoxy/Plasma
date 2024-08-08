@@ -434,7 +434,7 @@ PlasmaAudioProcessor::createParameterLayout()
     "Peak Q",
     juce::NormalisableRange<float>(0.1f, 5.0f, 0.01f, 1.0f),
     1.0f));
-  // Peak
+  // Dual Peak
   layout.add(std::make_unique<juce::AudioParameterFloat>(
     "Dual Peak Width",
     "Dual Peak Width",
@@ -561,6 +561,12 @@ getChainSettings(juce::AudioProcessorValueTreeState& apvts)
   settings.peakFreq = apvts.getRawParameterValue("Peak Freq")->load();
   settings.peakGain = apvts.getRawParameterValue("Peak Gain")->load();
   settings.peakQuality = apvts.getRawParameterValue("Peak Q")->load();
+  // Dual Peak
+  settings.dualPeakWidth =
+    apvts.getRawParameterValue("Dual Peak Width")->load();
+  settings.dualPeakFreq = apvts.getRawParameterValue("Dual Peak Freq")->load();
+  settings.dualPeakGain = apvts.getRawParameterValue("Dual Peak Gain")->load();
+  settings.dualPeakQuality = apvts.getRawParameterValue("Dual Peak Q")->load();
   // Highpass
   settings.highPassFreq = apvts.getRawParameterValue("Highpass Freq")->load();
   settings.highPassResonance =
