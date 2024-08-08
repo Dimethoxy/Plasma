@@ -105,6 +105,9 @@ private:
     highPassSlopeSlider,
     // Peak
     peakStereoSlider, peakFreqSlider, peakGainSlider, peakQualitySlider,
+    // DualPeak
+    dualPeakWidthSlider, dualPeakFreqSlider, dualPeakGainSlider,
+    dualPeakQualitySlider,
     // Lowpass
     lowPassFreqSlider, lowPassResonanceSlider, lowPassResonanceQualitySlider,
     lowPassSlopeSlider,
@@ -146,9 +149,10 @@ private:
   Rectangle<int> earlyArea();
   Rectangle<int> highpassArea();
   Rectangle<int> peakArea();
+  Rectangle<int> dualPeakArea();
   Rectangle<int> lowpassArea();
   Rectangle<int> lateArea();
-  int boxWidth = 150;
+  int boxWidth = 130;
   int boxHeight = 550;
 
   // Fontsizes

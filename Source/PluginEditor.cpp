@@ -53,6 +53,20 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
                       "",
                       "Quality")
   ,
+  // Peak
+  dualPeakWidthSlider(*audioProcessor.apvts.getParameter("Dual Peak Width"),
+                      "%",
+                      "Width")
+  , dualPeakFreqSlider(*audioProcessor.apvts.getParameter("Dual Peak Freq"),
+                       "Hz",
+                       "Dual Peak")
+  , dualPeakGainSlider(*audioProcessor.apvts.getParameter("Dual Peak Gain"),
+                       "dB",
+                       "Dual Peak Resonance")
+  , dualPeakQualitySlider(*audioProcessor.apvts.getParameter("Dual Peak Q"),
+                          "",
+                          "Quality")
+  ,
   // Lowpass
   lowPassFreqSlider(*audioProcessor.apvts.getParameter("Lowpass Freq"),
                     "Hz",
@@ -263,13 +277,12 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
   , versionManager(p.versionManager)
 {
   // OpenGL Settings
-  if(operatingSystemType != juce::SystemStats::Windows)
-  {
-      openGLContext.setComponentPaintingEnabled(true);
-      openGLContext.setContinuousRepainting(false);
-      openGLContext.attachTo(*getTopLevelComponent());
+  if (operatingSystemType != juce::SystemStats::Windows) {
+    openGLContext.setComponentPaintingEnabled(true);
+    openGLContext.setContinuousRepainting(false);
+    openGLContext.attachTo(*getTopLevelComponent());
   }
-  
+
   // Waveform
   waveformComponent = &p.waveformComponent;
   addAndMakeVisible(waveformComponent);
@@ -823,10 +836,19 @@ PlasmaAudioProcessorEditor::peakArea()
   return area;
 }
 Rectangle<int>
-PlasmaAudioProcessorEditor::lowpassArea()
+PlasmaAudioProcessorEditor::dualPeakArea()
 {
   Rectangle<int> area(
     peakArea().getRight() + sc(padding), sc(380), sc(boxWidth), sc(boxHeight));
+  return area;
+}
+Rectangle<int>
+PlasmaAudioProcessorEditor::lowpassArea()
+{
+  Rectangle<int> area(dualPeakArea().getRight() + sc(padding),
+                      sc(380),
+                      sc(boxWidth),
+                      sc(boxHeight));
   return area;
 }
 Rectangle<int>
@@ -1066,6 +1088,57 @@ PlasmaAudioProcessorEditor::resized()
                               knobLabelHeight,
                           peakFreqSlider.getBounds().getWidth(),
                           sc(40));
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // Dual Peak
+  // peakLabel.setBounds(peakArea().getX(),
+  //                    peakArea().getY() + sc(padding),
+  //                    peakArea().getWidth(),
+  //                    sc(40));
+  // Stereo
+  dualPeakWidthSlider.setBounds(dualPeakArea().getCentreX() - sc(knobSize) / 2,
+                                sc(430),
+                                sc(knobSize),
+                                sc(knobSize));
+  // peakStereoLabel.setBounds(peakStereoSlider.getBounds().getX(),
+  //                           peakStereoSlider.getBounds().getY() +
+  //                             peakStereoSlider.getBounds().getHeight() *
+  //                               knobLabelHeight,
+  //                           peakStereoSlider.getBounds().getWidth(),
+  //                           sc(40));
+  //  Quality
+  dualPeakQualitySlider.setBounds(dualPeakArea().getCentreX() -
+                                    sc(knobSize) / 2,
+                                  sc(550),
+                                  sc(knobSize),
+                                  sc(knobSize));
+  // peakQualityLabel.setBounds(peakQualitySlider.getBounds().getX(),
+  //                            peakQualitySlider.getBounds().getY() +
+  //                              peakQualitySlider.getBounds().getHeight() *
+  //                                knobLabelHeight,
+  //                            peakQualitySlider.getBounds().getWidth(),
+  //                            sc(40));
+  // Gain
+  dualPeakGainSlider.setBounds(dualPeakArea().getCentreX() - sc(knobSize) / 2,
+                               sc(670),
+                               sc(knobSize),
+                               sc(knobSize));
+  // peakGainLabel.setBounds(peakGainSlider.getBounds().getX(),
+  //                         peakGainSlider.getBounds().getY() +
+  //                           peakGainSlider.getBounds().getHeight() *
+  //                             knobLabelHeight,
+  //                         peakGainSlider.getBounds().getWidth(),
+  //                         sc(40));
+  //  Frequency
+  dualPeakFreqSlider.setBounds(dualPeakArea().getCentreX() - sc(knobSize) / 2,
+                               sc(790),
+                               sc(knobSize),
+                               sc(knobSize));
+  // peakFreqLabel.setBounds(peakFreqSlider.getBounds().getX(),
+  //                         peakFreqSlider.getBounds().getY() +
+  //                           peakFreqSlider.getBounds().getHeight() *
+  //                             knobLabelHeight,
+  //                         peakFreqSlider.getBounds().getWidth(),
+  //                         sc(40));
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Lowpass
   lowpassLabel.setBounds(lowpassArea().getX(),
@@ -1686,6 +1759,10 @@ PlasmaAudioProcessorEditor::getSliders()
     &peakFreqSlider,
     &peakGainSlider,
     &peakQualitySlider,
+    &dualPeakWidthSlider,
+    &dualPeakFreqSlider,
+    &dualPeakGainSlider,
+    &dualPeakQualitySlider,
     &lowPassSlopeSlider,
     &lowPassFreqSlider,
     &lowPassResonanceSlider,
