@@ -600,20 +600,26 @@ makePeakFilter(const ChainSettings& chainSettings,
 Coefficients
 makeLowPassResonance(const ChainSettings& chainSettings, double sampleRate)
 {
+  auto gain = (chainSettings.lowPassSlope == Slope::None)
+                ? 0.0f
+                : chainSettings.lowPassResonance;
   return juce::dsp::IIR::Coefficients<float>::makePeakFilter(
     sampleRate,
     chainSettings.lowPassFreq,
     chainSettings.lowPassResonanceQuality,
-    juce::Decibels::decibelsToGain(chainSettings.lowPassResonance));
+    juce::Decibels::decibelsToGain(gain));
 }
 Coefficients
 makeHighPassResonance(const ChainSettings& chainSettings, double sampleRate)
 {
+  auto gain = (chainSettings.highPassSlope == Slope::None)
+                ? 0.0f
+                : chainSettings.highPassResonance;
   return juce::dsp::IIR::Coefficients<float>::makePeakFilter(
     sampleRate,
     chainSettings.highPassFreq,
     chainSettings.highPassResonanceQuality,
-    juce::Decibels::decibelsToGain(chainSettings.highPassResonance));
+    juce::Decibels::decibelsToGain(gain));
 }
 void
 PlasmaAudioProcessor::updatePeakFilter(const ChainSettings& chainSettings)
@@ -632,11 +638,14 @@ void
 PlasmaAudioProcessor::updateHighPassResonance(
   const ChainSettings& chainSettings)
 {
+  auto gain = (chainSettings.highPassSlope == Slope::None)
+                ? 0.0f
+                : chainSettings.highPassResonance;
   auto peakCoefficients = juce::dsp::IIR::Coefficients<float>::makePeakFilter(
     getSampleRate(),
     chainSettings.highPassFreq,
     chainSettings.highPassResonanceQuality,
-    juce::Decibels::decibelsToGain(chainSettings.highPassResonance));
+    juce::Decibels::decibelsToGain(gain));
 
   updateCoefficients(
     leftChain.get<ChainPositions::HighPassResonance>().coefficients,
@@ -649,11 +658,14 @@ PlasmaAudioProcessor::updateHighPassResonance(
 void
 PlasmaAudioProcessor::updateLowPassResonance(const ChainSettings& chainSettings)
 {
+  auto gain = (chainSettings.lowPassSlope == Slope::None)
+                ? 0.0f
+                : chainSettings.lowPassResonance;
   auto peakCoefficients = juce::dsp::IIR::Coefficients<float>::makePeakFilter(
     getSampleRate(),
     chainSettings.lowPassFreq,
     chainSettings.lowPassResonanceQuality,
-    juce::Decibels::decibelsToGain(chainSettings.lowPassResonance));
+    juce::Decibels::decibelsToGain(gain));
 
   updateCoefficients(
     leftChain.get<ChainPositions::LowPassResonance>().coefficients,
