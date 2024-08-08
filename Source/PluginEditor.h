@@ -152,7 +152,7 @@ private:
   Rectangle<int> dualPeakArea();
   Rectangle<int> lowpassArea();
   Rectangle<int> lateArea();
-  int boxWidth = 130;
+  int boxWidth = 135;
   int boxHeight = 550;
 
   // Fontsizes
@@ -171,6 +171,9 @@ private:
     highPassSlopeLabel,
     // Peak
     peakStereoLabel, peakFreqLabel, peakGainLabel, peakQualityLabel,
+    // Dual Peak
+    dualPeakWidthLabel, dualPeakFreqLabel, dualPeakGainLabel,
+    dualPeakQualityLabel,
     // Lowpass
     lowPassFreqLabel, lowPassResonanceLabel, lowPassResonanceQualityLabel,
     lowPassSlopeLabel,
@@ -178,8 +181,8 @@ private:
     lateBiasLabel, lateDriveTypeLabel, lateGirthLabel, lateDriveLabel,
     preGainLabel, mixLabel, analyserLabel,
     // Titels
-    inLabel, outLabel, earlyLabel, highpassLabel, peakLabel, lowpassLabel,
-    lateLabel,
+    inLabel, outLabel, earlyLabel, highpassLabel, peakLabel, dualPeakLabel,
+    lowpassLabel, lateLabel,
     // Options
     optionsLabel;
 

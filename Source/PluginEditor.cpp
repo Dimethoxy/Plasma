@@ -205,6 +205,12 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
   , peakGainLabel("Resonance", FontSizes::Main, Justification::centredTop)
   , peakQualityLabel("Q", FontSizes::Main, Justification::centredTop)
   ,
+  // Peak
+  dualPeakWidthLabel("Width", FontSizes::Main, Justification::centredTop)
+  , dualPeakFreqLabel("Frequency", FontSizes::Main, Justification::centredTop)
+  , dualPeakGainLabel("Resonance", FontSizes::Main, Justification::centredTop)
+  , dualPeakQualityLabel("Q", FontSizes::Main, Justification::centredTop)
+  ,
   // Lowpass
   lowPassFreqLabel("Frequency", FontSizes::Main, Justification::centredTop)
   , lowPassResonanceLabel("Resonance",
@@ -230,6 +236,7 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
   , earlyLabel("Distortion", FontSizes::Titel, Justification::centredTop)
   , highpassLabel("Highpass", FontSizes::Titel, Justification::centredTop)
   , peakLabel("Peak", FontSizes::Titel, Justification::centredTop)
+  , dualPeakLabel("Dual", FontSizes::Titel, Justification::centredTop)
   , lowpassLabel("Lowpass", FontSizes::Titel, Justification::centredTop)
   , lateLabel("Distortion", FontSizes::Titel, Justification::centredTop)
   , plasmaLabel()
@@ -418,6 +425,7 @@ PlasmaAudioProcessorEditor::paint(juce::Graphics& g)
   g.fillRect(earlyArea());
   g.fillRect(highpassArea());
   g.fillRect(peakArea());
+  g.fillRect(dualPeakArea());
   g.fillRect(lowpassArea());
   g.fillRect(lateArea());
 
@@ -1090,55 +1098,55 @@ PlasmaAudioProcessorEditor::resized()
                           sc(40));
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Dual Peak
-  // peakLabel.setBounds(peakArea().getX(),
-  //                    peakArea().getY() + sc(padding),
-  //                    peakArea().getWidth(),
-  //                    sc(40));
+  dualPeakLabel.setBounds(dualPeakArea().getX(),
+                          dualPeakArea().getY() + sc(padding),
+                          dualPeakArea().getWidth(),
+                          sc(40));
   // Stereo
   dualPeakWidthSlider.setBounds(dualPeakArea().getCentreX() - sc(knobSize) / 2,
                                 sc(430),
                                 sc(knobSize),
                                 sc(knobSize));
-  // peakStereoLabel.setBounds(peakStereoSlider.getBounds().getX(),
-  //                           peakStereoSlider.getBounds().getY() +
-  //                             peakStereoSlider.getBounds().getHeight() *
-  //                               knobLabelHeight,
-  //                           peakStereoSlider.getBounds().getWidth(),
-  //                           sc(40));
+  dualPeakWidthLabel.setBounds(dualPeakWidthSlider.getBounds().getX(),
+                               dualPeakWidthSlider.getBounds().getY() +
+                                 dualPeakWidthSlider.getBounds().getHeight() *
+                                   knobLabelHeight,
+                               dualPeakWidthSlider.getBounds().getWidth(),
+                               sc(40));
   //  Quality
   dualPeakQualitySlider.setBounds(dualPeakArea().getCentreX() -
                                     sc(knobSize) / 2,
                                   sc(550),
                                   sc(knobSize),
                                   sc(knobSize));
-  // peakQualityLabel.setBounds(peakQualitySlider.getBounds().getX(),
-  //                            peakQualitySlider.getBounds().getY() +
-  //                              peakQualitySlider.getBounds().getHeight() *
-  //                                knobLabelHeight,
-  //                            peakQualitySlider.getBounds().getWidth(),
-  //                            sc(40));
+  dualPeakQualityLabel.setBounds(
+    dualPeakQualitySlider.getBounds().getX(),
+    dualPeakQualitySlider.getBounds().getY() +
+      dualPeakQualitySlider.getBounds().getHeight() * knobLabelHeight,
+    dualPeakQualitySlider.getBounds().getWidth(),
+    sc(40));
   // Gain
   dualPeakGainSlider.setBounds(dualPeakArea().getCentreX() - sc(knobSize) / 2,
                                sc(670),
                                sc(knobSize),
                                sc(knobSize));
-  // peakGainLabel.setBounds(peakGainSlider.getBounds().getX(),
-  //                         peakGainSlider.getBounds().getY() +
-  //                           peakGainSlider.getBounds().getHeight() *
-  //                             knobLabelHeight,
-  //                         peakGainSlider.getBounds().getWidth(),
-  //                         sc(40));
+  dualPeakGainLabel.setBounds(dualPeakGainSlider.getBounds().getX(),
+                              dualPeakGainSlider.getBounds().getY() +
+                                dualPeakGainSlider.getBounds().getHeight() *
+                                  knobLabelHeight,
+                              dualPeakGainSlider.getBounds().getWidth(),
+                              sc(40));
   //  Frequency
   dualPeakFreqSlider.setBounds(dualPeakArea().getCentreX() - sc(knobSize) / 2,
                                sc(790),
                                sc(knobSize),
                                sc(knobSize));
-  // peakFreqLabel.setBounds(peakFreqSlider.getBounds().getX(),
-  //                         peakFreqSlider.getBounds().getY() +
-  //                           peakFreqSlider.getBounds().getHeight() *
-  //                             knobLabelHeight,
-  //                         peakFreqSlider.getBounds().getWidth(),
-  //                         sc(40));
+  dualPeakFreqLabel.setBounds(dualPeakFreqSlider.getBounds().getX(),
+                              dualPeakFreqSlider.getBounds().getY() +
+                                dualPeakFreqSlider.getBounds().getHeight() *
+                                  knobLabelHeight,
+                              dualPeakFreqSlider.getBounds().getWidth(),
+                              sc(40));
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Lowpass
   lowpassLabel.setBounds(lowpassArea().getX(),
@@ -1796,6 +1804,11 @@ PlasmaAudioProcessorEditor::getLabels()
            &peakFreqLabel,
            &peakGainLabel,
            &peakQualityLabel,
+           // Peak
+           &dualPeakWidthLabel,
+           &dualPeakFreqLabel,
+           &dualPeakGainLabel,
+           &dualPeakQualityLabel,
            // Lowpass
            &lowPassFreqLabel,
            &lowPassResonanceLabel,
@@ -1815,6 +1828,7 @@ PlasmaAudioProcessorEditor::getLabels()
            &earlyLabel,
            &highpassLabel,
            &peakLabel,
+           &dualPeakLabel,
            &lowpassLabel,
            &lateLabel
   };
