@@ -47,16 +47,31 @@ ResponseCurveComponent::update()
     makeHighPassResonance(chainSettings, audioProcessor.getSampleRate());
   auto peakCoefficients =
     makePeakFilter(chainSettings, audioProcessor.getSampleRate(), 0.0);
-  auto dualPeakACoefficients = makeDualPeakFilter(
-    chainSettings, audioProcessor.getSampleRate(), chainSettings.dualPeakWidth);
-  auto dualPeakBCoefficients =
-    makeDualPeakFilter(chainSettings,
-                       audioProcessor.getSampleRate(),
-                       -chainSettings.dualPeakWidth);
   auto lowPassResonanceCoefficients =
     makeLowPassResonance(chainSettings, audioProcessor.getSampleRate());
   auto lowPassCoefficients =
     makeLowPassFilter(chainSettings, audioProcessor.getSampleRate());
+
+  // Dual Peak
+  auto dualPeakWidth = chainSettings.dualPeakWidth;
+  auto dualPeakFreq = chainSettings.dualPeakFreq;
+
+  auto logFreq = juce::mapFromLog10(dualPeakFreq, 20.0f, 20000.0f);
+  auto logWidth = juce::mapFromLog10(dualPeakWidth / 100.0f, 20.0f, 20000.0f);
+
+  auto logFreqA = logFreq - 0.1f;
+  auto logFreqB = logFreq + 0.1f;
+
+  auto freqA = juce::mapToLog10(logFreqA, 20.0f, 20000.0f);
+  auto freqB = juce::mapToLog10(logFreqB, 20.0f, 20000.0f);
+
+  auto offsetA = freqA - dualPeakFreq;
+  auto offsetB = freqB - dualPeakFreq;
+
+  auto dualPeakACoefficients =
+    makeDualPeakFilter(chainSettings, audioProcessor.getSampleRate(), offsetA);
+  auto dualPeakBCoefficients =
+    makeDualPeakFilter(chainSettings, audioProcessor.getSampleRate(), offsetB);
 
   // Updates
   updatePassFilter(monoChain.get<ChainPositions::HighPass>(),
