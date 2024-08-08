@@ -438,8 +438,8 @@ PlasmaAudioProcessor::createParameterLayout()
   layout.add(std::make_unique<juce::AudioParameterFloat>(
     "Dual Peak Width",
     "Dual Peak Width",
-    juce::NormalisableRange<float>(0.0f, 1000.0f, 0.1f, 1.0f),
-    300.0f));
+    juce::NormalisableRange<float>(0.0f, 100.0f, 0.1f, 1.0f),
+    0.0f));
   layout.add(std::make_unique<juce::AudioParameterFloat>(
     "Dual Peak Freq",
     "Dual Peak Freq",
@@ -680,10 +680,10 @@ PlasmaAudioProcessor::updateDualPeakFilter(const ChainSettings& chainSettings)
   auto dualPeakFreq = chainSettings.dualPeakFreq;
 
   auto logFreq = juce::mapFromLog10(dualPeakFreq, 20.0f, 20000.0f);
-  auto logWidth = juce::mapFromLog10(dualPeakWidth / 100.0f, 20.0f, 20000.0f);
+  auto width = dualPeakWidth / 500.0f;
 
-  auto logFreqA = logFreq - 0.1f;
-  auto logFreqB = logFreq + 0.1f;
+  auto logFreqA = logFreq - width;
+  auto logFreqB = logFreq + width;
 
   auto freqA = juce::mapToLog10(logFreqA, 20.0f, 20000.0f);
   auto freqB = juce::mapToLog10(logFreqB, 20.0f, 20000.0f);

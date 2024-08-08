@@ -53,7 +53,7 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
                       "",
                       "Quality")
   ,
-  // Peak
+  // Dual Peak
   dualPeakWidthSlider(*audioProcessor.apvts.getParameter("Dual Peak Width"),
                       "%",
                       "Width")
