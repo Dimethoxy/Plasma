@@ -706,7 +706,9 @@ PlasmaAudioProcessorEditor::sliderDragStarted(Slider* slider)
              slider == &highPassResonanceQualitySlider ||
              slider == &highPassSlopeSlider || slider == &peakStereoSlider ||
              slider == &peakFreqSlider || slider == &peakGainSlider ||
-             slider == &peakQualitySlider || slider == &lowPassFreqSlider ||
+             slider == &peakQualitySlider || slider == &dualPeakWidthSlider ||
+             slider == &dualPeakFreqSlider || slider == &dualPeakGainSlider ||
+             slider == &dualPeakQualitySlider || slider == &lowPassFreqSlider ||
              slider == &lowPassResonanceSlider ||
              slider == &lowPassResonanceQualitySlider ||
              slider == &lowPassSlopeSlider) {
