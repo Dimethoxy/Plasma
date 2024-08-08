@@ -434,6 +434,27 @@ PlasmaAudioProcessor::createParameterLayout()
     "Peak Q",
     juce::NormalisableRange<float>(0.1f, 5.0f, 0.01f, 1.0f),
     1.0f));
+  // Peak
+  layout.add(std::make_unique<juce::AudioParameterFloat>(
+    "Dual Peak Width",
+    "Dual Peak Width",
+    juce::NormalisableRange<float>(0.0f, 100.0f, 0.1f, 1.0f),
+    0.0f));
+  layout.add(std::make_unique<juce::AudioParameterFloat>(
+    "Dual Peak Freq",
+    "Dual Peak Freq",
+    juce::NormalisableRange<float>(20.0f, 20000.0f, 0.1f, 0.18),
+    450.0f));
+  layout.add(std::make_unique<juce::AudioParameterFloat>(
+    "Dual Peak Gain",
+    "Dual Peak Gain",
+    juce::NormalisableRange<float>(-48.0f, 48.0f, 0.1f, 1.0f),
+    0.0f));
+  layout.add(std::make_unique<juce::AudioParameterFloat>(
+    "Dual Peak Q",
+    "Dual Peak Q",
+    juce::NormalisableRange<float>(0.1f, 5.0f, 0.01f, 1.0f),
+    1.0f));
   // Slope Array
   juce::StringArray slopeArray;
   for (int i = 0; i < 8; i++) {
