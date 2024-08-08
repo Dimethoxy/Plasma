@@ -438,8 +438,8 @@ PlasmaAudioProcessor::createParameterLayout()
   layout.add(std::make_unique<juce::AudioParameterFloat>(
     "Dual Peak Width",
     "Dual Peak Width",
-    juce::NormalisableRange<float>(0.0f, 100.0f, 0.1f, 1.0f),
-    0.0f));
+    juce::NormalisableRange<float>(0.0f, 1000.0f, 0.1f, 1.0f),
+    300.0f));
   layout.add(std::make_unique<juce::AudioParameterFloat>(
     "Dual Peak Freq",
     "Dual Peak Freq",
@@ -610,6 +610,7 @@ PlasmaAudioProcessor::updateFilters()
   updateHighPass(chainSettings);
   updateHighPassResonance(chainSettings);
   updatePeakFilter(chainSettings);
+  updateDualPeakFilter(chainSettings);
   updateLowPass(chainSettings);
   updateLowPassResonance(chainSettings);
 }
@@ -620,9 +621,20 @@ makePeakFilter(const ChainSettings& chainSettings,
 {
   return juce::dsp::IIR::Coefficients<float>::makePeakFilter(
     sampleRate,
-    DistortionProcessor::clamp(chainSettings.peakFreq + offset, 20, 20000),
+    DistortionProcessor::clamp(chainSettings.dualPeakFreq + offset, 20, 20000),
     chainSettings.peakQuality,
     juce::Decibels::decibelsToGain(chainSettings.peakGain));
+}
+Coefficients
+makeDualPeakFilter(const ChainSettings& chainSettings,
+                   double sampleRate,
+                   float offset)
+{
+  return juce::dsp::IIR::Coefficients<float>::makePeakFilter(
+    sampleRate,
+    DistortionProcessor::clamp(chainSettings.dualPeakFreq + offset, 20, 20000),
+    chainSettings.dualPeakQuality,
+    juce::Decibels::decibelsToGain(chainSettings.dualPeakGain));
 }
 Coefficients
 makeLowPassResonance(const ChainSettings& chainSettings, double sampleRate)
@@ -659,6 +671,25 @@ PlasmaAudioProcessor::updatePeakFilter(const ChainSettings& chainSettings)
                      *peakCoefficientsL);
   updateCoefficients(rightChain.get<ChainPositions::Peak>().coefficients,
                      *peakCoefficientsR);
+}
+
+void
+PlasmaAudioProcessor::updateDualPeakFilter(const ChainSettings& chainSettings)
+{
+  auto peakCoefficientsA = makeDualPeakFilter(
+    chainSettings, getSampleRate(), chainSettings.dualPeakWidth / 2.0f);
+  auto peakCoefficientsB = makeDualPeakFilter(
+    chainSettings, getSampleRate(), -chainSettings.dualPeakWidth / 2.0f);
+
+  updateCoefficients(leftChain.get<ChainPositions::DualPeakA>().coefficients,
+                     *peakCoefficientsA);
+  updateCoefficients(rightChain.get<ChainPositions::DualPeakA>().coefficients,
+                     *peakCoefficientsA);
+
+  updateCoefficients(leftChain.get<ChainPositions::DualPeakB>().coefficients,
+                     *peakCoefficientsB);
+  updateCoefficients(rightChain.get<ChainPositions::DualPeakB>().coefficients,
+                     *peakCoefficientsB);
 }
 
 void

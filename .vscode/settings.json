@@ -1,0 +1,10 @@
+{
+  "files.associations": {
+    "chrono": "cpp",
+    "memory": "cpp",
+    "format": "cpp",
+    "future": "cpp",
+    "istream": "cpp",
+    "functional": "cpp"
+  }
+}

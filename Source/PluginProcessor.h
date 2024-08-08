@@ -12,6 +12,8 @@ enum ChainPositions
   HighPass,
   HighPassResonance,
   Peak,
+  DualPeakA,
+  DualPeakB,
   LowPass,
   LowPassResonance,
 };
@@ -42,6 +44,8 @@ struct ChainSettings
   float drive{ 10.0f }, girth{ 0.0f }, bias{ 0.0f }, preGain{ 0.0f };
   float lateDrive{ 0.0f }, lateBias{ 0.0f }, lateGirth{ 0.0f }, gain{ 0.0f };
   float peakFreq{ 0 }, peakGain{ 0 }, peakQuality{ 1.0f }, peakStereo{ 0.0f };
+  float dualPeakFreq{ 0 }, dualPeakGain{ 0 }, dualPeakQuality{ 1.0f },
+    dualPeakWidth{ 300.0f };
   float highPassFreq{ 20.0f }, lowPassFreq{ 20.0f };
   float highPassResonanceQuality{ 1.0 }, highPassResonance{ 0.0 };
   float lowPassResonanceQuality{ 1.0 }, lowPassResonance{ 0.0 };
@@ -68,8 +72,13 @@ using PassFilter = juce::dsp::ProcessorChain<Filter,
                                              Filter,
                                              Filter,
                                              Filter>;
-using MonoChain =
-  juce::dsp::ProcessorChain<PassFilter, Filter, Filter, PassFilter, Filter>;
+using MonoChain = juce::dsp::ProcessorChain<PassFilter, // HighPass
+                                            Filter,     // HighPass Resonance
+                                            Filter,     // Peak
+                                            Filter,     // Dual A
+                                            Filter,     // Dual B
+                                            PassFilter, // LowPass
+                                            Filter>;    // LowPass Resonance
 
 // Coefficients
 using Coefficients = Filter::CoefficientsPtr;
@@ -80,6 +89,10 @@ Coefficients
 makePeakFilter(const ChainSettings& chainSettings,
                double sampleRate,
                float offset);
+Coefficients
+makeDualPeakFilter(const ChainSettings& chainSettings,
+                   double sampleRate,
+                   float offset);
 Coefficients
 makeHighPassResonance(const ChainSettings& chainSettings, double sampleRate);
 Coefficients
@@ -210,6 +223,7 @@ private:
   // Filters
   MonoChain leftChain, rightChain;
   void updatePeakFilter(const ChainSettings& chainSettings);
+  void updateDualPeakFilter(const ChainSettings& chainSettings);
   void updateHighPassResonance(const ChainSettings& chainSettings);
   void updateLowPassResonance(const ChainSettings& chainSettings);
   void updateHighPass(const ChainSettings& chainSettings);
