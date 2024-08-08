@@ -5,6 +5,13 @@
     "format": "cpp",
     "future": "cpp",
     "istream": "cpp",
-    "functional": "cpp"
+    "functional": "cpp",
+    "array": "cpp",
+    "deque": "cpp",
+    "forward_list": "cpp",
+    "list": "cpp",
+    "vector": "cpp",
+    "string_view": "cpp",
+    "span": "cpp"
   }
 }

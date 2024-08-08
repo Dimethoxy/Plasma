@@ -621,7 +621,7 @@ makePeakFilter(const ChainSettings& chainSettings,
 {
   return juce::dsp::IIR::Coefficients<float>::makePeakFilter(
     sampleRate,
-    DistortionProcessor::clamp(chainSettings.dualPeakFreq + offset, 20, 20000),
+    DistortionProcessor::clamp(chainSettings.peakFreq + offset, 20, 20000),
     chainSettings.peakQuality,
     juce::Decibels::decibelsToGain(chainSettings.peakGain));
 }
