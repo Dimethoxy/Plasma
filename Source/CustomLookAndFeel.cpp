@@ -148,7 +148,7 @@ CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
     numOptions = 5;
     selectedOption = (int)slider.getValue();
   } else if (slider.getName() == "Lowpass" || slider.getName() == "Highpass" ||
-             slider.getName() == "Peak") {
+             slider.getName() == "Peak" || slider.getName() == "Dual Peak") {
     skewFactor = 0.82;
     if (slider.getName() == "Lowpass")
       isInverted = true;

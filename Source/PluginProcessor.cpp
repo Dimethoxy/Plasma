@@ -434,6 +434,27 @@ PlasmaAudioProcessor::createParameterLayout()
     "Peak Q",
     juce::NormalisableRange<float>(0.1f, 5.0f, 0.01f, 1.0f),
     1.0f));
+  // Dual Peak
+  layout.add(std::make_unique<juce::AudioParameterFloat>(
+    "Dual Peak Width",
+    "Dual Peak Width",
+    juce::NormalisableRange<float>(0.0f, 100.0f, 0.1f, 1.0f),
+    0.0f));
+  layout.add(std::make_unique<juce::AudioParameterFloat>(
+    "Dual Peak Freq",
+    "Dual Peak Freq",
+    juce::NormalisableRange<float>(20.0f, 20000.0f, 0.1f, 0.18),
+    450.0f));
+  layout.add(std::make_unique<juce::AudioParameterFloat>(
+    "Dual Peak Gain",
+    "Dual Peak Gain",
+    juce::NormalisableRange<float>(-48.0f, 48.0f, 0.1f, 1.0f),
+    0.0f));
+  layout.add(std::make_unique<juce::AudioParameterFloat>(
+    "Dual Peak Q",
+    "Dual Peak Q",
+    juce::NormalisableRange<float>(0.1f, 5.0f, 0.01f, 1.0f),
+    1.0f));
   // Slope Array
   juce::StringArray slopeArray;
   for (int i = 0; i < 8; i++) {
@@ -540,6 +561,12 @@ getChainSettings(juce::AudioProcessorValueTreeState& apvts)
   settings.peakFreq = apvts.getRawParameterValue("Peak Freq")->load();
   settings.peakGain = apvts.getRawParameterValue("Peak Gain")->load();
   settings.peakQuality = apvts.getRawParameterValue("Peak Q")->load();
+  // Dual Peak
+  settings.dualPeakWidth =
+    apvts.getRawParameterValue("Dual Peak Width")->load();
+  settings.dualPeakFreq = apvts.getRawParameterValue("Dual Peak Freq")->load();
+  settings.dualPeakGain = apvts.getRawParameterValue("Dual Peak Gain")->load();
+  settings.dualPeakQuality = apvts.getRawParameterValue("Dual Peak Q")->load();
   // Highpass
   settings.highPassFreq = apvts.getRawParameterValue("Highpass Freq")->load();
   settings.highPassResonance =
@@ -583,6 +610,7 @@ PlasmaAudioProcessor::updateFilters()
   updateHighPass(chainSettings);
   updateHighPassResonance(chainSettings);
   updatePeakFilter(chainSettings);
+  updateDualPeakFilter(chainSettings);
   updateLowPass(chainSettings);
   updateLowPassResonance(chainSettings);
 }
@@ -596,6 +624,17 @@ makePeakFilter(const ChainSettings& chainSettings,
     DistortionProcessor::clamp(chainSettings.peakFreq + offset, 20, 20000),
     chainSettings.peakQuality,
     juce::Decibels::decibelsToGain(chainSettings.peakGain));
+}
+Coefficients
+makeDualPeakFilter(const ChainSettings& chainSettings,
+                   double sampleRate,
+                   float offset)
+{
+  return juce::dsp::IIR::Coefficients<float>::makePeakFilter(
+    sampleRate,
+    DistortionProcessor::clamp(chainSettings.dualPeakFreq + offset, 20, 20000),
+    chainSettings.dualPeakQuality,
+    juce::Decibels::decibelsToGain(chainSettings.dualPeakGain));
 }
 Coefficients
 makeLowPassResonance(const ChainSettings& chainSettings, double sampleRate)
@@ -632,6 +671,40 @@ PlasmaAudioProcessor::updatePeakFilter(const ChainSettings& chainSettings)
                      *peakCoefficientsL);
   updateCoefficients(rightChain.get<ChainPositions::Peak>().coefficients,
                      *peakCoefficientsR);
+}
+
+void
+PlasmaAudioProcessor::updateDualPeakFilter(const ChainSettings& chainSettings)
+{
+  auto dualPeakWidth = chainSettings.dualPeakWidth;
+  auto dualPeakFreq = chainSettings.dualPeakFreq;
+
+  auto logFreq = juce::mapFromLog10(dualPeakFreq, 20.0f, 20000.0f);
+  auto width = dualPeakWidth / 500.0f;
+
+  auto logFreqA = logFreq - width;
+  auto logFreqB = logFreq + width;
+
+  auto freqA = juce::mapToLog10(logFreqA, 20.0f, 20000.0f);
+  auto freqB = juce::mapToLog10(logFreqB, 20.0f, 20000.0f);
+
+  auto offsetA = freqA - dualPeakFreq;
+  auto offsetB = freqB - dualPeakFreq;
+
+  auto peakCoefficientsA =
+    makeDualPeakFilter(chainSettings, getSampleRate(), offsetA);
+  auto peakCoefficientsB =
+    makeDualPeakFilter(chainSettings, getSampleRate(), offsetB);
+
+  updateCoefficients(leftChain.get<ChainPositions::DualPeakA>().coefficients,
+                     *peakCoefficientsA);
+  updateCoefficients(rightChain.get<ChainPositions::DualPeakA>().coefficients,
+                     *peakCoefficientsA);
+
+  updateCoefficients(leftChain.get<ChainPositions::DualPeakB>().coefficients,
+                     *peakCoefficientsB);
+  updateCoefficients(rightChain.get<ChainPositions::DualPeakB>().coefficients,
+                     *peakCoefficientsB);
 }
 
 void

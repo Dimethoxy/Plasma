@@ -105,6 +105,9 @@ private:
     highPassSlopeSlider,
     // Peak
     peakStereoSlider, peakFreqSlider, peakGainSlider, peakQualitySlider,
+    // DualPeak
+    dualPeakWidthSlider, dualPeakFreqSlider, dualPeakGainSlider,
+    dualPeakQualitySlider,
     // Lowpass
     lowPassFreqSlider, lowPassResonanceSlider, lowPassResonanceQualitySlider,
     lowPassSlopeSlider,
@@ -126,16 +129,18 @@ private:
   using APVTS = juce::AudioProcessorValueTreeState;
   using Attachment = APVTS::SliderAttachment;
   Attachment highPassFreqSliderAttachment, lowPassFreqSliderAttachment,
-    peakFreqSliderAttachment, biasSliderAttachment, lateBiasSliderAttachment,
-    driveTypeSliderAttachment, lateDriveTypeSliderAttachment,
-    highPassResonanceSliderAttachment, lowPassResonanceSliderAttachment,
-    peakGainSliderAttachment, peakStereoSliderAttachment,
-    highPassResonanceQualitySliderAttachment,
-    lowPassResonanceQualitySliderAttachment, peakQualitySliderAttachment,
-    highPassSlopeSliderAttachment, lowPassSlopeSliderAttachment,
-    preGainSliderAttachment, driveSliderAttachment, girthSliderAttachment,
-    lateGirthSliderAttachment, lateDriveSliderAttachment, gainSliderAttachment,
-    analyserSliderAttachment, mixSliderAttachment;
+    biasSliderAttachment, lateBiasSliderAttachment, driveTypeSliderAttachment,
+    lateDriveTypeSliderAttachment, highPassResonanceSliderAttachment,
+    lowPassResonanceSliderAttachment, peakStereoSliderAttachment,
+    peakFreqSliderAttachment, peakGainSliderAttachment,
+    peakQualitySliderAttachment, dualPeakWidthSliderAttachment,
+    dualPeakFreqSliderAttachment, dualPeakGainSliderAttachment,
+    dualPeakQualitySliderAttachment, highPassResonanceQualitySliderAttachment,
+    lowPassResonanceQualitySliderAttachment, highPassSlopeSliderAttachment,
+    lowPassSlopeSliderAttachment, preGainSliderAttachment,
+    driveSliderAttachment, girthSliderAttachment, lateGirthSliderAttachment,
+    lateDriveSliderAttachment, gainSliderAttachment, analyserSliderAttachment,
+    mixSliderAttachment;
 
   // Layout
   float sc(float val);
@@ -146,9 +151,10 @@ private:
   Rectangle<int> earlyArea();
   Rectangle<int> highpassArea();
   Rectangle<int> peakArea();
+  Rectangle<int> dualPeakArea();
   Rectangle<int> lowpassArea();
   Rectangle<int> lateArea();
-  int boxWidth = 150;
+  int boxWidth = 135;
   int boxHeight = 550;
 
   // Fontsizes
@@ -167,6 +173,9 @@ private:
     highPassSlopeLabel,
     // Peak
     peakStereoLabel, peakFreqLabel, peakGainLabel, peakQualityLabel,
+    // Dual Peak
+    dualPeakWidthLabel, dualPeakFreqLabel, dualPeakGainLabel,
+    dualPeakQualityLabel,
     // Lowpass
     lowPassFreqLabel, lowPassResonanceLabel, lowPassResonanceQualityLabel,
     lowPassSlopeLabel,
@@ -174,8 +183,8 @@ private:
     lateBiasLabel, lateDriveTypeLabel, lateGirthLabel, lateDriveLabel,
     preGainLabel, mixLabel, analyserLabel,
     // Titels
-    inLabel, outLabel, earlyLabel, highpassLabel, peakLabel, lowpassLabel,
-    lateLabel,
+    inLabel, outLabel, earlyLabel, highpassLabel, peakLabel, dualPeakLabel,
+    lowpassLabel, lateLabel,
     // Options
     optionsLabel;
 
