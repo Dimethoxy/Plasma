@@ -459,6 +459,11 @@ PlasmaAudioProcessorEditor::paint(juce::Graphics& g)
                                     peakArea().getY() + fs_titelLabel()),
                        Point<float>(peakArea().getCentreX() + sc(29),
                                     peakArea().getY() + fs_titelLabel()));
+  Line<float> dualPeakLine(
+    Point<float>(dualPeakArea().getCentreX() - sc(29),
+                 dualPeakArea().getY() + fs_titelLabel()),
+    Point<float>(dualPeakArea().getCentreX() + sc(29),
+                 dualPeakArea().getY() + fs_titelLabel()));
 
   Line<float> lowpassLine(Point<float>(lowpassArea().getCentreX() - sc(54),
                                        lowpassArea().getY() + fs_titelLabel()),
@@ -482,6 +487,7 @@ PlasmaAudioProcessorEditor::paint(juce::Graphics& g)
   g.drawLine(earlyLine, lineSize);
   g.drawLine(highpassLine, lineSize);
   g.drawLine(peakLine, lineSize);
+  g.drawLine(dualPeakLine, lineSize);
   g.drawLine(lowpassLine, lineSize);
   g.drawLine(lateLine, lineSize);
   if (showConfig) {
