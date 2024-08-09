@@ -157,6 +157,7 @@ CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
   } else if (slider.getName() == "Girth") {
     String str;
     isCentered = true;
+  } else if (slider.getName() == "Dual Peak Resonance") {
   }
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

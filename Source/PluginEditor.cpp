@@ -147,7 +147,7 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
                                 "Peak Q",
                                 peakQualitySlider)
   ,
-  // Peak
+  // Dual Peak
   dualPeakWidthSliderAttachment(audioProcessor.apvts,
                                 "Dual Peak Width",
                                 dualPeakWidthSlider)
