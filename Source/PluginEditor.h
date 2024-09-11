@@ -230,6 +230,7 @@ private:
   void saveCornerRadius(PropertiesFile* commonSettings);
   void setOscilloscopeBufferSize(int oscilloscopeBufferSize);
   void setOscilloscopeSamplesPerBlock(int oscilloscopeSamplesPerBlock);
+  void setCornerRadius(int cornerRadius);
 
   // Component Vectors
   std::vector<CustomLabel*> getLabels();

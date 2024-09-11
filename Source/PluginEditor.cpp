@@ -1512,10 +1512,10 @@ PlasmaAudioProcessorEditor::editorHidden(Label* label, TextEditor& textEditor)
     }
   } else if (label == &configCornerRadiusTextbox) {
     auto value = text.getIntValue();
-    if (value >= 0 && value <= 100) {
+    if (value >= 0 && value <= 50) {
       setCornerRadius(value);
-    } else if (value >= 100) {
-      setCornerRadius(100);
+    } else if (value >= 50) {
+      setCornerRadius(50);
     } else if (value <= 0) {
       setCornerRadius(0);
     } else {
@@ -1695,28 +1695,28 @@ PlasmaAudioProcessorEditor::setFontColor(Colour c)
     button->setColour(TextButton::ColourIds::textColourOffId, c);
   }
   plasmaLabel.setColour(Label::ColourIds::textColourId, c);
-}
-}
-plasmaLabel.setColour(Label::ColourIds::textColourId, c);
+  plasmaLabel.setColour(Label::ColourIds::textColourId, c);
 }
 
 void
-PlasmaAudioProcessorEditor::setOptionsFontColor(Colour c) optionsFontColor = c;
-for (auto* label : getOptionsLabels()) {
-  label->setColour(Label::ColourIds::textColourId, c);
-}
-for (auto* textbox : getTextboxes()) {
-  textbox->setColour(Label::ColourIds::textColourId, c);
-  textbox->setColour(Label::ColourIds::textWhenEditingColourId, c);
-}
-for (auto* button : getOptionsButtons()) {
-  button->setColour(TextButton::ColourIds::textColourOnId, c);
-  button->setColour(TextButton::ColourIds::textColourOffId, c);
-}
-waveformComponent->setColor(c);
-responseCurveComponent.setColor(c);
-earlyShapercurveComponent.setColor(c);
-lateShapercurveComponent.setColor(c);
+PlasmaAudioProcessorEditor::setOptionsFontColor(Colour c)
+{
+  optionsFontColor = c;
+  for (auto* label : getOptionsLabels()) {
+    label->setColour(Label::ColourIds::textColourId, c);
+  }
+  for (auto* textbox : getTextboxes()) {
+    textbox->setColour(Label::ColourIds::textColourId, c);
+    textbox->setColour(Label::ColourIds::textWhenEditingColourId, c);
+  }
+  for (auto* button : getOptionsButtons()) {
+    button->setColour(TextButton::ColourIds::textColourOnId, c);
+    button->setColour(TextButton::ColourIds::textColourOffId, c);
+  }
+  waveformComponent->setColor(c);
+  responseCurveComponent.setColor(c);
+  earlyShapercurveComponent.setColor(c);
+  lateShapercurveComponent.setColor(c);
 }
 
 bool
@@ -1764,7 +1764,6 @@ PlasmaAudioProcessorEditor::loadCornerRadius(PropertiesFile* userSettings)
 {
   cornerRadius =
     userSettings->getIntValue("cornerRadius", cornerRadiusFallback);
-  waveformComponent->setCornerRadius(cornerRadius);
 }
 
 void
@@ -1782,6 +1781,13 @@ PlasmaAudioProcessorEditor::setOscilloscopeSamplesPerBlock(
 {
   this->oscilloscopeSamplesPerBlock = oscilloscopeSamplesPerBlock;
   waveformComponent->setSamplesPerBlock(this->oscilloscopeSamplesPerBlock);
+  updateTextboxes();
+}
+
+void
+PlasmaAudioProcessorEditor::setCornerRadius(int cornerRadius)
+{
+  this->cornerRadius = cornerRadius;
   updateTextboxes();
 }
 
