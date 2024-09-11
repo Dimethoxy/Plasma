@@ -94,8 +94,8 @@ private:
   bool isAutoAnalyser;
   void setAnalyserType(AnalyserType analyser);
   AnalyserType lastAnalyserType = AnalyserType::Automatic;
-  int cornerRadius = 0;
-  int cornerRadiusFallback = 0;
+  int cornerRadius = 5;
+  int cornerRadiusFallback = 5;
 
   // Sliders
   CustomRotarySlider

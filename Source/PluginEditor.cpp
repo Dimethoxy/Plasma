@@ -279,13 +279,12 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
   , configCornerRadiusLabel("Corner Radius",
                             FontSizes::Main,
                             Justification::centredLeft)
-  ,
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Textboxes
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  configOscilloscopeBufferSizeTextbox("1024",
-                                      FontSizes::Main,
-                                      Justification::centredLeft)
+  , configOscilloscopeBufferSizeTextbox("1024",
+                                        FontSizes::Main,
+                                        Justification::centredLeft)
   , configOscilloscopeSamplesPerBlockTextbox("4",
                                              FontSizes::Main,
                                              Justification::centredLeft)
@@ -438,15 +437,15 @@ PlasmaAudioProcessorEditor::paint(juce::Graphics& g)
   // Front
   g.setColour(getForegroundColor());
   g.fillRect(headerArea());
-  g.fillRect(monitorArea());
-  g.fillRect(inArea());
-  g.fillRect(outArea());
-  g.fillRect(earlyArea());
-  g.fillRect(highpassArea());
-  g.fillRect(peakArea());
-  g.fillRect(dualPeakArea());
-  g.fillRect(lowpassArea());
-  g.fillRect(lateArea());
+  g.fillRoundedRectangle(monitorArea().toFloat(), sc(cornerRadius));
+  g.fillRoundedRectangle(inArea().toFloat(), sc(cornerRadius));
+  g.fillRoundedRectangle(outArea().toFloat(), sc(cornerRadius));
+  g.fillRoundedRectangle(earlyArea().toFloat(), sc(cornerRadius));
+  g.fillRoundedRectangle(highpassArea().toFloat(), sc(cornerRadius));
+  g.fillRoundedRectangle(peakArea().toFloat(), sc(cornerRadius));
+  g.fillRoundedRectangle(dualPeakArea().toFloat(), sc(cornerRadius));
+  g.fillRoundedRectangle(lowpassArea().toFloat(), sc(cornerRadius));
+  g.fillRoundedRectangle(lateArea().toFloat(), sc(cornerRadius));
 
   // Monitor Background
   g.setColour(getBackgroundColor());
@@ -604,6 +603,7 @@ PlasmaAudioProcessorEditor::configWindow(bool visibility)
     configBackgroundColorLabel.setVisible(false);
     configForegroundColorLabel.setVisible(false);
     configAccentColorLabel.setVisible(false);
+    configCornerRadiusLabel.setVisible(false);
 
     // Hide Config Inputs
     configOscilloscopeBufferSizeTextbox.setVisible(false);
@@ -611,6 +611,7 @@ PlasmaAudioProcessorEditor::configWindow(bool visibility)
     configBackgroundColorTextbox.setVisible(false);
     configForegroundColorTextbox.setVisible(false);
     configAccentColorTextbox.setVisible(false);
+    configCornerRadiusTextbox.setVisible(false);
 
     // Show Tooltip
     tooltipLabel.setVisible(true);
@@ -932,7 +933,7 @@ void
 PlasmaAudioProcessorEditor::resized()
 {
 
-  int knobSize = 120;
+  int knobSize = 123;
   ///////////////////////////////////////////////////////////////////////////////////////////
   // Monitor
   responseCurveComponent.setBounds(monitorArea().getX(),
@@ -1338,7 +1339,7 @@ PlasmaAudioProcessorEditor::resized()
                          scaleKnobSize);
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Options
-  int lineSize = sc(40);
+  int lineSize = sc(38);
   int labelOffset = sc(5);
   int textBoxSize = sc(30);
   // Title
@@ -1416,11 +1417,11 @@ PlasmaAudioProcessorEditor::resized()
   configCornerRadiusLabel.setBounds(monitorArea().getX() + 2 * sc(padding),
                                     monitorArea().getY() + 2 * sc(padding) +
                                       6 * lineSize + labelOffset,
-                                    sc(110),
+                                    sc(125),
                                     lineSize);
-  configAccentColorTextbox.setBounds(
-    configAccentColorLabel.getBounds().getRight() + sc(padding),
-    configAccentColorLabel.getBounds().getY() + sc(5),
+  configCornerRadiusTextbox.setBounds(
+    configCornerRadiusLabel.getBounds().getRight() + sc(padding),
+    configCornerRadiusLabel.getBounds().getY() + sc(5),
     sc(70),
     textBoxSize);
 
