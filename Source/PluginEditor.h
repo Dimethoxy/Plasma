@@ -94,6 +94,8 @@ private:
   bool isAutoAnalyser;
   void setAnalyserType(AnalyserType analyser);
   AnalyserType lastAnalyserType = AnalyserType::Automatic;
+  int cornerRadius = 0;
+  int cornerRadiusFallback = 0;
 
   // Sliders
   CustomRotarySlider
@@ -191,10 +193,11 @@ private:
   // Options Labels
   CustomLabel configOscilloscopeBufferSizeLabel,
     configOscilloscopeSamplesPerBlockLabel, configBackgroundColorLabel,
-    configForegroundColorLabel, configAccentColorLabel;
+    configForegroundColorLabel, configAccentColorLabel, configCornerRadiusLabel;
   CustomTextbox configOscilloscopeBufferSizeTextbox,
     configOscilloscopeSamplesPerBlockTextbox, configBackgroundColorTextbox,
-    configForegroundColorTextbox, configAccentColorTextbox;
+    configForegroundColorTextbox, configAccentColorTextbox,
+    configCornerRadiusTextbox;
 
   // Color
   bool testColorString(String string);
@@ -221,8 +224,10 @@ private:
   int oscilloscopeSamplesPerBlockFallback = 4;
   void loadOscilloscopeBufferSize(PropertiesFile* commonSettings);
   void loadOscilloscopeSamplesPerBlock(PropertiesFile* commonSettings);
+  void loadCornerRadius(PropertiesFile* commonSettings);
   void saveOscilloscopeBufferSize(PropertiesFile* commonSettings);
   void saveOscilloscopeSamplesPerBlock(PropertiesFile* commonSettings);
+  void saveCornerRadius(PropertiesFile* commonSettings);
   void setOscilloscopeBufferSize(int oscilloscopeBufferSize);
   void setOscilloscopeSamplesPerBlock(int oscilloscopeSamplesPerBlock);
 

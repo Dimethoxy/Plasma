@@ -276,6 +276,9 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
   , configAccentColorLabel("Accent Color",
                            FontSizes::Main,
                            Justification::centredLeft)
+  , configCornerRadiusLabel("Corner Radius",
+                            FontSizes::Main,
+                            Justification::centredLeft)
   ,
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Textboxes
@@ -295,6 +298,7 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
   , configAccentColorTextbox("#FF0000",
                              FontSizes::Main,
                              Justification::centredLeft)
+  , configCornerRadiusTextbox("0", FontSizes::Main, Justification::centredLeft)
   , versionManager(p.versionManager)
 {
   // OpenGL Settings
@@ -322,6 +326,7 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
   loadAccentColor(userSettings);
   loadOscilloscopeBufferSize(userSettings);
   loadOscilloscopeSamplesPerBlock(userSettings);
+  loadCornerRadius(userSettings);
 
   // Update Config Textboxes
   updateTextboxes();
@@ -550,6 +555,8 @@ PlasmaAudioProcessorEditor::updateTextboxes()
   configOscilloscopeSamplesPerBlockTextbox.setText(
     String(oscilloscopeSamplesPerBlock),
     NotificationType::dontSendNotification);
+  configCornerRadiusTextbox.setText(String(cornerRadius),
+                                    NotificationType::dontSendNotification);
   repaint();
 }
 void
@@ -568,6 +575,7 @@ PlasmaAudioProcessorEditor::configWindow(bool visibility)
     configBackgroundColorLabel.setVisible(true);
     configForegroundColorLabel.setVisible(true);
     configAccentColorLabel.setVisible(true);
+    configCornerRadiusLabel.setVisible(true);
 
     // Show Config Inputs
     configOscilloscopeBufferSizeTextbox.setVisible(true);
@@ -575,6 +583,7 @@ PlasmaAudioProcessorEditor::configWindow(bool visibility)
     configBackgroundColorTextbox.setVisible(true);
     configForegroundColorTextbox.setVisible(true);
     configAccentColorTextbox.setVisible(true);
+    configCornerRadiusTextbox.setVisible(true);
 
     // Hide Tooltip
     tooltipLabel.setVisible(false);
@@ -665,6 +674,7 @@ PlasmaAudioProcessorEditor::buttonClicked(Button* button)
     saveAccentColor(userSettings);
     saveOscilloscopeBufferSize(userSettings);
     saveOscilloscopeSamplesPerBlock(userSettings);
+    saveCornerRadius(userSettings);
 
     // Repaint
     repaint();
@@ -681,14 +691,14 @@ PlasmaAudioProcessorEditor::buttonClicked(Button* button)
     setAccentColor(accentColorFallback);
     setOscilloscopeBufferSize(oscilloscopeBufferSizeFallback);
     setOscilloscopeSamplesPerBlock(oscilloscopeSamplesPerBlockFallback);
-
+    setCornerRadius(cornerRadiusFallback);
     // Save Colors
     saveBackgroundColor(userSettings);
     saveForegroundColor(userSettings);
     saveAccentColor(userSettings);
     saveOscilloscopeBufferSize(userSettings);
     saveOscilloscopeSamplesPerBlock(userSettings);
-
+    saveCornerRadius(userSettings);
     // Repaint
     repaint();
   }
@@ -1402,6 +1412,18 @@ PlasmaAudioProcessorEditor::resized()
     configAccentColorLabel.getBounds().getY() + sc(5),
     sc(70),
     textBoxSize);
+  // CornerRadius
+  configCornerRadiusLabel.setBounds(monitorArea().getX() + 2 * sc(padding),
+                                    monitorArea().getY() + 2 * sc(padding) +
+                                      6 * lineSize + labelOffset,
+                                    sc(110),
+                                    lineSize);
+  configAccentColorTextbox.setBounds(
+    configAccentColorLabel.getBounds().getRight() + sc(padding),
+    configAccentColorLabel.getBounds().getY() + sc(5),
+    sc(70),
+    textBoxSize);
+
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Analyser
   waveformComponent->setBounds(monitorArea().reduced(sc(padding)));
@@ -1487,6 +1509,17 @@ PlasmaAudioProcessorEditor::editorHidden(Label* label, TextEditor& textEditor)
       setOscilloscopeSamplesPerBlock(4);
     } else {
       setOscilloscopeSamplesPerBlock(oscilloscopeSamplesPerBlockFallback);
+    }
+  } else if (label == &configCornerRadiusTextbox) {
+    auto value = text.getIntValue();
+    if (value >= 0 && value <= 100) {
+      setCornerRadius(value);
+    } else if (value >= 100) {
+      setCornerRadius(100);
+    } else if (value <= 0) {
+      setCornerRadius(0);
+    } else {
+      setCornerRadius(cornerRadiusFallback);
     }
   }
 }
@@ -1663,26 +1696,27 @@ PlasmaAudioProcessorEditor::setFontColor(Colour c)
   }
   plasmaLabel.setColour(Label::ColourIds::textColourId, c);
 }
+}
+plasmaLabel.setColour(Label::ColourIds::textColourId, c);
+}
 
 void
-PlasmaAudioProcessorEditor::setOptionsFontColor(Colour c)
-{
-  optionsFontColor = c;
-  for (auto* label : getOptionsLabels()) {
-    label->setColour(Label::ColourIds::textColourId, c);
-  }
-  for (auto* textbox : getTextboxes()) {
-    textbox->setColour(Label::ColourIds::textColourId, c);
-    textbox->setColour(Label::ColourIds::textWhenEditingColourId, c);
-  }
-  for (auto* button : getOptionsButtons()) {
-    button->setColour(TextButton::ColourIds::textColourOnId, c);
-    button->setColour(TextButton::ColourIds::textColourOffId, c);
-  }
-  waveformComponent->setColor(c);
-  responseCurveComponent.setColor(c);
-  earlyShapercurveComponent.setColor(c);
-  lateShapercurveComponent.setColor(c);
+PlasmaAudioProcessorEditor::setOptionsFontColor(Colour c) optionsFontColor = c;
+for (auto* label : getOptionsLabels()) {
+  label->setColour(Label::ColourIds::textColourId, c);
+}
+for (auto* textbox : getTextboxes()) {
+  textbox->setColour(Label::ColourIds::textColourId, c);
+  textbox->setColour(Label::ColourIds::textWhenEditingColourId, c);
+}
+for (auto* button : getOptionsButtons()) {
+  button->setColour(TextButton::ColourIds::textColourOnId, c);
+  button->setColour(TextButton::ColourIds::textColourOffId, c);
+}
+waveformComponent->setColor(c);
+responseCurveComponent.setColor(c);
+earlyShapercurveComponent.setColor(c);
+lateShapercurveComponent.setColor(c);
 }
 
 bool
@@ -1726,6 +1760,14 @@ PlasmaAudioProcessorEditor::loadOscilloscopeSamplesPerBlock(
 }
 
 void
+PlasmaAudioProcessorEditor::loadCornerRadius(PropertiesFile* userSettings)
+{
+  cornerRadius =
+    userSettings->getIntValue("cornerRadius", cornerRadiusFallback);
+  waveformComponent->setCornerRadius(cornerRadius);
+}
+
+void
 PlasmaAudioProcessorEditor::setOscilloscopeBufferSize(
   int oscilloscopeBufferSize)
 {
@@ -1756,6 +1798,12 @@ PlasmaAudioProcessorEditor::saveOscilloscopeSamplesPerBlock(
 {
   userSettings->setValue("oscilloscopeSamplesPerBlock",
                          oscilloscopeSamplesPerBlock);
+}
+
+void
+PlasmaAudioProcessorEditor::saveCornerRadius(PropertiesFile* userSettings)
+{
+  userSettings->setValue("cornerRadius", cornerRadius);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1865,7 +1913,8 @@ PlasmaAudioProcessorEditor::getOptionsLabels()
            &configOscilloscopeSamplesPerBlockLabel,
            &configBackgroundColorLabel,
            &configForegroundColorLabel,
-           &configAccentColorLabel };
+           &configAccentColorLabel,
+           &configCornerRadiusLabel };
 }
 
 std::vector<CustomTextbox*>
@@ -1875,7 +1924,8 @@ PlasmaAudioProcessorEditor::getTextboxes()
            &configOscilloscopeSamplesPerBlockTextbox,
            &configBackgroundColorTextbox,
            &configForegroundColorTextbox,
-           &configAccentColorTextbox };
+           &configAccentColorTextbox,
+           &configCornerRadiusTextbox };
 }
 
 std::vector<CustomTextButton*>
