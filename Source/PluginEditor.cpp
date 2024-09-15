@@ -449,7 +449,7 @@ PlasmaAudioProcessorEditor::paint(juce::Graphics& g)
 
   // Monitor Background
   g.setColour(getBackgroundColor());
-  g.fillRoundedRectangle(monitorArea().reduced(sc(padding)),
+  g.fillRoundedRectangle(monitorArea().reduced(sc(padding)).toFloat(),
                          sc(cornerRadius * 0.8));
 
   float lineSize = sc(2.0f);
