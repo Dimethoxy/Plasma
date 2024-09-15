@@ -449,7 +449,8 @@ PlasmaAudioProcessorEditor::paint(juce::Graphics& g)
 
   // Monitor Background
   g.setColour(getBackgroundColor());
-  g.fillRect(monitorArea().reduced(sc(padding)));
+  g.fillRoundedRectangle(monitorArea().reduced(sc(padding)),
+                         sc(cornerRadius * 0.8));
 
   float lineSize = sc(2.0f);
   Line<float> inLine(Point<float>(inArea().getCentreX() - sc(33),
@@ -867,29 +868,41 @@ PlasmaAudioProcessorEditor::highpassArea()
     earlyArea().getRight() + sc(padding), sc(380), sc(boxWidth), sc(boxHeight));
   return area;
 }
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Rectangle<int>
-PlasmaAudioProcessorEditor::peakArea()
+PlasmaAudioProcessorEditor::dualPeakArea()
 {
+  // Rectangle<int> area(
+  //   peakArea().getRight() + sc(padding), sc(380), sc(boxWidth),
+  //   sc(boxHeight));
+  // return area;
   Rectangle<int> area(highpassArea().getRight() + sc(padding),
                       sc(380),
                       sc(boxWidth),
                       sc(boxHeight));
   return area;
 }
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Rectangle<int>
-PlasmaAudioProcessorEditor::dualPeakArea()
+PlasmaAudioProcessorEditor::peakArea()
 {
-  Rectangle<int> area(
-    peakArea().getRight() + sc(padding), sc(380), sc(boxWidth), sc(boxHeight));
-  return area;
-}
-Rectangle<int>
-PlasmaAudioProcessorEditor::lowpassArea()
-{
+  // Rectangle<int> area(highpassArea().getRight() + sc(padding),
+  //                     sc(380),
+  //                     sc(boxWidth),
+  //                     sc(boxHeight));
+  // return area;
   Rectangle<int> area(dualPeakArea().getRight() + sc(padding),
                       sc(380),
                       sc(boxWidth),
                       sc(boxHeight));
+  return area;
+}
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Rectangle<int>
+PlasmaAudioProcessorEditor::lowpassArea()
+{
+  Rectangle<int> area(
+    peakArea().getRight() + sc(padding), sc(380), sc(boxWidth), sc(boxHeight));
   return area;
 }
 Rectangle<int>
