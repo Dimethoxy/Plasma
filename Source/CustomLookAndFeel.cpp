@@ -23,7 +23,6 @@ CustomLookAndFeel::drawLabel(Graphics& g, Label& label)
       label.getJustificationType(),
       jmax(1, (int)((float)textArea.getHeight() / font.getHeight())),
       label.getMinimumHorizontalScale());
-
     g.setColour(
       label.findColour(Label::outlineColourId).withMultipliedAlpha(alpha));
   }
