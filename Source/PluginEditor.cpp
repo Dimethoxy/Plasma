@@ -5,7 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Constructor
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+constexpr float innerCorner = 0.8f;
 PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
   : AudioProcessorEditor(&p)
   , audioProcessor(p)
@@ -414,7 +414,7 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
     highPassResonanceQualitySlider.setVisible(false);
     highPassResonanceQualityLabel.setVisible(false);
   }
-
+  waveformComponent->setCornerRadius(sc(cornerRadius * innerCorner));
   // Window
   setResizable(false, false);
   setSize(sc(810), sc(940));
@@ -437,6 +437,7 @@ PlasmaAudioProcessorEditor::paint(juce::Graphics& g)
   // Front
   g.setColour(getForegroundColor());
   g.fillRect(headerArea());
+  waveformComponent->setCornerRadius(sc(cornerRadius * innerCorner));
   g.fillRoundedRectangle(monitorArea().toFloat(), sc(cornerRadius));
   g.fillRoundedRectangle(inArea().toFloat(), sc(cornerRadius));
   g.fillRoundedRectangle(outArea().toFloat(), sc(cornerRadius));
@@ -450,7 +451,7 @@ PlasmaAudioProcessorEditor::paint(juce::Graphics& g)
   // Monitor Background
   g.setColour(getBackgroundColor());
   g.fillRoundedRectangle(monitorArea().reduced(sc(padding)).toFloat(),
-                         sc(cornerRadius * 0.8));
+                         sc(cornerRadius * innerCorner));
 
   float lineSize = sc(2.0f);
   Line<float> inLine(Point<float>(inArea().getCentreX() - sc(33),
@@ -806,29 +807,32 @@ PlasmaAudioProcessorEditor::setAnalyserType(AnalyserType analyser)
   // Waveform
   if (analyser == AnalyserType::Waveform) {
     waveformComponent->setVisible(true);
-  } else {
-    waveformComponent->setVisible(false);
+    responseCurveComponent.setVisible(false);
+    earlyShapercurveComponent.setVisible(false);
+    lateShapercurveComponent.setVisible(false);
   }
-
   // Repsonse
   if (analyser == AnalyserType::Response) {
     responseCurveComponent.setVisible(true);
-  } else {
-    responseCurveComponent.setVisible(false);
+    earlyShapercurveComponent.setVisible(false);
+    lateShapercurveComponent.setVisible(false);
+    waveformComponent->setVisible(false);
   }
-
   // Distortion
   if (analyser == AnalyserType::Shapercurve) {
     earlyShapercurveComponent.setVisible(true);
     lateShapercurveComponent.setVisible(true);
-  } else {
-    earlyShapercurveComponent.setVisible(false);
-    lateShapercurveComponent.setVisible(false);
+    waveformComponent->setVisible(false);
+    responseCurveComponent.setVisible(false);
   }
 
   // Options
   if (analyser == AnalyserType::Options) {
     configWindow(true);
+    waveformComponent->setVisible(false);
+    responseCurveComponent.setVisible(false);
+    earlyShapercurveComponent.setVisible(false);
+    lateShapercurveComponent.setVisible(false);
   } else {
     configWindow(false);
   }
@@ -945,7 +949,7 @@ PlasmaAudioProcessorEditor::fs_titelLabel()
 void
 PlasmaAudioProcessorEditor::resized()
 {
-
+  waveformComponent->setCornerRadius(sc(cornerRadius * innerCorner));
   int knobSize = 123;
   ///////////////////////////////////////////////////////////////////////////////////////////
   // Monitor
@@ -1802,6 +1806,7 @@ void
 PlasmaAudioProcessorEditor::setCornerRadius(int cornerRadius)
 {
   this->cornerRadius = cornerRadius;
+  waveformComponent->setCornerRadius(sc(cornerRadius * innerCorner));
   updateTextboxes();
 }
 
