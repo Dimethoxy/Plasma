@@ -25,6 +25,23 @@ However, Plasma is not just limited to hard dance genres – it's a versatile to
 
 You can download our pre-built binaries for Windows, MacOS and Linux [here](https://github.com/Dimethoxy/Plasma/releases).
 
+## Arch Linux
+
+There is now an AUR package available for Arch Linux users.
+
+You can install it easily by using your favorite AUR helper (e.g. [yay](https://github.com/Jguer/yay)):
+```bash
+yay -S dimethoxy-plasma-bin
+```
+Or manually:
+
+```sh
+sudo pacman -S --needed base-devel
+git clone https://aur.archlinux.org/dimethoxy-plasma-bin.git
+cd dimethoxy-plasma-bin
+makepkg -si
+```
+
 ## System Requirements
 
 ### Windows
