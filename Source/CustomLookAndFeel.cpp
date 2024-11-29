@@ -61,7 +61,7 @@ CustomLookAndFeel::drawButtonBackground(Graphics& g,
   }
   if (text == "O") {
     g.setFont(getCustomFont().withHeight(fontSize));
-    g.drawText("Options", area, Justification::centred, false);
+    g.drawText("Config", area, Justification::centred, false);
   }
   if (text == "U") {
     g.setFont(getCustomFont().withHeight(fontSize));
@@ -152,6 +152,8 @@ CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
     if (slider.getName() == "Lowpass")
       isInverted = true;
   } else if (slider.getName() == "Peak Resonance") {
+    isCentered = true;
+  } else if (slider.getName() == "Dual Peak Resonance") {
     isCentered = true;
   } else if (slider.getName() == "Girth") {
     String str;

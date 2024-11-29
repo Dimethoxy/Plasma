@@ -157,7 +157,8 @@ BaseVisualiser::setColours(Colour bk, Colour fg) noexcept
 void
 BaseVisualiser::paint(Graphics& g)
 {
-  g.fillAll(backgroundColour);
+  g.setColour(backgroundColour);
+  g.fillRoundedRectangle(getLocalBounds().toFloat(), cornerRadius);
   auto r = getLocalBounds().toFloat();
   auto channelHeight = r.getHeight() / (float)channels.size();
 
@@ -217,4 +218,10 @@ BaseVisualiser::paintChannel(Graphics& g,
                                                -1.0f,
                                                area.getRight(),
                                                area.getY()));
+}
+
+void
+BaseVisualiser::setCornerRadius(int cornerRadius)
+{
+  this->cornerRadius = cornerRadius;
 }

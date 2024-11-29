@@ -85,6 +85,7 @@ public:
   //==============================================================================
   /** @internal */
   void paint(Graphics&) override;
+  void setCornerRadius(int cornerRadius);
 
 private:
   struct ChannelInfo;
@@ -94,6 +95,6 @@ private:
   Colour backgroundColour, waveformColour;
 
   void timerCallback() override;
-
+  int cornerRadius;
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(BaseVisualiser)
 };

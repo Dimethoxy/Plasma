@@ -3,6 +3,12 @@ Installer/Mac/build
 Installer/Windows/Output
 *.DS_Store
 
+# Arch Linux related folders and files
+pkg/
+src/
+*.pkg.tar.xz
+
+
 # User-specific files
 *.rsuser
 *.suo
