@@ -5,7 +5,7 @@ Plasma is a free digital audio effect for VST3 hosts. With its asymmetrical dist
 However, Plasma is not just limited to hard dance genres – it's a versatile tool that can be used in any music production scenario. Use it to add grit and character to your guitar tracks or to create punishing basslines in your dubstep tracks. The possibilities with Plasma are endless.
 
 <div align="center">
-  <img src="https://github.com/Dimethoxy/Plasma/blob/main/Preview.png?raw=true" alt="Image of the GUI">
+  <img src="https://github.com/Dimethoxy/Plasma/blob/main/CompressedPreview.webp?raw=true" alt="Image of the GUI" style="width: 60%;">
 </div>
 
 ## Features
