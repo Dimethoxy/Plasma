@@ -1,12 +1,12 @@
 pkgbase = dimethoxy-plasma-bin
-pkgdesc = Asymmetrical Distortion Effect for VST3 and LV2 compatible hosts
-pkgver = 1.2.1
-pkgrel = 1
-url = https://github.com/Dimethoxy/Plasma
-arch = x86_64
-license = GPL3
-provides = dimethoxy-plasma
-source = https://github.com/Dimethoxy/Plasma/releases/download/v1.2.1/plasma-v1.2.1-linux.tar.gz
-sha256sums = 0111200a8294fcb50312fde794e6f1f3cca5bef9da8ef515b786d3a86fb15308
+	pkgdesc = Asymmetrical Distortion Effect for VST3 and LV2 compatible hosts
+	pkgver = 1.2.1
+	pkgrel = 1
+	url = https://github.com/Dimethoxy/Plasma
+	arch = x86_64
+	license = GPL3
+	provides = dimethoxy-plasma
+	source = https://github.com/Dimethoxy/Plasma/releases/download/v1.2.1/plasma-v1.2.1-linux.tar.gz
+	sha256sums = f61cfd287b0d58b9eca419c6c785e66a8bf94caf26b33615aa465c25bd8ee4e1
 
 pkgname = dimethoxy-plasma-bin
