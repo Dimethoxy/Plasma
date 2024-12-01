@@ -1674,7 +1674,7 @@ PlasmaAudioProcessorEditor::setBackgroundColor(Colour c)
   for (auto* slider : getSliders()) {
     slider->setColour(Slider::ColourIds::backgroundColourId, c);
   }
-  waveformComponent->setBackgroundColor(c);
+  waveformComponent->setBackgroundColor(c, foregroundColor);
 }
 
 void

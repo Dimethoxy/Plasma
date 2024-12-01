@@ -35,7 +35,7 @@ WaveformComponent::setColor(Colour c)
 }
 
 void
-WaveformComponent::setBackgroundColor(Colour c)
+WaveformComponent::setBackgroundColor(Colour c, Colour f)
 {
-  setColours(c, c);
+  setColours(c, f, f);
 }

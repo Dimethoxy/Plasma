@@ -147,16 +147,18 @@ BaseVisualiser::timerCallback()
 }
 
 void
-BaseVisualiser::setColours(Colour bk, Colour fg) noexcept
+BaseVisualiser::setColours(Colour bk, Colour wf, Colour fg) noexcept
 {
   backgroundColour = bk;
-  waveformColour = fg;
+  foregroundColour = fg;
+  waveformColour = wf;
   repaint();
 }
 
 void
 BaseVisualiser::paint(Graphics& g)
 {
+  g.fillAll(foregroundColour);
   g.setColour(backgroundColour);
   g.fillRoundedRectangle(getLocalBounds().toFloat(), cornerRadius);
   auto r = getLocalBounds().toFloat();

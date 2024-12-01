@@ -2,7 +2,7 @@
 
 <JUCERPROJECT id="qMF8Un" name="Plasma" projectType="audioplug" useAppConfig="0"
               jucerFormatVersion="1" bundleIdentifier="com.Dimethoxy.Plasma"
-              companyName="Dimethoxy" companyWebsite="Dimethoxy.com" version="1.2.0"
+              companyName="Dimethoxy" companyWebsite="Dimethoxy.com" version="1.2.1"
               pluginManufacturerCode="Dmtx" pluginDesc="Distortion" maxBinaryFileSize="20971520"
               pluginVST3Category="Distortion,Fx" companyCopyright="COPYRIGHT &#169; 2024 DIMETHOXY.COM"
               companyEmail="dimethoxy.audio@gmail.com" pluginFormats="buildAU,buildLV2,buildVST3"

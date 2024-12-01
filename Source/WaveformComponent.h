@@ -19,7 +19,7 @@ public:
                     int numLevels,
                     int nextSample) override;
   void setColor(Colour c);
-  void setBackgroundColor(Colour c);
+  void setBackgroundColor(Colour c, Colour f);
 
 private:
   Colour color = Colour(255, 255, 255);

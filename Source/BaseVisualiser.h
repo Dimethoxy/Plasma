@@ -57,7 +57,9 @@ public:
   void pushSample(const float* samplesForEachChannel, int numChannels);
 
   /** Sets the colours used to paint the */
-  void setColours(Colour backgroundColour, Colour waveformColour) noexcept;
+  void setColours(Colour backgroundColour,
+                  Colour waveformColour,
+                  Colour foregroundColour) noexcept;
 
   /** Sets the frequency at which the component repaints itself. */
   void setRepaintRate(int frequencyInHz);
@@ -82,6 +84,7 @@ public:
                         int numLevels,
                         int nextSample);
 
+  void setForegroundColor(Colour c);
   //==============================================================================
   /** @internal */
   void paint(Graphics&) override;
@@ -92,7 +95,7 @@ private:
 
   OwnedArray<ChannelInfo> channels;
   int numSamples, inputSamplesPerBlock;
-  Colour backgroundColour, waveformColour;
+  Colour backgroundColour, foregroundColour, waveformColour;
 
   void timerCallback() override;
   int cornerRadius;
