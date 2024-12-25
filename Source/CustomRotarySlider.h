@@ -1,7 +1,6 @@
 #pragma once
 
 #include "CustomLookAndFeel.h"
-#include "ValueEditor.h"
 #include <JuceHeader.h>
 
 class CustomRotarySlider

@@ -31,6 +31,7 @@ CustomRotarySlider::mouseDown(const MouseEvent& e)
     auto* editor = dynamic_cast<PlasmaAudioProcessorEditor*>(parent);
     auto& valueEditor = editor->getValueEditor();
     valueEditor.setVisible(true);
+    valueEditor.setSlider(this);
   } else {
     Slider::mouseDown(e); // to the usual thing .... drag the slider
   }

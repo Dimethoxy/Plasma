@@ -1468,8 +1468,10 @@ PlasmaAudioProcessorEditor::resized()
                                      monitorArea().getCentreY() - sc(200) / 2,
                                      sc(200),
                                      sc(200));
-  valueEditor.setBounds(monitorArea().reduced(sc(padding)));
+
   tooltipLabel.setAlwaysOnTop(true);
+  valueEditor.setBounds(monitorArea().reduced(sc(padding)));
+  valueEditor.setAlwaysOnTop(true);
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Update Labels & Textboxes
   for (auto* label : getLabels()) {
