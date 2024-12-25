@@ -311,6 +311,9 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
   waveformComponent = &p.waveformComponent;
   addAndMakeVisible(waveformComponent);
 
+  // Value Editor
+  addAndMakeVisible(valueEditor);
+
   // Load Config File
   options.applicationName = "Plasma";
   options.filenameSuffix = ".config";
@@ -1458,6 +1461,10 @@ PlasmaAudioProcessorEditor::resized()
                                      monitorArea().getCentreY() - sc(200) / 2,
                                      sc(200),
                                      sc(200));
+  valueEditor.setBounds(monitorArea().getCentreX() + sc(padding),
+                        monitorArea().getCentreY() - sc(200) / 2,
+                        sc(200),
+                        sc(200));
   tooltipLabel.setAlwaysOnTop(true);
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Update Labels & Textboxes
