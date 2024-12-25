@@ -19,6 +19,7 @@ public:
     setLookAndFeel(&lnf);
     setName(name);
     setColour(Slider::rotarySliderFillColourId, Colour(255, 0, 0));
+    setVelocityModeParameters(1.0, 1, 0.0, false, ModifierKeys::noModifiers);
   }
 
   // Destructor
@@ -28,6 +29,11 @@ public:
   {
 
     ModifierKeys modifiers = ModifierKeys::getCurrentModifiersRealtime();
+
+    if (modifiers.isShiftDown())
+      this->setMouseDragSensitivity(2000);
+    else
+      this->setMouseDragSensitivity(200);
 
     if (modifiers.isRightButtonDown() || modifiers.isCtrlDown()) {
       auto* parent = this->getParentComponent();
@@ -44,6 +50,16 @@ public:
       Slider::mouseDown(e); // to the usual thing .... drag the slider
     }
   }
+
+  void mouseWheelMove(const MouseEvent& e, const MouseWheelDetails& wheel)
+  {
+    auto newWheel = wheel;
+    const auto speed = e.mods.isShiftDown() ? 0.1 : 1.0;
+    newWheel.deltaY *= speed;
+
+    Slider::mouseWheelMove(e, newWheel);
+  }
+  // lets do the mouse wheel thing for dragging the slider as well
 
   // Misc
   const String name = "Slider";
