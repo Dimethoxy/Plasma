@@ -19,12 +19,13 @@ public:
   {
     addAndMakeVisible(textbox);
     addAndMakeVisible(titleLabel);
+    textbox.onEditorHide = [this] { this->textEditorHide(); };
   }
 
   void resized() override
   {
-    titleLabel.setBoundsRelative(0.20f, 0.0f, 0.6f, 0.42f);
-    textbox.setBoundsRelative(0.37f, 0.44f, 0.26f, 0.12f);
+    titleLabel.setBoundsRelative(0.20f, 0.0f, 0.6f, 0.50f);
+    textbox.setBoundsRelative(0.37f, 0.52f, 0.26f, 0.12f);
   }
 
   void paint(Graphics& g) override
@@ -47,6 +48,16 @@ public:
     textbox.showEditor();
     textbox.grabKeyboardFocus();
     lastValue = slider->getValue();
+  }
+
+  void textEditorHide()
+  {
+    const String newText = textbox.getText();
+    const float newValue = newText.getFloatValue();
+    slider->setValue(newValue);
+    const float setValue = slider->getValue();
+    textbox.setText(String(setValue), dontSendNotification);
+    setVisible(false);
   }
 
 private:
