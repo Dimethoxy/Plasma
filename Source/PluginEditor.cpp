@@ -313,6 +313,7 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 
   // Value Editor
   addAndMakeVisible(valueEditor);
+  valueEditor.setVisible(false);
 
   // Load Config File
   options.applicationName = "Plasma";
@@ -541,6 +542,12 @@ PlasmaAudioProcessorEditor::timerCallback(int timerID)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Interaction
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+ValueEditor&
+PlasmaAudioProcessorEditor::getValueEditor()
+{
+  return valueEditor;
+}
 
 void
 PlasmaAudioProcessorEditor::updateTextboxes()
@@ -1461,10 +1468,7 @@ PlasmaAudioProcessorEditor::resized()
                                      monitorArea().getCentreY() - sc(200) / 2,
                                      sc(200),
                                      sc(200));
-  valueEditor.setBounds(monitorArea().getCentreX() + sc(padding),
-                        monitorArea().getCentreY() - sc(200) / 2,
-                        sc(200),
-                        sc(200));
+  valueEditor.setBounds(monitorArea().reduced(sc(padding)));
   tooltipLabel.setAlwaysOnTop(true);
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Update Labels & Textboxes

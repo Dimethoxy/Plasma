@@ -58,6 +58,7 @@ public:
   void setFontColor(Colour c);
   void setOptionsFontColor(Colour c);
   void updateTextboxes();
+  ValueEditor& getValueEditor();
 
 private:
   // Scaling

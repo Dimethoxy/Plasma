@@ -1,4 +1,40 @@
+#pragma once
+
 #include "CustomRotarySlider.h"
+#include "PluginEditor.h"
+
+void
+CustomRotarySlider::mouseDown(const MouseEvent& e)
+{
+
+  ModifierKeys modifiers = ModifierKeys::getCurrentModifiersRealtime();
+
+  if (modifiers.isShiftDown())
+    this->setMouseDragSensitivity(4000);
+  else
+    this->setMouseDragSensitivity(200);
+
+  if (modifiers.isRightButtonDown()) {
+    auto* parent = this->getParentComponent();
+    auto* editor = dynamic_cast<AudioProcessorEditor*>(parent);
+    auto* hostContext = editor->getHostContext();
+    if (hostContext == nullptr)
+      return;
+    auto contextMenu = hostContext->getContextMenuForParameter(param);
+    if (contextMenu == nullptr)
+      return;
+    auto position = editor->getMouseXYRelative();
+    contextMenu->showNativeMenu(position);
+  } else if (modifiers.isCtrlDown() || modifiers.isCommandDown() ||
+             modifiers.isMiddleButtonDown()) {
+    auto* parent = getParentComponent();
+    auto* editor = dynamic_cast<PlasmaAudioProcessorEditor*>(parent);
+    auto& valueEditor = editor->getValueEditor();
+    valueEditor.setVisible(true);
+  } else {
+    Slider::mouseDown(e); // to the usual thing .... drag the slider
+  }
+}
 
 void
 CustomRotarySlider::paint(juce::Graphics& g)

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CustomLookAndFeel.h"
+#include "ValueEditor.h"
 #include <JuceHeader.h>
 
 class CustomRotarySlider
@@ -25,31 +26,7 @@ public:
   // Destructor
   ~CustomRotarySlider() { setLookAndFeel(nullptr); }
 
-  void mouseDown(const MouseEvent& e)
-  {
-
-    ModifierKeys modifiers = ModifierKeys::getCurrentModifiersRealtime();
-
-    if (modifiers.isShiftDown())
-      this->setMouseDragSensitivity(2000);
-    else
-      this->setMouseDragSensitivity(200);
-
-    if (modifiers.isRightButtonDown() || modifiers.isCtrlDown()) {
-      auto* parent = this->getParentComponent();
-      auto* editor = dynamic_cast<AudioProcessorEditor*>(parent);
-      auto* hostContext = editor->getHostContext();
-      if (hostContext == nullptr)
-        return;
-      auto contextMenu = hostContext->getContextMenuForParameter(param);
-      if (contextMenu == nullptr)
-        return;
-      auto position = editor->getMouseXYRelative();
-      contextMenu->showNativeMenu(position);
-    } else {
-      Slider::mouseDown(e); // to the usual thing .... drag the slider
-    }
-  }
+  void mouseDown(const MouseEvent& e);
 
   void mouseWheelMove(const MouseEvent& e, const MouseWheelDetails& wheel)
   {
