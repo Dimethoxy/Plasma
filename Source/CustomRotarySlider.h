@@ -19,31 +19,23 @@ public:
     setLookAndFeel(&lnf);
     setName(name);
     setColour(Slider::rotarySliderFillColourId, Colour(255, 0, 0));
+    setVelocityModeParameters(1.0, 1, 0.0, false, ModifierKeys::noModifiers);
   }
 
   // Destructor
   ~CustomRotarySlider() { setLookAndFeel(nullptr); }
 
-  void mouseDown(const MouseEvent& e)
+  void mouseDown(const MouseEvent& e);
+
+  void mouseWheelMove(const MouseEvent& e, const MouseWheelDetails& wheel)
   {
+    auto newWheel = wheel;
+    const auto speed = e.mods.isShiftDown() ? 0.1 : 1.0;
+    newWheel.deltaY *= speed;
 
-    ModifierKeys modifiers = ModifierKeys::getCurrentModifiersRealtime();
-
-    if (modifiers.isRightButtonDown() || modifiers.isCtrlDown()) {
-      auto* parent = this->getParentComponent();
-      auto* editor = dynamic_cast<AudioProcessorEditor*>(parent);
-      auto* hostContext = editor->getHostContext();
-      if (hostContext == nullptr)
-        return;
-      auto contextMenu = hostContext->getContextMenuForParameter(param);
-      if (contextMenu == nullptr)
-        return;
-      auto position = editor->getMouseXYRelative();
-      contextMenu->showNativeMenu(position);
-    } else {
-      Slider::mouseDown(e); // to the usual thing .... drag the slider
-    }
+    Slider::mouseWheelMove(e, newWheel);
   }
+  // lets do the mouse wheel thing for dragging the slider as well
 
   // Misc
   const String name = "Slider";

@@ -8,6 +8,7 @@
 #include "PluginProcessor.h"
 #include "ResponseCurveComponent.h"
 #include "ShapercurveComponent.h"
+#include "ValueEditor.h"
 #include "Version.h"
 #include <JuceHeader.h>
 
@@ -21,23 +22,6 @@ const Colour foregroundColorFactory = Colour(68, 71, 90);
 const Colour accentColorFactory = Colour(80, 250, 123);
 
 //=============================================================================================
-
-class CustomTextbox : public CustomLabel
-{
-public:
-  CustomTextbox(String text, int size, Justification justification)
-    : CustomLabel(text, size, justification)
-  {
-    setEditable(true);
-  };
-};
-
-enum FontSizes
-{
-  Main,
-  Titel,
-  Tooltipp
-};
 
 class PlasmaAudioProcessorEditor
   : public AudioProcessorEditor
@@ -74,6 +58,7 @@ public:
   void setFontColor(Colour c);
   void setOptionsFontColor(Colour c);
   void updateTextboxes();
+  ValueEditor& getValueEditor();
 
 private:
   // Scaling
@@ -126,6 +111,9 @@ private:
 
   // Loudness Meter Components
   Gui::LoudnessMeterComponent loudnessMeterIn, loudnessMeterOut;
+
+  // Value Editor
+  ValueEditor valueEditor;
 
   // Attachments
   using APVTS = juce::AudioProcessorValueTreeState;

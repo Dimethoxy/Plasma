@@ -8,7 +8,7 @@ url="https://github.com/Dimethoxy/Plasma"
 license=('GPL3')
 provides=('dimethoxy-plasma')
 source=("https://github.com/Dimethoxy/Plasma/releases/download/v$pkgver/plasma-v$pkgver-linux.tar.gz")
-sha256sums=('0111200a8294fcb50312fde794e6f1f3cca5bef9da8ef515b786d3a86fb15308')
+sha256sums=('f61cfd287b0d58b9eca419c6c785e66a8bf94caf26b33615aa465c25bd8ee4e1')
 
 package() {
     # Define new directories

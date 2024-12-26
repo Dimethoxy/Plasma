@@ -311,6 +311,10 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
   waveformComponent = &p.waveformComponent;
   addAndMakeVisible(waveformComponent);
 
+  // Value Editor
+  addAndMakeVisible(valueEditor);
+  valueEditor.setVisible(false);
+
   // Load Config File
   options.applicationName = "Plasma";
   options.filenameSuffix = ".config";
@@ -538,6 +542,12 @@ PlasmaAudioProcessorEditor::timerCallback(int timerID)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Interaction
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+ValueEditor&
+PlasmaAudioProcessorEditor::getValueEditor()
+{
+  return valueEditor;
+}
 
 void
 PlasmaAudioProcessorEditor::updateTextboxes()
@@ -1458,7 +1468,10 @@ PlasmaAudioProcessorEditor::resized()
                                      monitorArea().getCentreY() - sc(200) / 2,
                                      sc(200),
                                      sc(200));
+
   tooltipLabel.setAlwaysOnTop(true);
+  valueEditor.setBounds(monitorArea().reduced(sc(padding)));
+  valueEditor.setAlwaysOnTop(true);
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Update Labels & Textboxes
   for (auto* label : getLabels()) {
@@ -1675,6 +1688,7 @@ PlasmaAudioProcessorEditor::setBackgroundColor(Colour c)
     slider->setColour(Slider::ColourIds::backgroundColourId, c);
   }
   waveformComponent->setBackgroundColor(c, foregroundColor);
+  valueEditor.setBackgroundColor(c);
 }
 
 void
@@ -1735,6 +1749,7 @@ PlasmaAudioProcessorEditor::setOptionsFontColor(Colour c)
   responseCurveComponent.setColor(c);
   earlyShapercurveComponent.setColor(c);
   lateShapercurveComponent.setColor(c);
+  valueEditor.setFontColor(c);
 }
 
 bool
@@ -1807,6 +1822,7 @@ PlasmaAudioProcessorEditor::setCornerRadius(int cornerRadius)
 {
   this->cornerRadius = cornerRadius;
   waveformComponent->setCornerRadius(sc(cornerRadius * innerCorner));
+  valueEditor.setCornerRadius(sc(cornerRadius * innerCorner));
   updateTextboxes();
 }
 
