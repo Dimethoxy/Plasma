@@ -25,7 +25,7 @@ public:
   void resized() override
   {
     titleLabel.setBoundsRelative(0.10f, 0.0f, 0.8f, 0.49f);
-    textbox.setBoundsRelative(0.37f, 0.52f, 0.26f, 0.12f);
+    textbox.setBoundsRelative(0.35f, 0.52f, 0.3f, 0.12f);
   }
 
   void paint(Graphics& g) override
@@ -87,7 +87,7 @@ public:
       } else if (dist == 9) {
         return String("Cosine");
       } else if (dist == 10) {
-        return String("---");
+        return String("Harmonize");
       } else if (dist == 11) {
         return String("Weird");
       };
@@ -130,7 +130,7 @@ public:
         return 8.0f;
       } else if (value == "Cosine") {
         return 9.0f;
-      } else if (value == "---") {
+      } else if (value == "Harmonize") {
         return 10.0f;
       } else if (value == "Weird") {
         return 11.0f;

@@ -106,6 +106,9 @@ CustomRotarySlider::getTooltipString()
       case Cosine:
         return ("Distortion Type : Cosine");
         break;
+      case Harmonize:
+        return ("Distortion Type : Harmonize");
+        break;
       case Weird:
         return ("Distortion Type : Weird");
         break;
