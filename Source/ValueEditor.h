@@ -15,7 +15,7 @@ class ValueEditor
 public:
   ValueEditor()
     : textbox("0", FontSizes::Main, Justification::centredLeft)
-    , titleLabel("Value Editor", FontSizes::Titel, Justification::centredBottom)
+    , titleLabel("Value Editor", FontSizes::Main, Justification::centredBottom)
   {
     addAndMakeVisible(textbox);
     addAndMakeVisible(titleLabel);
@@ -24,7 +24,7 @@ public:
 
   void resized() override
   {
-    titleLabel.setBoundsRelative(0.20f, 0.0f, 0.6f, 0.50f);
+    titleLabel.setBoundsRelative(0.10f, 0.0f, 0.8f, 0.49f);
     textbox.setBoundsRelative(0.37f, 0.52f, 0.26f, 0.12f);
   }
 
@@ -32,6 +32,13 @@ public:
   {
     g.setColour(backgroundColor);
     g.fillRoundedRectangle(getLocalBounds().toFloat(), cornerSize);
+    g.setColour(textColor);
+    const float reduction = getWidth() * 0.13f;
+    const auto innerBounds = getLocalBounds()
+                               .reduced(reduction)
+                               .withCentre(getLocalBounds().getCentre())
+                               .toFloat();
+    g.drawRoundedRectangle(innerBounds, cornerSize, reduction / 20.0f);
   }
 
   void setColour(Colour background, Colour text)
@@ -43,7 +50,7 @@ public:
   void setSlider(CustomRotarySlider* slider)
   {
     this->slider = slider;
-    titleLabel.setText(slider->getName(), dontSendNotification);
+    titleLabel.setText(slider->getName() + ":", dontSendNotification);
     textbox.setText(String(slider->getValue()), dontSendNotification);
     textbox.showEditor();
     textbox.grabKeyboardFocus();
@@ -58,6 +65,20 @@ public:
     const float setValue = slider->getValue();
     textbox.setText(String(setValue), dontSendNotification);
     setVisible(false);
+  }
+
+  void setBackgroundColor(Colour color) { backgroundColor = color; }
+
+  void setCornerRadius(float corner) { cornerSize = corner; }
+
+  void setFontColor(Colour color)
+  {
+    textbox.setColour(Label::ColourIds::textColourId, color);
+    textbox.setColour(Label::ColourIds::textWhenEditingColourId, color);
+    textbox.setColour(TextEditor::ColourIds::highlightedTextColourId, color);
+    titleLabel.setColour(Label::ColourIds::textColourId, color);
+    textColor = color;
+    repaint();
   }
 
 private:

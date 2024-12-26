@@ -1688,6 +1688,7 @@ PlasmaAudioProcessorEditor::setBackgroundColor(Colour c)
     slider->setColour(Slider::ColourIds::backgroundColourId, c);
   }
   waveformComponent->setBackgroundColor(c, foregroundColor);
+  valueEditor.setBackgroundColor(c);
 }
 
 void
@@ -1748,6 +1749,7 @@ PlasmaAudioProcessorEditor::setOptionsFontColor(Colour c)
   responseCurveComponent.setColor(c);
   earlyShapercurveComponent.setColor(c);
   lateShapercurveComponent.setColor(c);
+  valueEditor.setFontColor(c);
 }
 
 bool
@@ -1820,6 +1822,7 @@ PlasmaAudioProcessorEditor::setCornerRadius(int cornerRadius)
 {
   this->cornerRadius = cornerRadius;
   waveformComponent->setCornerRadius(sc(cornerRadius * innerCorner));
+  valueEditor.setCornerRadius(sc(cornerRadius * innerCorner));
   updateTextboxes();
 }
 
