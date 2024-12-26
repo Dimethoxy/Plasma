@@ -47,11 +47,105 @@ public:
     textColor = text;
   }
 
+  const String readValue(CustomRotarySlider* slider)
+  {
+    const auto rawValue = slider->getValue();
+    const String name = slider->getName();
+    if (name == "Symmetry") {
+      return String(rawValue * 100.0f);
+    } else if (name == "Girth") {
+      return String(rawValue * 100.0f);
+    } else if (name == "Drive") {
+      return String((rawValue - 1.0f) * 10.0f);
+    } else if (name == "Slope") {
+      int slope = static_cast<int>((rawValue + 1) * 12.0f);
+      if (slope <= 96) {
+        return String(slope);
+      } else {
+        return String("Bypass");
+      }
+    } else if (name == "Distortion") {
+      const int dist = static_cast<int>(rawValue);
+      if (dist == 0) {
+        return String("Hard Clip");
+      } else if (dist == 1) {
+        return String("Soft Clip");
+      } else if (dist == 2) {
+        return String("Saturate");
+      } else if (dist == 3) {
+        return String("Atan");
+      } else if (dist == 4) {
+        return String("Crunch");
+      } else if (dist == 5) {
+        return String("Bitcrush");
+      } else if (dist == 6) {
+        return String("Extreme");
+      } else if (dist == 7) {
+        return String("Scream");
+      } else if (dist == 8) {
+        return String("Sine");
+      } else if (dist == 9) {
+        return String("Cosine");
+      } else if (dist == 10) {
+        return String("---");
+      } else if (dist == 11) {
+        return String("Weird");
+      };
+    }
+    return String(rawValue);
+  }
+
+  const float writeValue(String value)
+  {
+    if (name == "Symmetry") {
+      return value.getFloatValue() / 100.0f;
+    } else if (name == "Girth") {
+      return value.getFloatValue() / 100.0f;
+    } else if (name == "Drive") {
+      return (value.getFloatValue() / 10.0f) + 1.0f;
+    } else if (name == "Slope") {
+      if (value == "Bypass") {
+        return 7.0f;
+      } else {
+        return (value.getFloatValue() / 12.0f) - 1.0f;
+      }
+    } else if (name == "Distortion") {
+      if (value == "Hard Clip") {
+        return 0.0f;
+      } else if (value == "Soft Clip") {
+        return 1.0f;
+      } else if (value == "Saturate") {
+        return 2.0f;
+      } else if (value == "Atan") {
+        return 3.0f;
+      } else if (value == "Crunch") {
+        return 4.0f;
+      } else if (value == "Bitcrush") {
+        return 5.0f;
+      } else if (value == "Extreme") {
+        return 6.0f;
+      } else if (value == "Scream") {
+        return 7.0f;
+      } else if (value == "Sine") {
+        return 8.0f;
+      } else if (value == "Cosine") {
+        return 9.0f;
+      } else if (value == "---") {
+        return 10.0f;
+      } else if (value == "Weird") {
+        return 11.0f;
+      }
+    }
+    return value.getFloatValue();
+  }
+
   void setSlider(CustomRotarySlider* slider)
   {
     this->slider = slider;
+    this->name = slider->getName();
     titleLabel.setText(slider->getName() + ":", dontSendNotification);
-    textbox.setText(String(slider->getValue()), dontSendNotification);
+    const auto convertedValue = readValue(slider);
+    textbox.setText(convertedValue, dontSendNotification);
     textbox.showEditor();
     textbox.grabKeyboardFocus();
     lastValue = slider->getValue();
@@ -60,7 +154,7 @@ public:
   void textEditorHide()
   {
     const String newText = textbox.getText();
-    const float newValue = newText.getFloatValue();
+    const float newValue = writeValue(newText);
     slider->setValue(newValue);
     const float setValue = slider->getValue();
     textbox.setText(String(setValue), dontSendNotification);
@@ -83,6 +177,7 @@ public:
 
 private:
   CustomRotarySlider* slider;
+  String name = "Value Editor";
   CustomTextbox textbox;
   CustomLabel titleLabel;
   Colour backgroundColor = Colour(40, 42, 54);
