@@ -195,6 +195,11 @@ PlasmaAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 
   // Trigger VersionManager
   versionManager.triggerAsyncUpdate();
+
+  // Loudness Meter
+  const int expectedRequestRate = sampleRate / samplesPerBlock;
+  loudnessMeterIn.prepareToPlay(sampleRate, 2, samplesPerBlock, 3);
+  loudnessMeterOut.prepareToPlay(sampleRate, 2, samplesPerBlock, 3);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -238,6 +243,9 @@ PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
   // Clean RMS
   auto leftRms = buffer.getRMSLevel(0, 0, buffer.getNumSamples());
   auto rightRms = buffer.getRMSLevel(1, 0, buffer.getNumSamples());
+
+  // Clean Loudness Meter
+  loudnessMeterIn.processBlock(buffer);
 
   // Distortion Unit
   std::vector<int> randoms(buffer.getNumSamples());
@@ -363,6 +371,9 @@ PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
       channelData[sample] = channelData[sample] * gain * 2;
     }
   }
+
+  // Loudness Meter
+  loudnessMeterOut.processBlock(buffer);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -9,6 +9,20 @@
               lv2Uri="https://dimethoxy.com/plasma">
   <MAINGROUP id="JL3O3j" name="Plasma">
     <GROUP id="{C06EE6F1-1336-2987-2A83-453AE370713C}" name="Source">
+      <GROUP id="{0B53AF52-EA8E-8AD3-8558-0D82DD7408A2}" name="Ebu128">
+        <GROUP id="{CC8DF72C-0C97-3FAF-CC3F-9726BD54B8FB}" name="filters">
+          <FILE id="DWNelb" name="SecondOrderIIRFilter.cpp" compile="1" resource="0"
+                file="Source/LUFSMeter/filters/SecondOrderIIRFilter.cpp"/>
+          <FILE id="Ry5RyC" name="SecondOrderIIRFilter.h" compile="0" resource="0"
+                file="Source/LUFSMeter/filters/SecondOrderIIRFilter.h"/>
+        </GROUP>
+        <FILE id="sWgHkT" name="Ebu128LoudnessMeter.cpp" compile="1" resource="0"
+              file="Source/LUFSMeter/Ebu128LoudnessMeter.cpp"/>
+        <FILE id="Bgaz6m" name="Ebu128LoudnessMeter.h" compile="0" resource="0"
+              file="Source/LUFSMeter/Ebu128LoudnessMeter.h"/>
+        <FILE id="gFNFpC" name="MacrosAndJuceHeaders.h" compile="0" resource="0"
+              file="Source/LUFSMeter/MacrosAndJuceHeaders.h"/>
+      </GROUP>
       <FILE id="YZqtSh" name="BaseVisualiser.cpp" compile="1" resource="0"
             file="Source/BaseVisualiser.cpp"/>
       <FILE id="kNlmyW" name="BaseVisualiser.h" compile="0" resource="0"

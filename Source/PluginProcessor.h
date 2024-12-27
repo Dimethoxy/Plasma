@@ -1,4 +1,5 @@
 #pragma once
+#include "./LUFSMeter/Ebu128LoudnessMeter.h"
 #include "PlasmaDistortionProcessor.h"
 #include "Version.h"
 #include "WaveformComponent.h"
@@ -219,7 +220,15 @@ private:
   AudioSampleBuffer cleanBuffer;
 
   // LoudnessMeter
-  float rmsLevelLeft, rmsLevelRight;
+  float rmsLevelLeftIn{ 0.0f }, rmsLevelRight{ 0.0f };
+  float rmsLevelLeftOut{ 0.0f }, rmsLevelRightOut{ 0.0f };
+  float peakLevelLeftIn{ 0.0f }, peakLevelRightIn{ 0.0f };
+  float peakLevelLeftOut{ 0.0f }, peakLevelRightOut{ 0.0f };
+  Ebu128LoudnessMeter loudnessMeterIn;
+  Ebu128LoudnessMeter loudnessMeterOut;
+  float momentaryLoudnessIn{ 0.0f }, momentaryLoudnessOut{ 0.0f };
+  float integratedLoudnessIn{ 0.0f }, integratedLoudnessOut{ 0.0f };
+
   // Filters
   MonoChain leftChain, rightChain;
   void updatePeakFilter(const ChainSettings& chainSettings);
