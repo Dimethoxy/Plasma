@@ -153,6 +153,10 @@ CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
       isInverted = true;
   } else if (slider.getName() == "Peak Resonance") {
     isCentered = true;
+  } else if (slider.getName() == "Lowpass Resonance") {
+    isCentered = true;
+  } else if (slider.getName() == "Highpass Resonance") {
+    isCentered = true;
   } else if (slider.getName() == "Dual Peak Resonance") {
     isCentered = true;
   } else if (slider.getName() == "Girth") {

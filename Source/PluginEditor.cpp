@@ -401,23 +401,6 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
   updateButton.setVisible(false);
   startTimer(1, 1000 / 10);
 
-  // Hide filter sliders if needed
-  if (static_cast<Slope>(lowPassSlopeSlider.getValue()) == Slope::None) {
-    lowPassFreqSlider.setVisible(false);
-    lowPassFreqLabel.setVisible(false);
-    lowPassResonanceSlider.setVisible(false);
-    lowPassResonanceLabel.setVisible(false);
-    lowPassResonanceQualitySlider.setVisible(false);
-    lowPassResonanceQualityLabel.setVisible(false);
-  }
-  if (static_cast<Slope>(highPassSlopeSlider.getValue()) == Slope::None) {
-    highPassFreqSlider.setVisible(false);
-    highPassFreqLabel.setVisible(false);
-    highPassResonanceSlider.setVisible(false);
-    highPassResonanceLabel.setVisible(false);
-    highPassResonanceQualitySlider.setVisible(false);
-    highPassResonanceQualityLabel.setVisible(false);
-  }
   waveformComponent->setCornerRadius(sc(cornerRadius * innerCorner));
   // Window
   setResizable(false, false);
@@ -776,40 +759,40 @@ PlasmaAudioProcessorEditor::sliderValueChanged(Slider* slider)
       static_cast<CustomRotarySlider*>(slider)->getTooltipString(),
       juce::dontSendNotification);
   }
-  if (slider == &lowPassSlopeSlider) {
-    if (static_cast<Slope>(slider->getValue()) == Slope::None) {
-      lowPassFreqSlider.setVisible(false);
-      lowPassResonanceQualitySlider.setVisible(false);
-      lowPassResonanceSlider.setVisible(false);
-      lowPassFreqLabel.setVisible(false);
-      lowPassResonanceQualityLabel.setVisible(false);
-      lowPassResonanceLabel.setVisible(false);
-    } else {
-      lowPassFreqSlider.setVisible(true);
-      lowPassResonanceQualitySlider.setVisible(true);
-      lowPassResonanceSlider.setVisible(true);
-      lowPassFreqLabel.setVisible(true);
-      lowPassResonanceQualityLabel.setVisible(true);
-      lowPassResonanceLabel.setVisible(true);
-    }
-  }
-  if (slider == &highPassSlopeSlider) {
-    if (static_cast<Slope>(slider->getValue()) == Slope::None) {
-      highPassFreqSlider.setVisible(false);
-      highPassResonanceQualitySlider.setVisible(false);
-      highPassResonanceSlider.setVisible(false);
-      highPassFreqLabel.setVisible(false);
-      highPassResonanceQualityLabel.setVisible(false);
-      highPassResonanceLabel.setVisible(false);
-    } else {
-      highPassFreqSlider.setVisible(true);
-      highPassResonanceQualitySlider.setVisible(true);
-      highPassResonanceSlider.setVisible(true);
-      highPassFreqLabel.setVisible(true);
-      highPassResonanceQualityLabel.setVisible(true);
-      highPassResonanceLabel.setVisible(true);
-    }
-  }
+  // if (slider == &lowPassSlopeSlider) {
+  //   if (static_cast<Slope>(slider->getValue()) == Slope::None) {
+  //     lowPassFreqSlider.setVisible(false);
+  //     lowPassResonanceQualitySlider.setVisible(false);
+  //     lowPassResonanceSlider.setVisible(false);
+  //     lowPassFreqLabel.setVisible(false);
+  //     lowPassResonanceQualityLabel.setVisible(false);
+  //     lowPassResonanceLabel.setVisible(false);
+  //   } else {
+  //     lowPassFreqSlider.setVisible(true);
+  //     lowPassResonanceQualitySlider.setVisible(true);
+  //     lowPassResonanceSlider.setVisible(true);
+  //     lowPassFreqLabel.setVisible(true);
+  //     lowPassResonanceQualityLabel.setVisible(true);
+  //     lowPassResonanceLabel.setVisible(true);
+  //   }
+  // }
+  // if (slider == &highPassSlopeSlider) {
+  //   if (static_cast<Slope>(slider->getValue()) == Slope::None) {
+  //     highPassFreqSlider.setVisible(false);
+  //     highPassResonanceQualitySlider.setVisible(false);
+  //     highPassResonanceSlider.setVisible(false);
+  //     highPassFreqLabel.setVisible(false);
+  //     highPassResonanceQualityLabel.setVisible(false);
+  //     highPassResonanceLabel.setVisible(false);
+  //   } else {
+  //     highPassFreqSlider.setVisible(true);
+  //     highPassResonanceQualitySlider.setVisible(true);
+  //     highPassResonanceSlider.setVisible(true);
+  //     highPassFreqLabel.setVisible(true);
+  //     highPassResonanceQualityLabel.setVisible(true);
+  //     highPassResonanceLabel.setVisible(true);
+  //   }
+  // }
 }
 void
 PlasmaAudioProcessorEditor::setAnalyserType(AnalyserType analyser)
