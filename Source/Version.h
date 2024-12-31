@@ -32,8 +32,8 @@ const auto operatingSystemType = []() {
   auto macOS_13 = juce::SystemStats::MacOS_13;
   auto macOS_14 = juce::SystemStats::MacOS_14;
   bool isMac = macOSX_10_7 || macOSX_10_8 || macOSX_10_9 || macOSX_10_10 ||
-  macOSX_10_11 || macOSX_10_12 || macOSX_10_13 || macOSX_10_14 ||
-  macOSX_10_15 || macOS_11 || macOS_12 || macOS_13 || macOS_14;
+               macOSX_10_11 || macOSX_10_12 || macOSX_10_13 || macOSX_10_14 ||
+               macOSX_10_15 || macOS_11 || macOS_12 || macOS_13 || macOS_14;
 
   if (isWindows)
     return juce::SystemStats::Windows;
@@ -104,8 +104,11 @@ private:
   bool isUpToDate(const juce::String& currentVersion)
   {
     try {
-      juce::String apiResponse = sendRequest("version?product=plasma");
-      juce::String latestVersion = extractVersionNumber(apiResponse);
+      String versionParam = String("version=") + ProjectInfo::versionString;
+      String osParam = String("os=") + SystemStats::getOperatingSystemName();
+      String requestParams = String("?") + versionParam + String("&") + osParam;
+      String apiResponse = sendRequest(String("version?") + requestParams);
+      String latestVersion = extractVersionNumber(apiResponse);
       bool isLatest = (latestVersion == currentVersion) || latestVersion == "";
       return isLatest;
     } catch (...) {

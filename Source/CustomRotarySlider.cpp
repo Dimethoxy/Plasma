@@ -115,7 +115,7 @@ CustomRotarySlider::getTooltipString()
     }
   } else if (getName() == "Slope") {
     if (selectedOption >= 8)
-      return "Slope : Bypassed";
+      return "Slope : Peak Only";
     int slope = (selectedOption + 1) * 12;
     String str;
     str << "Slope : ";

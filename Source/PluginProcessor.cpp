@@ -195,6 +195,11 @@ PlasmaAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 
   // Trigger VersionManager
   versionManager.triggerAsyncUpdate();
+
+  // Loudness Meter
+  const int expectedRequestRate = sampleRate / samplesPerBlock;
+  loudnessMeterIn.prepareToPlay(sampleRate, 2, samplesPerBlock, 3);
+  loudnessMeterOut.prepareToPlay(sampleRate, 2, samplesPerBlock, 3);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -238,6 +243,9 @@ PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
   // Clean RMS
   auto leftRms = buffer.getRMSLevel(0, 0, buffer.getNumSamples());
   auto rightRms = buffer.getRMSLevel(1, 0, buffer.getNumSamples());
+
+  // Clean Loudness Meter
+  loudnessMeterIn.processBlock(buffer);
 
   // Distortion Unit
   std::vector<int> randoms(buffer.getNumSamples());
@@ -363,6 +371,9 @@ PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
       channelData[sample] = channelData[sample] * gain * 2;
     }
   }
+
+  // Loudness Meter
+  loudnessMeterOut.processBlock(buffer);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -378,7 +389,7 @@ PlasmaAudioProcessor::createParameterLayout()
   layout.add(std::make_unique<juce::AudioParameterFloat>(
     "Pre Gain",
     "Pre Gain",
-    juce::NormalisableRange<float>(-32.0f, 32.0f, 0.2f, 1.0f),
+    juce::NormalisableRange<float>(-64.0f, 64.0f, 0.2f, 1.0f),
     0.0f));
   // Drive
   juce::StringArray distortionArray;
@@ -427,7 +438,7 @@ PlasmaAudioProcessor::createParameterLayout()
   layout.add(std::make_unique<juce::AudioParameterFloat>(
     "Peak Gain",
     "Peak Gain",
-    juce::NormalisableRange<float>(-48.0f, 48.0f, 0.1f, 1.0f),
+    juce::NormalisableRange<float>(-64.0f, 64.0f, 0.1f, 1.0f),
     0.0f));
   layout.add(std::make_unique<juce::AudioParameterFloat>(
     "Peak Q",
@@ -448,7 +459,7 @@ PlasmaAudioProcessor::createParameterLayout()
   layout.add(std::make_unique<juce::AudioParameterFloat>(
     "Dual Peak Gain",
     "Dual Peak Gain",
-    juce::NormalisableRange<float>(-48.0f, 48.0f, 0.1f, 1.0f),
+    juce::NormalisableRange<float>(-64.0f, 64.0f, 0.1f, 1.0f),
     0.0f));
   layout.add(std::make_unique<juce::AudioParameterFloat>(
     "Dual Peak Q",
@@ -463,7 +474,7 @@ PlasmaAudioProcessor::createParameterLayout()
     str << " db/Oct";
     slopeArray.add(str);
   }
-  slopeArray.add("Bypass");
+  slopeArray.add("Peak Only");
   // Highpass
   layout.add(std::make_unique<juce::AudioParameterChoice>(
     "Highpass Slope", "Highpass Slope", slopeArray, 0));
@@ -475,7 +486,7 @@ PlasmaAudioProcessor::createParameterLayout()
   layout.add(std::make_unique<juce::AudioParameterFloat>(
     "Highpass Resonance",
     "Highpass Resonance",
-    juce::NormalisableRange<float>(0.0f, 64.0f, 0.1f, 1.0f),
+    juce::NormalisableRange<float>(-64.0f, 64.0f, 0.1f, 1.0f),
     0.0f));
   layout.add(std::make_unique<juce::AudioParameterFloat>(
     "Highpass Resonance Q",
@@ -493,7 +504,7 @@ PlasmaAudioProcessor::createParameterLayout()
   layout.add(std::make_unique<juce::AudioParameterFloat>(
     "Lowpass Resonance",
     "Lowpass Resonance",
-    juce::NormalisableRange<float>(0.0f, 64.0f, 0.1f, 1.0f),
+    juce::NormalisableRange<float>(-64.0f, 64.0f, 0.1f, 1.0f),
     0.0f));
   layout.add(std::make_unique<juce::AudioParameterFloat>(
     "Lowpass Resonance Q",
@@ -524,7 +535,7 @@ PlasmaAudioProcessor::createParameterLayout()
   layout.add(std::make_unique<juce::AudioParameterFloat>(
     "Gain",
     "Gain",
-    juce::NormalisableRange<float>(-32.0f, 32.0f, 0.2f, 1.0f),
+    juce::NormalisableRange<float>(-64.0f, 64.0f, 0.2f, 1.0f),
     0.0f));
   // Mix
   layout.add(std::make_unique<juce::AudioParameterFloat>(
@@ -639,9 +650,7 @@ makeDualPeakFilter(const ChainSettings& chainSettings,
 Coefficients
 makeLowPassResonance(const ChainSettings& chainSettings, double sampleRate)
 {
-  auto gain = (chainSettings.lowPassSlope == Slope::None)
-                ? 0.0f
-                : chainSettings.lowPassResonance;
+  auto gain = chainSettings.lowPassResonance;
   return juce::dsp::IIR::Coefficients<float>::makePeakFilter(
     sampleRate,
     chainSettings.lowPassFreq,
@@ -651,9 +660,7 @@ makeLowPassResonance(const ChainSettings& chainSettings, double sampleRate)
 Coefficients
 makeHighPassResonance(const ChainSettings& chainSettings, double sampleRate)
 {
-  auto gain = (chainSettings.highPassSlope == Slope::None)
-                ? 0.0f
-                : chainSettings.highPassResonance;
+  auto gain = chainSettings.highPassResonance;
   return juce::dsp::IIR::Coefficients<float>::makePeakFilter(
     sampleRate,
     chainSettings.highPassFreq,
@@ -711,9 +718,7 @@ void
 PlasmaAudioProcessor::updateHighPassResonance(
   const ChainSettings& chainSettings)
 {
-  auto gain = (chainSettings.highPassSlope == Slope::None)
-                ? 0.0f
-                : chainSettings.highPassResonance;
+  auto gain = chainSettings.highPassResonance;
   auto peakCoefficients = juce::dsp::IIR::Coefficients<float>::makePeakFilter(
     getSampleRate(),
     chainSettings.highPassFreq,
@@ -731,9 +736,7 @@ PlasmaAudioProcessor::updateHighPassResonance(
 void
 PlasmaAudioProcessor::updateLowPassResonance(const ChainSettings& chainSettings)
 {
-  auto gain = (chainSettings.lowPassSlope == Slope::None)
-                ? 0.0f
-                : chainSettings.lowPassResonance;
+  auto gain = chainSettings.lowPassResonance;
   auto peakCoefficients = juce::dsp::IIR::Coefficients<float>::makePeakFilter(
     getSampleRate(),
     chainSettings.lowPassFreq,

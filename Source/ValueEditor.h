@@ -62,7 +62,7 @@ public:
       if (slope <= 96) {
         return String(slope);
       } else {
-        return String("Bypass");
+        return String("Peak Only");
       }
     } else if (name == "Distortion") {
       const int dist = static_cast<int>(rawValue);
@@ -104,7 +104,7 @@ public:
     } else if (name == "Drive") {
       return (value.getFloatValue() / 10.0f) + 1.0f;
     } else if (name == "Slope") {
-      if (value == "Bypass") {
+      if (value == "Peak Only") {
         return 7.0f;
       } else {
         return (value.getFloatValue() / 12.0f) - 1.0f;
