@@ -91,8 +91,10 @@ Make sure you meet the following JUCE build requirements
 - Windows: Visual Studio 2019 (Windows 10)
 - Linux: g++ 7.0 or Clang 6.0
 - Android: Android Studio (NDK 26)
-
+  
 For full details on dependencies, refer to the [JUCE documentation](https://github.com/juce-framework/JUCE?tab=readme-ov-file#minimum-system-requirements).
+
+On Linux based systems you will also need to install the [JUCE Dependencies on Linux](https://github.com/juce-framework/JUCE/blob/master/docs/Linux%20Dependencies.md)
 
 ### Steps to Build
 
