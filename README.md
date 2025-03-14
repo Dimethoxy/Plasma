@@ -113,10 +113,9 @@ git clone https://github.com/Dimethoxy/Plasma.git
      - Navigate to the `Builds/LinuxMakefile/` folder inside the Plasma project.
      - Run the Makefile with one of these commands:
        ```bash
-       # Release build
        make CONFIG=Release
-
-       # Debug build
+       ```
+       ```bash
        make CONFIG=Debug
        ```
 
