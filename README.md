@@ -84,17 +84,22 @@ To build Plasma from source, follow these steps:
 
 ### Requirements
 
-Make sure you meet the following JUCE build requirements
+Before building Plasma, ensure you have the following:
 
-- C++ Standard: 17
-- macOS/iOS: Xcode 12.4 (Intel macOS 10.15.4, Apple Silicon macOS 11.0)
-- Windows: Visual Studio 2019 (Windows 10)
-- Linux: g++ 7.0 or Clang 6.0
-- Android: Android Studio (NDK 26)
-  
-For full details on dependencies, refer to the [JUCE documentation](https://github.com/juce-framework/JUCE?tab=readme-ov-file#minimum-system-requirements).
+#### JUCE Build Requirements
 
-On Linux based systems you will also need to install the [JUCE Dependencies on Linux](https://github.com/juce-framework/JUCE/blob/master/docs/Linux%20Dependencies.md)
+- **C++ Standard:** 17
+- **macOS/iOS:** Xcode 12.4 (Intel macOS 10.15.4, Apple Silicon macOS 11.0)
+- **Windows:** Visual Studio 2019 (Windows 10)
+- **Linux:** g++ 7.0 or Clang 6.0
+- **Android:** Android Studio (NDK 26)
+
+For full details on dependencies, refer to the [JUCE documentation](https://github.com/juce-framework/JUCE?tab=readme-ov-file#minimum-system-requirements).  
+
+#### Additional Requirements
+
+- **Git** – Required for cloning the repository. If you haven't installed it yet, follow the [Git installation guide](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
+- **Linux Users:** You must also install the [JUCE dependencies for Linux](https://github.com/juce-framework/JUCE/blob/master/docs/Linux%20Dependencies.md).
 
 ### Steps to Build
 
