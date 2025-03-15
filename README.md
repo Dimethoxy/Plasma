@@ -80,7 +80,7 @@ We ensure Arch Linux users receive updates as soon as they're available, directl
 
 ## 🛠️ Build Instructions
 
-To build Plasma from source, follow these steps:
+If you want to compile Plasma from source yourself, follow these steps:
 
 ### Requirements
 
