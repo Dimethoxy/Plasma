@@ -112,7 +112,8 @@ git clone https://github.com/Dimethoxy/Plasma.git
 4. Open the Projucer app inside the JUCE folder you just extracted.
 5. In Projucer, go to the top menu, click on File, then select Open.
 6. Navigate to the cloned Plasma repository and choose the `Plasma.jucer` file to open the project.
-7. Build the project:
+7. Make sure to save the project once, this will generate the build files.
+8. Build the project:
    - Windows/MacOS:
      - After saving, click the button at the top center of Projucer to open it in Visual Studio (Windows) or Xcode (macOS).
      - Now Build the project as usual in the IDE.
