@@ -372,6 +372,10 @@ PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
     }
   }
 
+  // Processed RMS
+  rmsLevelLeftOut = buffer.getRMSLevel(0, 0, buffer.getNumSamples());
+  rmsLevelRightOut = buffer.getRMSLevel(1, 0, buffer.getNumSamples());
+
   // Loudness Meter
   loudnessMeterOut.processBlock(buffer);
 }

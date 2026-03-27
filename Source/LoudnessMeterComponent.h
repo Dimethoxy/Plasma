@@ -28,55 +28,21 @@ public:
 
     const auto inBounds =
       bounds.withTrimmedRight(widht / 2).reduced(height / 24);
+    const auto outBounds =
+      bounds.withTrimmedLeft(widht / 2).reduced(height / 24);
     // g.setColour(Colours::red);
     // g.fillRoundedRectangle(inBounds, cornerRadius);
 
-    const auto inMeterBounds =
-      inBounds.withTrimmedRight(inBounds.getWidth() * 0.60f);
-    // g.setColour(accentColor);
-    // g.fillRoundedRectangle(inMeterBounds, cornerRadius);
-
-    const float trimFactor = 0.0f;
-    const auto inMeterInnerBounds =
-      inMeterBounds.reduced(0.3f * inMeterBounds.getWidth())
-        .withTrimmedRight(inMeterBounds.getWidth() * trimFactor)
-        .withTrimmedLeft(inMeterBounds.getWidth() * trimFactor)
-        .toNearestInt();
-    g.setColour(fontColor);
-    const int meterBorderThickness = int(inMeterInnerBounds.getWidth() * 0.08f);
-    g.drawRect(inMeterInnerBounds, meterBorderThickness);
-
-    const auto barBounds = inMeterInnerBounds.reduced(meterBorderThickness * 2);
-    const auto leftBarRawBounds = barBounds.withTrimmedRight(
-      barBounds.getWidth() / 2.0f + meterBorderThickness);
-    const auto rightBarRawBounds = barBounds.withTrimmedLeft(
-      barBounds.getWidth() / 2.0f + meterBorderThickness / 2.0f);
-
-    const float minValue = -64.0f;
-    const float maxValue = 16.0f;
-    // random number between 0 and 1
-    const float leftRawValue =
-      std::clamp(juce::Decibels::gainToDecibels(audioProcessor.rmsLevelLeftIn),
-                 minValue,
-                 maxValue);
-    const float rightRawValue =
-      std::clamp(juce::Decibels::gainToDecibels(audioProcessor.rmsLevelRightIn),
-                 minValue,
-                 maxValue);
-    const float leftNormalizedValue =
-      (leftRawValue - minValue) / (maxValue - minValue);
-    const float rightNormalizedValue =
-      (rightRawValue - minValue) / (maxValue - minValue);
-    const float rawHeight = barBounds.getHeight();
-    const float leftBarHeight = rawHeight * leftNormalizedValue;
-    const float rightBarHeight = rawHeight * rightNormalizedValue;
-    const auto leftBarBounds =
-      leftBarRawBounds.withTrimmedTop(rawHeight - leftBarHeight);
-    const auto rightBarBounds =
-      rightBarRawBounds.withTrimmedTop(rawHeight - rightBarHeight);
-    g.setColour(accentColor);
-    g.fillRect(leftBarBounds);
-    g.fillRect(rightBarBounds);
+    drawRmsScope(g,
+                 inBounds,
+                 audioProcessor.rmsLevelLeftIn,
+                 audioProcessor.rmsLevelRightIn,
+                 false);
+    drawRmsScope(g,
+                 outBounds,
+                 audioProcessor.rmsLevelLeftOut,
+                 audioProcessor.rmsLevelRightOut,
+                 true);
   }
 
   void setCornerRadius(float cornerRadius)
@@ -93,6 +59,58 @@ public:
   void setFontColor(Colour c) { fontColor = c; }
 
 private:
+  void drawRmsScope(Graphics& g,
+                    Rectangle<float> scopeBounds,
+                    float leftGain,
+                    float rightGain,
+                    bool alignToRight)
+  {
+    const auto meterBounds =
+      alignToRight
+        ? scopeBounds.withTrimmedLeft(scopeBounds.getWidth() * 0.60f)
+        : scopeBounds.withTrimmedRight(scopeBounds.getWidth() * 0.60f);
+
+    const float trimFactor = 0.0f;
+    const auto meterInnerBounds =
+      meterBounds.reduced(0.3f * meterBounds.getWidth())
+        .withTrimmedRight(meterBounds.getWidth() * trimFactor)
+        .withTrimmedLeft(meterBounds.getWidth() * trimFactor)
+        .toNearestInt();
+
+    g.setColour(fontColor);
+    const int meterBorderThickness = int(meterInnerBounds.getWidth() * 0.08f);
+    g.drawRect(meterInnerBounds, meterBorderThickness);
+
+    const auto barBounds = meterInnerBounds.reduced(meterBorderThickness * 2);
+    const auto leftBarRawBounds = barBounds.withTrimmedRight(
+      barBounds.getWidth() / 2.0f + meterBorderThickness);
+    const auto rightBarRawBounds = barBounds.withTrimmedLeft(
+      barBounds.getWidth() / 2.0f + meterBorderThickness / 2.0f);
+
+    const float minValue = -64.0f;
+    const float maxValue = 16.0f;
+    const float leftRawValue =
+      std::clamp(juce::Decibels::gainToDecibels(leftGain), minValue, maxValue);
+    const float rightRawValue =
+      std::clamp(juce::Decibels::gainToDecibels(rightGain), minValue, maxValue);
+    const float leftNormalizedValue =
+      (leftRawValue - minValue) / (maxValue - minValue);
+    const float rightNormalizedValue =
+      (rightRawValue - minValue) / (maxValue - minValue);
+
+    const float rawHeight = barBounds.getHeight();
+    const float leftBarHeight = rawHeight * leftNormalizedValue;
+    const float rightBarHeight = rawHeight * rightNormalizedValue;
+    const auto leftBarBounds =
+      leftBarRawBounds.withTrimmedTop(rawHeight - leftBarHeight);
+    const auto rightBarBounds =
+      rightBarRawBounds.withTrimmedTop(rawHeight - rightBarHeight);
+
+    g.setColour(accentColor);
+    g.fillRect(leftBarBounds);
+    g.fillRect(rightBarBounds);
+  }
+
   PlasmaAudioProcessor& audioProcessor;
   float cornerRadius = 5.0f;
   Colour backgroundColor = Colours::black;
