@@ -12,6 +12,10 @@ and orientation.
 We pledge to act and interact in ways that contribute to an open, welcoming,
 diverse, inclusive, and healthy community.
 
+This project is focused on technical collaboration and development. Discussions
+or contributions related to politics, religion, or ideology are not appropriate
+in this community and should be avoided.
+
 ## Our Standards
 
 Examples of behavior that contributes to a positive environment for our
@@ -35,6 +39,7 @@ Examples of unacceptable behavior include:
   address, without their explicit permission
 - Other conduct which could reasonably be considered inappropriate in a
   professional setting
+- Introducing or engaging in discussions about politics, religion, or ideology
 
 ## Enforcement Responsibilities
 
