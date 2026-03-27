@@ -56,8 +56,14 @@ CustomLabel::getCustomFontSize()
     case FontSizes::Tooltipp: {
       return TooltipSize * factor;
     }
-    case FontSizes::Small: {
-      return smallSize * factor;
+    case FontSizes::LoudnessMeterPrimary: {
+      return loudnessMeterPrimary * factor;
+    }
+    case FontSizes::LoudnessMeterAverage: {
+      return loudnessMeterAverage * factor;
+    }
+    case FontSizes::LoudnessMeterPeak: {
+      return loudnessMeterPeak * factor;
     }
     default: {
       return mainSize * factor;
@@ -79,8 +85,14 @@ CustomLabel::getScaledCustomFontSize()
     case FontSizes::Tooltipp: {
       return TooltipSize * factor;
     }
-    case FontSizes::Small: {
-      return smallSize * factor;
+    case FontSizes::LoudnessMeterPrimary: {
+      return loudnessMeterPrimary * factor;
+    }
+    case FontSizes::LoudnessMeterAverage: {
+      return loudnessMeterAverage * factor;
+    }
+    case FontSizes::LoudnessMeterPeak: {
+      return loudnessMeterPeak * factor;
     }
     default: {
       return mainSize * factor;

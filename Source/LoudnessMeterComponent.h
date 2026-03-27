@@ -14,18 +14,42 @@ class LoudnessMeterComponent
 public:
   LoudnessMeterComponent(PlasmaAudioProcessor& audioProcessor)
     : audioProcessor(audioProcessor)
-    , inRmsLabel("In RMS", FontSizes::Tooltipp, Justification::centred)
-    , inLufsLabel("In LUFS", FontSizes::Tooltipp, Justification::centred)
-    , outLufsLabel("Out LUFS", FontSizes::Tooltipp, Justification::centred)
-    , outRmsLabel("Out RMS", FontSizes::Tooltipp, Justification::centred)
-    , inRmsValueLabel("-64db", FontSizes::Tooltipp, Justification::centred)
-    , inLufsValueLabel("-70LUFS", FontSizes::Tooltipp, Justification::centred)
-    , outLufsValueLabel("-70LUFS", FontSizes::Tooltipp, Justification::centred)
-    , outRmsValueLabel("-64db", FontSizes::Tooltipp, Justification::centred)
-    , inRmsPeakLabel("(-64db)", FontSizes::Small, Justification::centred)
-    , inLufsPeakLabel("(-70LUFS)", FontSizes::Small, Justification::centred)
-    , outLufsPeakLabel("(-70LUFS)", FontSizes::Small, Justification::centred)
-    , outRmsPeakLabel("(-64db)", FontSizes::Small, Justification::centred)
+    , inRmsLabel("In RMS",
+                 FontSizes::LoudnessMeterPrimary,
+                 Justification::centred)
+    , inLufsLabel("In LUFS",
+                  FontSizes::LoudnessMeterPrimary,
+                  Justification::centred)
+    , outLufsLabel("Out LUFS",
+                   FontSizes::LoudnessMeterPrimary,
+                   Justification::centred)
+    , outRmsLabel("Out RMS",
+                  FontSizes::LoudnessMeterPrimary,
+                  Justification::centred)
+    , inRmsValueLabel("-64db",
+                      FontSizes::LoudnessMeterAverage,
+                      Justification::centred)
+    , inLufsValueLabel("-70LUFS",
+                       FontSizes::LoudnessMeterAverage,
+                       Justification::centred)
+    , outLufsValueLabel("-70LUFS",
+                        FontSizes::LoudnessMeterAverage,
+                        Justification::centred)
+    , outRmsValueLabel("-64db",
+                       FontSizes::LoudnessMeterAverage,
+                       Justification::centred)
+    , inRmsPeakLabel("(-64db)",
+                     FontSizes::LoudnessMeterPeak,
+                     Justification::centred)
+    , inLufsPeakLabel("(-70LUFS)",
+                      FontSizes::LoudnessMeterPeak,
+                      Justification::centred)
+    , outLufsPeakLabel("(-70LUFS)",
+                       FontSizes::LoudnessMeterPeak,
+                       Justification::centred)
+    , outRmsPeakLabel("(-64db)",
+                      FontSizes::LoudnessMeterPeak,
+                      Justification::centred)
   {
     addAndMakeVisible(inRmsLabel);
     addAndMakeVisible(inLufsLabel);
@@ -130,6 +154,9 @@ public:
     layoutScopePeakLabel(inLufsPeakLabel, inLufsBounds);
     layoutScopePeakLabel(outLufsPeakLabel, outLufsBounds);
     layoutScopePeakLabel(outRmsPeakLabel, outRmsBounds);
+
+    // Keep label font sizes in sync with the scaled bounds.
+    resizeAllLabels();
   }
 
   void setBackgroundColor(Colour c) { backgroundColor = c; }
@@ -352,6 +379,22 @@ private:
     outLufsPeakLabel.setText(
       formatLufsPeakText(getPeakDb(outLufsHistory, -70.0f)),
       dontSendNotification);
+  }
+
+  void resizeAllLabels()
+  {
+    inRmsLabel.resize();
+    inLufsLabel.resize();
+    outLufsLabel.resize();
+    outRmsLabel.resize();
+    inRmsValueLabel.resize();
+    inLufsValueLabel.resize();
+    outLufsValueLabel.resize();
+    outRmsValueLabel.resize();
+    inRmsPeakLabel.resize();
+    inLufsPeakLabel.resize();
+    outLufsPeakLabel.resize();
+    outRmsPeakLabel.resize();
   }
 
   void drawStereoScope(Graphics& g,
