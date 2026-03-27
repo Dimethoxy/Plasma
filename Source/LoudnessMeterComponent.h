@@ -16,12 +16,7 @@ public:
 
   ~LoudnessMeterComponent() override {}
 
-  void timerCallback() override
-  {
-    rmsLevelLeftIn = audioProcessor.rmsLevelLeftIn;
-    rmsLevelRightIn = audioProcessor.rmsLevelRightIn;
-    repaint();
-  }
+  void timerCallback() override { this->repaint(); }
 
   void paint(Graphics& g) override
   {
@@ -59,10 +54,15 @@ public:
 
     const float minValue = -64.0f;
     const float maxValue = 16.0f;
+    // random number between 0 and 1
     const float leftRawValue =
-      std::clamp(Decibels::gainToDecibels(rmsLevelLeftIn), minValue, maxValue);
+      std::clamp(juce::Decibels::gainToDecibels(audioProcessor.rmsLevelLeftIn),
+                 minValue,
+                 maxValue);
     const float rightRawValue =
-      std::clamp(Decibels::gainToDecibels(rmsLevelRightIn), minValue, maxValue);
+      std::clamp(juce::Decibels::gainToDecibels(audioProcessor.rmsLevelRightIn),
+                 minValue,
+                 maxValue);
     const float leftNormalizedValue =
       (leftRawValue - minValue) / (maxValue - minValue);
     const float rightNormalizedValue =
@@ -93,8 +93,6 @@ public:
   void setFontColor(Colour c) { fontColor = c; }
 
 private:
-  float rmsLevelLeftIn = 0.0f;
-  float rmsLevelRightIn = 0.0f;
   PlasmaAudioProcessor& audioProcessor;
   float cornerRadius = 5.0f;
   Colour backgroundColor = Colours::black;

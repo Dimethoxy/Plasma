@@ -120,7 +120,7 @@ PlasmaAudioProcessor::isBusesLayoutSupported(const BusesLayout& layouts) const
       layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
     return false;
 
-    // This checks if the input layout matches the output layout
+  // This checks if the input layout matches the output layout
 #if !JucePlugin_IsSynth
   if (layouts.getMainOutputChannelSet() != layouts.getMainInputChannelSet())
     return false;
@@ -241,9 +241,8 @@ PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
     tmpBuffer.copyFrom(ch, 0, buffer, ch, 0, buffer.getNumSamples());
 
   // Clean RMS
-  auto rmsLevelLeftIn = buffer.getRMSLevel(0, 0, buffer.getNumSamples());
-  auto rmsLevelRightIn =
-    -12.0; // buffer.getRMSLevel(1, 0, buffer.getNumSamples());
+  rmsLevelLeftIn = buffer.getRMSLevel(0, 0, buffer.getNumSamples());
+  rmsLevelRightIn = buffer.getRMSLevel(1, 0, buffer.getNumSamples());
 
   // Clean Loudness Meter
   loudnessMeterIn.processBlock(buffer);

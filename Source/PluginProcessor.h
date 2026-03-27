@@ -217,7 +217,7 @@ public:
   VersionManager versionManager;
 
   // LoudnessMeter
-  float rmsLevelLeftIn{ 0.0f }, rmsLevelRightIn{ -12.0f };
+  float rmsLevelLeftIn{ 0.0f }, rmsLevelRightIn{ 0.0f };
   float rmsLevelLeftOut{ 0.0f }, rmsLevelRightOut{ 0.0f };
   float peakLevelLeftIn{ 0.0f }, peakLevelRightIn{ 0.0f };
   float peakLevelLeftOut{ 0.0f }, peakLevelRightOut{ 0.0f };
