@@ -13,19 +13,31 @@ public:
     : audioProcessor(audioProcessor)
     , inRmsLabel("In RMS", FontSizes::Tooltipp, Justification::centred)
     , outRmsLabel("Out RMS", FontSizes::Tooltipp, Justification::centred)
+    , inRmsValueLabel("-64db", FontSizes::Tooltipp, Justification::centred)
+    , outRmsValueLabel("-64db", FontSizes::Tooltipp, Justification::centred)
   {
     addAndMakeVisible(inRmsLabel);
     addAndMakeVisible(outRmsLabel);
+    addAndMakeVisible(inRmsValueLabel);
+    addAndMakeVisible(outRmsValueLabel);
     inRmsLabel.setInterceptsMouseClicks(false, false);
     outRmsLabel.setInterceptsMouseClicks(false, false);
+    inRmsValueLabel.setInterceptsMouseClicks(false, false);
+    outRmsValueLabel.setInterceptsMouseClicks(false, false);
     inRmsLabel.setColour(Label::textColourId, fontColor);
     outRmsLabel.setColour(Label::textColourId, fontColor);
+    inRmsValueLabel.setColour(Label::textColourId, fontColor);
+    outRmsValueLabel.setColour(Label::textColourId, fontColor);
     startTimerHz(60);
   }
 
   ~LoudnessMeterComponent() override {}
 
-  void timerCallback() override { this->repaint(); }
+  void timerCallback() override
+  {
+    updateRmsValueLabels();
+    repaint();
+  }
 
   void paint(Graphics& g) override
   {
@@ -63,6 +75,8 @@ public:
 
     layoutRmsLabel(inRmsLabel, inBounds, false);
     layoutRmsLabel(outRmsLabel, outBounds, true);
+    layoutRmsValueLabel(inRmsValueLabel, inBounds, false);
+    layoutRmsValueLabel(outRmsValueLabel, outBounds, true);
   }
 
   void setBackgroundColor(Colour c) { backgroundColor = c; }
@@ -74,6 +88,8 @@ public:
     fontColor = c;
     inRmsLabel.setColour(Label::textColourId, c);
     outRmsLabel.setColour(Label::textColourId, c);
+    inRmsValueLabel.setColour(Label::textColourId, c);
+    outRmsValueLabel.setColour(Label::textColourId, c);
     repaint();
   }
 
@@ -85,7 +101,6 @@ private:
                 : bounds.withTrimmedRight(bounds.getWidth() / 2.0f);
     const auto scopeBounds = halfBounds.reduced(bounds.getHeight() / 24.0f);
 
-    // Shrink by 5% in height, evenly from top and bottom.
     return scopeBounds.reduced(0.0f, scopeBounds.getHeight() * 0.025f);
   }
 
@@ -107,6 +122,40 @@ private:
     const int labelX = int(meterBounds.getCentreX() - (labelWidth / 2.0f));
     const int labelY = int(scopeBounds.getY());
     label.setBounds(labelX, labelY, labelWidth, labelHeight);
+  }
+
+  void layoutRmsValueLabel(CustomLabel& label,
+                           Rectangle<float> scopeBounds,
+                           bool alignToRight)
+  {
+    const auto meterBounds = getMeterBounds(scopeBounds, alignToRight);
+    const int labelWidth = int(meterBounds.getWidth() * 1.5f);
+    const int labelHeight = int(scopeBounds.getHeight() * 0.10f);
+    const int labelX = int(meterBounds.getCentreX() - (labelWidth / 2.0f));
+    const int labelY = int(scopeBounds.getBottom() - labelHeight);
+    label.setBounds(labelX, labelY, labelWidth, labelHeight);
+  }
+
+  String formatDbValueText(float leftGain, float rightGain) const
+  {
+    const float minValue = -64.0f;
+    const float maxValue = 16.0f;
+    const float leftDb =
+      std::clamp(juce::Decibels::gainToDecibels(leftGain), minValue, maxValue);
+    const float rightDb =
+      std::clamp(juce::Decibels::gainToDecibels(rightGain), minValue, maxValue);
+    const int displayDb = int(std::round(std::max(leftDb, rightDb)));
+    return String(displayDb) + "db";
+  }
+
+  void updateRmsValueLabels()
+  {
+    inRmsValueLabel.setText(formatDbValueText(audioProcessor.rmsLevelLeftIn,
+                                              audioProcessor.rmsLevelRightIn),
+                            dontSendNotification);
+    outRmsValueLabel.setText(formatDbValueText(audioProcessor.rmsLevelLeftOut,
+                                               audioProcessor.rmsLevelRightOut),
+                             dontSendNotification);
   }
 
   void drawRmsScope(Graphics& g,
@@ -161,6 +210,8 @@ private:
   PlasmaAudioProcessor& audioProcessor;
   CustomLabel inRmsLabel;
   CustomLabel outRmsLabel;
+  CustomLabel inRmsValueLabel;
+  CustomLabel outRmsValueLabel;
   float cornerRadius = 5.0f;
   Colour backgroundColor = Colours::black;
   Colour accentColor = Colours::green;
