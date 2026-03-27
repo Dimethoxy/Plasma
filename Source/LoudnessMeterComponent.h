@@ -30,15 +30,11 @@ public:
   void paint(Graphics& g) override
   {
     const auto bounds = getLocalBounds().toFloat();
-    const auto widht = bounds.getWidth();
-    const auto height = bounds.getHeight();
     // g.setColour(backgroundColor);
     // g.fillRoundedRectangle(bounds, cornerRadius);
 
-    const auto inBounds =
-      bounds.withTrimmedRight(widht / 2).reduced(height / 24);
-    const auto outBounds =
-      bounds.withTrimmedLeft(widht / 2).reduced(height / 24);
+    const auto inBounds = getScopeBounds(bounds, false);
+    const auto outBounds = getScopeBounds(bounds, true);
     // g.setColour(Colours::red);
     // g.fillRoundedRectangle(inBounds, cornerRadius);
 
@@ -62,13 +58,8 @@ public:
   void resized() override
   {
     const auto bounds = getLocalBounds().toFloat();
-    const auto widht = bounds.getWidth();
-    const auto height = bounds.getHeight();
-
-    const auto inBounds =
-      bounds.withTrimmedRight(widht / 2).reduced(height / 24);
-    const auto outBounds =
-      bounds.withTrimmedLeft(widht / 2).reduced(height / 24);
+    const auto inBounds = getScopeBounds(bounds, false);
+    const auto outBounds = getScopeBounds(bounds, true);
 
     layoutRmsLabel(inRmsLabel, inBounds, false);
     layoutRmsLabel(outRmsLabel, outBounds, true);
@@ -87,6 +78,17 @@ public:
   }
 
 private:
+  Rectangle<float> getScopeBounds(Rectangle<float> bounds, bool rightSide)
+  {
+    const auto halfBounds =
+      rightSide ? bounds.withTrimmedLeft(bounds.getWidth() / 2.0f)
+                : bounds.withTrimmedRight(bounds.getWidth() / 2.0f);
+    const auto scopeBounds = halfBounds.reduced(bounds.getHeight() / 24.0f);
+
+    // Shrink by 5% in height, evenly from top and bottom.
+    return scopeBounds.reduced(0.0f, scopeBounds.getHeight() * 0.025f);
+  }
+
   Rectangle<float> getMeterBounds(Rectangle<float> scopeBounds,
                                   bool alignToRight)
   {
