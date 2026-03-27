@@ -1,5 +1,6 @@
 #pragma once
 
+#include "CustomLabel.h"
 #include "PluginProcessor.h"
 #include <JuceHeader.h>
 
@@ -10,7 +11,15 @@ class LoudnessMeterComponent
 public:
   LoudnessMeterComponent(PlasmaAudioProcessor& audioProcessor)
     : audioProcessor(audioProcessor)
+    , inRmsLabel("In RMS", FontSizes::Tooltipp, Justification::centred)
+    , outRmsLabel("Out RMS", FontSizes::Tooltipp, Justification::centred)
   {
+    addAndMakeVisible(inRmsLabel);
+    addAndMakeVisible(outRmsLabel);
+    inRmsLabel.setInterceptsMouseClicks(false, false);
+    outRmsLabel.setInterceptsMouseClicks(false, false);
+    inRmsLabel.setColour(Label::textColourId, fontColor);
+    outRmsLabel.setColour(Label::textColourId, fontColor);
     startTimerHz(60);
   }
 
@@ -50,25 +59,61 @@ public:
     this->cornerRadius = cornerRadius;
   }
 
-  void resized() override { auto bounds = getLocalBounds().toFloat(); }
+  void resized() override
+  {
+    const auto bounds = getLocalBounds().toFloat();
+    const auto widht = bounds.getWidth();
+    const auto height = bounds.getHeight();
+
+    const auto inBounds =
+      bounds.withTrimmedRight(widht / 2).reduced(height / 24);
+    const auto outBounds =
+      bounds.withTrimmedLeft(widht / 2).reduced(height / 24);
+
+    layoutRmsLabel(inRmsLabel, inBounds, false);
+    layoutRmsLabel(outRmsLabel, outBounds, true);
+  }
 
   void setBackgroundColor(Colour c) { backgroundColor = c; }
 
   void setAccentColor(Colour c) { accentColor = c; }
 
-  void setFontColor(Colour c) { fontColor = c; }
+  void setFontColor(Colour c)
+  {
+    fontColor = c;
+    inRmsLabel.setColour(Label::textColourId, c);
+    outRmsLabel.setColour(Label::textColourId, c);
+    repaint();
+  }
 
 private:
+  Rectangle<float> getMeterBounds(Rectangle<float> scopeBounds,
+                                  bool alignToRight)
+  {
+    return alignToRight
+             ? scopeBounds.withTrimmedLeft(scopeBounds.getWidth() * 0.60f)
+             : scopeBounds.withTrimmedRight(scopeBounds.getWidth() * 0.60f);
+  }
+
+  void layoutRmsLabel(CustomLabel& label,
+                      Rectangle<float> scopeBounds,
+                      bool alignToRight)
+  {
+    const auto meterBounds = getMeterBounds(scopeBounds, alignToRight);
+    const int labelWidth = int(meterBounds.getWidth() * 1.8f);
+    const int labelHeight = int(scopeBounds.getHeight() * 0.12f);
+    const int labelX = int(meterBounds.getCentreX() - (labelWidth / 2.0f));
+    const int labelY = int(scopeBounds.getY());
+    label.setBounds(labelX, labelY, labelWidth, labelHeight);
+  }
+
   void drawRmsScope(Graphics& g,
                     Rectangle<float> scopeBounds,
                     float leftGain,
                     float rightGain,
                     bool alignToRight)
   {
-    const auto meterBounds =
-      alignToRight
-        ? scopeBounds.withTrimmedLeft(scopeBounds.getWidth() * 0.60f)
-        : scopeBounds.withTrimmedRight(scopeBounds.getWidth() * 0.60f);
+    const auto meterBounds = getMeterBounds(scopeBounds, alignToRight);
 
     const float trimFactor = 0.0f;
     const auto meterInnerBounds =
@@ -112,6 +157,8 @@ private:
   }
 
   PlasmaAudioProcessor& audioProcessor;
+  CustomLabel inRmsLabel;
+  CustomLabel outRmsLabel;
   float cornerRadius = 5.0f;
   Colour backgroundColor = Colours::black;
   Colour accentColor = Colours::green;
