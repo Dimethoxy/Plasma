@@ -246,6 +246,16 @@ PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
 
   // Clean Loudness Meter
   loudnessMeterIn.processBlock(buffer);
+  {
+    const auto& inMomentaryByChannel =
+      loudnessMeterIn.getMomentaryLoudnessForIndividualChannels();
+    if (inMomentaryByChannel.size() >= 2) {
+      momentaryLoudnessLeftIn = inMomentaryByChannel[0];
+      momentaryLoudnessRightIn = inMomentaryByChannel[1];
+    }
+    momentaryLoudnessIn = loudnessMeterIn.getMomentaryLoudness();
+    integratedLoudnessIn = loudnessMeterIn.getIntegratedLoudness();
+  }
 
   // Distortion Unit
   std::vector<int> randoms(buffer.getNumSamples());
@@ -378,6 +388,16 @@ PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
 
   // Loudness Meter
   loudnessMeterOut.processBlock(buffer);
+  {
+    const auto& outMomentaryByChannel =
+      loudnessMeterOut.getMomentaryLoudnessForIndividualChannels();
+    if (outMomentaryByChannel.size() >= 2) {
+      momentaryLoudnessLeftOut = outMomentaryByChannel[0];
+      momentaryLoudnessRightOut = outMomentaryByChannel[1];
+    }
+    momentaryLoudnessOut = loudnessMeterOut.getMomentaryLoudness();
+    integratedLoudnessOut = loudnessMeterOut.getIntegratedLoudness();
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

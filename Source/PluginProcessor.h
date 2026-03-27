@@ -223,6 +223,8 @@ public:
   float peakLevelLeftOut{ 0.0f }, peakLevelRightOut{ 0.0f };
   Ebu128LoudnessMeter loudnessMeterIn;
   Ebu128LoudnessMeter loudnessMeterOut;
+  float momentaryLoudnessLeftIn{ -70.0f }, momentaryLoudnessRightIn{ -70.0f };
+  float momentaryLoudnessLeftOut{ -70.0f }, momentaryLoudnessRightOut{ -70.0f };
   float momentaryLoudnessIn{ 0.0f }, momentaryLoudnessOut{ 0.0f };
   float integratedLoudnessIn{ 0.0f }, integratedLoudnessOut{ 0.0f };
 
