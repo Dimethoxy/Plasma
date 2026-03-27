@@ -3,6 +3,7 @@
 #include "CustomLabel.h"
 #include "PluginProcessor.h"
 #include <JuceHeader.h>
+#include <deque>
 
 class LoudnessMeterComponent
   : public Component
@@ -94,6 +95,11 @@ public:
   }
 
 private:
+  static constexpr int labelSmoothingHz = 60;
+  static constexpr int labelSmoothingSeconds = 1;
+  static constexpr int labelSmoothingSamples =
+    labelSmoothingHz * labelSmoothingSeconds;
+
   Rectangle<float> getScopeBounds(Rectangle<float> bounds, bool rightSide)
   {
     const auto halfBounds =
@@ -136,7 +142,7 @@ private:
     label.setBounds(labelX, labelY, labelWidth, labelHeight);
   }
 
-  String formatDbValueText(float leftGain, float rightGain) const
+  float getCombinedDbValue(float leftGain, float rightGain) const
   {
     const float minValue = -64.0f;
     const float maxValue = 16.0f;
@@ -144,18 +150,51 @@ private:
       std::clamp(juce::Decibels::gainToDecibels(leftGain), minValue, maxValue);
     const float rightDb =
       std::clamp(juce::Decibels::gainToDecibels(rightGain), minValue, maxValue);
-    const int displayDb = int(std::round(std::max(leftDb, rightDb)));
+    return std::max(leftDb, rightDb);
+  }
+
+  String formatDbValueText(float dbValue) const
+  {
+    const int displayDb = int(std::round(dbValue));
     return String(displayDb) + "db";
+  }
+
+  void pushDbSample(std::deque<float>& history, float& sum, float sample)
+  {
+    history.push_back(sample);
+    sum += sample;
+
+    if (int(history.size()) > labelSmoothingSamples) {
+      sum -= history.front();
+      history.pop_front();
+    }
+  }
+
+  float getAverageDb(const std::deque<float>& history, float sum) const
+  {
+    if (history.empty()) {
+      return -64.0f;
+    }
+
+    return sum / float(history.size());
   }
 
   void updateRmsValueLabels()
   {
-    inRmsValueLabel.setText(formatDbValueText(audioProcessor.rmsLevelLeftIn,
-                                              audioProcessor.rmsLevelRightIn),
-                            dontSendNotification);
-    outRmsValueLabel.setText(formatDbValueText(audioProcessor.rmsLevelLeftOut,
-                                               audioProcessor.rmsLevelRightOut),
-                             dontSendNotification);
+    const auto inDb = getCombinedDbValue(audioProcessor.rmsLevelLeftIn,
+                                         audioProcessor.rmsLevelRightIn);
+    const auto outDb = getCombinedDbValue(audioProcessor.rmsLevelLeftOut,
+                                          audioProcessor.rmsLevelRightOut);
+
+    pushDbSample(inRmsHistory, inRmsHistorySum, inDb);
+    pushDbSample(outRmsHistory, outRmsHistorySum, outDb);
+
+    inRmsValueLabel.setText(
+      formatDbValueText(getAverageDb(inRmsHistory, inRmsHistorySum)),
+      dontSendNotification);
+    outRmsValueLabel.setText(
+      formatDbValueText(getAverageDb(outRmsHistory, outRmsHistorySum)),
+      dontSendNotification);
   }
 
   void drawRmsScope(Graphics& g,
@@ -212,6 +251,10 @@ private:
   CustomLabel outRmsLabel;
   CustomLabel inRmsValueLabel;
   CustomLabel outRmsValueLabel;
+  std::deque<float> inRmsHistory;
+  std::deque<float> outRmsHistory;
+  float inRmsHistorySum = 0.0f;
+  float outRmsHistorySum = 0.0f;
   float cornerRadius = 5.0f;
   Colour backgroundColor = Colours::black;
   Colour accentColor = Colours::green;
