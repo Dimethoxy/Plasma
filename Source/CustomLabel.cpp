@@ -3,89 +3,93 @@
 
 CustomLabel::CustomLabel(String text, int size, Justification justification)
 {
-	setCustomFontSize(size);
-	setText(text, juce::dontSendNotification);
-	setFont(getFont().withHeight(getCustomFontSize()));
-	setJustificationType(justification);
-	setLookAndFeel(&lnf);
+  setCustomFontSize(size);
+  setText(text, juce::dontSendNotification);
+  setFont(getFont().withHeight(getCustomFontSize()));
+  setJustificationType(justification);
+  setLookAndFeel(&lnf);
 }
 
 CustomLabel::~CustomLabel()
 {
-	setLookAndFeel(nullptr);
+  setLookAndFeel(nullptr);
 }
 
-void CustomLabel::resize()
+void
+CustomLabel::resize()
 {
-	setFont(getFont().withHeight(getScaledCustomFontSize()));
+  setFont(getFont().withHeight(getScaledCustomFontSize()));
 }
 
-Typeface::Ptr CustomLabel::getTypeface()
+Typeface::Ptr
+CustomLabel::getTypeface()
 {
-	Typeface::Ptr typeface = Typeface::createSystemTypefaceFor(BinaryData::PoppinsMedium_ttf, BinaryData::PoppinsMedium_ttfSize);
-	return typeface;
+  Typeface::Ptr typeface = Typeface::createSystemTypefaceFor(
+    BinaryData::PoppinsMedium_ttf, BinaryData::PoppinsMedium_ttfSize);
+  return typeface;
 }
 
-Font CustomLabel::getCustomFont()
+Font
+CustomLabel::getCustomFont()
 {
-	Font font(getTypeface());
-	return font;
+  Font font(getTypeface());
+  return font;
 }
 
-void CustomLabel::setCustomFontSize(int size)
+void
+CustomLabel::setCustomFontSize(int size)
 {
-	customFontSize = size;
+  customFontSize = size;
 }
 
-float CustomLabel::getCustomFontSize()
+float
+CustomLabel::getCustomFontSize()
 {
-	float factor = 1.0f;
-	switch (customFontSize)
-	{
-	case FontSizes::Main:
-	{
-		return mainSize * factor;
-	}
-	case FontSizes::Titel:
-	{
-		return titelSize * factor;
-	}
-	case FontSizes::Tooltipp:
-	{
-		return TooltipSize * factor;
-	}
-    default:
-    {
-        return mainSize * factor;
+  float factor = 1.0f;
+  switch (customFontSize) {
+    case FontSizes::Main: {
+      return mainSize * factor;
     }
-	}
-}
-
-float CustomLabel::getScaledCustomFontSize()
-{
-	float factor = getBounds().getHeight() / 40.0f;
-	switch (customFontSize)
-	{
-	case FontSizes::Main:
-	{
-		return mainSize * factor;
-	}
-	case FontSizes::Titel:
-	{
-		return titelSize * factor;
-	}
-	case FontSizes::Tooltipp:
-	{
-		return TooltipSize * factor;
-	}
-    default:
-    {
-        return mainSize * factor;
+    case FontSizes::Titel: {
+      return titelSize * factor;
     }
-	}
+    case FontSizes::Tooltipp: {
+      return TooltipSize * factor;
+    }
+    case FontSizes::Small: {
+      return smallSize * factor;
+    }
+    default: {
+      return mainSize * factor;
+    }
+  }
 }
 
-void CustomLabel::paint(Graphics& g)
+float
+CustomLabel::getScaledCustomFontSize()
 {
-	getLookAndFeel().drawLabel(g, *this);
+  float factor = getBounds().getHeight() / 40.0f;
+  switch (customFontSize) {
+    case FontSizes::Main: {
+      return mainSize * factor;
+    }
+    case FontSizes::Titel: {
+      return titelSize * factor;
+    }
+    case FontSizes::Tooltipp: {
+      return TooltipSize * factor;
+    }
+    case FontSizes::Small: {
+      return smallSize * factor;
+    }
+    default: {
+      return mainSize * factor;
+    }
+  }
+}
+
+void
+CustomLabel::paint(Graphics& g)
+{
+  getLookAndFeel().drawLabel(g, *this);
 }

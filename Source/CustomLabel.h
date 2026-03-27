@@ -7,7 +7,8 @@ enum FontSizes
 {
   Main,
   Titel,
-  Tooltipp
+  Tooltipp,
+  Small
 };
 class CustomLabel : public Label
 {
@@ -23,6 +24,7 @@ private:
   int mainSize = 20;
   int titelSize = 29;
   int TooltipSize = 18;
+  int smallSize = 14;
   int customFontSize;
   void setCustomFontSize(int size);
   Typeface::Ptr getTypeface();

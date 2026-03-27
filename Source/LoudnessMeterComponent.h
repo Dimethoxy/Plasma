@@ -3,6 +3,7 @@
 #include "CustomLabel.h"
 #include "PluginProcessor.h"
 #include <JuceHeader.h>
+#include <algorithm>
 #include <deque>
 
 class LoudnessMeterComponent
@@ -16,19 +17,27 @@ public:
     , outRmsLabel("Out RMS", FontSizes::Tooltipp, Justification::centred)
     , inRmsValueLabel("-64db", FontSizes::Tooltipp, Justification::centred)
     , outRmsValueLabel("-64db", FontSizes::Tooltipp, Justification::centred)
+    , inRmsPeakLabel("(-64db)", FontSizes::Small, Justification::centred)
+    , outRmsPeakLabel("(-64db)", FontSizes::Small, Justification::centred)
   {
     addAndMakeVisible(inRmsLabel);
     addAndMakeVisible(outRmsLabel);
     addAndMakeVisible(inRmsValueLabel);
     addAndMakeVisible(outRmsValueLabel);
+    addAndMakeVisible(inRmsPeakLabel);
+    addAndMakeVisible(outRmsPeakLabel);
     inRmsLabel.setInterceptsMouseClicks(false, false);
     outRmsLabel.setInterceptsMouseClicks(false, false);
     inRmsValueLabel.setInterceptsMouseClicks(false, false);
     outRmsValueLabel.setInterceptsMouseClicks(false, false);
+    inRmsPeakLabel.setInterceptsMouseClicks(false, false);
+    outRmsPeakLabel.setInterceptsMouseClicks(false, false);
     inRmsLabel.setColour(Label::textColourId, fontColor);
     outRmsLabel.setColour(Label::textColourId, fontColor);
     inRmsValueLabel.setColour(Label::textColourId, fontColor);
     outRmsValueLabel.setColour(Label::textColourId, fontColor);
+    inRmsPeakLabel.setColour(Label::textColourId, fontColor);
+    outRmsPeakLabel.setColour(Label::textColourId, fontColor);
     startTimerHz(60);
   }
 
@@ -78,6 +87,8 @@ public:
     layoutRmsLabel(outRmsLabel, outBounds, true);
     layoutRmsValueLabel(inRmsValueLabel, inBounds, false);
     layoutRmsValueLabel(outRmsValueLabel, outBounds, true);
+    layoutRmsPeakLabel(inRmsPeakLabel, inBounds, false);
+    layoutRmsPeakLabel(outRmsPeakLabel, outBounds, true);
   }
 
   void setBackgroundColor(Colour c) { backgroundColor = c; }
@@ -91,6 +102,8 @@ public:
     outRmsLabel.setColour(Label::textColourId, c);
     inRmsValueLabel.setColour(Label::textColourId, c);
     outRmsValueLabel.setColour(Label::textColourId, c);
+    inRmsPeakLabel.setColour(Label::textColourId, c);
+    outRmsPeakLabel.setColour(Label::textColourId, c);
     repaint();
   }
 
@@ -99,6 +112,26 @@ private:
   static constexpr int labelSmoothingSeconds = 1;
   static constexpr int labelSmoothingSamples =
     labelSmoothingHz * labelSmoothingSeconds;
+
+  int getTopLabelHeight(Rectangle<float> scopeBounds) const
+  {
+    return int(scopeBounds.getHeight() * 0.12f);
+  }
+
+  int getValueLabelHeight(Rectangle<float> scopeBounds) const
+  {
+    return int(scopeBounds.getHeight() * 0.08f);
+  }
+
+  int getPeakLabelHeight(Rectangle<float> scopeBounds) const
+  {
+    return int(scopeBounds.getHeight() * 0.06f);
+  }
+
+  int getLabelGap(Rectangle<float> scopeBounds) const
+  {
+    return std::max(1, int(scopeBounds.getHeight() * 0.01f));
+  }
 
   Rectangle<float> getScopeBounds(Rectangle<float> bounds, bool rightSide)
   {
@@ -124,7 +157,7 @@ private:
   {
     const auto meterBounds = getMeterBounds(scopeBounds, alignToRight);
     const int labelWidth = int(meterBounds.getWidth() * 1.8f);
-    const int labelHeight = int(scopeBounds.getHeight() * 0.12f);
+    const int labelHeight = getTopLabelHeight(scopeBounds);
     const int labelX = int(meterBounds.getCentreX() - (labelWidth / 2.0f));
     const int labelY = int(scopeBounds.getY());
     label.setBounds(labelX, labelY, labelWidth, labelHeight);
@@ -136,9 +169,27 @@ private:
   {
     const auto meterBounds = getMeterBounds(scopeBounds, alignToRight);
     const int labelWidth = int(meterBounds.getWidth() * 1.5f);
-    const int labelHeight = int(scopeBounds.getHeight() * 0.10f);
+    const int labelHeight = getValueLabelHeight(scopeBounds);
+    const int peakLabelHeight = getPeakLabelHeight(scopeBounds);
+    const int labelGap = getLabelGap(scopeBounds);
+    const int verticalOffset = int(scopeBounds.getHeight() * 0.04f);
     const int labelX = int(meterBounds.getCentreX() - (labelWidth / 2.0f));
-    const int labelY = int(scopeBounds.getBottom() - labelHeight);
+    const int labelY = int(scopeBounds.getBottom() - peakLabelHeight -
+                           labelGap - labelHeight + verticalOffset);
+    label.setBounds(labelX, labelY, labelWidth, labelHeight);
+  }
+
+  void layoutRmsPeakLabel(CustomLabel& label,
+                          Rectangle<float> scopeBounds,
+                          bool alignToRight)
+  {
+    const auto meterBounds = getMeterBounds(scopeBounds, alignToRight);
+    const int labelWidth = int(meterBounds.getWidth() * 1.5f);
+    const int labelHeight = getPeakLabelHeight(scopeBounds);
+    const int verticalOffset = int(scopeBounds.getHeight() * 0.04f);
+    const int labelX = int(meterBounds.getCentreX() - (labelWidth / 2.0f));
+    const int labelY =
+      int(scopeBounds.getBottom() - labelHeight + verticalOffset);
     label.setBounds(labelX, labelY, labelWidth, labelHeight);
   }
 
@@ -157,6 +208,11 @@ private:
   {
     const int displayDb = int(std::round(dbValue));
     return String(displayDb) + "db";
+  }
+
+  String formatDbPeakText(float dbValue) const
+  {
+    return "(" + formatDbValueText(dbValue) + ")";
   }
 
   void pushDbSample(std::deque<float>& history, float& sum, float sample)
@@ -179,6 +235,15 @@ private:
     return sum / float(history.size());
   }
 
+  float getPeakDb(const std::deque<float>& history) const
+  {
+    if (history.empty()) {
+      return -64.0f;
+    }
+
+    return *std::max_element(history.begin(), history.end());
+  }
+
   void updateRmsValueLabels()
   {
     const auto inDb = getCombinedDbValue(audioProcessor.rmsLevelLeftIn,
@@ -195,6 +260,10 @@ private:
     outRmsValueLabel.setText(
       formatDbValueText(getAverageDb(outRmsHistory, outRmsHistorySum)),
       dontSendNotification);
+    inRmsPeakLabel.setText(formatDbPeakText(getPeakDb(inRmsHistory)),
+                           dontSendNotification);
+    outRmsPeakLabel.setText(formatDbPeakText(getPeakDb(outRmsHistory)),
+                            dontSendNotification);
   }
 
   void drawRmsScope(Graphics& g,
@@ -251,6 +320,8 @@ private:
   CustomLabel outRmsLabel;
   CustomLabel inRmsValueLabel;
   CustomLabel outRmsValueLabel;
+  CustomLabel inRmsPeakLabel;
+  CustomLabel outRmsPeakLabel;
   std::deque<float> inRmsHistory;
   std::deque<float> outRmsHistory;
   float inRmsHistorySum = 0.0f;
