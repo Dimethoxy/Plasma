@@ -1735,6 +1735,8 @@ PlasmaAudioProcessorEditor::setFontColor(Colour c)
   }
   plasmaLabel.setColour(Label::ColourIds::textColourId, c);
   plasmaLabel.setColour(Label::ColourIds::textColourId, c);
+  earlyShapercurveComponent.setColor(c);
+  lateShapercurveComponent.setColor(c);
   loudnessMeterComponent.setFontColor(c);
 }
 
