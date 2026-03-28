@@ -219,16 +219,8 @@ PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
   float gain, preGain;
   // Get Settings
   auto chainSettings = getChainSettings(apvts);
-  if (chainSettings.preGain > -32.f) {
-    preGain = Decibels::decibelsToGain(chainSettings.preGain);
-  } else {
-    preGain = 0.0f;
-  }
-  if (chainSettings.gain > -32.f) {
-    gain = Decibels::decibelsToGain(chainSettings.gain);
-  } else {
-    gain = 0.f;
-  }
+  preGain = Decibels::decibelsToGain(chainSettings.preGain, -64.0f);
+  gain = Decibels::decibelsToGain(chainSettings.gain, -64.0f);
   float mixWet = chainSettings.mix / 100;
   float mixDry = (100.0 - chainSettings.mix) / 100;
   // bool killswitch = false;
