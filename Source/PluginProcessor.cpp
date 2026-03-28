@@ -233,8 +233,6 @@ PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
   for (int ch = 0; ch < buffer.getNumChannels(); ++ch)
     tmpBuffer.copyFrom(ch, 0, buffer, ch, 0, buffer.getNumSamples());
 
-  // Keep separate RMS values for process decisions so meter routing changes
-  // do not alter DSP behavior.
   const auto dspInputRmsLeft = buffer.getRMSLevel(0, 0, buffer.getNumSamples());
   const auto dspInputRmsRight =
     buffer.getRMSLevel(1, 0, buffer.getNumSamples());
@@ -266,7 +264,6 @@ PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
 
     for (int sample = 0; sample < buffer.getNumSamples(); sample++) {
       if (channelData[sample] != 0.0) {
-        // Input meter tap: after pre gain, before girth/drive/bias.
         meterData[sample] = channelData[sample];
 
         // Girth

@@ -3,9 +3,6 @@
 #include "CustomLabel.h"
 #include "PluginProcessor.h"
 #include <JuceHeader.h>
-#include <algorithm>
-#include <cmath>
-#include <deque>
 
 class LoudnessMeterComponent
   : public Component
@@ -29,10 +26,10 @@ public:
     , inRmsValueLabel("-64db",
                       FontSizes::LoudnessMeterAverage,
                       Justification::centred)
-    , inLufsValueLabel("-70LUFS",
+    , inLufsValueLabel("-70db",
                        FontSizes::LoudnessMeterAverage,
                        Justification::centred)
-    , outLufsValueLabel("-70LUFS",
+    , outLufsValueLabel("-70db",
                         FontSizes::LoudnessMeterAverage,
                         Justification::centred)
     , outRmsValueLabel("-64db",
@@ -41,10 +38,10 @@ public:
     , inRmsPeakLabel("(-64db)",
                      FontSizes::LoudnessMeterPeak,
                      Justification::centred)
-    , inLufsPeakLabel("(-70LUFS)",
+    , inLufsPeakLabel("(-70db)",
                       FontSizes::LoudnessMeterPeak,
                       Justification::centred)
-    , outLufsPeakLabel("(-70LUFS)",
+    , outLufsPeakLabel("(-70db)",
                        FontSizes::LoudnessMeterPeak,
                        Justification::centred)
     , outRmsPeakLabel("(-64db)",
@@ -303,7 +300,7 @@ private:
   String formatLufsValueText(float lufsValue) const
   {
     const int displayLufs = int(std::round(lufsValue));
-    return String(displayLufs) + "LUFS";
+    return String(displayLufs) + "db";
   }
 
   String formatLufsPeakText(float lufsValue) const
