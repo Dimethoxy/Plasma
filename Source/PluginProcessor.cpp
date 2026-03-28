@@ -120,7 +120,7 @@ PlasmaAudioProcessor::isBusesLayoutSupported(const BusesLayout& layouts) const
       layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
     return false;
 
-    // This checks if the input layout matches the output layout
+  // This checks if the input layout matches the output layout
 #if !JucePlugin_IsSynth
   if (layouts.getMainOutputChannelSet() != layouts.getMainInputChannelSet())
     return false;
@@ -188,7 +188,8 @@ PlasmaAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
   updateFilters();
 
   // Allocate Clean Buffer
-  cleanBuffer.setSize(getNumInputChannels(), samplesPerBlock);
+  cleanBuffer.setSize(getTotalNumInputChannels(), samplesPerBlock);
+  inputMeterBuffer.setSize(getTotalNumInputChannels(), samplesPerBlock);
 
   // Waveform
   waveformComponent.clear();
@@ -219,16 +220,8 @@ PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
   float gain, preGain;
   // Get Settings
   auto chainSettings = getChainSettings(apvts);
-  if (chainSettings.preGain > -32.f) {
-    preGain = Decibels::decibelsToGain(chainSettings.preGain);
-  } else {
-    preGain = 0.0f;
-  }
-  if (chainSettings.gain > -32.f) {
-    gain = Decibels::decibelsToGain(chainSettings.gain);
-  } else {
-    gain = 0.f;
-  }
+  preGain = Decibels::decibelsToGain(chainSettings.preGain, -64.0f);
+  gain = Decibels::decibelsToGain(chainSettings.gain, -64.0f);
   float mixWet = chainSettings.mix / 100;
   float mixDry = (100.0 - chainSettings.mix) / 100;
   // bool killswitch = false;
@@ -240,12 +233,26 @@ PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
   for (int ch = 0; ch < buffer.getNumChannels(); ++ch)
     tmpBuffer.copyFrom(ch, 0, buffer, ch, 0, buffer.getNumSamples());
 
-  // Clean RMS
-  auto leftRms = buffer.getRMSLevel(0, 0, buffer.getNumSamples());
-  auto rightRms = buffer.getRMSLevel(1, 0, buffer.getNumSamples());
+  const auto dspInputRmsLeft = buffer.getRMSLevel(0, 0, buffer.getNumSamples());
+  const auto dspInputRmsRight =
+    buffer.getRMSLevel(1, 0, buffer.getNumSamples());
 
-  // Clean Loudness Meter
-  loudnessMeterIn.processBlock(buffer);
+  // Apply Pre-Gain
+  for (int channel = 0; channel < buffer.getNumChannels(); ++channel) {
+    auto* channelData = buffer.getWritePointer(channel);
+    for (int sample = 0; sample < buffer.getNumSamples(); sample++) {
+      channelData[sample] *= preGain;
+    }
+  }
+
+  // Input meter tap source buffer (filled at pre-gain point in the first
+  // stage).
+  for (int ch = 0; ch < buffer.getNumChannels(); ++ch)
+    inputMeterBuffer.copyFrom(ch, 0, buffer, ch, 0, buffer.getNumSamples());
+
+  // Input meter tap RMS values (after pre-gain, before girth/drive/bias).
+  rmsLevelLeftIn = inputMeterBuffer.getRMSLevel(0, 0, buffer.getNumSamples());
+  rmsLevelRightIn = inputMeterBuffer.getRMSLevel(1, 0, buffer.getNumSamples());
 
   // Distortion Unit
   std::vector<int> randoms(buffer.getNumSamples());
@@ -253,12 +260,11 @@ PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
     n = rand();
   for (int channel = 0; channel < 2; ++channel) {
     auto* channelData = buffer.getWritePointer(channel);
+    auto* meterData = inputMeterBuffer.getWritePointer(channel);
 
     for (int sample = 0; sample < buffer.getNumSamples(); sample++) {
       if (channelData[sample] != 0.0) {
-        // Pre Gain
-        channelData[sample] =
-          DistortionProcessor::clamp(channelData[sample] * preGain, -1.0, 1.0);
+        meterData[sample] = channelData[sample];
 
         // Girth
         if (chainSettings.girth >= 0.0f)
@@ -288,13 +294,26 @@ PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
     }
   }
 
+  // Clean Loudness Meter
+  loudnessMeterIn.processBlock(inputMeterBuffer);
+  {
+    const auto& inMomentaryByChannel =
+      loudnessMeterIn.getMomentaryLoudnessForIndividualChannels();
+    if (inMomentaryByChannel.size() >= 2) {
+      momentaryLoudnessLeftIn = inMomentaryByChannel[0];
+      momentaryLoudnessRightIn = inMomentaryByChannel[1];
+    }
+    momentaryLoudnessIn = loudnessMeterIn.getMomentaryLoudness();
+    integratedLoudnessIn = loudnessMeterIn.getIntegratedLoudness();
+  }
+
   // DSP
   juce::dsp::AudioBlock<float> block(buffer);
 
   // Filter
   updateFilters();
   auto threshold = 0.0f;
-  if (leftRms != threshold) {
+  if (dspInputRmsLeft != threshold) {
     auto leftBlock = block.getSingleChannelBlock(0);
     juce::dsp::ProcessContextReplacing<float> leftContext(leftBlock);
     leftChain.process(leftContext);
@@ -305,7 +324,7 @@ PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
     }
   }
 
-  if (rightRms != threshold) {
+  if (dspInputRmsRight != threshold) {
     auto rightBlock = block.getSingleChannelBlock(1);
     juce::dsp::ProcessContextReplacing<float> rightContext(rightBlock);
     rightChain.process(rightContext);
@@ -324,10 +343,6 @@ PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
     auto* cleanData = tmpBuffer.getWritePointer(channel);
     for (int sample = 0; sample < buffer.getNumSamples(); sample++) {
       if (channelData[sample] != 0.0) {
-        // Reduce Loudness
-        channelData[sample] =
-          DistortionProcessor::clamp(channelData[sample], -1, 1);
-
         // Girth
         if (chainSettings.lateGirth >= 0.0f)
           channelData[sample] =
@@ -355,9 +370,8 @@ PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
         channelData[sample] =
           cleanData[sample] * mixDry + channelData[sample] * mixWet;
 
-        // Reduce Loudness for Waveform Analyser
-        channelData[sample] =
-          0.5 * DistortionProcessor::clamp(channelData[sample], -1, 1);
+        // Reduce Loudness for Waveform
+        channelData[sample] = 0.5 * channelData[sample];
       }
     }
   }
@@ -372,8 +386,22 @@ PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
     }
   }
 
+  // Processed RMS
+  rmsLevelLeftOut = buffer.getRMSLevel(0, 0, buffer.getNumSamples());
+  rmsLevelRightOut = buffer.getRMSLevel(1, 0, buffer.getNumSamples());
+
   // Loudness Meter
   loudnessMeterOut.processBlock(buffer);
+  {
+    const auto& outMomentaryByChannel =
+      loudnessMeterOut.getMomentaryLoudnessForIndividualChannels();
+    if (outMomentaryByChannel.size() >= 2) {
+      momentaryLoudnessLeftOut = outMomentaryByChannel[0];
+      momentaryLoudnessRightOut = outMomentaryByChannel[1];
+    }
+    momentaryLoudnessOut = loudnessMeterOut.getMomentaryLoudness();
+    integratedLoudnessOut = loudnessMeterOut.getIntegratedLoudness();
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -545,7 +573,7 @@ PlasmaAudioProcessor::createParameterLayout()
     100.0f));
   // Analyser
   juce::StringArray analyserArray;
-  for (int i = 0; i < 5; i++) {
+  for (int i = 0; i < 6; i++) {
     juce::String str;
     str << "Type ";
     str << i;

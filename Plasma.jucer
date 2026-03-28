@@ -2,7 +2,7 @@
 
 <JUCERPROJECT id="qMF8Un" name="Plasma" projectType="audioplug" useAppConfig="0"
               jucerFormatVersion="1" bundleIdentifier="com.Dimethoxy.Plasma"
-              companyName="Dimethoxy" companyWebsite="Dimethoxy.com" version="1.2.1"
+              companyName="Dimethoxy" companyWebsite="Dimethoxy.com" version="1.3.0"
               pluginManufacturerCode="Dmtx" pluginDesc="Distortion" maxBinaryFileSize="20971520"
               pluginVST3Category="Distortion,Fx" companyCopyright="COPYRIGHT &#169; 2024 DIMETHOXY.COM"
               companyEmail="dimethoxy.audio@gmail.com" pluginFormats="buildAU,buildLV2,buildVST3"
@@ -139,6 +139,7 @@
         <MODULEPATH id="juce_gui_basics" path="../../juce"/>
         <MODULEPATH id="juce_gui_extra" path="../../juce"/>
         <MODULEPATH id="juce_opengl" path="../../Ressources/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors_headless" path="../juce/modules"/>
       </MODULEPATHS>
     </VS2022>
     <XCODE_MAC targetFolder="Builds/MacOSX" iosInAppPurchases="0" hardenedRuntime="1">
@@ -161,6 +162,7 @@
         <MODULEPATH id="juce_gui_basics" path="../../juce"/>
         <MODULEPATH id="juce_gui_extra" path="../../juce"/>
         <MODULEPATH id="juce_opengl" path="../../Ressources/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors_headless" path="../juce/modules"/>
       </MODULEPATHS>
     </XCODE_MAC>
     <LINUX_MAKE targetFolder="Builds/LinuxMakefile">
@@ -182,6 +184,7 @@
         <MODULEPATH id="juce_gui_basics" path="D:\Dev\Ressources\JUCE\modules"/>
         <MODULEPATH id="juce_gui_extra" path="D:\Dev\Ressources\JUCE\modules"/>
         <MODULEPATH id="juce_opengl" path="../../Ressources/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors_headless" path="../juce/modules"/>
       </MODULEPATHS>
     </LINUX_MAKE>
   </EXPORTFORMATS>
@@ -192,6 +195,8 @@
     <MODULE id="juce_audio_plugin_client" showAllCode="1" useLocalCopy="0"
             useGlobalPath="1"/>
     <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_processors_headless" showAllCode="1" useLocalCopy="0"
+            useGlobalPath="1"/>
     <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>

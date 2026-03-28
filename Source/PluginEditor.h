@@ -110,7 +110,7 @@ private:
   ShapercurveComponent lateShapercurveComponent;
 
   // Loudness Meter Components
-  Gui::LoudnessMeterComponent loudnessMeterIn, loudnessMeterOut;
+  LoudnessMeterComponent loudnessMeterComponent;
 
   // Value Editor
   ValueEditor valueEditor;

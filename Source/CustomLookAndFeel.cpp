@@ -144,7 +144,7 @@ CustomLookAndFeel::drawRotarySlider(juce::Graphics& g,
     // auto value = round(slider.getValue() * 100);
   } else if (slider.getName() == "Analyser Type") {
     isSelector = true;
-    numOptions = 5;
+    numOptions = 6;
     selectedOption = (int)slider.getValue();
   } else if (slider.getName() == "Lowpass" || slider.getName() == "Highpass" ||
              slider.getName() == "Peak" || slider.getName() == "Dual Peak") {

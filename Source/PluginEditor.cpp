@@ -299,6 +299,7 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
                              Justification::centredLeft)
   , configCornerRadiusTextbox("0", FontSizes::Main, Justification::centredLeft)
   , versionManager(p.versionManager)
+  , loudnessMeterComponent(p)
 {
   // OpenGL Settings
   if (operatingSystemType != juce::SystemStats::Windows) {
@@ -306,6 +307,9 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
     openGLContext.setContinuousRepainting(false);
     openGLContext.attachTo(*getTopLevelComponent());
   }
+
+  // Loudness Meter
+  addAndMakeVisible(loudnessMeterComponent);
 
   // Waveform
   waveformComponent = &p.waveformComponent;
@@ -401,7 +405,10 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
   updateButton.setVisible(false);
   startTimer(1, 1000 / 10);
 
+  // Coner Radius Bullshit
   waveformComponent->setCornerRadius(sc(cornerRadius * innerCorner));
+  loudnessMeterComponent.setCornerRadius(sc(cornerRadius * innerCorner));
+
   // Window
   setResizable(false, false);
   setSize(sc(810), sc(940));
@@ -719,6 +726,8 @@ PlasmaAudioProcessorEditor::sliderDragStarted(Slider* slider)
              slider == &lowPassResonanceQualitySlider ||
              slider == &lowPassSlopeSlider) {
     autoAnalyserType = AnalyserType::Response;
+  } else if (slider == &gainSlider || slider == &preGainSlider) {
+    autoAnalyserType = AnalyserType::Loudness;
   } else {
     autoAnalyserType = AnalyserType::Waveform;
   }
@@ -803,6 +812,7 @@ PlasmaAudioProcessorEditor::setAnalyserType(AnalyserType analyser)
     responseCurveComponent.setVisible(false);
     earlyShapercurveComponent.setVisible(false);
     lateShapercurveComponent.setVisible(false);
+    loudnessMeterComponent.setVisible(false);
   }
   // Repsonse
   if (analyser == AnalyserType::Response) {
@@ -810,6 +820,7 @@ PlasmaAudioProcessorEditor::setAnalyserType(AnalyserType analyser)
     earlyShapercurveComponent.setVisible(false);
     lateShapercurveComponent.setVisible(false);
     waveformComponent->setVisible(false);
+    loudnessMeterComponent.setVisible(false);
   }
   // Distortion
   if (analyser == AnalyserType::Shapercurve) {
@@ -817,6 +828,16 @@ PlasmaAudioProcessorEditor::setAnalyserType(AnalyserType analyser)
     lateShapercurveComponent.setVisible(true);
     waveformComponent->setVisible(false);
     responseCurveComponent.setVisible(false);
+    loudnessMeterComponent.setVisible(false);
+  }
+
+  // Loudness
+  if (analyser == AnalyserType::Loudness) {
+    waveformComponent->setVisible(false);
+    responseCurveComponent.setVisible(false);
+    earlyShapercurveComponent.setVisible(false);
+    lateShapercurveComponent.setVisible(false);
+    loudnessMeterComponent.setVisible(true);
   }
 
   // Options
@@ -826,6 +847,7 @@ PlasmaAudioProcessorEditor::setAnalyserType(AnalyserType analyser)
     responseCurveComponent.setVisible(false);
     earlyShapercurveComponent.setVisible(false);
     lateShapercurveComponent.setVisible(false);
+    loudnessMeterComponent.setVisible(false);
   } else {
     configWindow(false);
   }
@@ -952,7 +974,7 @@ PlasmaAudioProcessorEditor::resized()
                                    monitorArea().getHeight() - 2 * sc(padding));
   responseCurveComponent.update();
   responseCurveComponent.setPadding(sc(padding));
-  // loudnessMeterIn.setBounds(220, 60, 620, 155);
+
   auto logoX = headerArea().getCentreX() - sc(100);
   if (operatingSystemType != juce::SystemStats::OperatingSystemType::Windows) {
     plasmaLabel.setBounds(logoX, sc(5), sc(200), sc(100));
@@ -1451,7 +1473,7 @@ PlasmaAudioProcessorEditor::resized()
                                      monitorArea().getCentreY() - sc(200) / 2,
                                      sc(200),
                                      sc(200));
-
+  loudnessMeterComponent.setBounds(monitorArea().reduced(sc(padding)));
   tooltipLabel.setAlwaysOnTop(true);
   valueEditor.setBounds(monitorArea().reduced(sc(padding)));
   valueEditor.setAlwaysOnTop(true);
@@ -1672,6 +1694,7 @@ PlasmaAudioProcessorEditor::setBackgroundColor(Colour c)
   }
   waveformComponent->setBackgroundColor(c, foregroundColor);
   valueEditor.setBackgroundColor(c);
+  loudnessMeterComponent.setBackgroundColor(c);
 }
 
 void
@@ -1693,6 +1716,7 @@ PlasmaAudioProcessorEditor::setAccentColor(Colour c)
   for (auto* slider : getSliders()) {
     slider->setColour(Slider::ColourIds::rotarySliderFillColourId, c);
   }
+  loudnessMeterComponent.setAccentColor(c);
 }
 
 void
@@ -1711,6 +1735,9 @@ PlasmaAudioProcessorEditor::setFontColor(Colour c)
   }
   plasmaLabel.setColour(Label::ColourIds::textColourId, c);
   plasmaLabel.setColour(Label::ColourIds::textColourId, c);
+  earlyShapercurveComponent.setColor(c);
+  lateShapercurveComponent.setColor(c);
+  loudnessMeterComponent.setFontColor(c);
 }
 
 void
@@ -1806,6 +1833,7 @@ PlasmaAudioProcessorEditor::setCornerRadius(int cornerRadius)
   this->cornerRadius = cornerRadius;
   waveformComponent->setCornerRadius(sc(cornerRadius * innerCorner));
   valueEditor.setCornerRadius(sc(cornerRadius * innerCorner));
+  loudnessMeterComponent.setCornerRadius(sc(cornerRadius * innerCorner));
   updateTextboxes();
 }
 
@@ -1840,8 +1868,7 @@ PlasmaAudioProcessorEditor::getComps()
   return { &responseCurveComponent,
            &earlyShapercurveComponent,
            &lateShapercurveComponent,
-           &loudnessMeterIn,
-           &loudnessMeterOut };
+           &loudnessMeterComponent };
 }
 
 std::vector<CustomRotarySlider*>

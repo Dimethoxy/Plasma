@@ -199,6 +199,10 @@ CustomRotarySlider::getAnalyserName(AnalyserType analyserType)
       return "Shapercurve";
       break;
     }
+    case AnalyserType::Loudness: {
+      return "Loudness";
+      break;
+    }
     case AnalyserType::Waveform: {
       return "Waveform";
       break;

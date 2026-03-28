@@ -36,6 +36,7 @@ enum AnalyserType
   Waveform,
   Response,
   Shapercurve,
+  Loudness,
   Options
 };
 
@@ -215,19 +216,22 @@ public:
   WaveformComponent waveformComponent;
   VersionManager versionManager;
 
-private:
-  // Clean Buffer
-  AudioSampleBuffer cleanBuffer;
-
   // LoudnessMeter
-  float rmsLevelLeftIn{ 0.0f }, rmsLevelRight{ 0.0f };
+  float rmsLevelLeftIn{ 0.0f }, rmsLevelRightIn{ 0.0f };
   float rmsLevelLeftOut{ 0.0f }, rmsLevelRightOut{ 0.0f };
   float peakLevelLeftIn{ 0.0f }, peakLevelRightIn{ 0.0f };
   float peakLevelLeftOut{ 0.0f }, peakLevelRightOut{ 0.0f };
   Ebu128LoudnessMeter loudnessMeterIn;
   Ebu128LoudnessMeter loudnessMeterOut;
+  float momentaryLoudnessLeftIn{ -70.0f }, momentaryLoudnessRightIn{ -70.0f };
+  float momentaryLoudnessLeftOut{ -70.0f }, momentaryLoudnessRightOut{ -70.0f };
   float momentaryLoudnessIn{ 0.0f }, momentaryLoudnessOut{ 0.0f };
   float integratedLoudnessIn{ 0.0f }, integratedLoudnessOut{ 0.0f };
+
+private:
+  // Clean Buffer
+  AudioSampleBuffer cleanBuffer;
+  AudioSampleBuffer inputMeterBuffer;
 
   // Filters
   MonoChain leftChain, rightChain;
