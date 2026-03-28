@@ -238,7 +238,7 @@ private:
 
   void layoutScopeLabel(CustomLabel& label, Rectangle<float> scopeBounds)
   {
-    const int labelWidth = int(scopeBounds.getWidth() * 0.86f);
+    const int labelWidth = int(scopeBounds.getWidth());
     const int labelHeight = getTopLabelHeight(scopeBounds);
     const int labelX = int(scopeBounds.getCentreX() - (labelWidth / 2.0f));
     const int labelY = int(scopeBounds.getY());
