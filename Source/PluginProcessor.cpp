@@ -188,7 +188,8 @@ PlasmaAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
   updateFilters();
 
   // Allocate Clean Buffer
-  cleanBuffer.setSize(getNumInputChannels(), samplesPerBlock);
+  cleanBuffer.setSize(getTotalNumInputChannels(), samplesPerBlock);
+  inputMeterBuffer.setSize(getTotalNumInputChannels(), samplesPerBlock);
 
   // Waveform
   waveformComponent.clear();
@@ -232,22 +233,28 @@ PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
   for (int ch = 0; ch < buffer.getNumChannels(); ++ch)
     tmpBuffer.copyFrom(ch, 0, buffer, ch, 0, buffer.getNumSamples());
 
-  // Clean RMS
-  rmsLevelLeftIn = buffer.getRMSLevel(0, 0, buffer.getNumSamples());
-  rmsLevelRightIn = buffer.getRMSLevel(1, 0, buffer.getNumSamples());
+  // Keep separate RMS values for process decisions so meter routing changes
+  // do not alter DSP behavior.
+  const auto dspInputRmsLeft = buffer.getRMSLevel(0, 0, buffer.getNumSamples());
+  const auto dspInputRmsRight =
+    buffer.getRMSLevel(1, 0, buffer.getNumSamples());
 
-  // Clean Loudness Meter
-  loudnessMeterIn.processBlock(buffer);
-  {
-    const auto& inMomentaryByChannel =
-      loudnessMeterIn.getMomentaryLoudnessForIndividualChannels();
-    if (inMomentaryByChannel.size() >= 2) {
-      momentaryLoudnessLeftIn = inMomentaryByChannel[0];
-      momentaryLoudnessRightIn = inMomentaryByChannel[1];
+  // Apply Pre-Gain
+  for (int channel = 0; channel < buffer.getNumChannels(); ++channel) {
+    auto* channelData = buffer.getWritePointer(channel);
+    for (int sample = 0; sample < buffer.getNumSamples(); sample++) {
+      channelData[sample] *= preGain;
     }
-    momentaryLoudnessIn = loudnessMeterIn.getMomentaryLoudness();
-    integratedLoudnessIn = loudnessMeterIn.getIntegratedLoudness();
   }
+
+  // Input meter tap source buffer (filled at pre-gain point in the first
+  // stage).
+  for (int ch = 0; ch < buffer.getNumChannels(); ++ch)
+    inputMeterBuffer.copyFrom(ch, 0, buffer, ch, 0, buffer.getNumSamples());
+
+  // Input meter tap RMS values (after pre-gain, before girth/drive/bias).
+  rmsLevelLeftIn = inputMeterBuffer.getRMSLevel(0, 0, buffer.getNumSamples());
+  rmsLevelRightIn = inputMeterBuffer.getRMSLevel(1, 0, buffer.getNumSamples());
 
   // Distortion Unit
   std::vector<int> randoms(buffer.getNumSamples());
@@ -255,12 +262,12 @@ PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
     n = rand();
   for (int channel = 0; channel < 2; ++channel) {
     auto* channelData = buffer.getWritePointer(channel);
+    auto* meterData = inputMeterBuffer.getWritePointer(channel);
 
     for (int sample = 0; sample < buffer.getNumSamples(); sample++) {
       if (channelData[sample] != 0.0) {
-        // Pre Gain
-        channelData[sample] =
-          DistortionProcessor::clamp(channelData[sample] * preGain, -1.0, 1.0);
+        // Input meter tap: after pre gain, before girth/drive/bias.
+        meterData[sample] = channelData[sample];
 
         // Girth
         if (chainSettings.girth >= 0.0f)
@@ -290,13 +297,26 @@ PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
     }
   }
 
+  // Clean Loudness Meter
+  loudnessMeterIn.processBlock(inputMeterBuffer);
+  {
+    const auto& inMomentaryByChannel =
+      loudnessMeterIn.getMomentaryLoudnessForIndividualChannels();
+    if (inMomentaryByChannel.size() >= 2) {
+      momentaryLoudnessLeftIn = inMomentaryByChannel[0];
+      momentaryLoudnessRightIn = inMomentaryByChannel[1];
+    }
+    momentaryLoudnessIn = loudnessMeterIn.getMomentaryLoudness();
+    integratedLoudnessIn = loudnessMeterIn.getIntegratedLoudness();
+  }
+
   // DSP
   juce::dsp::AudioBlock<float> block(buffer);
 
   // Filter
   updateFilters();
   auto threshold = 0.0f;
-  if (rmsLevelLeftIn != threshold) {
+  if (dspInputRmsLeft != threshold) {
     auto leftBlock = block.getSingleChannelBlock(0);
     juce::dsp::ProcessContextReplacing<float> leftContext(leftBlock);
     leftChain.process(leftContext);
@@ -307,7 +327,7 @@ PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
     }
   }
 
-  if (rmsLevelRightIn != threshold) {
+  if (dspInputRmsRight != threshold) {
     auto rightBlock = block.getSingleChannelBlock(1);
     juce::dsp::ProcessContextReplacing<float> rightContext(rightBlock);
     rightChain.process(rightContext);
@@ -326,10 +346,6 @@ PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
     auto* cleanData = tmpBuffer.getWritePointer(channel);
     for (int sample = 0; sample < buffer.getNumSamples(); sample++) {
       if (channelData[sample] != 0.0) {
-        // Reduce Loudness
-        channelData[sample] =
-          DistortionProcessor::clamp(channelData[sample], -1, 1);
-
         // Girth
         if (chainSettings.lateGirth >= 0.0f)
           channelData[sample] =
@@ -355,8 +371,7 @@ PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
         }
         // Mix
         channelData[sample] =
-          cleanData[sample] * mixDry +
-          DistortionProcessor::clamp(channelData[sample], -1.0f, 1.0f) * mixWet;
+          cleanData[sample] * mixDry + channelData[sample] * mixWet;
 
         // Reduce Loudness for Waveform
         channelData[sample] = 0.5 * channelData[sample];

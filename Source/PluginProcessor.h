@@ -231,6 +231,7 @@ public:
 private:
   // Clean Buffer
   AudioSampleBuffer cleanBuffer;
+  AudioSampleBuffer inputMeterBuffer;
 
   // Filters
   MonoChain leftChain, rightChain;
