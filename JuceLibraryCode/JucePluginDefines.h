@@ -155,7 +155,7 @@
  #define JucePlugin_ARAFactoryID           "com.Dimethoxy.Plasma.factory"
 #endif
 #ifndef  JucePlugin_ARADocumentArchiveID
- #define JucePlugin_ARADocumentArchiveID   "com.Dimethoxy.Plasma.aradocumentarchive.1.2.1"
+ #define JucePlugin_ARADocumentArchiveID   "com.Dimethoxy.Plasma.aradocumentarchive.1.3.0"
 #endif
 #ifndef  JucePlugin_ARACompatibleArchiveIDs
  #define JucePlugin_ARACompatibleArchiveIDs  ""
