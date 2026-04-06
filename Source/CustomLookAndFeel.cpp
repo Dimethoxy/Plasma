@@ -59,9 +59,12 @@ CustomLookAndFeel::drawButtonBackground(Graphics& g,
   if (operatingSystemType != juce::SystemStats::OperatingSystemType::Windows) {
     fontSize = 4.0 * iconSize;
   }
-  if (text == "O") {
+  if (text == "O" || text == "Config") {
     g.setFont(getCustomFont().withHeight(fontSize));
     g.drawText("Config", area, Justification::centred, false);
+  } else if (text == "Return") {
+    g.setFont(getCustomFont().withHeight(fontSize));
+    g.drawText("Return", area, Justification::centred, false);
   }
   if (text == "U") {
     g.setFont(getCustomFont().withHeight(fontSize));

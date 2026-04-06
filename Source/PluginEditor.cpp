@@ -366,7 +366,7 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
   addAndMakeVisible(plasmaLabel);
 
   // Options Button
-  configButton.setButtonText("O");
+  configButton.setButtonText("Config");
   configButton.addListener(this);
   addAndMakeVisible(configButton);
 
@@ -565,6 +565,8 @@ PlasmaAudioProcessorEditor::configWindow(bool visibility)
 {
   // Make visible
   if (visibility) {
+    configButton.setButtonText("Return");
+
     // Show Option Components
     safeConfigButton.setVisible(true);
     resetConfigButton.setVisible(true);
@@ -594,6 +596,8 @@ PlasmaAudioProcessorEditor::configWindow(bool visibility)
   }
   // Hide
   else {
+    configButton.setButtonText("Config");
+
     // Hide Options Components
     safeConfigButton.setVisible(false);
     resetConfigButton.setVisible(false);
