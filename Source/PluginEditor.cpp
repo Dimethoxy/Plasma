@@ -279,6 +279,9 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
   , configCornerRadiusLabel("Corner Radius",
                             FontSizes::Main,
                             Justification::centredLeft)
+  , disableOpenGLNeedsRestartLabel("Needs restart",
+                                   FontSizes::Main,
+                                   Justification::centredLeft)
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Textboxes
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -301,8 +304,19 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
   , versionManager(p.versionManager)
   , loudnessMeterComponent(p)
 {
+  // Load Config File
+  options.applicationName = "Plasma";
+  options.filenameSuffix = ".config";
+  options.osxLibrarySubFolder = "Application Support";
+  applicationProperties.setStorageParameters(options);
+  auto userSettings = applicationProperties.getUserSettings();
+
+  // Load Config Data needed before OpenGL setup
+  scale = userSettings->getIntValue("scale", 100);
+  loadDisableOpenGL(userSettings);
+
   // OpenGL Settings
-  if (operatingSystemType != juce::SystemStats::Windows) {
+  if (operatingSystemType != juce::SystemStats::Windows && !disableOpenGL) {
     openGLContext.setComponentPaintingEnabled(true);
     openGLContext.setContinuousRepainting(false);
     openGLContext.attachTo(*getTopLevelComponent());
@@ -315,25 +329,17 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
   waveformComponent = &p.waveformComponent;
   addAndMakeVisible(waveformComponent);
 
-  // Value Editor
-  addAndMakeVisible(valueEditor);
-  valueEditor.setVisible(false);
-
-  // Load Config File
-  options.applicationName = "Plasma";
-  options.filenameSuffix = ".config";
-  options.osxLibrarySubFolder = "Application Support";
-  applicationProperties.setStorageParameters(options);
-  auto userSettings = applicationProperties.getUserSettings();
-
-  // Load Config Data
-  scale = userSettings->getIntValue("scale", 100);
+  // Load remaining config data after waveformComponent is available.
   loadBackgroundColor(userSettings);
   loadForegroundColor(userSettings);
   loadAccentColor(userSettings);
   loadOscilloscopeBufferSize(userSettings);
   loadOscilloscopeSamplesPerBlock(userSettings);
   loadCornerRadius(userSettings);
+
+  // Value Editor
+  addAndMakeVisible(valueEditor);
+  valueEditor.setVisible(false);
 
   // Update Config Textboxes
   updateTextboxes();
@@ -356,6 +362,13 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
     addAndMakeVisible(textbox);
     textbox->addListener(this);
   }
+
+  // Disable OpenGL Option (non-Windows only)
+  disableOpenGLCheckbox.setButtonText("Disable OpenGL");
+  disableOpenGLCheckbox.setToggleState(disableOpenGL,
+                                       juce::dontSendNotification);
+  disableOpenGLCheckbox.addListener(this);
+  addAndMakeVisible(disableOpenGLCheckbox);
 
   // Update Button
   updateButton.setButtonText("U");
@@ -563,6 +576,9 @@ PlasmaAudioProcessorEditor::updateTextboxes()
 void
 PlasmaAudioProcessorEditor::configWindow(bool visibility)
 {
+  const bool showOpenGLConfig =
+    operatingSystemType != juce::SystemStats::OperatingSystemType::Windows;
+
   // Make visible
   if (visibility) {
     configButton.setButtonText("Return");
@@ -587,6 +603,10 @@ PlasmaAudioProcessorEditor::configWindow(bool visibility)
     configForegroundColorTextbox.setVisible(true);
     configAccentColorTextbox.setVisible(true);
     configCornerRadiusTextbox.setVisible(true);
+
+    // Show non-Windows OpenGL config option
+    disableOpenGLCheckbox.setVisible(showOpenGLConfig);
+    disableOpenGLNeedsRestartLabel.setVisible(showOpenGLConfig);
 
     // Hide Tooltip
     tooltipLabel.setVisible(false);
@@ -618,6 +638,10 @@ PlasmaAudioProcessorEditor::configWindow(bool visibility)
     configForegroundColorTextbox.setVisible(false);
     configAccentColorTextbox.setVisible(false);
     configCornerRadiusTextbox.setVisible(false);
+
+    // Hide non-Windows OpenGL config option
+    disableOpenGLCheckbox.setVisible(false);
+    disableOpenGLNeedsRestartLabel.setVisible(false);
 
     // Show Tooltip
     tooltipLabel.setVisible(true);
@@ -682,9 +706,15 @@ PlasmaAudioProcessorEditor::buttonClicked(Button* button)
     saveOscilloscopeBufferSize(userSettings);
     saveOscilloscopeSamplesPerBlock(userSettings);
     saveCornerRadius(userSettings);
+    saveDisableOpenGL(userSettings);
 
     // Repaint
     repaint();
+  } else if (button == &disableOpenGLCheckbox) {
+    disableOpenGL = disableOpenGLCheckbox.getToggleState();
+    auto userSettings = applicationProperties.getUserSettings();
+    saveDisableOpenGL(userSettings);
+    userSettings->save();
   } else if (button == &resetConfigButton) {
     // Load Config File
     options.applicationName = "Plasma";
@@ -699,6 +729,9 @@ PlasmaAudioProcessorEditor::buttonClicked(Button* button)
     setOscilloscopeBufferSize(oscilloscopeBufferSizeFallback);
     setOscilloscopeSamplesPerBlock(oscilloscopeSamplesPerBlockFallback);
     setCornerRadius(cornerRadiusFallback);
+    disableOpenGL = disableOpenGLFallback;
+    disableOpenGLCheckbox.setToggleState(disableOpenGL,
+                                         juce::dontSendNotification);
     // Save Colors
     saveBackgroundColor(userSettings);
     saveForegroundColor(userSettings);
@@ -706,6 +739,7 @@ PlasmaAudioProcessorEditor::buttonClicked(Button* button)
     saveOscilloscopeBufferSize(userSettings);
     saveOscilloscopeSamplesPerBlock(userSettings);
     saveCornerRadius(userSettings);
+    saveDisableOpenGL(userSettings);
     // Repaint
     repaint();
   }
@@ -1378,11 +1412,22 @@ PlasmaAudioProcessorEditor::resized()
   int lineSize = sc(38);
   int labelOffset = sc(5);
   int textBoxSize = sc(30);
+  const int optionsLeftColumnX = monitorArea().getX() + 2 * sc(padding);
+  const int optionsTopY = monitorArea().getY() + 2 * sc(padding);
+  const int optionsLeftColumnWidth = sc(175);
+  const int optionsRightColumnX =
+    optionsLeftColumnX + optionsLeftColumnWidth + sc(180);
   // Title
-  optionsLabel.setBounds(monitorArea().getX() + 2 * sc(padding),
-                         monitorArea().getY() + 2 * sc(padding),
-                         sc(100),
-                         sc(40));
+  optionsLabel.setBounds(optionsLeftColumnX, optionsTopY, sc(100), sc(40));
+  // Disable OpenGL (right column, non-Windows only)
+  disableOpenGLCheckbox.setBounds(optionsRightColumnX,
+                                  optionsTopY + 5 * lineSize + sc(20),
+                                  optionsLeftColumnWidth,
+                                  textBoxSize);
+  disableOpenGLNeedsRestartLabel.setBounds(optionsRightColumnX + sc(28),
+                                           optionsTopY + 5 * lineSize + sc(40),
+                                           optionsLeftColumnWidth,
+                                           lineSize);
   // Save
   safeConfigButton.setBounds(monitorArea().getRight() - sc(30) * 2.5 -
                                sc(padding),
@@ -1396,7 +1441,7 @@ PlasmaAudioProcessorEditor::resized()
                               sc(30));
   // Oscilloscope Buffer Size
   configOscilloscopeBufferSizeLabel.setBounds(
-    monitorArea().getX() + 2 * sc(padding),
+    optionsLeftColumnX,
     monitorArea().getY() + 2 * sc(padding) + 1 * lineSize + labelOffset,
     sc(200),
     lineSize);
@@ -1407,7 +1452,7 @@ PlasmaAudioProcessorEditor::resized()
     textBoxSize);
   // Oscilloscope Samples Per Block Label
   configOscilloscopeSamplesPerBlockLabel.setBounds(
-    monitorArea().getX() + 2 * sc(padding),
+    optionsLeftColumnX,
     monitorArea().getY() + 2 * sc(padding) + 2 * lineSize + labelOffset,
     sc(200),
     lineSize);
@@ -1417,7 +1462,7 @@ PlasmaAudioProcessorEditor::resized()
     sc(50),
     textBoxSize);
   // Background Color
-  configBackgroundColorLabel.setBounds(monitorArea().getX() + 2 * sc(padding),
+  configBackgroundColorLabel.setBounds(optionsLeftColumnX,
                                        monitorArea().getY() + 2 * sc(padding) +
                                          3 * lineSize + labelOffset,
                                        sc(150),
@@ -1428,7 +1473,7 @@ PlasmaAudioProcessorEditor::resized()
     sc(70),
     textBoxSize);
   // Foreground Color
-  configForegroundColorLabel.setBounds(monitorArea().getX() + 2 * sc(padding),
+  configForegroundColorLabel.setBounds(optionsLeftColumnX,
                                        monitorArea().getY() + 2 * sc(padding) +
                                          4 * lineSize + labelOffset,
                                        sc(150),
@@ -1439,7 +1484,7 @@ PlasmaAudioProcessorEditor::resized()
     sc(70),
     textBoxSize);
   // Accent Color
-  configAccentColorLabel.setBounds(monitorArea().getX() + 2 * sc(padding),
+  configAccentColorLabel.setBounds(optionsLeftColumnX,
                                    monitorArea().getY() + 2 * sc(padding) +
                                      5 * lineSize + labelOffset,
                                    sc(110),
@@ -1450,7 +1495,7 @@ PlasmaAudioProcessorEditor::resized()
     sc(70),
     textBoxSize);
   // CornerRadius
-  configCornerRadiusLabel.setBounds(monitorArea().getX() + 2 * sc(padding),
+  configCornerRadiusLabel.setBounds(optionsLeftColumnX,
                                     monitorArea().getY() + 2 * sc(padding) +
                                       6 * lineSize + labelOffset,
                                     sc(125),
@@ -1720,6 +1765,7 @@ PlasmaAudioProcessorEditor::setAccentColor(Colour c)
   for (auto* slider : getSliders()) {
     slider->setColour(Slider::ColourIds::rotarySliderFillColourId, c);
   }
+  disableOpenGLCheckbox.setColour(juce::ToggleButton::tickColourId, c);
   loudnessMeterComponent.setAccentColor(c);
 }
 
@@ -1759,6 +1805,7 @@ PlasmaAudioProcessorEditor::setOptionsFontColor(Colour c)
     button->setColour(TextButton::ColourIds::textColourOnId, c);
     button->setColour(TextButton::ColourIds::textColourOffId, c);
   }
+  disableOpenGLCheckbox.setColour(juce::ToggleButton::textColourId, c);
   waveformComponent->setColor(c);
   responseCurveComponent.setColor(c);
   earlyShapercurveComponent.setColor(c);
@@ -1814,6 +1861,15 @@ PlasmaAudioProcessorEditor::loadCornerRadius(PropertiesFile* userSettings)
 }
 
 void
+PlasmaAudioProcessorEditor::loadDisableOpenGL(PropertiesFile* userSettings)
+{
+  disableOpenGL =
+    userSettings->getBoolValue("disableOpenGL", disableOpenGLFallback);
+  disableOpenGLCheckbox.setToggleState(disableOpenGL,
+                                       juce::dontSendNotification);
+}
+
+void
 PlasmaAudioProcessorEditor::setOscilloscopeBufferSize(
   int oscilloscopeBufferSize)
 {
@@ -1860,6 +1916,12 @@ void
 PlasmaAudioProcessorEditor::saveCornerRadius(PropertiesFile* userSettings)
 {
   userSettings->setValue("cornerRadius", cornerRadius);
+}
+
+void
+PlasmaAudioProcessorEditor::saveDisableOpenGL(PropertiesFile* userSettings)
+{
+  userSettings->setValue("disableOpenGL", disableOpenGL);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1969,7 +2031,8 @@ PlasmaAudioProcessorEditor::getOptionsLabels()
            &configBackgroundColorLabel,
            &configForegroundColorLabel,
            &configAccentColorLabel,
-           &configCornerRadiusLabel };
+           &configCornerRadiusLabel,
+           &disableOpenGLNeedsRestartLabel };
 }
 
 std::vector<CustomTextbox*>
