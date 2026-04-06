@@ -181,7 +181,9 @@ private:
   // Options Labels
   CustomLabel configOscilloscopeBufferSizeLabel,
     configOscilloscopeSamplesPerBlockLabel, configBackgroundColorLabel,
-    configForegroundColorLabel, configAccentColorLabel, configCornerRadiusLabel;
+    configForegroundColorLabel, configAccentColorLabel, configCornerRadiusLabel,
+    disableOpenGLNeedsRestartLabel;
+  ToggleButton disableOpenGLCheckbox;
   CustomTextbox configOscilloscopeBufferSizeTextbox,
     configOscilloscopeSamplesPerBlockTextbox, configBackgroundColorTextbox,
     configForegroundColorTextbox, configAccentColorTextbox,
@@ -210,12 +212,16 @@ private:
   int oscilloscopeSamplesPerBlock = 4;
   int oscilloscopeBufferSizeFallback = 1024;
   int oscilloscopeSamplesPerBlockFallback = 4;
+  bool disableOpenGL = false;
+  bool disableOpenGLFallback = false;
   void loadOscilloscopeBufferSize(PropertiesFile* commonSettings);
   void loadOscilloscopeSamplesPerBlock(PropertiesFile* commonSettings);
   void loadCornerRadius(PropertiesFile* commonSettings);
+  void loadDisableOpenGL(PropertiesFile* commonSettings);
   void saveOscilloscopeBufferSize(PropertiesFile* commonSettings);
   void saveOscilloscopeSamplesPerBlock(PropertiesFile* commonSettings);
   void saveCornerRadius(PropertiesFile* commonSettings);
+  void saveDisableOpenGL(PropertiesFile* commonSettings);
   void setOscilloscopeBufferSize(int oscilloscopeBufferSize);
   void setOscilloscopeSamplesPerBlock(int oscilloscopeSamplesPerBlock);
   void setCornerRadius(int cornerRadius);
