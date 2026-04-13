@@ -63,7 +63,7 @@ public:
 private:
   // Scaling
   CustomTextButton scaleUpButton, scaleDownButton, configButton,
-    safeConfigButton, resetConfigButton, updateButton;
+    safeConfigButton, resetConfigButton, revertConfigButton, updateButton;
 
   // Audio Processor
   PlasmaAudioProcessor& audioProcessor;

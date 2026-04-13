@@ -256,6 +256,7 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
   , plasmaLabel()
   , configButton()
   , resetConfigButton()
+  , revertConfigButton()
   , scaleUpButton()
   , scaleDownButton()
   ,
@@ -402,6 +403,11 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
   resetConfigButton.setButtonText("R");
   resetConfigButton.addListener(this);
   addAndMakeVisible(resetConfigButton);
+
+  // Revert to last saved button
+  revertConfigButton.setButtonText("L");
+  revertConfigButton.addListener(this);
+  addAndMakeVisible(revertConfigButton);
 
   // Hide Options Menu
   optionsLabel.setVisible(false);
@@ -586,6 +592,7 @@ PlasmaAudioProcessorEditor::configWindow(bool visibility)
     // Show Option Components
     safeConfigButton.setVisible(true);
     resetConfigButton.setVisible(true);
+    revertConfigButton.setVisible(true);
     optionsLabel.setVisible(true);
 
     // Show Config Labels
@@ -621,6 +628,7 @@ PlasmaAudioProcessorEditor::configWindow(bool visibility)
     // Hide Options Components
     safeConfigButton.setVisible(false);
     resetConfigButton.setVisible(false);
+    revertConfigButton.setVisible(false);
     optionsLabel.setVisible(false);
 
     // Hide Config Labels
@@ -741,6 +749,25 @@ PlasmaAudioProcessorEditor::buttonClicked(Button* button)
     saveCornerRadius(userSettings);
     saveDisableOpenGL(userSettings);
     // Repaint
+    repaint();
+  } else if (button == &revertConfigButton) {
+    // Load Config File
+    options.applicationName = "Plasma";
+    options.filenameSuffix = ".config";
+    applicationProperties.setStorageParameters(options);
+    auto userSettings = applicationProperties.getUserSettings();
+
+    // Revert to currently saved values
+    loadBackgroundColor(userSettings);
+    loadForegroundColor(userSettings);
+    loadAccentColor(userSettings);
+    loadOscilloscopeBufferSize(userSettings);
+    loadOscilloscopeSamplesPerBlock(userSettings);
+    loadCornerRadius(userSettings);
+    loadDisableOpenGL(userSettings);
+
+    updateTextboxes();
+    resized();
     repaint();
   }
 }
@@ -1439,6 +1466,11 @@ PlasmaAudioProcessorEditor::resized()
                               monitorArea().getY() + 3 * sc(padding),
                               2 * sc(30),
                               sc(30));
+  // Revert to last saved
+  revertConfigButton.setBounds(resetConfigButton.getBounds().getX() - sc(70),
+                               monitorArea().getY() + 3 * sc(padding),
+                               2 * sc(30),
+                               sc(30));
   // Oscilloscope Buffer Size
   configOscilloscopeBufferSizeLabel.setBounds(
     optionsLeftColumnX,
@@ -2055,5 +2087,5 @@ PlasmaAudioProcessorEditor::getButtons()
 std::vector<CustomTextButton*>
 PlasmaAudioProcessorEditor::getOptionsButtons()
 {
-  return { &safeConfigButton, &resetConfigButton };
+  return { &safeConfigButton, &resetConfigButton, &revertConfigButton };
 }
