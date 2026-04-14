@@ -2,6 +2,63 @@
 #include "JuceHeader.h"
 #include "PluginProcessor.h"
 
+void
+OpenGLToggleLookAndFeel::drawToggleButton(juce::Graphics& g,
+                                          juce::ToggleButton& button,
+                                          bool shouldDrawButtonAsHighlighted,
+                                          bool shouldDrawButtonAsDown)
+{
+  juce::ignoreUnused(shouldDrawButtonAsHighlighted, shouldDrawButtonAsDown);
+
+  const auto bounds = button.getLocalBounds().toFloat();
+  const float controlHeight = static_cast<float>(button.getHeight());
+
+  // Keep font scaling behavior close to CustomLabel::resize().
+  const float fontSize = juce::jmax(7.0f, controlHeight * 0.5f);
+  const float boxSize = juce::jmax(9.0f, controlHeight * 0.62f);
+  const float boxX = 4.0f;
+  const float boxY = (bounds.getHeight() - boxSize) * 0.5f;
+  const auto box = juce::Rectangle<float>(boxX, boxY, boxSize, boxSize);
+  const int textPadding =
+    juce::roundToInt(juce::jmax(2.0f, controlHeight * 0.16f));
+
+  auto textColour = button.findColour(juce::ToggleButton::textColourId);
+  auto tickColour = button.findColour(juce::ToggleButton::tickColourId);
+  if (!button.isEnabled()) {
+    textColour = textColour.withMultipliedAlpha(0.5f);
+    tickColour = tickColour.withMultipliedAlpha(0.5f);
+  }
+
+  const float outlineThickness = juce::jmax(1.0f, boxSize * 0.10f);
+  g.setColour(textColour);
+  g.drawRoundedRectangle(box.reduced(outlineThickness * 0.5f),
+                         juce::jmax(2.0f, boxSize * 0.16f),
+                         outlineThickness);
+
+  if (button.getToggleState()) {
+    juce::Path tick;
+    tick.startNewSubPath(box.getX() + boxSize * 0.28f,
+                         box.getY() + boxSize * 0.56f);
+    tick.lineTo(box.getX() + boxSize * 0.43f, box.getY() + boxSize * 0.72f);
+    tick.lineTo(box.getX() + boxSize * 0.72f, box.getY() + boxSize * 0.34f);
+    g.setColour(tickColour);
+    g.strokePath(tick,
+                 juce::PathStrokeType(juce::jmax(1.0f, boxSize * 0.11f),
+                                      juce::PathStrokeType::curved,
+                                      juce::PathStrokeType::rounded));
+  }
+
+  g.setColour(textColour);
+  g.setFont(fontSize);
+  g.drawFittedText(
+    button.getButtonText(),
+    button.getLocalBounds()
+      .withTrimmedLeft(juce::roundToInt(box.getRight()) + textPadding)
+      .withTrimmedRight(2),
+    juce::Justification::centredLeft,
+    1);
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Constructor
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -366,6 +423,7 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 
   // Disable OpenGL Option (non-Windows only)
   disableOpenGLCheckbox.setButtonText("Disable OpenGL");
+  disableOpenGLCheckbox.setLookAndFeel(&openGLToggleLookAndFeel);
   disableOpenGLCheckbox.setToggleState(disableOpenGL,
                                        juce::dontSendNotification);
   disableOpenGLCheckbox.addListener(this);
@@ -434,6 +492,7 @@ PlasmaAudioProcessorEditor::PlasmaAudioProcessorEditor(PlasmaAudioProcessor& p)
 }
 PlasmaAudioProcessorEditor::~PlasmaAudioProcessorEditor()
 {
+  disableOpenGLCheckbox.setLookAndFeel(nullptr);
   openGLContext.detach();
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1444,16 +1503,17 @@ PlasmaAudioProcessorEditor::resized()
   const int optionsLeftColumnWidth = sc(175);
   const int optionsRightColumnX =
     optionsLeftColumnX + optionsLeftColumnWidth + sc(180);
+  const int optionsRightColumnWidth = sc(220);
   // Title
   optionsLabel.setBounds(optionsLeftColumnX, optionsTopY, sc(100), sc(40));
   // Disable OpenGL (right column, non-Windows only)
   disableOpenGLCheckbox.setBounds(optionsRightColumnX,
                                   optionsTopY + 5 * lineSize + sc(20),
-                                  optionsLeftColumnWidth,
-                                  textBoxSize);
-  disableOpenGLNeedsRestartLabel.setBounds(optionsRightColumnX + sc(28),
+                                  optionsRightColumnWidth,
+                                  lineSize);
+  disableOpenGLNeedsRestartLabel.setBounds(optionsRightColumnX + sc(29),
                                            optionsTopY + 5 * lineSize + sc(40),
-                                           optionsLeftColumnWidth,
+                                           optionsRightColumnWidth,
                                            lineSize);
   // Save
   safeConfigButton.setBounds(monitorArea().getRight() - sc(30) * 2.5 -

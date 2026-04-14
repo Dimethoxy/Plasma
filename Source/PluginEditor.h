@@ -23,6 +23,17 @@ const Colour accentColorFactory = Colour(80, 250, 123);
 
 //=============================================================================================
 
+class OpenGLToggleLookAndFeel : public juce::LookAndFeel_V4
+{
+public:
+  void drawToggleButton(juce::Graphics& g,
+                        juce::ToggleButton& button,
+                        bool shouldDrawButtonAsHighlighted,
+                        bool shouldDrawButtonAsDown) override;
+};
+
+//=============================================================================================
+
 class PlasmaAudioProcessorEditor
   : public AudioProcessorEditor
   , public MultiTimer
@@ -184,6 +195,7 @@ private:
     configForegroundColorLabel, configAccentColorLabel, configCornerRadiusLabel,
     disableOpenGLNeedsRestartLabel;
   ToggleButton disableOpenGLCheckbox;
+  OpenGLToggleLookAndFeel openGLToggleLookAndFeel;
   CustomTextbox configOscilloscopeBufferSizeTextbox,
     configOscilloscopeSamplesPerBlockTextbox, configBackgroundColorTextbox,
     configForegroundColorTextbox, configAccentColorTextbox,
