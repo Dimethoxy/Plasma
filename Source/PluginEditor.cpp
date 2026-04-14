@@ -1461,16 +1461,16 @@ PlasmaAudioProcessorEditor::resized()
                              monitorArea().getY() + 3 * sc(padding),
                              2 * sc(30),
                              sc(30));
-  // Reset
-  resetConfigButton.setBounds(safeConfigButton.getBounds().getX() - sc(70),
-                              monitorArea().getY() + 3 * sc(padding),
-                              2 * sc(30),
-                              sc(30));
   // Revert to last saved
-  revertConfigButton.setBounds(resetConfigButton.getBounds().getX() - sc(70),
+  revertConfigButton.setBounds(safeConfigButton.getBounds().getX() - sc(70),
                                monitorArea().getY() + 3 * sc(padding),
                                2 * sc(30),
                                sc(30));
+  // Reset
+  resetConfigButton.setBounds(revertConfigButton.getBounds().getX() - sc(70),
+                              monitorArea().getY() + 3 * sc(padding),
+                              2 * sc(30),
+                              sc(30));
   // Oscilloscope Buffer Size
   configOscilloscopeBufferSizeLabel.setBounds(
     optionsLeftColumnX,

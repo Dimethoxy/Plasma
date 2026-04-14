@@ -72,6 +72,9 @@ CustomLookAndFeel::drawButtonBackground(Graphics& g,
   } else if (text == "S") {
     g.setFont(getCustomFont().withHeight(fontSize));
     g.drawText("Save", area, Justification::centred, false);
+  } else if (text == "L") {
+    g.setFont(getCustomFont().withHeight(fontSize));
+    g.drawText("Revert", area, Justification::centred, false);
   } else if (text == "R") {
     g.setFont(getCustomFont().withHeight(fontSize));
     g.drawText("Reset", area, Justification::centred, false);
