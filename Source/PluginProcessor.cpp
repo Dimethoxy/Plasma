@@ -254,6 +254,19 @@ PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
   rmsLevelLeftIn = inputMeterBuffer.getRMSLevel(0, 0, buffer.getNumSamples());
   rmsLevelRightIn = inputMeterBuffer.getRMSLevel(1, 0, buffer.getNumSamples());
 
+  // Loudness Meter
+  loudnessMeterIn.processBlock(buffer);
+  {
+    const auto& inMomentaryByChannel =
+      loudnessMeterIn.getMomentaryLoudnessForIndividualChannels();
+    if (inMomentaryByChannel.size() >= 2) {
+      momentaryLoudnessLeftIn = inMomentaryByChannel[0];
+      momentaryLoudnessRightIn = inMomentaryByChannel[1];
+    }
+    momentaryLoudnessIn = loudnessMeterIn.getMomentaryLoudness();
+    integratedLoudnessIn = loudnessMeterIn.getIntegratedLoudness();
+  }
+
   // Distortion Unit
   std::vector<int> randoms(buffer.getNumSamples());
   for (int& n : randoms)
@@ -292,19 +305,6 @@ PlasmaAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
         }
       }
     }
-  }
-
-  // Clean Loudness Meter
-  loudnessMeterIn.processBlock(inputMeterBuffer);
-  {
-    const auto& inMomentaryByChannel =
-      loudnessMeterIn.getMomentaryLoudnessForIndividualChannels();
-    if (inMomentaryByChannel.size() >= 2) {
-      momentaryLoudnessLeftIn = inMomentaryByChannel[0];
-      momentaryLoudnessRightIn = inMomentaryByChannel[1];
-    }
-    momentaryLoudnessIn = loudnessMeterIn.getMomentaryLoudness();
-    integratedLoudnessIn = loudnessMeterIn.getIntegratedLoudness();
   }
 
   // DSP
