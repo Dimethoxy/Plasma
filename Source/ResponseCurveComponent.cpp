@@ -214,7 +214,7 @@ ResponseCurveComponent::paint(juce::Graphics& g)
   const double outputMin = y + h;
   const double outputMax = y;
   auto map = [outputMin, outputMax](double input) {
-    return jmap(input, -64.0, 64.0, outputMin, outputMax);
+    return jmap(input, -96.0, 96.0, outputMin, outputMax);
   };
 
   responseCurve.startNewSubPath(x, map(mags.front()));
