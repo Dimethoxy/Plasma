@@ -54,6 +54,10 @@ makepkg -si
 ```
 We ensure Arch Linux users receive updates as soon as they're available, directly through the AUR.
 
+## ⭐ Star History
+
+[![Star History Chart](https://api.star-history.com/chart?repos=Dimethoxy/Disflux%2CDimethoxy/Plasma&type=date&legend=bottom-right)](https://www.star-history.com/?repos=Dimethoxy%2FDisflux%2CDimethoxy%2FPlasma&type=date&legend=bottom-right)
+
 ## 💻 System Requirements
 
 ### Windows
